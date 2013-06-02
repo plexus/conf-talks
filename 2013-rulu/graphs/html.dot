@@ -1,0 +1,11 @@
+graph foo {
+  rankdir=LR;
+  d1[label="div"];
+  d2[label="div"];
+  d3[label="div"];
+  html -- head;
+  html -- body;
+  body -- d1;
+  body -- d2;
+  body -- d3;
+}
