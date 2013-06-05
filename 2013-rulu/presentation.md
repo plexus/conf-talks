@@ -4,8 +4,6 @@
 by [@plexus](http://twitter.com/plexus)
 
 ---
-= data-x="1000"
-
 # tl;dr in Haiku
 
 For formal language
@@ -15,17 +13,38 @@ Avoid plain strings at all cost
 Use data structures
 
 ---
-= data-x="2000"
+# Language
 
-## Formal languages
-
-* HTML, CSS, Javascript
-* HAML, SASS/SCSS, Coffeescript
-* JSON, XML, YAML
-* SQL, Ruby, Regex
-* URL, HTTP request/response, Mbox/MIME
+An <strong>alphabet</strong> to construct <br/>
+<strong>words</strong> to build <br/>
+<strong>sentences</strong> that convey <br/>
+<strong>meaning</strong>
 
 ---
+
+# Ruby
+
+ &nbsp; | &nbsp;
+--- | ---
+<strong>alphabet</strong> | character set (UTF-8)
+<strong>words</strong> | keywords, var names, symbols, ...
+<strong>sentences</strong> | expressions
+<strong>meaning</strong> | what it does
+
+---
+
+# HTML
+
+ &nbsp; | &nbsp;
+--- | ---
+<strong>alphabet</strong> | character set (UTF-8)
+<strong>words</strong> | tags, attr names, symbols, ...
+<strong>sentences</strong> | DOM tree
+<strong>meaning</strong> | How it is rendered
+
+---
+
+
 
 ## Formal language is
 
@@ -41,7 +60,6 @@ Use data structures
 * doesn't say much about applications
 
 ----
-= data-x="3000"
 
 # An example
 ## Innocent HTML fragment
@@ -65,7 +83,6 @@ Use data structures
 * Semantics
 
 ----
-= data-x="4000"
 
 ## Bytes
 
@@ -165,7 +182,7 @@ Add an arbitrary subtree in our HTML
 ````dot
 graph para {
   p -- script;
-  script -- evil_code();
+  script -- evil_code;
 }
 ````
 

@@ -1,0 +1,67 @@
+* formal languages
+** from alphabet/sounds/bytes to semantics
+*** we want to convey ideas (semantics)
+**** Transfer over space (speech) and or time (writing)
+*** ideas represent relations between concepts
+**** There is structure there => syntax tree
+*** flatten this structure in a linear list of words
+*** encode these words with sounds or letters
+** two way process
+*** other side "decodes" by chunking sounds into words (lexing/tokenizing)
+*** building up a syntax tree (relations between concepts)
+*** interpreting semantics
+
+* Incorporating outside info
+** parse & represent vs "mark"/quote
+** getting it wrong == danger
+*** injection attacks, SQLi, XSS
+** Examples of both approaches
+*** Arel -> AST
+**** User.where(name: params[:user_name].to_s)
+**** Arel::Relation == AST
+**** uses a visitor pattern to serialize to DB specific SQL
+**** user_id = leaf node in tree
+***** type = literal string
+***** will be encoded as such
+***** can never break out of that to form a subtree
+*** SafeBuffer -> strings/alphabet
+**** "<a href='#{ sanitize(link) }'>#{ sanitize(caption) }</a>".html_safe
+**** better example : view snippet with some raw()
+**** what's a string
+***** literal string
+***** snippet of html
+***** html-escaped literal string (i.e. what side of the escape are we on?)
+
+* Time to generalize
+** treat plain text formats as serialization formats
+** The Dragons Outside Architecture
+*** inside app = syntax trees
+*** outside app = plain text
+**** can be sent over the wire
+*** Serialize/deserialize at the border of your app
+
+* Tooling
+** What do we need
+*** Elegant data types
+*** quality parsers/serializers
+*** higher level APIs on top of these
+** what do we have
+*** SQL : Sequel, Arel ; pretty good!
+*** HTML... mmm not sure, nokogiri?
+*** CSS : Does SASS use this model? Does it have a CSS AST data type?
+*** HTTP : Rack, think this is quite solid.
+**** Actually great example
+**** HTTP request/response is just a language
+**** Rack has a solid, focused, do one thing well implementation
+**** Result : no one would even think about parsing HTTP request/response manually
+
+* Let's try with HTML
+** Nokogiri
+*** parser : great
+*** serializer : only HTML 4.01 (because of libxml2)
+*** data types : awkward to work with directly
+** Representing HTML
+*** Serialization = complex (<br> vs <br/> vs <br />, HTML4/HTML5/XHTML/tag soup)
+*** Conceptually simple
+**** All get parsed to the same DOM
+**** This is the mental model people have of HTML
