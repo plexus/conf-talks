@@ -1,0 +1,33 @@
+require 'rb-inotify'
+
+class WatchTask
+  def initialize(name, opts = {})
+    Rake::Task.define_task name do
+      Array(opts[:watch]).each do |pattern|
+        notifier.watch(pattern, :modify, :create) do |event|
+          system(opts[:exec])
+        end
+        at_exit {
+          system(opts[:exec])
+          notifier.run
+        }
+      end
+    end
+  end
+
+  def notifier
+    @notifier ||= INotify::Notifier.new
+  end
+end
+
+namespace :mdpress do
+  WatchTask.new(
+    :watch,
+    :watch => [
+      'presentation.md',
+      'themes/plexus.css',
+      'themes/plexus.html'
+    ],
+    :exec => 'bundle exec mdpress -s plexus presentation.md'
+  )
+end

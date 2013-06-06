@@ -4,7 +4,7 @@
 by [@plexus](http://twitter.com/plexus)
 
 ---
-# tl;dr in Haiku
+# tl;dr (in Haiku)
 
 For formal language
 
@@ -13,12 +13,29 @@ Avoid plain strings at all cost
 Use data structures
 
 ---
+# Why?
+
+Make your programs
+
+* more robust
+* more secure
+* more powerful
+
+````notes
+These are notes
+````
+
+---
+
 # Language
 
 An <strong>alphabet</strong> to construct <br/>
 <strong>words</strong> to build <br/>
 <strong>sentences</strong> that convey <br/>
 <strong>meaning</strong>
+
+---
+#
 
 ---
 

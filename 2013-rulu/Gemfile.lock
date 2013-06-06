@@ -1,0 +1,34 @@
+PATH
+  remote: /home/arne/github/mdpress
+  specs:
+    mdpress (0.0.14)
+      httparty
+      launchy
+      redcarpet
+      trollop
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.3.4)
+    ffi (1.8.1)
+    httparty (0.11.0)
+      multi_json (~> 1.0)
+      multi_xml (>= 0.5.2)
+    launchy (2.3.0)
+      addressable (~> 2.3)
+    multi_json (1.7.6)
+    multi_xml (0.5.4)
+    rake (10.0.4)
+    rb-inotify (0.9.0)
+      ffi (>= 0.5.0)
+    redcarpet (2.3.0)
+    trollop (2.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  mdpress!
+  rake
+  rb-inotify

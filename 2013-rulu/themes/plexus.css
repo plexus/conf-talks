@@ -35,7 +35,7 @@ body {
 
 .impress-enabled .step {
 	margin: 0;
-	/* opacity: 0.3; */
+	opacity: 0.3;
 	-webkit-transition: opacity 1s;
 	-moz-transition: opacity 1s;
 	-ms-transition: opacity 1s;
@@ -43,13 +43,13 @@ body {
 	transition: opacity 1s;
 }
 
-/* .step:not(.active) { */
-/* 	opacity: 0.0; */
-/* } */
+.step:not(.active) {
+	opacity: 0.0;
+}
 
-/* .impress-enabled .step.active { */
-/* 	opacity: 1 */
-/* } */
+.impress-enabled .step.active {
+	opacity: 1
+}
 
 strong {
 	font-weight: 800;
