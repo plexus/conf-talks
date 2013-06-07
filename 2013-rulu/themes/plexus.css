@@ -3,7 +3,7 @@ html {
 }
 
 body {
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'PT Serif', georgia, serif; /*'Open Sans', sans-serif;*/
 	line-height: 40px;
 	font-size: 32px;
 }
@@ -19,7 +19,7 @@ body {
 }
 
 .step {
-	width: 1060px;
+	width: 900px;
 	padding: 40px 0;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -31,11 +31,12 @@ body {
 	-ms-transition: opacity 1s;
 	-o-transition: opacity 1s;
 	transition: opacity 1s;
+  /*text-align: center;*/
 }
 
 .impress-enabled .step {
 	margin: 0;
-	opacity: 0.3;
+	opacity: 0.8;
 	-webkit-transition: opacity 1s;
 	-moz-transition: opacity 1s;
 	-ms-transition: opacity 1s;
@@ -44,7 +45,7 @@ body {
 }
 
 .step:not(.active) {
-	opacity: 0.0;
+	opacity: 0.3;
 }
 
 .impress-enabled .step.active {
@@ -93,7 +94,7 @@ blockquote {
 	padding: 10px 0;
 	border-top: 1px solid #aaa;
 	border-bottom: 1px solid #aaa;
-	width: 1060px;
+	width: 900px;
 }
 table {
 	width:100%;
@@ -208,4 +209,16 @@ span,strong {
 	-ms-transition-delay: 0.5s;
 	-o-transition-delay: 0.5s;
 	transition-delay: 0.5s;
+}
+
+
+/* arne stuff */
+
+.box {
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+.dot-wrap {
+  text-align: center;
 }

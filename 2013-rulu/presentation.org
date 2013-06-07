@@ -15,6 +15,11 @@
 **** SQL/Arel : solved
 **** HTML/XSS : unsolved
 
+** HTML is hard
+*** Not strictly a formal language
+*** implementations accept everything
+***
+
 ** The Apples and Snakes architecture
 
 ** Tooling.. what if
@@ -110,3 +115,9 @@
 
 * Test
  - Rake :: not too bad
+
+* Sources
+** Talks
+*** Meredith L. Patterson : The Science of Insecurity ; http://langsec.org / http://www.youtube.com/watch?v=3kEfedtQVOY
+** Books
+*** Speaking : Willem J.M. Levelt

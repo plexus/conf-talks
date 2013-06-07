@@ -1,10 +1,16 @@
+---
+defaults:
+  data-x: '+1000'
+  data-y: '+0'
+---
+
 # Web Linguistics
 ## Towards Higher Fluency
 
 by [@plexus](http://twitter.com/plexus)
 
 ---
-# tl;dr (in Haiku)
+## tl;dr (in Haiku)
 
 For formal language
 
@@ -12,32 +18,248 @@ Avoid plain strings at all cost
 
 Use data structures
 
----
-# Why?
-
-Make your programs
-
-* more robust
-* more secure
-* more powerful
-
 ````notes
-These are notes
+I want to make this point up front, if nothing else, at least take this point with you.
 ````
+
+---
+# XSS
+## Cross site scripting
+
+```notes
+This is where our story starts.
+```
+
+---
+
+> [CVE-2013-1857] XSS Vulnerability<br/> in the `sanitize` helper of Ruby on Rails
+
+&nbsp; &mdash; @tenderlove on rails-security-ann
+
+<p></p>
+
+> Given all the fun we've had with security issues
+
+&nbsp; &mdash; Rails 4 beta announcement
+
+```notes
+It's been an interesting winter for Rails security issues, and hopefully security is still at the front of peoples minds.
+```
+
+---
+
+## XSS
+
+Code like this
+
+```html
+<div>#{ @post.body }</div>
+```
+
+&nbsp;
+&nbsp;
+
+Will lead to malicious injection
+
+```html
+<div>
+  <script>evil code</script>
+</div>
+```
+
+```notes
+So what exactly is XSS? This is an example of a 'persisted' XSS attack. Anyone who can sneak HTML in our pages can do nasty stuff.
+
+This gives an attacker all privileges the current user of your app has.
+```
+
+---
+## Escape!
+
+The common wisdom is to "escape" the inserted value
+
+```html
+<div>#{ html_escape(@post.body) }</div>
+```
+
+&nbsp;
+&nbsp;
+
+Now the code is harmless
+
+```html
+<div>
+  &lt;script&gt;evil code&lt;/script&gt
+</div>
+```
+
+```notes
+So what to do? This is what you learn in Web security 101, make sure you HTML escape whatever you don't trust, and you'll be fine.
+```
+
+---
+## XSS
+
+Is a more common
+
+vulnerability as
+
+buffer overflows
+
+```notes
+So if it's that simple, why is it still that common?
+```
+
+---
+
+Manual escaping? **hard**
+
+Let's automate!
+
+```html
+# using HTML::SafeBuffer
+<div><%= @post.body %></div>
+```
+
+And it **just works**
+
+```notes
+This is (at least in Ruby) the state of the art of XSS prevention, it's part of Rails 'secure by default' philosophy.
+```
+
+---
+
+We've turned the problem around
+
+Whitelist instead of blacklist
+
+```ruby
+def helper
+  "<p> haikus are pretty <p>".html_safe
+end
+```
+
+&nbsp;
+
+**We're still manually deciding what (not) to escape**
+
+```notes
+It is a step forward, less strings will be left unescaped, but you can hardly call this a structural solution.
+```
+
+---
+# SQLi
+## The mother of all injection attacks
+
+```notes
+XSS is just one type of injection attack, another one, SQL injection, has been with us for even longer. It seems we are better at preventing this one, why is that?
+```
+
+---
+## ActiveRecord 3 / Arel
+
+```ruby
+@users = User.where(name: params[:query])
+
+# => #<ActiveRecord::Relation>
+```
+
+&nbsp;
+
+See also [Sequel](https://github.com/jeremyevans/sequel)
+
+```ruby
+posts.where(stamp:
+  (Date.today - 14)..(Date.today - 7))
+
+# WHERE stamp >= '2010-06-30'
+# AND stamp <= '2010-07-07'
+```
+
+
+```notes
+How is this different? At the surface this may seem not much different from the SafeBuffer approach, but the difference runs much deeper. But to really understand what's going on here, we need to say a few words about languages.
+```
 
 ---
 
 # Language
-
-An <strong>alphabet</strong> to construct <br/>
-<strong>words</strong> to build <br/>
-<strong>sentences</strong> that convey <br/>
-<strong>meaning</strong>
+## langue, taal, sprache, 語言
 
 ---
-#
+## Language
+
+An **alphabet** to
+
+construct **words** and **sentences**
+
+that convey **meaning**
+
+
+````notes
+This is true of both natural and formal languages. Let's go through this from bottom to top.
+
+In CS there is usually more emphasis on the understanding (parsing) of languages, but here I want to go what it takes to generate language. Hence we'll start from meaning (an idea) and see how we get to spoken/written language.
+````
 
 ---
+## Meaning
+
+&ldquo; Lisa writes good code. &rdquo;
+
+````notes
+Suppose I want to convey this message. Before I can say this, or even have the words in my mind, I need to have this as an idea in my mind.
+````
+
+---
+= data-x="+0" data-y="+400"
+
+````dot
+graph lisa {
+  LISA[shape="none"  weight=11];
+  WRITE[shape="none"];
+  GOOD[shape="none"];
+  CODE[shape="none"];
+  s[shape="circle" weight=10];
+  p[shape="circle" weight=10];
+  m[shape="circle"];
+  s -- LISA
+  s -- p
+  p -- WRITE
+  p -- m
+  m -- GOOD;
+  m -- CODE;
+}
+````
+
+````notes
+At this point we have identified the components that make up our message, and have determined how they relate to each other. Now we can go on and serialize this message.
+````
+
+---
+= data-x="+0" data-y="+400"
+
+<span class="box">LISA</span>
+<span class="box">WRITE</span>
+<span class="box">GOOD</span>
+<span class="box">CODE</span>
+
+````notes
+Now we can turn this tree into a linear list of words, ready to be uttered.
+````
+
+---
+= data-x="+0" data-y="+400"
+
+![](../waveform.gif)
+
+````notes
+And turn these words into sounds.
+````
+
+
+---
+
 
 # Ruby
 
@@ -59,87 +281,62 @@ An <strong>alphabet</strong> to construct <br/>
 <strong>sentences</strong> | DOM tree
 <strong>meaning</strong> | How it is rendered
 
----
-
-
-
-## Formal language is
-
-* A (infinite) set of strings
-* A productive grammar
-
----
-
-## Formal language theory
-
-* deals with well-formedness
-* is a string part of the language
-* doesn't say much about applications
-
-----
-
-# An example
-## Innocent HTML fragment
-
-````html
-&lt;p>
-  &lt;strong>Rübÿ&lt;/strong>
-  needs more
-  &lt;abbr title="Heavy Metal Umlauts">HMÜ&lt;/abbr>
-&lt;/p>
-````
-
 ----
 
 ## Levels of interpretation
 
-* Bytes
 * Characters
 * Tokens
 * Syntax tree
 * Semantics
 
 ----
+= data-x="+0" data-y="+400"
 
 ## Bytes
 
 ```ruby
-["<", "p", ">", "\n",
- " ", " ", "<", "e", "m", ">",
- "R", "\xC3", "\xBC", "b", "\xC3", "\xBF",
- "<", "/", "e", "m", ">"]
+[ "R", "\xC3", "\xBC", "b", "\xC3", "\xBF" ]
 ````
 
 ----
+= data-x="+0" data-y="+400"
+
 ## Characters
 
 ```ruby
-["<", "p", ">", "\n",
- " ", " ", "<", "e", "m", ">",
- "R", "ü", "b", "ÿ",
- "<", "/", "e", "m", ">"]
+[ "R", "ü", "b", "ÿ" ]
 ````
 
 ----
+= data-x="+0" data-y="+400"
+
 ## Tokens
 
 ```ruby
-["<", "p", ">", "\n  ",
- "<", "em", ">", "Rübÿ",
- "<", "/", "em", ">"]
+["<p>", "\n  ", "<em>", "Rübÿ", "</em>", "</p>"]
 ````
 
 ----
-## HTML Tokens
+= data-x="+0" data-y="+400"
 
-```ruby
-["&lt;p>", "\n  ", "&lt;em>", "Rübÿ", "&lt;/em>", "&lt;/p>"]
-````
-
-----
-## Abstract Syntax Tree
-
-<img src="../graphs/html.svg" height="500px;" />
+```dot
+graph foo {
+  html[shape="circle"];
+  head[shape="circle"];
+  body[shape="circle"];
+  d1[label="p" shape="circle"];
+  d2[label="em" shape="circle"];
+  d3[label="\"Rübÿ\"" shape="none"];
+  n[label="\"\\n  \"" shape="none"]
+  html -- head;
+  html -- body;
+  body -- d1;
+  d1 -- d2;
+  d1 -- n;
+  d2 -- d3;
+}
+```
 
 ---
 ## Semantics
@@ -154,6 +351,12 @@ An <strong>alphabet</strong> to construct <br/>
   <abbr title="Heavy Metal Umlauts">HMÜ</abbr>
 </p>
 ````
+
+<p>
+  <strong>Rübÿ</strong>
+  needs more
+  <abbr title="Heavy Metal Umlauts">HMÜ</abbr>
+</p>
 
 ---
 
@@ -175,7 +378,7 @@ and yet we are dealing with HTML at the character level
 ## The problem
 
 ````ruby
-"&lt;p>#{@text}&lt;/p>"
+<p>#{@text}</p>"
 ````
 
 ---
@@ -186,6 +389,9 @@ Add a single text node inside the paragraph
 
 ````dot
 graph para {
+  p[shape="circle"];
+  text[label="\"text\"" shape="box"];
+
   p -- text;
 }
 ````
@@ -198,6 +404,9 @@ Add an arbitrary subtree in our HTML
 
 ````dot
 graph para {
+  p[shape="circle"];
+  script[shape="circle"];
+  evil_code[label="evil_code();" shape="box"];
   p -- script;
   script -- evil_code;
 }
@@ -205,7 +414,7 @@ graph para {
 
 ---
 
-# The problem
+## The problem
 
 Semantics of string are twofold
 
@@ -214,25 +423,15 @@ Semantics of string are twofold
 
 ---
 
-## Security
-
-We try to tell our code which one it is
-
-````ruby
-html_escape
-html_safe?
-raw
-...
-````
-
-That's a lot of manual book keeping
-
----
 
 What side of the escape are we on?
 
-````
-&amp;amp;quot;Ruby&amp;amp;quot; &amp;amp;gt; &amp;amp;quot;PHP&amp;amp;quot;
+````html
+&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;
+&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;lt;
+&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;
+&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;
+&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;
 ````
 
 ---
@@ -241,13 +440,15 @@ What side of the escape are we on?
 ### Pidgin vs Creole
 
 ````erb
-&lt;ul class="nav">
-  &lt;% unless @cart.empty? %>
-    &lt;li>&lt;%= link_to raw("&lt;i class='icon-cart'>&lt;/i>  Cart"),
-                          cart_path %>
-    &lt;/li>
-  &lt;% end -%>
-&lt;/ul>
+<ul class="nav">
+  <% unless @cart.empty? %>
+    <li>
+      <%= link_to raw(
+            "<p class='icon-cart'>Cart</p>"
+          ), cart_path %>
+    </li>
+  <% end -%>
+</ul>
 ````
 
 ---
@@ -334,3 +535,19 @@ class MyController
   end
 end
 ````
+
+---
+# scratch
+
+```dot
+graph lang {
+  rankdir="LR";
+  meaning[shape="none"];
+  sentences[shape="none"];
+  words[shape="none"];
+  sounds[shape="none"];
+  meaning -- sentences[shape="none"];
+  sentences -- words[shape="none"];
+  words -- sounds[shape="none"];
+}
+```

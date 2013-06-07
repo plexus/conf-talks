@@ -6,9 +6,9 @@ class WatchTask
       Array(opts[:watch]).each do |pattern|
         notifier.watch(pattern, :modify, :create) do |event|
           system(opts[:exec])
+          puts "OK"
         end
         at_exit {
-          system(opts[:exec])
           notifier.run
         }
       end
@@ -28,6 +28,6 @@ namespace :mdpress do
       'themes/plexus.css',
       'themes/plexus.html'
     ],
-    :exec => 'bundle exec mdpress -s plexus presentation.md'
+    :exec => 'bundle exec mdpress --latex -s plexus presentation.md'
   )
 end
