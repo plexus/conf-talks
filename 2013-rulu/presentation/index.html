@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Web Linguistics : Towards Higher Fluency</title>
+    <link href="css/reset.css" rel="stylesheet" />
+    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="shortcut icon" href="css/favicon.png" />
+    <link rel="apple-touch-icon" href="css/apple-touch-icon.png" />
+    <!-- Code Prettifier: -->
+<link href="css/highlight.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$']]}});
+        </script>
+        <script type="text/javascript"
+          src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+      
+    <link href="css/style.css" rel="stylesheet" />
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,800italic,300,400,800' rel='stylesheet' type='text/css'/>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script>
+(function ( document, window ) {
+    document.addEventListener("impress:init", function (event) {
+        document.addEventListener("impress:stepenter", function (event) {
+            var step = $(event.target);
+            if (console.clear) { console.clear(); }
+            console.log(step.attr('id'));
+            console.log(step.find('.notes').text());
+        }, false);
+    });
+})(document, window);
+</script>
+
+  </head>
+
+  <body>
+  <div class="fallback-message">
+  <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+  <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+  </div>
+    <div id="impress">
+    <div class='step ' data-x='1000' data-y='0'>
+    
+<h1>Web Linguistics</h1>
+
+<h2>Towards Higher Fluency</h2>
+
+<p>by Arne Brasseur / <a href="http://twitter.com/plexus">@plexus</a></p>
+</div>
+      <div class='step haiku' data-x='2000' data-y='0'>
+    
+<h2>tl;dr (in Haiku)</h2>
+
+<p>For formal language</p>
+
+<p>Avoid plain strings at all cost</p>
+
+<p>Use data structures</p>
+<div class='notes' style='display:none;'>I want to make this point up front, if nothing else, at least take this point with you.
+</div></div>
+      <div class='step ' data-x='3000' data-y='0'>
+    
+<h1>XSS</h1>
+
+<h2>Cross site scripting</h2>
+<div class='notes' style='display:none;'>This is where our story starts.
+</div></div>
+      <div class='step ' data-x='4000' data-y='0'>
+    
+<blockquote>
+<p>[CVE-2013-1857] XSS Vulnerability<br/> in the <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<code class="inline prettyprint">sanitize</code>
+ helper of Ruby on Rails</p>
+</blockquote>
+
+<p>&nbsp; &mdash; @tenderlove on rails-security-ann</p>
+
+<p></p>
+
+<blockquote>
+<p>Given all the fun we&#39;ve had with security issues</p>
+</blockquote>
+
+<p>&nbsp; &mdash; Rails 4 beta announcement</p>
+<div class='notes' style='display:none;'>It's been an interesting winter for Rails security issues, and hopefully security is still at the front of peoples minds.
+</div></div>
+      <div class='step ' data-x='5000' data-y='0'>
+    
+<h2>XSS</h2>
+
+<p>Code like this</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">"&lt;div&gt;#{ @post.body }&lt;/div&gt;"
+</code></pre>
+
+<p>&nbsp;
+&nbsp;</p>
+
+<p>Will lead to malicious injection</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint html">&lt;div&gt;
+  &lt;script&gt;evil code&lt;/script&gt;
+&lt;/div&gt;
+</code></pre>
+<div class='notes' style='display:none;'>So what exactly is XSS? This is an example of a 'persisted' XSS attack. Anyone who can sneak HTML in our pages can do nasty stuff.
+
+This gives an attacker all privileges the current user of your app has.
+</div></div>
+      <div class='step ' data-x='6000' data-y='0'>
+    
+<h2>Escape!</h2>
+
+<p>The common wisdom is to &quot;escape&quot; the inserted value</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint html">&lt;div&gt;#{ html_escape(@post.body) }&lt;/div&gt;
+</code></pre>
+
+<p>&nbsp;
+&nbsp;</p>
+
+<p>Now the code is harmless</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint html">&lt;div&gt;
+  &amp;lt;script&amp;gt;evil code&amp;lt;/script&amp;gt
+&lt;/div&gt;
+</code></pre>
+<div class='notes' style='display:none;'>So what to do? This is what you learn in Web security 101, make sure you HTML escape whatever you don't trust, and you'll be fine.
+</div></div>
+      <div class='step haiku' data-x='7000' data-y='0'>
+    
+<h2>XSS</h2>
+
+<p>Is a more common</p>
+
+<p>vulnerability than</p>
+
+<p>buffer overflows</p>
+<div class='notes' style='display:none;'>So if it's that simple, why is it still that common?
+</div></div>
+      <div class='step ' data-x='8000' data-y='0'>
+    
+<p>Manual escaping? <strong>hard</strong></p>
+
+<p>Let&#39;s automate!</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint html"># using HTML::SafeBuffer
+&lt;div&gt;&lt;%= @post.body %&gt;&lt;/div&gt;
+</code></pre>
+
+<p>And it <strong>just works</strong></p>
+<div class='notes' style='display:none;'>This is (at least in Ruby) the state of the art of XSS prevention, it's part of Rails 'secure by default' philosophy.
+</div></div>
+      <div class='step ' data-x='9000' data-y='0'>
+    
+<p>We&#39;ve turned the problem around</p>
+
+<p>Whitelist instead of blacklist</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">def helper
+  "&lt;p&gt; haikus are pretty &lt;p&gt;".html_safe
+end
+</code></pre>
+
+<p>&nbsp;</p>
+
+<p><strong>We&#39;re still manually deciding what (not) to escape</strong></p>
+<div class='notes' style='display:none;'>It is a step forward, less strings will be left unescaped, but you can hardly call this a structural solution.
+</div></div>
+      <div class='step ' data-x='10000' data-y='0'>
+    
+<h2>The problem</h2>
+
+<p>Semantics of string are twofold</p>
+
+<ul>
+<li>a string</li>
+<li>a textual representation of HTML</li>
+</ul>
+</div>
+      <div class='step ' data-x='11000' data-y='0'>
+    
+<p>What side of the escape are we on?</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint html">&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;
+&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;lt;
+&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;
+&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;
+&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;
+</code></pre>
+</div>
+      <div class='step ' data-x='12000' data-y='0'>
+    
+<h1>SQLi</h1>
+
+<h2>The mother of all injection attacks</h2>
+<div class='notes' style='display:none;'>XSS is just one type of injection attack, another one, SQL injection, has been with us for even longer. It seems we are better at preventing this one, why is that?
+</div></div>
+      <div class='step ' data-x='13000' data-y='0'>
+    
+<h2>ActiveRecord 3 / Arel</h2>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">@users = User.where(name: params[:query])
+
+# =&gt; #&lt;ActiveRecord::Relation&gt;
+</code></pre>
+
+<p>&nbsp;</p>
+
+<p>See also <a href="https://github.com/jeremyevans/sequel">Sequel</a></p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">posts.where(stamp:
+  (Date.today - 14)..(Date.today - 7))
+
+# WHERE stamp &gt;= '2010-06-30'
+# AND stamp &lt;= '2010-07-07'
+</code></pre>
+<div class='notes' style='display:none;'>How is this different? At the surface this may seem not much different from the SafeBuffer approach, but the difference runs much deeper. But to really understand what's going on here, we need to say a few words about languages.
+</div></div>
+      <div class='step ' data-x='14000' data-y='0'>
+    
+<h1>Language</h1>
+
+<h2>langue, taal, sprache, 語言</h2>
+</div>
+      <div class='step ' data-x='15000' data-y='0'>
+    
+<h2>Language</h2>
+
+<p>An <strong>alphabet</strong> to</p>
+
+<p>construct <strong>words</strong> and <strong>sentences</strong></p>
+
+<p>that convey <strong>meaning</strong></p>
+<div class='notes' style='display:none;'>This is true of both natural and formal languages. Let's go through this from bottom to top.
+
+In CS there is usually more emphasis on the understanding (parsing) of languages, but here I want to go what it takes to generate language. Hence we'll start from meaning (an idea) and see how we get to spoken/written language.
+</div></div>
+      <div class='step ' data-x='16000' data-y='0'>
+    
+<h2>Meaning</h2>
+
+<p>&ldquo; Lisa writes good code. &rdquo;</p>
+<div class='notes' style='display:none;'>Suppose I want to convey this message. Before I can say this, or even have the words in my mind, I need to have this as an idea in my mind.
+</div></div>
+      <div class='step ' data-x='16000' data-y='400'>
+    <div class='dot-wrap'><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="201pt" height="270pt" viewBox="0.00 0.00 201.00 270.00">
+<g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 266)">
+<title>lisa</title>
+
+<!-- LISA -->
+<g id="node1" class="node"><title>LISA</title>
+<text text-anchor="middle" x="27" y="-165.4" font-family="Times Roman,serif" font-size="14.00">LISA</text>
+</g>
+<!-- WRITE -->
+<g id="node2" class="node"><title>WRITE</title>
+<text text-anchor="middle" x="55" y="-89.4" font-family="Times Roman,serif" font-size="14.00">WRITE</text>
+</g>
+<!-- GOOD -->
+<g id="node3" class="node"><title>GOOD</title>
+<text text-anchor="middle" x="86" y="-14.4" font-family="Times Roman,serif" font-size="14.00">GOOD</text>
+</g>
+<!-- CODE -->
+<g id="node4" class="node"><title>CODE</title>
+<text text-anchor="middle" x="164" y="-14.4" font-family="Times Roman,serif" font-size="14.00">CODE</text>
+</g>
+<!-- s -->
+<g id="node5" class="node"><title>s</title>
+<ellipse fill="none" stroke="black" cx="58" cy="-243" rx="17.8879" ry="18.3848"></ellipse>
+<text text-anchor="middle" x="58" y="-239.4" font-family="Times Roman,serif" font-size="14.00">s</text>
+</g>
+<!-- s&#45;&#45;LISA -->
+<g id="edge2" class="edge"><title>s--LISA</title>
+<path fill="none" stroke="black" d="M50.8101,-225.837C45.945,-214.224 39.5293,-198.909 34.5835,-187.102"></path>
+</g>
+<!-- p -->
+<g id="node6" class="node"><title>p</title>
+<ellipse fill="none" stroke="black" cx="90" cy="-169" rx="17.8879" ry="18.3848"></ellipse>
+<text text-anchor="middle" x="90" y="-165.4" font-family="Times Roman,serif" font-size="14.00">p</text>
+</g>
+<!-- s&#45;&#45;p -->
+<g id="edge4" class="edge"><title>s--p</title>
+<path fill="none" stroke="black" d="M65.4219,-225.837C70.5916,-213.882 77.4575,-198.004 82.6184,-186.07"></path>
+</g>
+<!-- p&#45;&#45;WRITE -->
+<g id="edge6" class="edge"><title>p--WRITE</title>
+<path fill="none" stroke="black" d="M82.2324,-152.133C76.6337,-139.976 69.0863,-123.587 63.357,-111.147"></path>
+</g>
+<!-- m -->
+<g id="node7" class="node"><title>m</title>
+<ellipse fill="none" stroke="black" cx="125" cy="-93" rx="20.0059" ry="20.5061"></ellipse>
+<text text-anchor="middle" x="125" y="-89.4" font-family="Times Roman,serif" font-size="14.00">m</text>
+</g>
+<!-- p&#45;&#45;m -->
+<g id="edge8" class="edge"><title>p--m</title>
+<path fill="none" stroke="black" d="M97.7676,-152.133C103.286,-140.151 110.697,-124.058 116.395,-111.686"></path>
+</g>
+<!-- m&#45;&#45;GOOD -->
+<g id="edge10" class="edge"><title>m--GOOD</title>
+<path fill="none" stroke="black" d="M115.559,-74.8446C109.473,-63.1394 101.585,-47.9716 95.489,-36.2482"></path>
+</g>
+<!-- m&#45;&#45;CODE -->
+<g id="edge12" class="edge"><title>m--CODE</title>
+<path fill="none" stroke="black" d="M134.441,-74.8446C140.527,-63.1394 148.415,-47.9716 154.511,-36.2482"></path>
+</g>
+</g>
+</svg></div><div class='notes' style='display:none;'>At this point we have identified the components that make up our message, and have determined how they relate to each other. Now we can go on and serialize this message.
+</div></div>
+      <div class='step ' data-x='16000' data-y='800'>
+    
+<p><span class="box">LISA</span>
+<span class="box">WRITES</span>
+<span class="box">GOOD</span>
+<span class="box">CODE</span></p>
+<div class='notes' style='display:none;'>Now we can turn this tree into a linear list of words, ready to be uttered.
+</div></div>
+      <div class='step ' data-x='16000' data-y='1200'>
+    
+<p><img src="../waveform.gif" alt=""></p>
+<div class='notes' style='display:none;'>And turn these words into sounds.
+</div></div>
+      <div class='step ' data-x='16000' data-y='600' data-scale='2'>
+    </div>
+      <div class='step ' data-x='17000' data-y='600'>
+    
+<h1>Injection, revisited</h1>
+</div>
+      <div class='step ' data-x='18000' data-y='600'>
+    <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">@users = User.where(name: params[:query])
+</code></pre>
+
+<p>&nbsp;</p>
+<div class='dot-wrap'><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="370pt" height="340pt" viewBox="0.00 0.00 370.00 340.00">
+<g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 336)">
+<title>ar</title>
+
+<!-- relation -->
+<g id="node1" class="node"><title>relation</title>
+<text text-anchor="middle" x="127" y="-310.4" font-family="Times Roman,serif" font-size="14.00">#&lt;AR::Relation&gt;</text>
+</g>
+<!-- SELECT -->
+<g id="node7" class="node"><title>SELECT</title>
+<ellipse fill="none" stroke="black" cx="127" cy="-241" rx="50.2046" ry="18.3848"></ellipse>
+<text text-anchor="middle" x="127" y="-237.4" font-family="Times Roman,serif" font-size="14.00">SELECT</text>
+</g>
+<!-- relation&#45;&#45;SELECT -->
+<g id="edge2" class="edge"><title>relation--SELECT</title>
+<path fill="none" stroke="black" d="M127,-295.955C127,-284.893 127,-270.762 127,-259.6"></path>
+</g>
+<!-- star -->
+<g id="node2" class="node"><title>star</title>
+<polygon fill="none" stroke="black" points="-0.5,-149 -0.5,-185 68.5,-185 68.5,-149 -0.5,-149"></polygon>
+<text text-anchor="middle" x="22" y="-163.4" font-family="Times Roman,serif" font-size="14.00">field</text>
+<polyline fill="none" stroke="black" points="44.5,-149 44.5,-185 "></polyline>
+<text text-anchor="middle" x="56.5" y="-163.4" font-family="Times Roman,serif" font-size="14.00">*</text>
+</g>
+<!-- name -->
+<g id="node3" class="node"><title>name</title>
+<polygon fill="none" stroke="black" points="120,-1 120,-37 220,-37 220,-1 120,-1"></polygon>
+<text text-anchor="middle" x="142.5" y="-15.4" font-family="Times Roman,serif" font-size="14.00">field</text>
+<polyline fill="none" stroke="black" points="165,-1 165,-37 "></polyline>
+<text text-anchor="middle" x="192.5" y="-15.4" font-family="Times Roman,serif" font-size="14.00">name</text>
+</g>
+<!-- users -->
+<g id="node4" class="node"><title>users</title>
+<polygon fill="none" stroke="black" points="75,-75 75,-111 179,-111 179,-75 75,-75"></polygon>
+<text text-anchor="middle" x="100.5" y="-89.4" font-family="Times Roman,serif" font-size="14.00">table</text>
+<polyline fill="none" stroke="black" points="126,-75 126,-111 "></polyline>
+<text text-anchor="middle" x="152.5" y="-89.4" font-family="Times Roman,serif" font-size="14.00">users</text>
+</g>
+<!-- query -->
+<g id="node5" class="node"><title>query</title>
+<polygon fill="none" stroke="black" points="238,-1 238,-37 362,-37 362,-1 238,-1"></polygon>
+<text text-anchor="middle" x="266" y="-15.4" font-family="Times Roman,serif" font-size="14.00">string</text>
+<polyline fill="none" stroke="black" points="294,-1 294,-37 "></polyline>
+<text text-anchor="middle" x="328" y="-15.4" font-family="Times Roman,serif" font-size="14.00">"query"</text>
+</g>
+<!-- SELECT&#45;&#45;star -->
+<g id="edge4" class="edge"><title>SELECT--star</title>
+<path fill="none" stroke="black" d="M105.897,-224.208C91.2128,-212.524 71.6545,-196.962 56.6444,-185.018"></path>
+</g>
+<!-- FROM -->
+<g id="node10" class="node"><title>FROM</title>
+<ellipse fill="none" stroke="black" cx="127" cy="-167" rx="41.0122" ry="18.3848"></ellipse>
+<text text-anchor="middle" x="127" y="-163.4" font-family="Times Roman,serif" font-size="14.00">FROM</text>
+</g>
+<!-- SELECT&#45;&#45;FROM -->
+<g id="edge6" class="edge"><title>SELECT--FROM</title>
+<path fill="none" stroke="black" d="M127,-222.327C127,-211.109 127,-196.884 127,-185.667"></path>
+</g>
+<!-- WHERE -->
+<g id="node13" class="node"><title>WHERE</title>
+<ellipse fill="none" stroke="black" cx="235" cy="-167" rx="48.9975" ry="18.3848"></ellipse>
+<text text-anchor="middle" x="235" y="-163.4" font-family="Times Roman,serif" font-size="14.00">WHERE</text>
+</g>
+<!-- SELECT&#45;&#45;WHERE -->
+<g id="edge10" class="edge"><title>SELECT--WHERE</title>
+<path fill="none" stroke="black" d="M150.969,-224.577C168.866,-212.314 193.217,-195.629 211.098,-183.377"></path>
+</g>
+<!-- FROM&#45;&#45;users -->
+<g id="edge8" class="edge"><title>FROM--users</title>
+<path fill="none" stroke="black" d="M127,-148.327C127,-136.938 127,-122.449 127,-111.156"></path>
+</g>
+<!-- eq -->
+<g id="node15" class="node"><title>eq</title>
+<ellipse fill="none" stroke="black" cx="235" cy="-93" rx="27" ry="18.3848"></ellipse>
+<text text-anchor="middle" x="235" y="-89.4" font-family="Times Roman,serif" font-size="14.00">eq</text>
+</g>
+<!-- WHERE&#45;&#45;eq -->
+<g id="edge12" class="edge"><title>WHERE--eq</title>
+<path fill="none" stroke="black" d="M235,-148.327C235,-137.109 235,-122.884 235,-111.667"></path>
+</g>
+<!-- eq&#45;&#45;name -->
+<g id="edge14" class="edge"><title>eq--name</title>
+<path fill="none" stroke="black" d="M220.896,-76.9431C210.591,-65.2109 196.606,-49.2899 185.903,-37.1054"></path>
+</g>
+<!-- eq&#45;&#45;query -->
+<g id="edge16" class="edge"><title>eq--query</title>
+<path fill="none" stroke="black" d="M249.104,-76.9431C259.409,-65.2109 273.394,-49.2899 284.097,-37.1054"></path>
+</g>
+</g>
+</svg></div><div class='notes' style='display:none;'>Now we can revisit our injection attacks. In this case a syntax tree is built, this can then be used to generate the SQL dialect we need.
+
+This is good because we can express our intent (semantics), and the data structure reflects those semantics.
+</div></div>
+      <div class='step ' data-x='19000' data-y='600'>
+    <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">def helper
+  "&lt;p&gt; haikus are pretty &lt;p&gt;".html_safe
+end
+</code></pre>
+
+<p>&nbsp;</p>
+<div class='dot-wrap'><svg width="372pt" height="60pt" viewbox="0.00 0.00 372.00 60.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 56)">
+<title>html_safe</title>
+
+<!-- string -->
+<g id="node1" class="node"><title>string</title>
+<polygon fill="none" stroke="black" points="0,-0 0,-52 364,-52 364,-0 0,-0"></polygon>
+<text text-anchor="middle" x="182" y="-35.4" font-family="Times Roman,serif" font-size="14.00">String</text>
+<polyline fill="none" stroke="black" points="0,-26 364,-26 "></polyline>
+<text text-anchor="middle" x="112.5" y="-9.4" font-family="Times Roman,serif" font-size="14.00">"&lt;p&gt; haikus are pretty &lt;\p&gt;"</text>
+<polyline fill="none" stroke="black" points="225,-0 225,-26 "></polyline>
+<text text-anchor="middle" x="294.5" y="-9.4" font-family="Times Roman,serif" font-size="14.00">@html_safe=true</text>
+</g>
+</g>
+</svg></div></div>
+      <div class='step center' data-x='18500' data-y='200' data-z='1000'>
+    
+<h2>Spot the differences</h2>
+</div>
+      <div class='step ' data-x='18500' data-y='700' data-z='1000'>
+    </div>
+      <div class='step ' data-x='20000' data-y='700'>
+    
+<h1>Tooling ... what if?</h1>
+</div>
+      <div class='step ' data-x='21000' data-y='700'>
+    
+<ul>
+<li>SQL</li>
+<li>HTML</li>
+<li>(S)CSS</li>
+<li>HTTP</li>
+<li>Javascript</li>
+<li>Coffeescript</li>
+<li>JSON</li>
+<li>XML</li>
+<li>YAML</li>
+<li>Ruby</li>
+<li>Regex</li>
+<li>URL</li>
+</ul>
+</div>
+      <div class='step ' data-x='22000' data-y='700'>
+    
+<h2>What if for each we had</h2>
+
+<ol>
+<li>A solid data type for syntax trees</li>
+<li>quality parsers/generator</li>
+<li>problem domain specific APIs to deal with 1.</li>
+</ol>
+</div>
+      <div class='step ' data-x='23000' data-y='700'>
+    
+<h2>Apples and snakes architecture</h2>
+
+<p>Keep the <strong>snakes</strong> (strings) out of the app</p>
+
+<p>parse/generate at the app boundary</p>
+
+<p>Inside the app, only <strong>apples</strong> (syntax trees)</p>
+
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<code class="inline prettyprint">TODO insert hand-drawn schematic here</code>
+</p>
+</div>
+      <div class='step ' data-x='24000' data-y='700'>
+    
+<h2>Welcome to the future</h2>
+
+<ul>
+<li>SQL :: Sequel, Arel</li>
+<li>(S)CSS :: Sass::SCSS::CssParser / Sass::Tree::RootNode</li>
+<li>JSON, XML, YAML :: take your pick</li>
+<li>Ruby :: ParseTree, Melbourne, Parser gem</li>
+<li>URL :: standard library</li>
+</ul>
+<div class='notes' style='display:none;'>There's already a lot out there, but still some missing pieces. Plus often tedious to work with.
+</div></div>
+      <div class='step ' data-x='25000' data-y='700'>
+    
+<h1>HTML</h1>
+</div>
+      <div class='step ' data-x='26000' data-y='700'>
+    
+<p>Using data structures over trees</p>
+
+<p>in this case is a must for security</p>
+
+<p>but it buys us more</p>
+</div>
+      <div class='step ' data-x='27000' data-y='700'>
+    
+<p>Consider HTML a serialization format</p>
+
+<p>Generate HTML 4.01, HTML5, XHTML 1.0, XHTML5</p>
+
+<p>all from the same DOM</p>
+<div class='notes' style='display:none;'>HTML is hard, depending on context you need to html, url, css or json escape. And there are multiple versions, but conceptually the DOM hasn't changed.
+</div></div>
+      <div class='step ' data-x='28000' data-y='700'>
+    
+<h2>Nokogiri</h2>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">@doc = Nokogiri::HTML::Document.new
+@html = Nokogiri::XML::Element.new('html', @doc)
+@doc &lt;&lt; @html
+@doc.to_html
+# =&gt; &lt;!DOCTYPE html PUBLIC
+#        -//W3C//DTD HTML 4.0 Transitional...
+</code></pre>
+<div class='notes' style='display:none;'>The default for doing these kind of things, but ; tedious to work with ; only HTML 4.01 (because of libxml2), optimized for parsing.
+</div></div>
+      <div class='step ' data-x='29000' data-y='700'>
+    
+<h2>Literal notations</h2>
+
+<p>Builder pattern</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">HTML::Builder.new do
+  html do
+    body do
+      p 'hello, world'
+    end
+  end
+end
+</code></pre>
+<div class='notes' style='display:none;'>Can be a pain to keep track of `self`, some magic involved, but feels natural.
+
+Important that the result can be recombined, not the case with nokogiri.
+</div></div>
+      <div class='step ' data-x='30000' data-y='700'>
+    
+<h2>Literal notations</h2>
+
+<p>S-expressions</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">tag(:p, tag(:em, "hello, world"))
+</code></pre>
+<div class='notes' style='display:none;'>Simple, lightweight, easy to reason about.
+</div></div>
+      <div class='step ' data-x='31000' data-y='700'>
+    
+<p>Now you can actually program your HTML</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">class MyController
+  def index
+    page = SignupPage.new
+    if request.post?
+      page.rewrite(PopulateFormFields.new(params))
+    end
+    render Layout.new(page)
+  end
+end
+</code></pre>
+<div class='notes' style='display:none;'>Other ideas : add file/line numbers in dev mode ; structural validation ; presentation vs data separation.
+</div></div>
+      <div class='step ' data-x='32000' data-y='700'>
+    
+<h2>Hexp</h2>
+
+<p>HTML Expressions</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">class Widget &lt; Struct.new(:user)
+  def to_hexp
+    if user.logged_in?
+      H[:p, [
+        [:a, {href: user_path(user), user.name}]
+        "(#{user.karma})"
+        ]
+      ]
+    else
+      H[:a, {href: login_path}, "Sign in"]
+    end
+  end
+end
+</code></pre>
+
+<p><a href="https://github.com/plexus/hexp">https://github.com/plexus/hexp</a></p>
+<div class='notes' style='display:none;'>This is one attempt at making this a reality.
+</div></div>
+      <div class='step ' data-x='33000' data-y='700'>
+    <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">class Nav
+  def initialize(cart)
+    @cart=cart
+  end
+
+  def to_dom
+    [:ul, [
+        home_link,
+        cart_link
+      ].compact
+    ]
+  end
+
+  def cart_link
+    unless @cart.empty?
+      [:li, {class: 'cart-icon'}, link_to('Cart', cart_path)]
+    end
+  end
+end
+</code></pre>
+</div>
+      <div class='step ' data-x='34000' data-y='700'>
+    
+<h1>References</h1>
+</div>
+      <div class='step ' data-x='35000' data-y='700'>
+    
+<h2>Blog posts</h2>
+
+<ul>
+<li><a href="http://acko.net/blog/safe-string-theory-for-the-web/">Safe String Theory for the web</a> by Steven Wittens</li>
+<li><a href="http://www.more-magic.net/posts/structurally-fixing-injection-bugs.html">Structurally Fixing Injection Bugs</a> by Peter Bex</li>
+<li><a href="http://adit.io/posts/2012-04-14-working_with_HTML_in_haskell.html">Working with HTML in Haskell</a> by Aditya Bhargava</li>
+<li><a href="http://blog.moertel.com/posts/2006-10-18-a-type-based-solution-to-the-strings-problem.html">A type-based solution to the “strings problem”: a fitting end to XSS and SQL-injection holes?</a> by Tom Moertel</li>
+<li><a href="http://devblog.arnebrasseur.net/2013-04-plain-text">The Devil in Plain Text</a> by Arne Brasseur</li>
+</ul>
+</div>
+      <div class='step ' data-x='36000' data-y='700'>
+    
+<h2>Conference talks</h2>
+
+<ul>
+<li><a href="http://www.youtube.com/watch?v=3kEfedtQVOY">The Science of Insecurity</a> by Meredith L. Patterson</li>
+</ul>
+</div>
+      <div class='step ' data-x='37000' data-y='700'>
+    
+<h2>Books</h2>
+
+<ul>
+<li>Speaking by Willem J.M. Levelt</li>
+<li>An Introduction to Formal Languages and Automata by Peter Linz</li>
+</ul>
+</div>
+      <div class='step ' data-x='38000' data-y='700'>
+    
+<h2>Academia</h2>
+
+<ul>
+<li><a href="http://langsec.org/">Langsec</a></li>
+</ul>
+</div>
+      <div class='step ' data-x='39000' data-y='700'>
+    
+<h2>Libraries</h2>
+
+<ul>
+<li><a href="https://github.com/Wardrop/Formless">Formless</a>
+Completely transparent, unobtrusive form populator for web applications and content scrapers</li>
+<li><a href="https://github.com/flavorjones/loofah">Loofah</a>
+HTML/XML manipulation and sanitization based on Nokogiri</li>
+</ul>
+</div>
+      <div class='step ' data-x='40000' data-y='700'>
+    
+<h2>In other languages</h2>
+
+<p>Common Lisp</p>
+
+<ul>
+<li><a href="http://jandmworks.com/cl-who-ext.html">CL-WHO</a></li>
+</ul>
+
+<p>Haskell</p>
+
+<ul>
+<li><a href="http://jaspervdj.be/blaze/tutorial.html">BlazeHtml</a></li>
+<li><a href="http://www.yesodweb.com/book/widgets">Yesod framework</a></li>
+<li>HXT</li>
+</ul>
+
+      </div>
+    <script src="js/impress.js"></script>
+    <script>impress().init();</script>
+  </body>
+</html>
+    

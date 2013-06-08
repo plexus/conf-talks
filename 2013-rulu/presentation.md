@@ -1,4 +1,5 @@
 ---
+title: "Web Linguistics : Towards Higher Fluency"
 defaults:
   data-x: '+1000'
   data-y: '+0'
@@ -7,9 +8,10 @@ defaults:
 # Web Linguistics
 ## Towards Higher Fluency
 
-by [@plexus](http://twitter.com/plexus)
+by Arne Brasseur / [@plexus](http://twitter.com/plexus)
 
 ---
+= class='haiku'
 ## tl;dr (in Haiku)
 
 For formal language
@@ -52,8 +54,8 @@ It's been an interesting winter for Rails security issues, and hopefully securit
 
 Code like this
 
-```html
-<div>#{ @post.body }</div>
+```ruby
+"<div>#{ @post.body }</div>"
 ```
 
 &nbsp;
@@ -98,11 +100,12 @@ So what to do? This is what you learn in Web security 101, make sure you HTML es
 ```
 
 ---
+= class='haiku'
 ## XSS
 
 Is a more common
 
-vulnerability as
+vulnerability than
 
 buffer overflows
 
@@ -146,6 +149,27 @@ end
 ```notes
 It is a step forward, less strings will be left unescaped, but you can hardly call this a structural solution.
 ```
+
+---
+
+## The problem
+
+Semantics of string are twofold
+
+* a string
+* a textual representation of HTML
+
+---
+
+What side of the escape are we on?
+
+````html
+&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;
+&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;lt;
+&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;
+&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;
+&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;
+````
 
 ---
 # SQLi
@@ -240,7 +264,7 @@ At this point we have identified the components that make up our message, and ha
 = data-x="+0" data-y="+400"
 
 <span class="box">LISA</span>
-<span class="box">WRITE</span>
+<span class="box">WRITES</span>
 <span class="box">GOOD</span>
 <span class="box">CODE</span>
 
@@ -257,246 +281,250 @@ Now we can turn this tree into a linear list of words, ready to be uttered.
 And turn these words into sounds.
 ````
 
+---
+= data-scale="2" data-y="-600" data-x="+0"
 
 ---
 
+# Injection, revisited
 
-# Ruby
+---
 
- &nbsp; | &nbsp;
---- | ---
-<strong>alphabet</strong> | character set (UTF-8)
-<strong>words</strong> | keywords, var names, symbols, ...
-<strong>sentences</strong> | expressions
-<strong>meaning</strong> | what it does
+```ruby
+@users = User.where(name: params[:query])
+```
+
+&nbsp;
+
+```dot
+graph ar {
+  relation[label="#<AR::Relation>" shape=none]
+  star[label="field|*" shape=record]
+  name[label="field|name" shape=record]
+  users[label="table|users" shape=record]
+  query[label="string|\"query\"" shape=record]
+  relation -- SELECT;
+  SELECT -- star;
+  SELECT -- FROM;
+  FROM -- users;
+  SELECT -- WHERE;
+  WHERE -- eq;
+  eq -- name;
+  eq -- query;
+}
+```
+
+```notes
+Now we can revisit our injection attacks. In this case a syntax tree is built, this can then be used to generate the SQL dialect we need.
+
+This is good because we can express our intent (semantics), and the data structure reflects those semantics.
+```
+
+---
+
+```ruby
+def helper
+  "<p> haikus are pretty <p>".html_safe
+end
+```
+
+&nbsp;
+
+```dot
+graph html_safe {
+  rankdir=LR
+  node[shape=record];
+  string[label="String | {\"\<p\> haikus are pretty \<\\p\>\" | @html_safe=true }"];
+}
+```
+
+---
+=  data-x="-500" data-y="-400" data-z="1000" class='center'
+## Spot the differences
+
+---
+=  data-y="+500" data-z="1000" data-x="+0"
+
+---
+= data-x="+1500"
+
+# Tooling ... what if?
+
+---
+
+* SQL
+* HTML
+* (S)CSS
+* HTTP
+* Javascript
+* Coffeescript
+* JSON
+* XML
+* YAML
+* Ruby
+* Regex
+* URL
+
+---
+
+## What if for each we had
+
+1. A solid data type for syntax trees
+2. quality parsers/generator
+3. problem domain specific APIs to deal with 1.
+
+---
+
+## Apples and snakes architecture
+
+Keep the **snakes** (strings) out of the app
+
+parse/generate at the app boundary
+
+Inside the app, only **apples** (syntax trees)
+
+`TODO insert hand-drawn schematic here`
+
+---
+
+## Welcome to the future
+
+- SQL :: Sequel, Arel
+- (S)CSS :: Sass::SCSS::CssParser / Sass::Tree::RootNode
+- JSON, XML, YAML :: take your pick
+- Ruby :: ParseTree, Melbourne, Parser gem
+- URL :: standard library
+
+```notes
+There's already a lot out there, but still some missing pieces. Plus often tedious to work with.
+```
 
 ---
 
 # HTML
 
- &nbsp; | &nbsp;
---- | ---
-<strong>alphabet</strong> | character set (UTF-8)
-<strong>words</strong> | tags, attr names, symbols, ...
-<strong>sentences</strong> | DOM tree
-<strong>meaning</strong> | How it is rendered
+---
 
-----
+Using data structures over trees
 
-## Levels of interpretation
+in this case is a must for security
 
-* Characters
-* Tokens
-* Syntax tree
-* Semantics
+but it buys us more
 
-----
-= data-x="+0" data-y="+400"
+---
 
-## Bytes
+Consider HTML a serialization format
 
-```ruby
-[ "R", "\xC3", "\xBC", "b", "\xC3", "\xBF" ]
-````
+Generate HTML 4.01, HTML5, XHTML 1.0, XHTML5
 
-----
-= data-x="+0" data-y="+400"
+all from the same DOM
 
-## Characters
-
-```ruby
-[ "R", "ü", "b", "ÿ" ]
-````
-
-----
-= data-x="+0" data-y="+400"
-
-## Tokens
-
-```ruby
-["<p>", "\n  ", "<em>", "Rübÿ", "</em>", "</p>"]
-````
-
-----
-= data-x="+0" data-y="+400"
-
-```dot
-graph foo {
-  html[shape="circle"];
-  head[shape="circle"];
-  body[shape="circle"];
-  d1[label="p" shape="circle"];
-  d2[label="em" shape="circle"];
-  d3[label="\"Rübÿ\"" shape="none"];
-  n[label="\"\\n  \"" shape="none"]
-  html -- head;
-  html -- body;
-  body -- d1;
-  d1 -- d2;
-  d1 -- n;
-  d2 -- d3;
-}
+```notes
+HTML is hard, depending on context you need to html, url, css or json escape. And there are multiple versions, but conceptually the DOM hasn't changed.
 ```
 
 ---
-## Semantics
 
-* What does it mean
-* What does it do
+## Nokogiri
 
-````
-<p>
-  <strong>Rübÿ</strong>
-  needs more
-  <abbr title="Heavy Metal Umlauts">HMÜ</abbr>
-</p>
-````
+```ruby
+@doc = Nokogiri::HTML::Document.new
+@html = Nokogiri::XML::Element.new('html', @doc)
+@doc << @html
+@doc.to_html
+# => <!DOCTYPE html PUBLIC
+#        -//W3C//DTD HTML 4.0 Transitional...
+```
 
-<p>
-  <strong>Rübÿ</strong>
-  needs more
-  <abbr title="Heavy Metal Umlauts">HMÜ</abbr>
-</p>
+```notes
+The default for doing these kind of things, but ; tedious to work with ; only HTML 4.01 (because of libxml2), optimized for parsing.
+```
 
 ---
 
-The closest we get to representing semantics
+## Literal notations
 
-is through syntax trees
+Builder pattern
 
-and yet we are dealing with HTML at the character level
+```ruby
+HTML::Builder.new do
+  html do
+    body do
+      p 'hello, world'
+    end
+  end
+end
+```
+
+```notes
+Can be a pain to keep track of `self`, some magic involved, but feels natural.
+
+Important that the result can be recombined, not the case with nokogiri.
+```
 
 ---
 
-## Security
+## Literal notations
 
-* XSS, SQLi
-* Common wisdom : proper escaping
+S-expressions
+
+```ruby
+tag(:p, tag(:em, "hello, world"))
+```
+
+```notes
+Simple, lightweight, easy to reason about.
+```
 
 ---
 
-## The problem
+Now you can actually program your HTML
 
 ````ruby
-<p>#{@text}</p>"
+class MyController
+  def index
+    page = SignupPage.new
+    if request.post?
+      page.rewrite(PopulateFormFields.new(params))
+    end
+    render Layout.new(page)
+  end
+end
 ````
 
----
-
-## We think we're doing this
-
-Add a single text node inside the paragraph
-
-````dot
-graph para {
-  p[shape="circle"];
-  text[label="\"text\"" shape="box"];
-
-  p -- text;
-}
-````
+```notes
+Other ideas : add file/line numbers in dev mode ; structural validation ; presentation vs data separation.
+```
 
 ---
 
-## Instead we're doing this
+## Hexp
 
-Add an arbitrary subtree in our HTML
+HTML Expressions
 
-````dot
-graph para {
-  p[shape="circle"];
-  script[shape="circle"];
-  evil_code[label="evil_code();" shape="box"];
-  p -- script;
-  script -- evil_code;
-}
-````
+```ruby
+class Widget < Struct.new(:user)
+  def to_hexp
+    if user.logged_in?
+      H[:p, [
+        [:a, {href: user_path(user), user.name}]
+        "(#{user.karma})"
+        ]
+      ]
+    else
+      H[:a, {href: login_path}, "Sign in"]
+    end
+  end
+end
+```
 
----
+!! <iframe src="https://github.com/plexus/hexp#readme" />
 
-## The problem
+https://github.com/plexus/hexp
 
-Semantics of string are twofold
-
-* a string
-* a textual representation of HTML
-
----
-
-
-What side of the escape are we on?
-
-````html
-&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;
-&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;lt;
-&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;
-&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;
-&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;
-````
-
----
-
-## Rails Templates
-### Pidgin vs Creole
-
-````erb
-<ul class="nav">
-  <% unless @cart.empty? %>
-    <li>
-      <%= link_to raw(
-            "<p class='icon-cart'>Cart</p>"
-          ), cart_path %>
-    </li>
-  <% end -%>
-</ul>
-````
-
----
-
-## Pidgin
-
-* Ad-hoc mix of two languages
-* No fixed rules or grammar
-* No native speakers
-
----
-
-### Creole
-
-* Second generation
-* One language begins to dominate
-* Proper grammar emerges
-
----
-
-## In Summary
-
-Manually escaping is hard
-
-Generating correct HTML is hard
-
-Strings are very low level when reasoning<br />
-about application semantics
-
----
-
-## Try something different
-
-* Plain text coming in?
-* => parse to data structure
-* Plain text going out?
-* => Generate from data structure
-
----
-
-## Inside the application
-### No more strings
-
----
-
-## Fringe Benefits
-
-MOAR POWER
+```notes
+This is one attempt at making this a reality.
+```
 
 ---
 
@@ -524,30 +552,292 @@ end
 
 ---
 
-````ruby
-class MyController
-  def index
-    page = SignupPage.new
-    if request.post?
-      page = page.rewrite(PopulateFormFields.new(params))
-    end
-    render Layout.new(page)
-  end
-end
-````
+# References
 
 ---
-# scratch
 
-```dot
-graph lang {
-  rankdir="LR";
-  meaning[shape="none"];
-  sentences[shape="none"];
-  words[shape="none"];
-  sounds[shape="none"];
-  meaning -- sentences[shape="none"];
-  sentences -- words[shape="none"];
-  words -- sounds[shape="none"];
-}
-```
+## Blog posts
+
+* [Safe String Theory for the web](http://acko.net/blog/safe-string-theory-for-the-web/) by Steven Wittens
+* [Structurally Fixing Injection Bugs](http://www.more-magic.net/posts/structurally-fixing-injection-bugs.html) by Peter Bex
+* [Working with HTML in Haskell](http://adit.io/posts/2012-04-14-working_with_HTML_in_haskell.html) by Aditya Bhargava
+* [A type-based solution to the “strings problem”: a fitting end to XSS and SQL-injection holes?](http://blog.moertel.com/posts/2006-10-18-a-type-based-solution-to-the-strings-problem.html) by Tom Moertel
+* [The Devil in Plain Text](http://devblog.arnebrasseur.net/2013-04-plain-text) by Arne Brasseur
+
+---
+
+## Conference talks
+
+* [The Science of Insecurity](http://www.youtube.com/watch?v=3kEfedtQVOY) by Meredith L. Patterson
+
+---
+
+## Books
+
+* Speaking by Willem J.M. Levelt
+* An Introduction to Formal Languages and Automata by Peter Linz
+
+---
+
+## Academia
+
+* [Langsec](http://langsec.org/)
+
+---
+
+## Libraries
+
+* [Formless](https://github.com/Wardrop/Formless)
+  Completely transparent, unobtrusive form populator for web applications and content scrapers
+* [Loofah](https://github.com/flavorjones/loofah)
+  HTML/XML manipulation and sanitization based on Nokogiri
+
+---
+
+## In other languages
+
+Common Lisp
+
+* [CL-WHO](http://jandmworks.com/cl-who-ext.html)
+
+Haskell
+
+* [BlazeHtml](http://jaspervdj.be/blaze/tutorial.html)
+* [Yesod framework](http://www.yesodweb.com/book/widgets)
+* HXT
+
+!!---
+!!# Ruby
+!!
+!! &nbsp; | &nbsp;
+!!--- | ---
+!!**alphabet** | character set (UTF-8)
+!!**words** | keywords, var names, symbols, ...
+!!**sentences** | expressions
+!!**meaning** | what it does
+!!
+!!---
+!!# HTML
+!!
+!! &nbsp; | &nbsp;
+!!--- | ---
+!!**alphabet** | character set (UTF-8)
+!!**words** | tags, attr names, symbols, ...
+!!**sentences** | DOM tree
+!!**meaning** | How it is rendered
+!!
+!!----
+!!
+!!
+!!---
+!!## Levels of interpretation
+!!
+!!* Characters
+!!* Tokens
+!!* Syntax tree
+!!* Semantics
+!! ----
+!! = data-x="+0" data-y="+400" skip
+!!
+!! ## Bytes
+!!
+!! ```ruby
+!! [ "R", "\xC3", "\xBC", "b", "\xC3", "\xBF" ]
+!! ````
+!!
+!! ----
+!! = data-x="+0" data-y="+400"
+!!
+!! ## Characters
+!!
+!! ```ruby
+!! [ "R", "ü", "b", "ÿ" ]
+!! ````
+!!
+!! ----
+!! = data-x="+0" data-y="+400"
+!!
+!! ## Tokens
+!!
+!! ```ruby
+!! ["<p>", "\n  ", "<em>", "Rübÿ", "</em>", "</p>"]
+!! ````
+!!
+!! ----
+!! = data-x="+0" data-y="+400"
+!!
+!! ## Syntax tree
+!!
+!! ```dot
+!! graph foo {
+!!   html[shape="circle"];
+!!   head[shape="circle"];
+!!   body[shape="circle"];
+!!   d1[label="p" shape="circle"];
+!!   d2[label="em" shape="circle"];
+!!   d3[label="\"Rübÿ\"" shape="none"];
+!!   n[label="\"\\n  \"" shape="none"]
+!!   html -- head;
+!!   html -- body;
+!!   body -- d1;
+!!   d1 -- d2;
+!!   d1 -- n;
+!!   d2 -- d3;
+!! }
+!! ```
+!!
+!! ---
+!! ## Semantics
+!!
+!! * What does it mean
+!! * What does it do
+!!
+!! ````
+!! <p>
+!!   <strong>Rübÿ</strong>
+!!   needs more
+!!   <abbr title="Heavy Metal Umlauts">HMÜ</abbr>
+!! </p>
+!! ````
+!!
+!! <p>
+!!   <strong>Rübÿ</strong>
+!!   needs more
+!!   <abbr title="Heavy Metal Umlauts">HMÜ</abbr>
+!! </p>
+!!
+!! ---
+!!
+!! The closest we get to representing semantics
+!!
+!! is through syntax trees
+!!
+!! and yet we are dealing with HTML at the character level
+!!
+!! ---
+!!
+!! ## Security
+!!
+!! * XSS, SQLi
+!! * Common wisdom : proper escaping
+!!
+!! ---
+!!
+!! ## The problem
+!!
+!! ````ruby
+!! <p>#{@text}</p>"
+!! ````
+!!
+!! ---
+!!
+!! ## We think we're doing this
+!!
+!! Add a single text node inside the paragraph
+!!
+!! ````dot
+!! graph para {
+!!   p[shape="circle"];
+!!   text[label="\"text\"" shape="box"];
+!!
+!!   p -- text;
+!! }
+!! ````
+!!
+!! ---
+!!
+!! ## Instead we're doing this
+!!
+!! Add an arbitrary subtree in our HTML
+!!
+!! ````dot
+!! graph para {
+!!   p[shape="circle"];
+!!   script[shape="circle"];
+!!   evil_code[label="evil_code();" shape="box"];
+!!   p -- script;
+!!   script -- evil_code;
+!! }
+!! ````
+!!
+!!
+!! ---
+!!
+!! ## Rails Templates
+!! ### Pidgin vs Creole
+!!
+!! ````erb
+!! <ul class="nav">
+!!   <% unless @cart.empty? %>
+!!     <li>
+!!       <%= link_to raw(
+!!             "<p class='icon-cart'>Cart</p>"
+!!           ), cart_path %>
+!!     </li>
+!!   <% end -%>
+!! </ul>
+!! ````
+!!
+!! ---
+!!
+!! ## Pidgin
+!!
+!! * Ad-hoc mix of two languages
+!! * No fixed rules or grammar
+!! * No native speakers
+!!
+!! ---
+!!
+!! ### Creole
+!!
+!! * Second generation
+!! * One language begins to dominate
+!! * Proper grammar emerges
+!!
+!! ---
+!!
+!! ## In Summary
+!!
+!! Manually escaping is hard
+!!
+!! Generating correct HTML is hard
+!!
+!! Strings are very low level when reasoning<br />
+!! about application semantics
+!!
+!! ---
+!!
+!! ## Try something different
+!!
+!! * Plain text coming in?
+!! * => parse to data structure
+!! * Plain text going out?
+!! * => Generate from data structure
+!!
+!! ---
+!!
+!! ## Inside the application
+!! ### No more strings
+!!
+!! ---
+!!
+!! ## Fringe Benefits
+!!
+!! MOAR POWER
+!!
+!! ---
+!! # scratch
+!!
+!! ```dot
+!! graph lang {
+!!   rankdir="LR";
+!!   meaning[shape="none"];
+!!   sentences[shape="none"];
+!!   words[shape="none"];
+!!   sounds[shape="none"];
+!!   meaning -- sentences[shape="none"];
+!!   sentences -- words[shape="none"];
+!!   words -- sounds[shape="none"];
+!! }
+!! ```
+!!

@@ -6,6 +6,7 @@
         document.addEventListener("impress:stepenter", function (event) {
             var step = $(event.target);
             if (console.clear) { console.clear(); }
+            console.log(step.attr('id'));
             console.log(step.find('.notes').text());
         }, false);
     });

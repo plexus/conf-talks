@@ -18,7 +18,6 @@
 ** HTML is hard
 *** Not strictly a formal language
 *** implementations accept everything
-***
 
 ** The Apples and Snakes architecture
 
