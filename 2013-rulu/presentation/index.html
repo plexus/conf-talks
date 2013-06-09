@@ -34,6 +34,14 @@
             console.log(step.find('.notes').text());
         }, false);
     });
+
+    // Prevent default keydown action when one of supported key is pressed.
+    document.addEventListener("keydown", function ( event ) {
+      if ( event.keyCode === 48) { //0
+        event.preventDefault();
+        impress().goto(0);
+      }
+    }, false);
 })(document, window);
 </script>
 
@@ -44,7 +52,7 @@
   <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
   <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
   </div>
-    <div id="impress">
+    <div id="impress" data-transition-duration="1000">
     <div class='step ' data-x='1000' data-y='0'>
     
 <h1>Web Linguistics</h1>
@@ -93,6 +101,8 @@
       <div class='step ' data-x='5000' data-y='0'>
     
 <h2>XSS</h2>
+
+<p>TODO make this more concrete ; find real life example</p>
 
 <p>Code like this</p>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -145,6 +155,29 @@ This gives an attacker all privileges the current user of your app has.
 </div></div>
       <div class='step ' data-x='8000' data-y='0'>
     
+<p>What side of the escape are we on?</p>
+
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<img src="shipping_label.jpg" alt="">
+</p>
+
+<p>Steps to reproduce</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">escape_html(
+  escape_html(
+    '&oacute;'.force_encoding('ISO-8859-1')
+       .encode('UTF-8')
+       .sub('&Atilde;', '&amp;atilde;')
+       .sub('&sup3;','&amp;sup3;')))
+</code></pre>
+<div class='notes' style='display:none;'>This is a real life shipping label. This may seem silly but it happens all the time, we either escape too much or too little.
+
+I actually noticed this myself although less extreme, when sending a parcel to a friend I wanted to add a middle name between quotes, these ended up on the parcel as HTML entity.
+</div></div>
+      <div class='step ' data-x='9000' data-y='0'>
+    
+<p>TODO this also need to be more clear, why is it hard? it&#39;s hard because it&#39;s not automated. We need to make it &quot;physically&quot; impossible for the programmer to get this wrong.</p>
+
 <p>Manual escaping? <strong>hard</strong></p>
 
 <p>Let&#39;s automate!</p>
@@ -156,7 +189,7 @@ This gives an attacker all privileges the current user of your app has.
 <p>And it <strong>just works</strong></p>
 <div class='notes' style='display:none;'>This is (at least in Ruby) the state of the art of XSS prevention, it's part of Rails 'secure by default' philosophy.
 </div></div>
-      <div class='step ' data-x='9000' data-y='0'>
+      <div class='step ' data-x='10000' data-y='0'>
     
 <p>We&#39;ve turned the problem around</p>
 
@@ -170,9 +203,9 @@ end
 <p>&nbsp;</p>
 
 <p><strong>We&#39;re still manually deciding what (not) to escape</strong></p>
-<div class='notes' style='display:none;'>It is a step forward, less strings will be left unescaped, but you can hardly call this a structural solution.
+<div class='notes' style='display:none;'>This is better because whitelist > blacklist. It is a step forward, less strings will be left unescaped, but you can hardly call this a structural solution.
 </div></div>
-      <div class='step ' data-x='10000' data-y='0'>
+      <div class='step ' data-x='11000' data-y='0'>
     
 <h2>The problem</h2>
 
@@ -182,17 +215,6 @@ end
 <li>a string</li>
 <li>a textual representation of HTML</li>
 </ul>
-</div>
-      <div class='step ' data-x='11000' data-y='0'>
-    
-<p>What side of the escape are we on?</p>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<pre><code class="prettyprint html">&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;
-&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;lt;
-&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;
-&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;
-&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;
-</code></pre>
 </div>
       <div class='step ' data-x='12000' data-y='0'>
     
@@ -228,7 +250,7 @@ end
 
 <h2>langue, taal, sprache, 語言</h2>
 </div>
-      <div class='step ' data-x='15000' data-y='0'>
+      <div class='step haiku' data-x='15000' data-y='0'>
     
 <h2>Language</h2>
 
@@ -321,7 +343,9 @@ In CS there is usually more emphasis on the understanding (parsing) of languages
 </div></div>
       <div class='step ' data-x='16000' data-y='1200'>
     
-<p><img src="../waveform.gif" alt=""></p>
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<img src="waveform.gif" alt="">
+</p>
 <div class='notes' style='display:none;'>And turn these words into sounds.
 </div></div>
       <div class='step ' data-x='16000' data-y='600' data-scale='2'>
@@ -458,11 +482,146 @@ end
 </div>
       <div class='step ' data-x='18500' data-y='700' data-z='1000'>
     </div>
-      <div class='step ' data-x='20000' data-y='700'>
+      <div class='step center' data-x='20000' data-y='700'>
+    <div class='dot-wrap'><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="518pt" height="188pt" viewBox="0.00 0.00 518.00 188.00">
+<g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 184)">
+<title>commmunication</title>
+
+<!-- x1 -->
+<g id="node2" class="node"><title>x1</title>
+<ellipse fill="none" stroke="black" cx="72" cy="-162" rx="18" ry="18"></ellipse>
+</g>
+<!-- y1 -->
+<g id="node4" class="node"><title>y1</title>
+<ellipse fill="none" stroke="black" cx="72" cy="-90" rx="18" ry="18"></ellipse>
+</g>
+<!-- x1&#45;&gt;y1 -->
+<g id="edge3" class="edge"><title>x1-&gt;y1</title>
+<path fill="none" stroke="black" d="M72,-143.831C72,-133 72,-119.288 72,-108.413"></path>
+</g>
+<!-- z1 -->
+<g id="node5" class="node"><title>z1</title>
+<ellipse fill="none" stroke="black" cx="18" cy="-18" rx="18" ry="18"></ellipse>
+</g>
+<!-- y1&#45;&gt;z1 -->
+<g id="edge4" class="edge"><title>y1-&gt;z1</title>
+<path fill="none" stroke="black" d="M61.0723,-75.4297C51.7035,-62.938 38.2755,-45.034 28.9115,-32.5486"></path>
+</g>
+<!-- z2 -->
+<g id="node7" class="node"><title>z2</title>
+<ellipse fill="none" stroke="black" cx="72" cy="-18" rx="18" ry="18"></ellipse>
+</g>
+<!-- y1&#45;&gt;z2 -->
+<g id="edge6" class="edge"><title>y1-&gt;z2</title>
+<path fill="none" stroke="black" d="M72,-71.8314C72,-61 72,-47.2876 72,-36.4133"></path>
+</g>
+<!-- z3 -->
+<g id="node9" class="node"><title>z3</title>
+<ellipse fill="none" stroke="black" cx="126" cy="-18" rx="18" ry="18"></ellipse>
+</g>
+<!-- y1&#45;&gt;z3 -->
+<g id="edge8" class="edge"><title>y1-&gt;z3</title>
+<path fill="none" stroke="black" d="M82.9277,-75.4297C92.2965,-62.938 105.724,-45.034 115.089,-32.5486"></path>
+</g>
+<!-- aa -->
+<g id="node14" class="node"><title>aa</title>
+<ellipse fill="black" stroke="black" cx="110" cy="-90" rx="1.8" ry="1.8"></ellipse>
+</g>
+<!-- y1&#45;&gt;aa -->
+<g id="edge25" class="edge"><title>y1-&gt;aa</title>
+</g>
+<!-- serializer -->
+<g id="node11" class="node"><title>serializer</title>
+<polygon fill="none" stroke="black" points="210,-108 130,-108 130,-72 210,-72 210,-108"></polygon>
+<text text-anchor="middle" x="170" y="-86.4" font-family="Times Roman,serif" font-size="14.00">serializer</text>
+</g>
+<!-- network -->
+<g id="node12" class="node"><title>network</title>
+<text text-anchor="middle" x="265" y="-86.4" font-family="Times Roman,serif" font-size="14.00">network</text>
+</g>
+<!-- serializer&#45;&gt;network -->
+<g id="edge12" class="edge"><title>serializer-&gt;network</title>
+<path fill="none" stroke="black" d="M210.078,-90C215.942,-90 221.806,-90 227.67,-90"></path>
+</g>
+<!-- parser -->
+<g id="node13" class="node"><title>parser</title>
+<polygon fill="none" stroke="black" points="380,-108 320,-108 320,-72 380,-72 380,-108"></polygon>
+<text text-anchor="middle" x="350" y="-86.4" font-family="Times Roman,serif" font-size="14.00">parser</text>
+</g>
+<!-- network&#45;&gt;parser -->
+<g id="edge13" class="edge"><title>network-&gt;parser</title>
+<path fill="none" stroke="black" d="M302.188,-90C308.04,-90 313.892,-90 319.744,-90"></path>
+</g>
+<!-- bb -->
+<g id="node16" class="node"><title>bb</title>
+<ellipse fill="black" stroke="black" cx="400" cy="-90" rx="1.8" ry="1.8"></ellipse>
+</g>
+<!-- parser&#45;&gt;bb -->
+<g id="edge14" class="edge"><title>parser-&gt;bb</title>
+<path fill="none" stroke="black" d="M380.078,-90C386.096,-90 392.114,-90 398.132,-90"></path>
+</g>
+<!-- aa&#45;&gt;serializer -->
+<g id="edge11" class="edge"><title>aa-&gt;serializer</title>
+<path fill="none" stroke="black" d="M111.875,-90C117.778,-90 123.682,-90 129.585,-90"></path>
+</g>
+<!-- b -->
+<g id="node20" class="node"><title>b</title>
+<ellipse fill="none" stroke="black" cx="438" cy="-90" rx="18" ry="18"></ellipse>
+</g>
+<!-- bb&#45;&gt;b -->
+<g id="edge27" class="edge"><title>bb-&gt;b</title>
+</g>
+<!-- a -->
+<g id="node18" class="node"><title>a</title>
+<ellipse fill="none" stroke="black" cx="438" cy="-162" rx="18" ry="18"></ellipse>
+</g>
+<!-- a&#45;&gt;b -->
+<g id="edge17" class="edge"><title>a-&gt;b</title>
+<path fill="none" stroke="black" d="M438,-143.831C438,-133 438,-119.288 438,-108.413"></path>
+</g>
+<!-- c -->
+<g id="node21" class="node"><title>c</title>
+<ellipse fill="none" stroke="black" cx="384" cy="-18" rx="18" ry="18"></ellipse>
+</g>
+<!-- b&#45;&gt;c -->
+<g id="edge18" class="edge"><title>b-&gt;c</title>
+<path fill="none" stroke="black" d="M427.072,-75.4297C417.704,-62.938 404.276,-45.034 394.911,-32.5486"></path>
+</g>
+<!-- d -->
+<g id="node23" class="node"><title>d</title>
+<ellipse fill="none" stroke="black" cx="438" cy="-18" rx="18" ry="18"></ellipse>
+</g>
+<!-- b&#45;&gt;d -->
+<g id="edge20" class="edge"><title>b-&gt;d</title>
+<path fill="none" stroke="black" d="M438,-71.8314C438,-61 438,-47.2876 438,-36.4133"></path>
+</g>
+<!-- e -->
+<g id="node25" class="node"><title>e</title>
+<ellipse fill="none" stroke="black" cx="492" cy="-18" rx="18" ry="18"></ellipse>
+</g>
+<!-- b&#45;&gt;e -->
+<g id="edge22" class="edge"><title>b-&gt;e</title>
+<path fill="none" stroke="black" d="M448.928,-75.4297C458.296,-62.938 471.724,-45.034 481.089,-32.5486"></path>
+</g>
+</g>
+</svg></div>
+<p>&nbsp;</p>
+
+<p>Serializer and parser need to be symmetrical.</p>
+</div>
+      <div class='step ' data-x='21000' data-y='700'>
+    
+<p>HTML &quot;parsers&quot; are realy rewriting engines.</p>
+
+<p>To make sure the same tree gets reconstructed, we should stay within a strict subset.</p>
+
+<p>Let someone else handle this hairy mess.</p>
+</div>
+      <div class='step ' data-x='22000' data-y='700'>
     
 <h1>Tooling ... what if?</h1>
 </div>
-      <div class='step ' data-x='21000' data-y='700'>
+      <div class='step ' data-x='23000' data-y='700'>
     
 <ul>
 <li>SQL</li>
@@ -479,7 +638,7 @@ end
 <li>URL</li>
 </ul>
 </div>
-      <div class='step ' data-x='22000' data-y='700'>
+      <div class='step ' data-x='24000' data-y='700'>
     
 <h2>What if for each we had</h2>
 
@@ -489,7 +648,7 @@ end
 <li>problem domain specific APIs to deal with 1.</li>
 </ol>
 </div>
-      <div class='step ' data-x='23000' data-y='700'>
+      <div class='step ' data-x='25000' data-y='700'>
     
 <h2>Apples and snakes architecture</h2>
 
@@ -503,7 +662,7 @@ end
 <code class="inline prettyprint">TODO insert hand-drawn schematic here</code>
 </p>
 </div>
-      <div class='step ' data-x='24000' data-y='700'>
+      <div class='step ' data-x='26000' data-y='700'>
     
 <h2>Welcome to the future</h2>
 
@@ -516,11 +675,11 @@ end
 </ul>
 <div class='notes' style='display:none;'>There's already a lot out there, but still some missing pieces. Plus often tedious to work with.
 </div></div>
-      <div class='step ' data-x='25000' data-y='700'>
+      <div class='step ' data-x='27000' data-y='700'>
     
 <h1>HTML</h1>
 </div>
-      <div class='step ' data-x='26000' data-y='700'>
+      <div class='step ' data-x='28000' data-y='700'>
     
 <p>Using data structures over trees</p>
 
@@ -528,7 +687,7 @@ end
 
 <p>but it buys us more</p>
 </div>
-      <div class='step ' data-x='27000' data-y='700'>
+      <div class='step ' data-x='29000' data-y='700'>
     
 <p>Consider HTML a serialization format</p>
 
@@ -537,7 +696,7 @@ end
 <p>all from the same DOM</p>
 <div class='notes' style='display:none;'>HTML is hard, depending on context you need to html, url, css or json escape. And there are multiple versions, but conceptually the DOM hasn't changed.
 </div></div>
-      <div class='step ' data-x='28000' data-y='700'>
+      <div class='step ' data-x='30000' data-y='700'>
     
 <h2>Nokogiri</h2>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -550,7 +709,7 @@ end
 </code></pre>
 <div class='notes' style='display:none;'>The default for doing these kind of things, but ; tedious to work with ; only HTML 4.01 (because of libxml2), optimized for parsing.
 </div></div>
-      <div class='step ' data-x='29000' data-y='700'>
+      <div class='step ' data-x='31000' data-y='700'>
     
 <h2>Literal notations</h2>
 
@@ -568,7 +727,7 @@ end
 
 Important that the result can be recombined, not the case with nokogiri.
 </div></div>
-      <div class='step ' data-x='30000' data-y='700'>
+      <div class='step ' data-x='32000' data-y='700'>
     
 <h2>Literal notations</h2>
 
@@ -578,7 +737,7 @@ Important that the result can be recombined, not the case with nokogiri.
 </code></pre>
 <div class='notes' style='display:none;'>Simple, lightweight, easy to reason about.
 </div></div>
-      <div class='step ' data-x='31000' data-y='700'>
+      <div class='step ' data-x='33000' data-y='700'>
     
 <p>Now you can actually program your HTML</p>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -594,7 +753,7 @@ end
 </code></pre>
 <div class='notes' style='display:none;'>Other ideas : add file/line numbers in dev mode ; structural validation ; presentation vs data separation.
 </div></div>
-      <div class='step ' data-x='32000' data-y='700'>
+      <div class='step ' data-x='34000' data-y='700'>
     
 <h2>Hexp</h2>
 
@@ -618,7 +777,7 @@ end
 <p><a href="https://github.com/plexus/hexp">https://github.com/plexus/hexp</a></p>
 <div class='notes' style='display:none;'>This is one attempt at making this a reality.
 </div></div>
-      <div class='step ' data-x='33000' data-y='700'>
+      <div class='step ' data-x='35000' data-y='700'>
     <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <pre><code class="prettyprint ruby">class Nav
   def initialize(cart)
@@ -641,11 +800,43 @@ end
 end
 </code></pre>
 </div>
-      <div class='step ' data-x='34000' data-y='700'>
+      <div class='step ' data-x='36000' data-y='700'>
+    
+<h1>In summary</h1>
+</div>
+      <div class='step ' data-x='37000' data-y='700'>
+    
+<h2>Don&#39;t serialize by hand</h2>
+
+<p>We&#39;re reinventing the wheel (badly)</p>
+
+<p>We have serialization mixed with business logic. This violates the Single Responsibility Principle.</p>
+
+<p>Let a library do the serialization for you.</p>
+</div>
+      <div class='step ' data-x='38000' data-y='700'>
+    
+<h2>Aim high level</h2>
+
+<p>What the app cares about are the semantics of the output it produces. Semantics lie in the interpretation, but the closest representation is the syntax tree</p>
+</div>
+      <div class='step ' data-x='39000' data-y='700'>
+    
+<h2>More expressive power</h2>
+
+<p>You can do more with data structures than with mere strings, so your code can be more powerful, more expressive.</p>
+
+<p>Incidentally, this also largely prevents injection attacks, which alone is enough justification.</p>
+</div>
+      <div class='step ' data-x='40000' data-y='700'>
+    
+<h1>Thank you!</h1>
+</div>
+      <div class='step ' data-x='41000' data-y='700'>
     
 <h1>References</h1>
 </div>
-      <div class='step ' data-x='35000' data-y='700'>
+      <div class='step ' data-x='42000' data-y='700'>
     
 <h2>Blog posts</h2>
 
@@ -657,7 +848,7 @@ end
 <li><a href="http://devblog.arnebrasseur.net/2013-04-plain-text">The Devil in Plain Text</a> by Arne Brasseur</li>
 </ul>
 </div>
-      <div class='step ' data-x='36000' data-y='700'>
+      <div class='step ' data-x='43000' data-y='700'>
     
 <h2>Conference talks</h2>
 
@@ -665,7 +856,7 @@ end
 <li><a href="http://www.youtube.com/watch?v=3kEfedtQVOY">The Science of Insecurity</a> by Meredith L. Patterson</li>
 </ul>
 </div>
-      <div class='step ' data-x='37000' data-y='700'>
+      <div class='step ' data-x='44000' data-y='700'>
     
 <h2>Books</h2>
 
@@ -674,7 +865,7 @@ end
 <li>An Introduction to Formal Languages and Automata by Peter Linz</li>
 </ul>
 </div>
-      <div class='step ' data-x='38000' data-y='700'>
+      <div class='step ' data-x='45000' data-y='700'>
     
 <h2>Academia</h2>
 
@@ -682,7 +873,7 @@ end
 <li><a href="http://langsec.org/">Langsec</a></li>
 </ul>
 </div>
-      <div class='step ' data-x='39000' data-y='700'>
+      <div class='step ' data-x='46000' data-y='700'>
     
 <h2>Libraries</h2>
 
@@ -693,7 +884,7 @@ Completely transparent, unobtrusive form populator for web applications and cont
 HTML/XML manipulation and sanitization based on Nokogiri</li>
 </ul>
 </div>
-      <div class='step ' data-x='40000' data-y='700'>
+      <div class='step ' data-x='47000' data-y='700'>
     
 <h2>In other languages</h2>
 
@@ -710,6 +901,12 @@ HTML/XML manipulation and sanitization based on Nokogiri</li>
 <li><a href="http://www.yesodweb.com/book/widgets">Yesod framework</a></li>
 <li>HXT</li>
 </ul>
+</div>
+      <div class='step hidden' data-x='48000' data-y='700'>
+    
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<img src="temple.jpg" alt="">
+</p>
 
       </div>
     <script src="js/impress.js"></script>

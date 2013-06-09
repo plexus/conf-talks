@@ -3,6 +3,7 @@ title: "Web Linguistics : Towards Higher Fluency"
 defaults:
   data-x: '+1000'
   data-y: '+0'
+transition-duration: 1000
 ---
 
 # Web Linguistics
@@ -51,6 +52,8 @@ It's been an interesting winter for Rails security issues, and hopefully securit
 ---
 
 ## XSS
+
+TODO make this more concrete ; find real life example
 
 Code like this
 
@@ -115,6 +118,32 @@ So if it's that simple, why is it still that common?
 
 ---
 
+What side of the escape are we on?
+
+![](shipping_label.jpg)
+
+Steps to reproduce
+
+```ruby
+escape_html(
+  escape_html(
+    'ó'.force_encoding('ISO-8859-1')
+       .encode('UTF-8')
+       .sub('Ã', '&atilde;')
+       .sub('³','&sup3;')))
+```
+
+
+```notes
+This is a real life shipping label. This may seem silly but it happens all the time, we either escape too much or too little.
+
+I actually noticed this myself although less extreme, when sending a parcel to a friend I wanted to add a middle name between quotes, these ended up on the parcel as HTML entity.
+```
+
+---
+
+TODO this also need to be more clear, why is it hard? it's hard because it's not automated. We need to make it "physically" impossible for the programmer to get this wrong.
+
 Manual escaping? **hard**
 
 Let's automate!
@@ -147,7 +176,7 @@ end
 **We're still manually deciding what (not) to escape**
 
 ```notes
-It is a step forward, less strings will be left unescaped, but you can hardly call this a structural solution.
+This is better because whitelist > blacklist. It is a step forward, less strings will be left unescaped, but you can hardly call this a structural solution.
 ```
 
 ---
@@ -159,19 +188,9 @@ Semantics of string are twofold
 * a string
 * a textual representation of HTML
 
----
-
-What side of the escape are we on?
-
-````html
-&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;
-&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;lt;
-&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;quot;
-&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;
-&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;
-````
 
 ---
+
 # SQLi
 ## The mother of all injection attacks
 
@@ -211,6 +230,8 @@ How is this different? At the surface this may seem not much different from the 
 ## langue, taal, sprache, 語言
 
 ---
+= class='haiku'
+
 ## Language
 
 An **alphabet** to
@@ -275,7 +296,7 @@ Now we can turn this tree into a linear list of words, ready to be uttered.
 ---
 = data-x="+0" data-y="+400"
 
-![](../waveform.gif)
+![](waveform.gif)
 
 ````notes
 And turn these words into sounds.
@@ -345,8 +366,59 @@ graph html_safe {
 ---
 =  data-y="+500" data-z="1000" data-x="+0"
 
+
 ---
-= data-x="+1500"
+= data-x="+1500" class="center"
+
+```dot
+digraph commmunication {
+  edge[dir=none]
+  node[label="" shape=circle]
+
+  subgraph sub_0 {
+    x1 -> y1 -> z1;
+    y1 -> z2;
+    y1 -> z3;
+  }
+
+  subgraph sub_1 {
+    rankdir=LR;
+    rank=same;
+    node[shape=point];
+    serializer[label=serializer shape=box];
+    network[label=network shape=none];
+    parser[label=parser shape=box];
+    aa -> serializer -> network -> parser -> bb;
+  }
+
+  subgraph sub_2 {
+    a -> b -> c;
+    b -> d;
+    b -> e;
+  }
+
+  subgraph sub_3 {
+    rank="same";
+    edge[style="invisible",dir="none"];
+    y1 -> aa;
+    bb -> b;
+  }
+}
+```
+
+&nbsp;
+
+Serializer and parser need to be symmetrical.
+
+---
+
+HTML "parsers" are realy rewriting engines.
+
+To make sure the same tree gets reconstructed, we should stay within a strict subset.
+
+Let someone else handle this hairy mess.
+
+---
 
 # Tooling ... what if?
 
@@ -549,6 +621,36 @@ class Nav
   end
 end
 ````
+
+---
+# In summary
+
+---
+## Don't serialize by hand
+
+
+We're reinventing the wheel (badly)
+
+We have serialization mixed with business logic. This violates the Single Responsibility Principle.
+
+Let a library do the serialization for you.
+
+---
+## Aim high level
+
+What the app cares about are the semantics of the output it produces. Semantics lie in the interpretation, but the closest representation is the syntax tree
+
+---
+## More expressive power
+
+You can do more with data structures than with mere strings, so your code can be more powerful, more expressive.
+
+Incidentally, this also largely prevents injection attacks, which alone is enough justification.
+
+---
+
+# Thank you!
+
 
 ---
 
@@ -841,3 +943,10 @@ Haskell
 !! }
 !! ```
 !!
+
+---
+= class='hidden'
+
+![](temple.jpg)
+
+!!used from CSS, added here so it gets copied in

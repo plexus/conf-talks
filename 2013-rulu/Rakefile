@@ -1,5 +1,7 @@
 require 'rb-inotify'
 
+BUILD='bundle exec mdpress --latex -s plexus presentation.md'
+
 class WatchTask
   def initialize(name, opts = {})
     Rake::Task.define_task name do
@@ -28,6 +30,21 @@ namespace :mdpress do
       'themes/plexus.css',
       'themes/plexus.html'
     ],
-    :exec => 'bundle exec mdpress --latex -s plexus presentation.md'
+    :exec => BUILD
   )
+
+  task :build do
+    sh BUILD
+  end
+end
+
+
+
+task :preview => 'mdpress:build' do
+  require 'securerandom'
+  secret = SecureRandom.hex(8)
+  sh "scp -r presentation arnebrasseur@arnebrasseur.net:subdomains/www/rulu-#{secret}"
+  url = "http://arnebrasseur.net/rulu-#{secret}/index.html"
+  puts
+  sh "chromium-browser #{url}"
 end
