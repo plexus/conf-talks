@@ -237,7 +237,7 @@ padding-left: 40px;
     position: absolute;
     top: 0px;
     left: 0px;
-    background-image: url(temple.jpg);
+    background-image: url(../temple.jpg);
     opacity : 0.12;
     width: 900px;
     height: 450px;
@@ -251,4 +251,27 @@ padding-left: 40px;
 
 .huge {
   font-size: 250px;
+}
+
+.think {
+  background-image: url(../larry_thumb.png);
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  background-size: 30%;
+}
+
+.statement {
+  font-size: 1.6em;
+}
+
+.statement strong, .statement bold {
+  font-size: 1.3em;
+}
+
+.statement p {
+  padding: 0.4em 0;
+}
+
+.dense code {
+  font-size: 0.7em;
 }

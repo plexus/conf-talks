@@ -4,6 +4,8 @@ defaults:
   data-x: '+1000'
   data-y: '+0'
 transition-duration: 1000
+images:
+  - larry_thumb.png
 ---
 
 # Web Linguistics
@@ -28,6 +30,7 @@ Use data structures
 ````
 
 ---
+= class='center'
 
 # Language
 ## langue, taal, sprache, 語言
@@ -37,11 +40,20 @@ Use data structures
 
 ![](platypus_cloud.png)
 
+```notes
+I have an idea in my head : "A platypus is carrying a chicken through the forest".
+
+Before I can say this, or even have the words in my mind, I need to have this as an idea in my mind.
+```
+
 ---
 = class='center'
 
 ![](platypus_graph.png)
 
+```notes
+In order to communicate this idea, I need to pull it into individual concepts
+```
 
 <!-- --- -->
 
@@ -62,33 +74,39 @@ Use data structures
 <!-- In CS there is usually more emphasis on the understanding (parsing) of languages, but here I want to go what it takes to generate language. Hence we'll start from meaning (an idea) and see how we get to spoken/written language. -->
 <!-- ```` -->
 
----
-## Meaning
-
-&ldquo; Lisa writes good code. &rdquo;
 
 ````notes
-Suppose I want to convey this message. Before I can say this, or even have the words in my mind, I need to have this as an idea in my mind.
 ````
 
 ---
-= data-x="+0" data-y="+400"
+= class='center'
 
 ````dot
-graph lisa {
-  LISA[shape="none"  weight=11];
-  WRITE[shape="none"];
-  GOOD[shape="none"];
-  CODE[shape="none"];
-  s[shape="circle" weight=10];
-  p[shape="circle" weight=10];
-  m[shape="circle"];
-  s -- LISA
-  s -- p
-  p -- WRITE
-  p -- m
-  m -- GOOD;
-  m -- CODE;
+graph platypus {
+  node[shape=none color=blue fontcolor=blue];
+  edge[color=blue];
+
+  s[label=sentence shape=oval];
+  subject[];
+  action[];
+  place[];
+  verb[];
+  object[];
+
+  platypus[fontcolor=red];
+  carry[fontcolor=red];
+  chicken[fontcolor=red];
+  forest[fontcolor=red];
+
+  s -- subject
+  subject -- platypus
+  s -- action
+  action -- verb
+  action -- object
+  verb -- carry
+  object -- chicken
+  s -- place
+  place -- forest;
 }
 ````
 
@@ -97,34 +115,231 @@ At this point we have identified the components that make up our message, and ha
 ````
 
 ---
-= data-x="+0" data-y="+400"
+= class='center'
 
-<span class="box">LISA</span>
-<span class="box">WRITES</span>
-<span class="box">GOOD</span>
-<span class="box">CODE</span>
+<span class="box">A platypus</span>
+<span class="box">is carrying</span>
+<span class="box">a chicken</span>
+<span class="box">in the forest</span>
 
 ````notes
 Now we can turn this tree into a linear list of words, ready to be uttered.
 ````
 
 ---
-= data-x="+0" data-y="+400"
+= class='center'
 
-![](waveform.gif)
+<img src='waveform.gif' width='600px' />
 
 ````notes
 And turn these words into sounds.
 ````
 
 ---
-= data-scale="2" data-y="-600" data-x="+0"
+= class='think'
+
+## Magic of language
+
+* Listener reconstructs abstract representation
+* Identical "tree" is shared between speakers
+* Each derive meaning from this representation
+
+---
+= class='center'
+
+# Formal Language
+
+---
+= class='statement center'
+
+a **formal language** is
+
+a **set of strings** of symbols
+
+governed by **strict rules**
+
+---
+= class='statement center'
+
+These rules form the **grammar**
+
+of the language, they specify
+
+how to **generate** valid strings
 
 ---
 
-# Use vs mention
+```
+alphabet = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+            +, *, (, ), =}
 
-"Pentasyllabic" is pentasyllabic.
+<equation>   ::= <expression> = <expression>
+
+<expression> ::= <number>  | <sum> |
+                 <product> | ( <expression> )
+
+<number>     ::= <digit> | <digit> <number>
+
+<digit>      ::= 0 | 1 | 2 | 3 | 4 |
+                 5 | 6 | 7 | 8 | 9
+
+<sum>        ::= <expression> + <expression>
+
+<product>    ::= <expression> * <expression>
+```
+
+---
+
+well-formed :
+
+```
+5 = 3 + 2
+4 * 4 = 10 + 6
+10 + 20 = ( 3 + 5 ) * 7
+```
+
+&nbsp;
+
+not well-formed :
+
+```
+5 = + 5
+10 = 15 - 5
+3 * 5 + 7
+```
+
+---
+= class='center'
+
+```dot
+graph {
+  node[shape=none]
+
+
+  exp1[label="expression"]
+  eq[label="=" fontcolor="blue"]
+  exp2[label="expression"]
+
+  num1[label="number"]
+  plus[label="+" fontcolor="blue"]
+  num2[label="number"]
+
+  num3[label="number"]
+  times[label="*" fontcolor="blue"]
+  num4[label="number"]
+
+  digit1[label="digit"]
+  digit2[label="digit"]
+  digit3[label="digit"]
+  digit3[label="digit"]
+
+  5[fontcolor="blue"]
+  3[fontcolor="blue"]
+  2[fontcolor="blue"]
+  4[fontcolor="blue"]
+
+  equation -- exp1
+  equation -- eq
+  equation -- exp2
+
+  exp1 -- sum
+  sum -- num1
+  sum -- plus
+  sum -- num2
+  num1 -- digit1
+  num2 -- digit2
+  digit1 -- 5
+  digit2 -- 3
+
+  exp2 -- product
+  product -- num3
+  product -- times
+  product -- num4
+  num3 -- digit3
+  num4 -- digit4
+  digit3 -- 2
+  digit4 -- 4
+}
+```
+
+---
+= class='statement center'
+
+The **meaning** of a sentence
+
+corresponds with
+
+its **syntax tree**
+
+---
+
+## Language is everywhere
+
+* Programming languages
+* Markup & styling languages
+* Network protocols
+
+---
+= class='lang_words center'
+
+![](language_word_cloud.svg)
+
+---
+= class='statement center'
+
+Your application either
+
+**consumes** or **generates**
+
+these languages
+
+---
+= class='statement center'
+
+In either case it should
+
+use **syntax trees**
+
+to do so
+
+---
+=  class="center"
+
+```dot
+digraph commmunication {
+  edge[dir=none color=blue]
+  node[label="" shape=circle color=blue]
+
+  subgraph sub_0 {
+    x1 -> y1 -> z1;
+    y1 -> z2;
+    y1 -> z3;
+  }
+
+  subgraph sub_1 {
+    rankdir=LR;
+    rank=same;
+    node[shape=point];
+    serializer[label=serializer shape=box];
+    network[label=network shape=none];
+    parser[label=parser shape=box];
+    aa -> serializer -> network -> parser -> bb;
+  }
+
+  subgraph sub_2 {
+    a -> b -> c;
+    b -> d;
+    b -> e;
+  }
+
+  subgraph sub_3 {
+    rank="same";
+    edge[style="invisible",dir="none"];
+    y1 -> aa;
+    bb -> b;
+  }
+}
+```
 
 ---
 
@@ -393,48 +608,6 @@ graph html_safe {
 =  data-y="+500" data-z="1000" data-x="+0"
 
 
----
-= data-x="+1500" class="center"
-
-```dot
-digraph commmunication {
-  edge[dir=none]
-  node[label="" shape=circle]
-
-  subgraph sub_0 {
-    x1 -> y1 -> z1;
-    y1 -> z2;
-    y1 -> z3;
-  }
-
-  subgraph sub_1 {
-    rankdir=LR;
-    rank=same;
-    node[shape=point];
-    serializer[label=serializer shape=box];
-    network[label=network shape=none];
-    parser[label=parser shape=box];
-    aa -> serializer -> network -> parser -> bb;
-  }
-
-  subgraph sub_2 {
-    a -> b -> c;
-    b -> d;
-    b -> e;
-  }
-
-  subgraph sub_3 {
-    rank="same";
-    edge[style="invisible",dir="none"];
-    y1 -> aa;
-    bb -> b;
-  }
-}
-```
-
-&nbsp;
-
-Serializer and parser need to be symmetrical.
 
 ---
 
@@ -450,18 +623,6 @@ Let someone else handle this hairy mess.
 
 ---
 
-* SQL
-* HTML
-* (S)CSS
-* HTTP
-* Javascript
-* Coffeescript
-* JSON
-* XML
-* YAML
-* Ruby
-* Regex
-* URL
 
 ---
 
@@ -777,12 +938,7 @@ Haskell
 !!
 !!
 !!---
-!!## Levels of interpretation
-!!
-!!* Characters
-!!* Tokens
-!!* Syntax tree
-!!* Semantics
+
 !! ----
 !! = data-x="+0" data-y="+400" skip
 !!
