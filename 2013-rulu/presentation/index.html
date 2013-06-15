@@ -70,207 +70,43 @@
 <p>Avoid plain strings at all cost</p>
 
 <p>Use data structures</p>
-<div class='notes' style='display:none;'>I want to make this point up front, if nothing else, at least take this point with you.
+<div class='notes' style='display:none;'>- make this point up front
+- talk in 3 parts : What do I mean? Why do I say this? How do we that?
 </div></div>
       <div class='step ' data-x='3000' data-y='0'>
-    
-<h1>XSS</h1>
-
-<h2>Cross site scripting</h2>
-<div class='notes' style='display:none;'>This is where our story starts.
-</div></div>
-      <div class='step ' data-x='4000' data-y='0'>
-    
-<blockquote>
-<p>[CVE-2013-1857] XSS Vulnerability<br/> in the <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<code class="inline prettyprint">sanitize</code>
- helper of Ruby on Rails</p>
-</blockquote>
-
-<p>&nbsp; &mdash; @tenderlove on rails-security-ann</p>
-
-<p></p>
-
-<blockquote>
-<p>Given all the fun we&#39;ve had with security issues</p>
-</blockquote>
-
-<p>&nbsp; &mdash; Rails 4 beta announcement</p>
-<div class='notes' style='display:none;'>It's been an interesting winter for Rails security issues, and hopefully security is still at the front of peoples minds.
-</div></div>
-      <div class='step ' data-x='5000' data-y='0'>
-    
-<h2>XSS</h2>
-
-<p>TODO make this more concrete ; find real life example</p>
-
-<p>Code like this</p>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<pre><code class="prettyprint ruby">"&lt;div&gt;#{ @post.body }&lt;/div&gt;"
-</code></pre>
-
-<p>&nbsp;
-&nbsp;</p>
-
-<p>Will lead to malicious injection</p>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<pre><code class="prettyprint html">&lt;div&gt;
-  &lt;script&gt;evil code&lt;/script&gt;
-&lt;/div&gt;
-</code></pre>
-<div class='notes' style='display:none;'>So what exactly is XSS? This is an example of a 'persisted' XSS attack. Anyone who can sneak HTML in our pages can do nasty stuff.
-
-This gives an attacker all privileges the current user of your app has.
-</div></div>
-      <div class='step ' data-x='6000' data-y='0'>
-    
-<h2>Escape!</h2>
-
-<p>The common wisdom is to &quot;escape&quot; the inserted value</p>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<pre><code class="prettyprint html">&lt;div&gt;#{ html_escape(@post.body) }&lt;/div&gt;
-</code></pre>
-
-<p>&nbsp;
-&nbsp;</p>
-
-<p>Now the code is harmless</p>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<pre><code class="prettyprint html">&lt;div&gt;
-  &amp;lt;script&amp;gt;evil code&amp;lt;/script&amp;gt
-&lt;/div&gt;
-</code></pre>
-<div class='notes' style='display:none;'>So what to do? This is what you learn in Web security 101, make sure you HTML escape whatever you don't trust, and you'll be fine.
-</div></div>
-      <div class='step haiku' data-x='7000' data-y='0'>
-    
-<h2>XSS</h2>
-
-<p>Is a more common</p>
-
-<p>vulnerability than</p>
-
-<p>buffer overflows</p>
-<div class='notes' style='display:none;'>So if it's that simple, why is it still that common?
-</div></div>
-      <div class='step ' data-x='8000' data-y='0'>
-    
-<p>What side of the escape are we on?</p>
-
-<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<img src="shipping_label.jpg" alt="">
-</p>
-
-<p>Steps to reproduce</p>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<pre><code class="prettyprint ruby">escape_html(
-  escape_html(
-    '&oacute;'.force_encoding('ISO-8859-1')
-       .encode('UTF-8')
-       .sub('&Atilde;', '&amp;atilde;')
-       .sub('&sup3;','&amp;sup3;')))
-</code></pre>
-<div class='notes' style='display:none;'>This is a real life shipping label. This may seem silly but it happens all the time, we either escape too much or too little.
-
-I actually noticed this myself although less extreme, when sending a parcel to a friend I wanted to add a middle name between quotes, these ended up on the parcel as HTML entity.
-</div></div>
-      <div class='step ' data-x='9000' data-y='0'>
-    
-<p>TODO this also need to be more clear, why is it hard? it&#39;s hard because it&#39;s not automated. We need to make it &quot;physically&quot; impossible for the programmer to get this wrong.</p>
-
-<p>Manual escaping? <strong>hard</strong></p>
-
-<p>Let&#39;s automate!</p>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<pre><code class="prettyprint html"># using HTML::SafeBuffer
-&lt;div&gt;&lt;%= @post.body %&gt;&lt;/div&gt;
-</code></pre>
-
-<p>And it <strong>just works</strong></p>
-<div class='notes' style='display:none;'>This is (at least in Ruby) the state of the art of XSS prevention, it's part of Rails 'secure by default' philosophy.
-</div></div>
-      <div class='step ' data-x='10000' data-y='0'>
-    
-<p>We&#39;ve turned the problem around</p>
-
-<p>Whitelist instead of blacklist</p>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<pre><code class="prettyprint ruby">def helper
-  "&lt;p&gt; haikus are pretty &lt;p&gt;".html_safe
-end
-</code></pre>
-
-<p>&nbsp;</p>
-
-<p><strong>We&#39;re still manually deciding what (not) to escape</strong></p>
-<div class='notes' style='display:none;'>This is better because whitelist > blacklist. It is a step forward, less strings will be left unescaped, but you can hardly call this a structural solution.
-</div></div>
-      <div class='step ' data-x='11000' data-y='0'>
-    
-<h2>The problem</h2>
-
-<p>Semantics of string are twofold</p>
-
-<ul>
-<li>a string</li>
-<li>a textual representation of HTML</li>
-</ul>
-</div>
-      <div class='step ' data-x='12000' data-y='0'>
-    
-<h1>SQLi</h1>
-
-<h2>The mother of all injection attacks</h2>
-<div class='notes' style='display:none;'>XSS is just one type of injection attack, another one, SQL injection, has been with us for even longer. It seems we are better at preventing this one, why is that?
-</div></div>
-      <div class='step ' data-x='13000' data-y='0'>
-    
-<h2>ActiveRecord 3 / Arel</h2>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<pre><code class="prettyprint ruby">@users = User.where(name: params[:query])
-
-# =&gt; #&lt;ActiveRecord::Relation&gt;
-</code></pre>
-
-<p>&nbsp;</p>
-
-<p>See also <a href="https://github.com/jeremyevans/sequel">Sequel</a></p>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<pre><code class="prettyprint ruby">posts.where(stamp:
-  (Date.today - 14)..(Date.today - 7))
-
-# WHERE stamp &gt;= '2010-06-30'
-# AND stamp &lt;= '2010-07-07'
-</code></pre>
-<div class='notes' style='display:none;'>How is this different? At the surface this may seem not much different from the SafeBuffer approach, but the difference runs much deeper. But to really understand what's going on here, we need to say a few words about languages.
-</div></div>
-      <div class='step ' data-x='14000' data-y='0'>
     
 <h1>Language</h1>
 
 <h2>langue, taal, sprache, 語言</h2>
+
+<!-- --- -->
+
+<!-- = class='haiku' -->
+
+<!-- ## Language -->
+
+<!-- An **alphabet** to -->
+
+<!-- construct **words** and **sentences** -->
+
+<!-- that convey **meaning** -->
+
+<!-- ````notes -->
+
+<!-- This is true of both natural and formal languages. Let's go through this from bottom to top. -->
+
+<!-- In CS there is usually more emphasis on the understanding (parsing) of languages, but here I want to go what it takes to generate language. Hence we'll start from meaning (an idea) and see how we get to spoken/written language. -->
+
+<!-- ```` -->
 </div>
-      <div class='step haiku' data-x='15000' data-y='0'>
-    
-<h2>Language</h2>
-
-<p>An <strong>alphabet</strong> to</p>
-
-<p>construct <strong>words</strong> and <strong>sentences</strong></p>
-
-<p>that convey <strong>meaning</strong></p>
-<div class='notes' style='display:none;'>This is true of both natural and formal languages. Let's go through this from bottom to top.
-
-In CS there is usually more emphasis on the understanding (parsing) of languages, but here I want to go what it takes to generate language. Hence we'll start from meaning (an idea) and see how we get to spoken/written language.
-</div></div>
-      <div class='step ' data-x='16000' data-y='0'>
+      <div class='step ' data-x='4000' data-y='0'>
     
 <h2>Meaning</h2>
 
 <p>&ldquo; Lisa writes good code. &rdquo;</p>
 <div class='notes' style='display:none;'>Suppose I want to convey this message. Before I can say this, or even have the words in my mind, I need to have this as an idea in my mind.
 </div></div>
-      <div class='step ' data-x='16000' data-y='400'>
+      <div class='step ' data-x='4000' data-y='400'>
     <div class='dot-wrap'><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="201pt" height="270pt" viewBox="0.00 0.00 201.00 270.00">
 <g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 266)">
 <title>lisa</title>
@@ -333,7 +169,7 @@ In CS there is usually more emphasis on the understanding (parsing) of languages
 </g>
 </svg></div><div class='notes' style='display:none;'>At this point we have identified the components that make up our message, and have determined how they relate to each other. Now we can go on and serialize this message.
 </div></div>
-      <div class='step ' data-x='16000' data-y='800'>
+      <div class='step ' data-x='4000' data-y='800'>
     
 <p><span class="box">LISA</span>
 <span class="box">WRITES</span>
@@ -341,20 +177,205 @@ In CS there is usually more emphasis on the understanding (parsing) of languages
 <span class="box">CODE</span></p>
 <div class='notes' style='display:none;'>Now we can turn this tree into a linear list of words, ready to be uttered.
 </div></div>
-      <div class='step ' data-x='16000' data-y='1200'>
+      <div class='step ' data-x='4000' data-y='1200'>
     
 <p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <img src="waveform.gif" alt="">
 </p>
 <div class='notes' style='display:none;'>And turn these words into sounds.
 </div></div>
-      <div class='step ' data-x='16000' data-y='600' data-scale='2'>
+      <div class='step ' data-x='4000' data-y='600' data-scale='2'>
     </div>
+      <div class='step ' data-x='5000' data-y='600'>
+    
+<h1>Use vs mention</h1>
+
+<p>&quot;Pentasyllabic&quot; is pentasyllabic.</p>
+</div>
+      <div class='step ' data-x='6000' data-y='600'>
+    
+<h1>Why ?</h1>
+</div>
+      <div class='step ' data-x='7000' data-y='600'>
+    
+<h2>Security</h2>
+</div>
+      <div class='step ' data-x='8000' data-y='600'>
+    
+<h1>XSS</h1>
+
+<h2>Cross site scripting</h2>
+</div>
+      <div class='step ' data-x='9000' data-y='600'>
+    
+<blockquote>
+<p>[CVE-2013-1857] XSS Vulnerability<br/> in the <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<code class="inline prettyprint">sanitize</code>
+ helper of Ruby on Rails</p>
+</blockquote>
+
+<p>&nbsp; &mdash; @tenderlove on rails-security-ann</p>
+
+<p></p>
+
+<blockquote>
+<p>Given all the fun we&#39;ve had with security issues</p>
+</blockquote>
+
+<p>&nbsp; &mdash; Rails 4 beta announcement</p>
+<div class='notes' style='display:none;'>It's been an interesting winter for Rails security issues, and hopefully security is still at the front of peoples minds.
+</div></div>
+      <div class='step ' data-x='10000' data-y='600'>
+    
+<h2>XSS</h2>
+
+<p>TODO make this more concrete ; find real life example</p>
+
+<p>Code like this</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">"&lt;div&gt;#{ @post.body }&lt;/div&gt;"
+</code></pre>
+
+<p>&nbsp;
+&nbsp;</p>
+
+<p>Will lead to malicious injection</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint html">&lt;div&gt;
+  &lt;script&gt;evil code&lt;/script&gt;
+&lt;/div&gt;
+</code></pre>
+<div class='notes' style='display:none;'>So what exactly is XSS? This is an example of a 'persisted' XSS attack. Anyone who can sneak HTML in our pages can do nasty stuff.
+
+This gives an attacker all privileges the current user of your app has.
+</div></div>
+      <div class='step ' data-x='11000' data-y='600'>
+    
+<h2>Escape!</h2>
+
+<p>The common wisdom is to &quot;escape&quot; the inserted value</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint html">&lt;div&gt;#{ html_escape(@post.body) }&lt;/div&gt;
+</code></pre>
+
+<p>&nbsp;
+&nbsp;</p>
+
+<p>Now the code is harmless</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint html">&lt;div&gt;
+  &amp;lt;script&amp;gt;evil code&amp;lt;/script&amp;gt
+&lt;/div&gt;
+</code></pre>
+<div class='notes' style='display:none;'>So what to do? This is what you learn in Web security 101, make sure you HTML escape whatever you don't trust, and you'll be fine.
+</div></div>
+      <div class='step haiku' data-x='12000' data-y='600'>
+    
+<h2>XSS</h2>
+
+<p>Is a more common</p>
+
+<p>vulnerability than</p>
+
+<p>buffer overflows</p>
+<div class='notes' style='display:none;'>So if it's that simple, why is it still that common?
+</div></div>
+      <div class='step ' data-x='13000' data-y='600'>
+    
+<p>What side of the escape are we on?</p>
+
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<img src="shipping_label.jpg" alt="">
+</p>
+
+<p>Steps to reproduce</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">escape_html(
+  escape_html(
+    '&oacute;'.force_encoding('ISO-8859-1')
+       .encode('UTF-8')
+       .sub('&Atilde;', '&amp;atilde;')
+       .sub('&sup3;','&amp;sup3;')))
+</code></pre>
+<div class='notes' style='display:none;'>This is a real life shipping label. This may seem silly but it happens all the time, we either escape too much or too little.
+
+I actually noticed this myself although less extreme, when sending a parcel to a friend I wanted to add a middle name between quotes, these ended up on the parcel as HTML entity.
+</div></div>
+      <div class='step ' data-x='14000' data-y='600'>
+    
+<p>TODO this also need to be more clear, why is it hard? it&#39;s hard because it&#39;s not automated. We need to make it &quot;physically&quot; impossible for the programmer to get this wrong.</p>
+
+<p>Manual escaping? <strong>hard</strong></p>
+
+<p>Let&#39;s automate!</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint html"># using HTML::SafeBuffer
+&lt;div&gt;&lt;%= @post.body %&gt;&lt;/div&gt;
+</code></pre>
+
+<p>And it <strong>just works</strong></p>
+<div class='notes' style='display:none;'>This is (at least in Ruby) the state of the art of XSS prevention, it's part of Rails 'secure by default' philosophy.
+</div></div>
+      <div class='step ' data-x='15000' data-y='600'>
+    
+<p>We&#39;ve turned the problem around</p>
+
+<p>Whitelist instead of blacklist</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">def helper
+  "&lt;p&gt; haikus are pretty &lt;p&gt;".html_safe
+end
+</code></pre>
+
+<p>&nbsp;</p>
+
+<p><strong>We&#39;re still manually deciding what (not) to escape</strong></p>
+<div class='notes' style='display:none;'>This is better because whitelist > blacklist. It is a step forward, less strings will be left unescaped, but you can hardly call this a structural solution.
+</div></div>
+      <div class='step ' data-x='16000' data-y='600'>
+    
+<h2>The problem</h2>
+
+<p>Semantics of string are twofold</p>
+
+<ul>
+<li>a string</li>
+<li>a textual representation of HTML</li>
+</ul>
+</div>
       <div class='step ' data-x='17000' data-y='600'>
+    
+<h1>SQLi</h1>
+
+<h2>The mother of all injection attacks</h2>
+<div class='notes' style='display:none;'>XSS is just one type of injection attack, another one, SQL injection, has been with us for even longer. It seems we are better at preventing this one, why is that?
+</div></div>
+      <div class='step ' data-x='18000' data-y='600'>
+    
+<h2>ActiveRecord 3 / Arel</h2>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">@users = User.where(name: params[:query])
+
+# =&gt; #&lt;ActiveRecord::Relation&gt;
+</code></pre>
+
+<p>&nbsp;</p>
+
+<p>See also <a href="https://github.com/jeremyevans/sequel">Sequel</a></p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<pre><code class="prettyprint ruby">posts.where(stamp:
+  (Date.today - 14)..(Date.today - 7))
+
+# WHERE stamp &gt;= '2010-06-30'
+# AND stamp &lt;= '2010-07-07'
+</code></pre>
+<div class='notes' style='display:none;'>How is this different? At the surface this may seem not much different from the SafeBuffer approach, but the difference runs much deeper. But to really understand what's going on here, we need to say a few words about languages.
+</div></div>
+      <div class='step ' data-x='19000' data-y='600'>
     
 <h1>Injection, revisited</h1>
 </div>
-      <div class='step ' data-x='18000' data-y='600'>
+      <div class='step ' data-x='20000' data-y='600'>
     <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <pre><code class="prettyprint ruby">@users = User.where(name: params[:query])
 </code></pre>
@@ -453,7 +474,7 @@ In CS there is usually more emphasis on the understanding (parsing) of languages
 
 This is good because we can express our intent (semantics), and the data structure reflects those semantics.
 </div></div>
-      <div class='step ' data-x='19000' data-y='600'>
+      <div class='step ' data-x='21000' data-y='600'>
     <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <pre><code class="prettyprint ruby">def helper
   "&lt;p&gt; haikus are pretty &lt;p&gt;".html_safe
@@ -476,13 +497,13 @@ end
 </g>
 </g>
 </svg></div></div>
-      <div class='step center' data-x='18500' data-y='200' data-z='1000'>
+      <div class='step center' data-x='20500' data-y='200' data-z='1000'>
     
 <h2>Spot the differences</h2>
 </div>
-      <div class='step ' data-x='18500' data-y='700' data-z='1000'>
+      <div class='step ' data-x='20500' data-y='700' data-z='1000'>
     </div>
-      <div class='step center' data-x='20000' data-y='700'>
+      <div class='step center' data-x='22000' data-y='700'>
     <div class='dot-wrap'><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="518pt" height="188pt" viewBox="0.00 0.00 518.00 188.00">
 <g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 184)">
 <title>commmunication</title>
@@ -609,7 +630,7 @@ end
 
 <p>Serializer and parser need to be symmetrical.</p>
 </div>
-      <div class='step ' data-x='21000' data-y='700'>
+      <div class='step ' data-x='23000' data-y='700'>
     
 <p>HTML &quot;parsers&quot; are realy rewriting engines.</p>
 
@@ -617,11 +638,11 @@ end
 
 <p>Let someone else handle this hairy mess.</p>
 </div>
-      <div class='step ' data-x='22000' data-y='700'>
+      <div class='step ' data-x='24000' data-y='700'>
     
 <h1>Tooling ... what if?</h1>
 </div>
-      <div class='step ' data-x='23000' data-y='700'>
+      <div class='step ' data-x='25000' data-y='700'>
     
 <ul>
 <li>SQL</li>
@@ -638,7 +659,7 @@ end
 <li>URL</li>
 </ul>
 </div>
-      <div class='step ' data-x='24000' data-y='700'>
+      <div class='step ' data-x='26000' data-y='700'>
     
 <h2>What if for each we had</h2>
 
@@ -648,7 +669,7 @@ end
 <li>problem domain specific APIs to deal with 1.</li>
 </ol>
 </div>
-      <div class='step ' data-x='25000' data-y='700'>
+      <div class='step ' data-x='27000' data-y='700'>
     
 <h2>Apples and snakes architecture</h2>
 
@@ -662,7 +683,7 @@ end
 <code class="inline prettyprint">TODO insert hand-drawn schematic here</code>
 </p>
 </div>
-      <div class='step ' data-x='26000' data-y='700'>
+      <div class='step ' data-x='28000' data-y='700'>
     
 <h2>Welcome to the future</h2>
 
@@ -675,11 +696,11 @@ end
 </ul>
 <div class='notes' style='display:none;'>There's already a lot out there, but still some missing pieces. Plus often tedious to work with.
 </div></div>
-      <div class='step ' data-x='27000' data-y='700'>
+      <div class='step ' data-x='29000' data-y='700'>
     
-<h1>HTML</h1>
+<h1>How?</h1>
 </div>
-      <div class='step ' data-x='28000' data-y='700'>
+      <div class='step ' data-x='30000' data-y='700'>
     
 <p>Using data structures over trees</p>
 
@@ -687,7 +708,7 @@ end
 
 <p>but it buys us more</p>
 </div>
-      <div class='step ' data-x='29000' data-y='700'>
+      <div class='step ' data-x='31000' data-y='700'>
     
 <p>Consider HTML a serialization format</p>
 
@@ -696,7 +717,7 @@ end
 <p>all from the same DOM</p>
 <div class='notes' style='display:none;'>HTML is hard, depending on context you need to html, url, css or json escape. And there are multiple versions, but conceptually the DOM hasn't changed.
 </div></div>
-      <div class='step ' data-x='30000' data-y='700'>
+      <div class='step ' data-x='32000' data-y='700'>
     
 <h2>Nokogiri</h2>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -709,7 +730,7 @@ end
 </code></pre>
 <div class='notes' style='display:none;'>The default for doing these kind of things, but ; tedious to work with ; only HTML 4.01 (because of libxml2), optimized for parsing.
 </div></div>
-      <div class='step ' data-x='31000' data-y='700'>
+      <div class='step ' data-x='33000' data-y='700'>
     
 <h2>Literal notations</h2>
 
@@ -727,7 +748,7 @@ end
 
 Important that the result can be recombined, not the case with nokogiri.
 </div></div>
-      <div class='step ' data-x='32000' data-y='700'>
+      <div class='step ' data-x='34000' data-y='700'>
     
 <h2>Literal notations</h2>
 
@@ -737,7 +758,7 @@ Important that the result can be recombined, not the case with nokogiri.
 </code></pre>
 <div class='notes' style='display:none;'>Simple, lightweight, easy to reason about.
 </div></div>
-      <div class='step ' data-x='33000' data-y='700'>
+      <div class='step ' data-x='35000' data-y='700'>
     
 <p>Now you can actually program your HTML</p>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -753,7 +774,7 @@ end
 </code></pre>
 <div class='notes' style='display:none;'>Other ideas : add file/line numbers in dev mode ; structural validation ; presentation vs data separation.
 </div></div>
-      <div class='step ' data-x='34000' data-y='700'>
+      <div class='step ' data-x='36000' data-y='700'>
     
 <h2>Hexp</h2>
 
@@ -777,7 +798,7 @@ end
 <p><a href="https://github.com/plexus/hexp">https://github.com/plexus/hexp</a></p>
 <div class='notes' style='display:none;'>This is one attempt at making this a reality.
 </div></div>
-      <div class='step ' data-x='35000' data-y='700'>
+      <div class='step ' data-x='37000' data-y='700'>
     <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <pre><code class="prettyprint ruby">class Nav
   def initialize(cart)
@@ -800,11 +821,11 @@ end
 end
 </code></pre>
 </div>
-      <div class='step ' data-x='36000' data-y='700'>
+      <div class='step ' data-x='38000' data-y='700'>
     
 <h1>In summary</h1>
 </div>
-      <div class='step ' data-x='37000' data-y='700'>
+      <div class='step ' data-x='39000' data-y='700'>
     
 <h2>Don&#39;t serialize by hand</h2>
 
@@ -814,13 +835,13 @@ end
 
 <p>Let a library do the serialization for you.</p>
 </div>
-      <div class='step ' data-x='38000' data-y='700'>
+      <div class='step ' data-x='40000' data-y='700'>
     
 <h2>Aim high level</h2>
 
 <p>What the app cares about are the semantics of the output it produces. Semantics lie in the interpretation, but the closest representation is the syntax tree</p>
 </div>
-      <div class='step ' data-x='39000' data-y='700'>
+      <div class='step ' data-x='41000' data-y='700'>
     
 <h2>More expressive power</h2>
 
@@ -828,15 +849,35 @@ end
 
 <p>Incidentally, this also largely prevents injection attacks, which alone is enough justification.</p>
 </div>
-      <div class='step ' data-x='40000' data-y='700'>
+      <div class='step ' data-x='42000' data-y='700'>
+    
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<img src="snakes_and_apples.png" alt="">
+</p>
+</div>
+      <div class='step center' data-x='43000' data-y='700'>
+    
+<p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<img src="wizard_cry.png" alt="">
+</p>
+</div>
+      <div class='step center' data-x='44000' data-y='700'>
+    
+<div class='huge'>
+
+Q ?
+
+</div>
+</div>
+      <div class='step ' data-x='45000' data-y='700'>
     
 <h1>Thank you!</h1>
 </div>
-      <div class='step ' data-x='41000' data-y='700'>
+      <div class='step ' data-x='46000' data-y='700'>
     
 <h1>References</h1>
 </div>
-      <div class='step ' data-x='42000' data-y='700'>
+      <div class='step ' data-x='47000' data-y='700'>
     
 <h2>Blog posts</h2>
 
@@ -848,7 +889,7 @@ end
 <li><a href="http://devblog.arnebrasseur.net/2013-04-plain-text">The Devil in Plain Text</a> by Arne Brasseur</li>
 </ul>
 </div>
-      <div class='step ' data-x='43000' data-y='700'>
+      <div class='step ' data-x='48000' data-y='700'>
     
 <h2>Conference talks</h2>
 
@@ -856,7 +897,7 @@ end
 <li><a href="http://www.youtube.com/watch?v=3kEfedtQVOY">The Science of Insecurity</a> by Meredith L. Patterson</li>
 </ul>
 </div>
-      <div class='step ' data-x='44000' data-y='700'>
+      <div class='step ' data-x='49000' data-y='700'>
     
 <h2>Books</h2>
 
@@ -865,7 +906,7 @@ end
 <li>An Introduction to Formal Languages and Automata by Peter Linz</li>
 </ul>
 </div>
-      <div class='step ' data-x='45000' data-y='700'>
+      <div class='step ' data-x='50000' data-y='700'>
     
 <h2>Academia</h2>
 
@@ -873,7 +914,7 @@ end
 <li><a href="http://langsec.org/">Langsec</a></li>
 </ul>
 </div>
-      <div class='step ' data-x='46000' data-y='700'>
+      <div class='step ' data-x='51000' data-y='700'>
     
 <h2>Libraries</h2>
 
@@ -884,7 +925,7 @@ Completely transparent, unobtrusive form populator for web applications and cont
 HTML/XML manipulation and sanitization based on Nokogiri</li>
 </ul>
 </div>
-      <div class='step ' data-x='47000' data-y='700'>
+      <div class='step ' data-x='52000' data-y='700'>
     
 <h2>In other languages</h2>
 
@@ -902,7 +943,7 @@ HTML/XML manipulation and sanitization based on Nokogiri</li>
 <li>HXT</li>
 </ul>
 </div>
-      <div class='step hidden' data-x='48000' data-y='700'>
+      <div class='step hidden' data-x='53000' data-y='700'>
     
 <p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <img src="temple.jpg" alt="">

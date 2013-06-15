@@ -13,6 +13,7 @@ by Arne Brasseur / [@plexus](http://twitter.com/plexus)
 
 ---
 = class='haiku'
+
 ## tl;dr (in Haiku)
 
 For formal language
@@ -22,16 +23,121 @@ Avoid plain strings at all cost
 Use data structures
 
 ````notes
-I want to make this point up front, if nothing else, at least take this point with you.
+- make this point up front
+- talk in 3 parts : What do I mean? Why do I say this? How do we that?
 ````
 
 ---
+
+# Language
+## langue, taal, sprache, 語言
+
+---
+= class='center'
+
+![](platypus_cloud.png)
+
+---
+= class='center'
+
+![](platypus_graph.png)
+
+
+<!-- --- -->
+
+<!-- = class='haiku' -->
+
+<!-- ## Language -->
+
+<!-- An **alphabet** to -->
+
+<!-- construct **words** and **sentences** -->
+
+<!-- that convey **meaning** -->
+
+
+<!-- ````notes -->
+<!-- This is true of both natural and formal languages. Let's go through this from bottom to top. -->
+
+<!-- In CS there is usually more emphasis on the understanding (parsing) of languages, but here I want to go what it takes to generate language. Hence we'll start from meaning (an idea) and see how we get to spoken/written language. -->
+<!-- ```` -->
+
+---
+## Meaning
+
+&ldquo; Lisa writes good code. &rdquo;
+
+````notes
+Suppose I want to convey this message. Before I can say this, or even have the words in my mind, I need to have this as an idea in my mind.
+````
+
+---
+= data-x="+0" data-y="+400"
+
+````dot
+graph lisa {
+  LISA[shape="none"  weight=11];
+  WRITE[shape="none"];
+  GOOD[shape="none"];
+  CODE[shape="none"];
+  s[shape="circle" weight=10];
+  p[shape="circle" weight=10];
+  m[shape="circle"];
+  s -- LISA
+  s -- p
+  p -- WRITE
+  p -- m
+  m -- GOOD;
+  m -- CODE;
+}
+````
+
+````notes
+At this point we have identified the components that make up our message, and have determined how they relate to each other. Now we can go on and serialize this message.
+````
+
+---
+= data-x="+0" data-y="+400"
+
+<span class="box">LISA</span>
+<span class="box">WRITES</span>
+<span class="box">GOOD</span>
+<span class="box">CODE</span>
+
+````notes
+Now we can turn this tree into a linear list of words, ready to be uttered.
+````
+
+---
+= data-x="+0" data-y="+400"
+
+![](waveform.gif)
+
+````notes
+And turn these words into sounds.
+````
+
+---
+= data-scale="2" data-y="-600" data-x="+0"
+
+---
+
+# Use vs mention
+
+"Pentasyllabic" is pentasyllabic.
+
+---
+
+# Why ?
+
+---
+
+## Security
+
+---
+
 # XSS
 ## Cross site scripting
-
-```notes
-This is where our story starts.
-```
 
 ---
 
@@ -104,6 +210,7 @@ So what to do? This is what you learn in Web security 101, make sure you HTML es
 
 ---
 = class='haiku'
+
 ## XSS
 
 Is a more common
@@ -223,87 +330,6 @@ posts.where(stamp:
 ```notes
 How is this different? At the surface this may seem not much different from the SafeBuffer approach, but the difference runs much deeper. But to really understand what's going on here, we need to say a few words about languages.
 ```
-
----
-
-# Language
-## langue, taal, sprache, 語言
-
----
-= class='haiku'
-
-## Language
-
-An **alphabet** to
-
-construct **words** and **sentences**
-
-that convey **meaning**
-
-
-````notes
-This is true of both natural and formal languages. Let's go through this from bottom to top.
-
-In CS there is usually more emphasis on the understanding (parsing) of languages, but here I want to go what it takes to generate language. Hence we'll start from meaning (an idea) and see how we get to spoken/written language.
-````
-
----
-## Meaning
-
-&ldquo; Lisa writes good code. &rdquo;
-
-````notes
-Suppose I want to convey this message. Before I can say this, or even have the words in my mind, I need to have this as an idea in my mind.
-````
-
----
-= data-x="+0" data-y="+400"
-
-````dot
-graph lisa {
-  LISA[shape="none"  weight=11];
-  WRITE[shape="none"];
-  GOOD[shape="none"];
-  CODE[shape="none"];
-  s[shape="circle" weight=10];
-  p[shape="circle" weight=10];
-  m[shape="circle"];
-  s -- LISA
-  s -- p
-  p -- WRITE
-  p -- m
-  m -- GOOD;
-  m -- CODE;
-}
-````
-
-````notes
-At this point we have identified the components that make up our message, and have determined how they relate to each other. Now we can go on and serialize this message.
-````
-
----
-= data-x="+0" data-y="+400"
-
-<span class="box">LISA</span>
-<span class="box">WRITES</span>
-<span class="box">GOOD</span>
-<span class="box">CODE</span>
-
-````notes
-Now we can turn this tree into a linear list of words, ready to be uttered.
-````
-
----
-= data-x="+0" data-y="+400"
-
-![](waveform.gif)
-
-````notes
-And turn these words into sounds.
-````
-
----
-= data-scale="2" data-y="-600" data-x="+0"
 
 ---
 
@@ -473,7 +499,7 @@ There's already a lot out there, but still some missing pieces. Plus often tedio
 
 ---
 
-# HTML
+# How?
 
 ---
 
@@ -646,6 +672,25 @@ What the app cares about are the semantics of the output it produces. Semantics 
 You can do more with data structures than with mere strings, so your code can be more powerful, more expressive.
 
 Incidentally, this also largely prevents injection attacks, which alone is enough justification.
+
+---
+
+![](snakes_and_apples.png)
+
+---
+= class='center'
+
+![](wizard_cry.png)
+
+
+---
+= class='center'
+
+<div class='huge'>
+
+Q ?
+
+</div>
 
 ---
 

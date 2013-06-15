@@ -23,6 +23,7 @@ class WatchTask
 end
 
 namespace :mdpress do
+  desc 'watch the presentation and theme for changes and rebuild'
   WatchTask.new(
     :watch,
     :watch => [
@@ -33,18 +34,18 @@ namespace :mdpress do
     :exec => BUILD
   )
 
+  desc 'build the impress.js presentation'
   task :build do
     sh BUILD
   end
 end
 
 
-
+desc 'push a preview version to a unique URI'
 task :preview => 'mdpress:build' do
   require 'securerandom'
   secret = SecureRandom.hex(8)
   sh "scp -r presentation arnebrasseur@arnebrasseur.net:subdomains/www/rulu-#{secret}"
   url = "http://arnebrasseur.net/rulu-#{secret}/index.html"
-  puts
   sh "chromium-browser #{url}"
 end
