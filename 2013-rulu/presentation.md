@@ -138,7 +138,7 @@ And turn these words into sounds.
 ````
 
 ---
-= class='think'
+= class='thumb'
 
 ## Magic of language
 
@@ -392,6 +392,31 @@ So if it's that simple, why is it still that common?
 
 ---
 
+> [CVE-2013-1857] XSS Vulnerability<br/> in the `sanitize` helper of Ruby on Rails
+
+&nbsp; &mdash; @tenderlove on rails-security-ann
+
+<p></p>
+
+> Given all the fun we've had with security issues
+
+&nbsp; &mdash; Rails 4 beta announcement
+
+```notes
+It's been an interesting winter for Rails security issues, and hopefully security is still at the front of peoples minds.
+```
+
+---
+= class='statement center think'
+
+&nbsp;
+
+**why** is it so **hard?**
+
+&nbsp;
+
+---
+
 What side of the escape are we on?
 
 ![](shipping_label.jpg)
@@ -412,22 +437,6 @@ escape_html(
 This is a real life shipping label. This may seem silly but it happens all the time, we either escape too much or too little.
 
 I actually noticed this myself although less extreme, when sending a parcel to a friend I wanted to add a middle name between quotes, these ended up on the parcel as HTML entity.
-```
-
----
-
-> [CVE-2013-1857] XSS Vulnerability<br/> in the `sanitize` helper of Ruby on Rails
-
-&nbsp; &mdash; @tenderlove on rails-security-ann
-
-<p></p>
-
-> Given all the fun we've had with security issues
-
-&nbsp; &mdash; Rails 4 beta announcement
-
-```notes
-It's been an interesting winter for Rails security issues, and hopefully security is still at the front of peoples minds.
 ```
 
 ---
@@ -516,44 +525,59 @@ digraph commmunication {
 ```
 
 ---
+=  class="center"
 
-# SQLi
-## The mother of all injection attacks
+```dot
+digraph commmunication {
+  edge[dir=none color=blue]
+  node[label="" shape=circle color=blue]
 
-```notes
-XSS is just one type of injection attack, another one, SQL injection, has been with us for even longer. It seems we are better at preventing this one, why is that?
+  c[color=red];
+  f[color=red];
+  g[color=red];
+  h[color=red];
+
+  subgraph sub_0 {
+    x1 -> y1 -> z1;
+    y1 -> z2;
+    y1 -> z3;
+  }
+
+  subgraph sub_1 {
+    rankdir=LR;
+    rank=same;
+    node[shape=point];
+    serializer[label=serializer shape=box];
+    network[label=network shape=none];
+    parser[label=parser shape=box];
+    aa -> serializer -> network -> parser -> bb;
+  }
+
+  subgraph sub_2 {
+    a -> b -> c;
+    b -> d;
+    b -> e;
+    c -> f[color=red];
+    c -> g[color=red];
+    g -> h[color=red];
+  }
+
+  subgraph sub_3 {
+    rank="same";
+    edge[style="invisible",dir="none"];
+    y1 -> aa;
+    bb -> b;
+  }
+}
 ```
+
 
 ---
-## ActiveRecord 3 / Arel
+= class='statement center'
 
-```ruby
-@users = User.where(name: params[:query])
+this is **not** a **new concept**
 
-# => #<ActiveRecord::Relation>
-```
-
-&nbsp;
-
-See also [Sequel](https://github.com/jeremyevans/sequel)
-
-```ruby
-posts.where(stamp:
-  (Date.today - 14)..(Date.today - 7))
-
-# WHERE stamp >= '2010-06-30'
-# AND stamp <= '2010-07-07'
-```
-
-
-```notes
-How is this different? At the surface this may seem not much different from the SafeBuffer approach, but the difference runs much deeper. But to really understand what's going on here, we need to say a few words about languages.
-```
-
----
-= class='center'
-
-# Injection, revisited
+we **already do this** for SQL
 
 ---
 = class='center'
@@ -590,7 +614,6 @@ This is good because we can express our intent (semantics), and the data structu
 ```
 
 ---
-= class='center'
 
 ```ruby
 def helper
@@ -636,9 +659,23 @@ Be **conservative** in what you **send**
 be **liberal** in what you **accept**
 
 ---
-= class='center'
+= class='statement center thumb'
 
-<img width='400px' src='larry_cry.png' />
+&nbsp;
+
+Be **conservative** in what you **send**
+
+&nbsp;
+
+---
+= class='statement center cry'
+
+&nbsp;
+
+be **liberal** in what you **accept**
+
+&nbsp;
+
 
 ---
 = class='statement center'
@@ -680,50 +717,10 @@ Inside the app, only **apples**
 ![](snakes_and_apples.png)
 
 ---
-=  class="center"
-
-```dot
-digraph commmunication {
-  edge[dir=none color=blue]
-  node[label="" shape=circle color=blue]
-
-  subgraph sub_0 {
-    x1 -> y1 -> z1;
-    y1 -> z2;
-    y1 -> z3;
-  }
-
-  subgraph sub_1 {
-    rankdir=LR;
-    rank=same;
-    node[shape=point];
-    serializer[label=serializer shape=box];
-    network[label=network shape=none];
-    parser[label=parser shape=box];
-    aa -> serializer -> network -> parser -> bb;
-  }
-
-  subgraph sub_2 {
-    a -> b -> c;
-    b -> d;
-    b -> e;
-  }
-
-  subgraph sub_3 {
-    rank="same";
-    edge[style="invisible",dir="none"];
-    y1 -> aa;
-    bb -> b;
-  }
-}
-```
-
-
----
 = class='center'
 
 # Building trees
-
+## Constructing literals
 ---
 
 ## Objects
@@ -733,8 +730,6 @@ digraph commmunication {
 @html = Nokogiri::XML::Element.new('html', @doc)
 @doc << @html
 @doc.to_html
-# => <!DOCTYPE html PUBLIC
-#        -//W3C//DTD HTML 4.0 Transitional...
 ```
 
 ```notes
@@ -743,7 +738,7 @@ The default for doing these kind of things, but ; tedious to work with ; only HT
 
 ---
 
-# Builder
+## Builder syntax
 
 ```ruby
 HTML::Builder.new do
@@ -758,13 +753,12 @@ end
 ```notes
 Can be a pain to keep track of `self`, some magic involved, but feels natural.
 
-Important that the result can be recombined, not the case with nokogiri.
+Important that the result can be recombined, not the case with Nokogiri::HTML::Builder.
 ```
 
 ---
 
-
-# S-expressions
+## S-expressions
 
 ```lisp
 ('p ('em "hello, world"))
@@ -907,11 +901,6 @@ Q ?
 * [Working with HTML in Haskell](http://adit.io/posts/2012-04-14-working_with_HTML_in_haskell.html) by Aditya Bhargava
 * [A type-based solution to the “strings problem”: a fitting end to XSS and SQL-injection holes?](http://blog.moertel.com/posts/2006-10-18-a-type-based-solution-to-the-strings-problem.html) by Tom Moertel
 * [The Devil in Plain Text](http://devblog.arnebrasseur.net/2013-04-plain-text) by Arne Brasseur
-
----
-
-## Conference talks
-
 
 ---
 

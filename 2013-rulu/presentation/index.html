@@ -213,7 +213,7 @@ Before I can say this, or even have the words in my mind, I need to have this as
 <p><img src='waveform.gif' width='600px' /></p>
 <div class='notes' style='display:none;'>And turn these words into sounds.
 </div></div>
-      <div class='step think' data-x='9000' data-y='0'>
+      <div class='step thumb' data-x='9000' data-y='0'>
     
 <h2>Magic of language</h2>
 
@@ -555,6 +555,33 @@ This gives an attacker all privileges the current user of your app has.
 </div></div>
       <div class='step ' data-x='27000' data-y='0'>
     
+<blockquote>
+<p>[CVE-2013-1857] XSS Vulnerability<br/> in the <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<code class="inline prettyprint">sanitize</code>
+ helper of Ruby on Rails</p>
+</blockquote>
+
+<p>&nbsp; &mdash; @tenderlove on rails-security-ann</p>
+
+<p></p>
+
+<blockquote>
+<p>Given all the fun we&#39;ve had with security issues</p>
+</blockquote>
+
+<p>&nbsp; &mdash; Rails 4 beta announcement</p>
+<div class='notes' style='display:none;'>It's been an interesting winter for Rails security issues, and hopefully security is still at the front of peoples minds.
+</div></div>
+      <div class='step statement center think' data-x='28000' data-y='0'>
+    
+<p>&nbsp;</p>
+
+<p><strong>why</strong> is it so <strong>hard?</strong></p>
+
+<p>&nbsp;</p>
+</div>
+      <div class='step ' data-x='29000' data-y='0'>
+    
 <p>What side of the escape are we on?</p>
 
 <p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -574,26 +601,7 @@ This gives an attacker all privileges the current user of your app has.
 
 I actually noticed this myself although less extreme, when sending a parcel to a friend I wanted to add a middle name between quotes, these ended up on the parcel as HTML entity.
 </div></div>
-      <div class='step ' data-x='28000' data-y='0'>
-    
-<blockquote>
-<p>[CVE-2013-1857] XSS Vulnerability<br/> in the <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<code class="inline prettyprint">sanitize</code>
- helper of Ruby on Rails</p>
-</blockquote>
-
-<p>&nbsp; &mdash; @tenderlove on rails-security-ann</p>
-
-<p></p>
-
-<blockquote>
-<p>Given all the fun we&#39;ve had with security issues</p>
-</blockquote>
-
-<p>&nbsp; &mdash; Rails 4 beta announcement</p>
-<div class='notes' style='display:none;'>It's been an interesting winter for Rails security issues, and hopefully security is still at the front of peoples minds.
-</div></div>
-      <div class='step ' data-x='29000' data-y='0'>
+      <div class='step ' data-x='30000' data-y='0'>
     
 <p>Manual escaping? <strong>hard</strong></p>
 
@@ -606,7 +614,7 @@ I actually noticed this myself although less extreme, when sending a parcel to a
 <p>And it <strong>just works</strong></p>
 <div class='notes' style='display:none;'>This is (at least in Ruby) the state of the art of XSS prevention, it's part of Rails 'secure by default' philosophy.
 </div></div>
-      <div class='step ' data-x='30000' data-y='0'>
+      <div class='step ' data-x='31000' data-y='0'>
     
 <p>We&#39;ve turned the problem around</p>
 
@@ -622,7 +630,7 @@ end
 <p><strong>We&#39;re still manually deciding what (not) to escape</strong></p>
 <div class='notes' style='display:none;'>This is better because whitelist > blacklist. It is a step forward, less strings will be left unescaped, but you can hardly call this a structural solution.
 </div></div>
-      <div class='step ' data-x='31000' data-y='0'>
+      <div class='step ' data-x='32000' data-y='0'>
     
 <h2>The problem</h2>
 
@@ -633,7 +641,7 @@ end
 <li>a textual representation of HTML</li>
 </ul>
 </div>
-      <div class='step center' data-x='32000' data-y='0'>
+      <div class='step center' data-x='33000' data-y='0'>
     <div class='dot-wrap'><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600px" viewBox="0.00 0.00 518.00 188.00">
 <g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 184)">
 <title>commmunication</title>
@@ -756,37 +764,158 @@ end
 </g>
 </g>
 </svg></div></div>
-      <div class='step ' data-x='33000' data-y='0'>
+      <div class='step center' data-x='34000' data-y='0'>
+    <div class='dot-wrap'><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600px" viewBox="0.00 0.00 518.00 332.00">
+<g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 328)">
+<title>commmunication</title>
+
+<!-- c -->
+<g id="node1" class="node"><title>c</title>
+<ellipse fill="none" stroke="red" cx="384" cy="-162" rx="18" ry="18"></ellipse>
+</g>
+<!-- f -->
+<g id="node2" class="node"><title>f</title>
+<ellipse fill="none" stroke="red" cx="357" cy="-90" rx="18" ry="18"></ellipse>
+</g>
+<!-- c&#45;&gt;f -->
+<g id="edge24" class="edge"><title>c-&gt;f</title>
+<path fill="none" stroke="red" d="M377.601,-144.937C373.297,-133.46 367.647,-118.392 363.353,-106.941"></path>
+</g>
+<!-- g -->
+<g id="node3" class="node"><title>g</title>
+<ellipse fill="none" stroke="red" cx="411" cy="-90" rx="18" ry="18"></ellipse>
+</g>
+<!-- c&#45;&gt;g -->
+<g id="edge26" class="edge"><title>c-&gt;g</title>
+<path fill="none" stroke="red" d="M390.399,-144.937C394.703,-133.46 400.353,-118.392 404.647,-106.941"></path>
+</g>
+<!-- h -->
+<g id="node4" class="node"><title>h</title>
+<ellipse fill="none" stroke="red" cx="411" cy="-18" rx="18" ry="18"></ellipse>
+</g>
+<!-- g&#45;&gt;h -->
+<g id="edge28" class="edge"><title>g-&gt;h</title>
+<path fill="none" stroke="red" d="M411,-71.8314C411,-61 411,-47.2876 411,-36.4133"></path>
+</g>
+<!-- x1 -->
+<g id="node6" class="node"><title>x1</title>
+<ellipse fill="none" stroke="blue" cx="72" cy="-306" rx="18" ry="18"></ellipse>
+</g>
+<!-- y1 -->
+<g id="node8" class="node"><title>y1</title>
+<ellipse fill="none" stroke="blue" cx="72" cy="-234" rx="18" ry="18"></ellipse>
+</g>
+<!-- x1&#45;&gt;y1 -->
+<g id="edge3" class="edge"><title>x1-&gt;y1</title>
+<path fill="none" stroke="blue" d="M72,-287.831C72,-277 72,-263.288 72,-252.413"></path>
+</g>
+<!-- z1 -->
+<g id="node9" class="node"><title>z1</title>
+<ellipse fill="none" stroke="blue" cx="18" cy="-162" rx="18" ry="18"></ellipse>
+</g>
+<!-- y1&#45;&gt;z1 -->
+<g id="edge4" class="edge"><title>y1-&gt;z1</title>
+<path fill="none" stroke="blue" d="M61.0723,-219.43C51.7035,-206.938 38.2755,-189.034 28.9115,-176.549"></path>
+</g>
+<!-- z2 -->
+<g id="node11" class="node"><title>z2</title>
+<ellipse fill="none" stroke="blue" cx="72" cy="-162" rx="18" ry="18"></ellipse>
+</g>
+<!-- y1&#45;&gt;z2 -->
+<g id="edge6" class="edge"><title>y1-&gt;z2</title>
+<path fill="none" stroke="blue" d="M72,-215.831C72,-205 72,-191.288 72,-180.413"></path>
+</g>
+<!-- z3 -->
+<g id="node13" class="node"><title>z3</title>
+<ellipse fill="none" stroke="blue" cx="126" cy="-162" rx="18" ry="18"></ellipse>
+</g>
+<!-- y1&#45;&gt;z3 -->
+<g id="edge8" class="edge"><title>y1-&gt;z3</title>
+<path fill="none" stroke="blue" d="M82.9277,-219.43C92.2965,-206.938 105.724,-189.034 115.089,-176.549"></path>
+</g>
+<!-- aa -->
+<g id="node18" class="node"><title>aa</title>
+<ellipse fill="blue" stroke="blue" cx="110" cy="-234" rx="1.8" ry="1.8"></ellipse>
+</g>
+<!-- y1&#45;&gt;aa -->
+<g id="edge31" class="edge"><title>y1-&gt;aa</title>
+</g>
+<!-- serializer -->
+<g id="node15" class="node"><title>serializer</title>
+<polygon fill="none" stroke="blue" points="210,-252 130,-252 130,-216 210,-216 210,-252"></polygon>
+<text text-anchor="middle" x="170" y="-230.4" font-family="Times Roman,serif" font-size="14.00">serializer</text>
+</g>
+<!-- network -->
+<g id="node16" class="node"><title>network</title>
+<text text-anchor="middle" x="265" y="-230.4" font-family="Times Roman,serif" font-size="14.00">network</text>
+</g>
+<!-- serializer&#45;&gt;network -->
+<g id="edge12" class="edge"><title>serializer-&gt;network</title>
+<path fill="none" stroke="blue" d="M210.078,-234C215.942,-234 221.806,-234 227.67,-234"></path>
+</g>
+<!-- parser -->
+<g id="node17" class="node"><title>parser</title>
+<polygon fill="none" stroke="blue" points="380,-252 320,-252 320,-216 380,-216 380,-252"></polygon>
+<text text-anchor="middle" x="350" y="-230.4" font-family="Times Roman,serif" font-size="14.00">parser</text>
+</g>
+<!-- network&#45;&gt;parser -->
+<g id="edge13" class="edge"><title>network-&gt;parser</title>
+<path fill="none" stroke="blue" d="M302.188,-234C308.04,-234 313.892,-234 319.744,-234"></path>
+</g>
+<!-- bb -->
+<g id="node20" class="node"><title>bb</title>
+<ellipse fill="blue" stroke="blue" cx="400" cy="-234" rx="1.8" ry="1.8"></ellipse>
+</g>
+<!-- parser&#45;&gt;bb -->
+<g id="edge14" class="edge"><title>parser-&gt;bb</title>
+<path fill="none" stroke="blue" d="M380.078,-234C386.096,-234 392.114,-234 398.132,-234"></path>
+</g>
+<!-- aa&#45;&gt;serializer -->
+<g id="edge11" class="edge"><title>aa-&gt;serializer</title>
+<path fill="none" stroke="blue" d="M111.875,-234C117.778,-234 123.682,-234 129.585,-234"></path>
+</g>
+<!-- b -->
+<g id="node24" class="node"><title>b</title>
+<ellipse fill="none" stroke="blue" cx="438" cy="-234" rx="18" ry="18"></ellipse>
+</g>
+<!-- bb&#45;&gt;b -->
+<g id="edge33" class="edge"><title>bb-&gt;b</title>
+</g>
+<!-- a -->
+<g id="node22" class="node"><title>a</title>
+<ellipse fill="none" stroke="blue" cx="438" cy="-306" rx="18" ry="18"></ellipse>
+</g>
+<!-- a&#45;&gt;b -->
+<g id="edge17" class="edge"><title>a-&gt;b</title>
+<path fill="none" stroke="blue" d="M438,-287.831C438,-277 438,-263.288 438,-252.413"></path>
+</g>
+<!-- b&#45;&gt;c -->
+<g id="edge18" class="edge"><title>b-&gt;c</title>
+<path fill="none" stroke="blue" d="M427.072,-219.43C417.704,-206.938 404.276,-189.034 394.911,-176.549"></path>
+</g>
+<!-- d -->
+<g id="node26" class="node"><title>d</title>
+<ellipse fill="none" stroke="blue" cx="438" cy="-162" rx="18" ry="18"></ellipse>
+</g>
+<!-- b&#45;&gt;d -->
+<g id="edge20" class="edge"><title>b-&gt;d</title>
+<path fill="none" stroke="blue" d="M438,-215.831C438,-205 438,-191.288 438,-180.413"></path>
+</g>
+<!-- e -->
+<g id="node28" class="node"><title>e</title>
+<ellipse fill="none" stroke="blue" cx="492" cy="-162" rx="18" ry="18"></ellipse>
+</g>
+<!-- b&#45;&gt;e -->
+<g id="edge22" class="edge"><title>b-&gt;e</title>
+<path fill="none" stroke="blue" d="M448.928,-219.43C458.296,-206.938 471.724,-189.034 481.089,-176.549"></path>
+</g>
+</g>
+</svg></div></div>
+      <div class='step statement center' data-x='35000' data-y='0'>
     
-<h1>SQLi</h1>
+<p>this is <strong>not</strong> a <strong>new concept</strong></p>
 
-<h2>The mother of all injection attacks</h2>
-<div class='notes' style='display:none;'>XSS is just one type of injection attack, another one, SQL injection, has been with us for even longer. It seems we are better at preventing this one, why is that?
-</div></div>
-      <div class='step ' data-x='34000' data-y='0'>
-    
-<h2>ActiveRecord 3 / Arel</h2>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<pre><code class="prettyprint ruby">@users = User.where(name: params[:query])
-
-# =&gt; #&lt;ActiveRecord::Relation&gt;
-</code></pre>
-
-<p>&nbsp;</p>
-
-<p>See also <a href="https://github.com/jeremyevans/sequel">Sequel</a></p>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<pre><code class="prettyprint ruby">posts.where(stamp:
-  (Date.today - 14)..(Date.today - 7))
-
-# WHERE stamp &gt;= '2010-06-30'
-# AND stamp &lt;= '2010-07-07'
-</code></pre>
-<div class='notes' style='display:none;'>How is this different? At the surface this may seem not much different from the SafeBuffer approach, but the difference runs much deeper. But to really understand what's going on here, we need to say a few words about languages.
-</div></div>
-      <div class='step center' data-x='35000' data-y='0'>
-    
-<h1>Injection, revisited</h1>
+<p>we <strong>already do this</strong> for SQL</p>
 </div>
       <div class='step center' data-x='36000' data-y='0'>
     <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
@@ -887,7 +1016,7 @@ end
 
 This is good because we can express our intent (semantics), and the data structure reflects those semantics.
 </div></div>
-      <div class='step center' data-x='38000' data-y='0'>
+      <div class='step ' data-x='38000' data-y='0'>
     <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <pre><code class="prettyprint ruby">def helper
   "&lt;p&gt; haikus are pretty &lt;p&gt;".html_safe
@@ -932,11 +1061,23 @@ end
 
 <p>be <strong>liberal</strong> in what you <strong>accept</strong></p>
 </div>
-      <div class='step center' data-x='44000' data-y='0'>
+      <div class='step statement center thumb' data-x='44000' data-y='0'>
     
-<p><img width='400px' src='larry_cry.png' /></p>
+<p>&nbsp;</p>
+
+<p>Be <strong>conservative</strong> in what you <strong>send</strong></p>
+
+<p>&nbsp;</p>
 </div>
-      <div class='step statement center' data-x='45000' data-y='0'>
+      <div class='step statement center cry' data-x='45000' data-y='0'>
+    
+<p>&nbsp;</p>
+
+<p>be <strong>liberal</strong> in what you <strong>accept</strong></p>
+
+<p>&nbsp;</p>
+</div>
+      <div class='step statement center' data-x='46000' data-y='0'>
     
 <p>HTML &quot;parsers&quot; are <strong>rewriting engines</strong></p>
 
@@ -944,11 +1085,11 @@ end
 
 <p>Let someone else handle this hairy mess</p>
 </div>
-      <div class='step center' data-x='46000' data-y='0'>
+      <div class='step center' data-x='47000' data-y='0'>
     
 <h1>How?</h1>
 </div>
-      <div class='step ' data-x='47000' data-y='0'>
+      <div class='step ' data-x='48000' data-y='0'>
     
 <h2>Shopping list</h2>
 
@@ -958,11 +1099,11 @@ end
 <li>problem domain specific APIs to deal with 1.</li>
 </ol>
 </div>
-      <div class='step center' data-x='48000' data-y='0'>
+      <div class='step center' data-x='49000' data-y='0'>
     
 <h1>Apples and snakes architecture</h1>
 </div>
-      <div class='step statement center' data-x='49000' data-y='0'>
+      <div class='step statement center' data-x='50000' data-y='0'>
     
 <p>Keep the <strong>snakes</strong> out of the app</p>
 
@@ -970,138 +1111,17 @@ end
 
 <p>Inside the app, only <strong>apples</strong></p>
 </div>
-      <div class='step ' data-x='50000' data-y='0'>
+      <div class='step ' data-x='51000' data-y='0'>
     
 <p><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <img src="snakes_and_apples.png" alt="">
 </p>
 </div>
-      <div class='step center' data-x='51000' data-y='0'>
-    <div class='dot-wrap'><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600px" viewBox="0.00 0.00 518.00 188.00">
-<g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 184)">
-<title>commmunication</title>
-
-<!-- x1 -->
-<g id="node2" class="node"><title>x1</title>
-<ellipse fill="none" stroke="blue" cx="72" cy="-162" rx="18" ry="18"></ellipse>
-</g>
-<!-- y1 -->
-<g id="node4" class="node"><title>y1</title>
-<ellipse fill="none" stroke="blue" cx="72" cy="-90" rx="18" ry="18"></ellipse>
-</g>
-<!-- x1&#45;&gt;y1 -->
-<g id="edge3" class="edge"><title>x1-&gt;y1</title>
-<path fill="none" stroke="blue" d="M72,-143.831C72,-133 72,-119.288 72,-108.413"></path>
-</g>
-<!-- z1 -->
-<g id="node5" class="node"><title>z1</title>
-<ellipse fill="none" stroke="blue" cx="18" cy="-18" rx="18" ry="18"></ellipse>
-</g>
-<!-- y1&#45;&gt;z1 -->
-<g id="edge4" class="edge"><title>y1-&gt;z1</title>
-<path fill="none" stroke="blue" d="M61.0723,-75.4297C51.7035,-62.938 38.2755,-45.034 28.9115,-32.5486"></path>
-</g>
-<!-- z2 -->
-<g id="node7" class="node"><title>z2</title>
-<ellipse fill="none" stroke="blue" cx="72" cy="-18" rx="18" ry="18"></ellipse>
-</g>
-<!-- y1&#45;&gt;z2 -->
-<g id="edge6" class="edge"><title>y1-&gt;z2</title>
-<path fill="none" stroke="blue" d="M72,-71.8314C72,-61 72,-47.2876 72,-36.4133"></path>
-</g>
-<!-- z3 -->
-<g id="node9" class="node"><title>z3</title>
-<ellipse fill="none" stroke="blue" cx="126" cy="-18" rx="18" ry="18"></ellipse>
-</g>
-<!-- y1&#45;&gt;z3 -->
-<g id="edge8" class="edge"><title>y1-&gt;z3</title>
-<path fill="none" stroke="blue" d="M82.9277,-75.4297C92.2965,-62.938 105.724,-45.034 115.089,-32.5486"></path>
-</g>
-<!-- aa -->
-<g id="node14" class="node"><title>aa</title>
-<ellipse fill="blue" stroke="blue" cx="110" cy="-90" rx="1.8" ry="1.8"></ellipse>
-</g>
-<!-- y1&#45;&gt;aa -->
-<g id="edge25" class="edge"><title>y1-&gt;aa</title>
-</g>
-<!-- serializer -->
-<g id="node11" class="node"><title>serializer</title>
-<polygon fill="none" stroke="blue" points="210,-108 130,-108 130,-72 210,-72 210,-108"></polygon>
-<text text-anchor="middle" x="170" y="-86.4" font-family="Times Roman,serif" font-size="14.00">serializer</text>
-</g>
-<!-- network -->
-<g id="node12" class="node"><title>network</title>
-<text text-anchor="middle" x="265" y="-86.4" font-family="Times Roman,serif" font-size="14.00">network</text>
-</g>
-<!-- serializer&#45;&gt;network -->
-<g id="edge12" class="edge"><title>serializer-&gt;network</title>
-<path fill="none" stroke="blue" d="M210.078,-90C215.942,-90 221.806,-90 227.67,-90"></path>
-</g>
-<!-- parser -->
-<g id="node13" class="node"><title>parser</title>
-<polygon fill="none" stroke="blue" points="380,-108 320,-108 320,-72 380,-72 380,-108"></polygon>
-<text text-anchor="middle" x="350" y="-86.4" font-family="Times Roman,serif" font-size="14.00">parser</text>
-</g>
-<!-- network&#45;&gt;parser -->
-<g id="edge13" class="edge"><title>network-&gt;parser</title>
-<path fill="none" stroke="blue" d="M302.188,-90C308.04,-90 313.892,-90 319.744,-90"></path>
-</g>
-<!-- bb -->
-<g id="node16" class="node"><title>bb</title>
-<ellipse fill="blue" stroke="blue" cx="400" cy="-90" rx="1.8" ry="1.8"></ellipse>
-</g>
-<!-- parser&#45;&gt;bb -->
-<g id="edge14" class="edge"><title>parser-&gt;bb</title>
-<path fill="none" stroke="blue" d="M380.078,-90C386.096,-90 392.114,-90 398.132,-90"></path>
-</g>
-<!-- aa&#45;&gt;serializer -->
-<g id="edge11" class="edge"><title>aa-&gt;serializer</title>
-<path fill="none" stroke="blue" d="M111.875,-90C117.778,-90 123.682,-90 129.585,-90"></path>
-</g>
-<!-- b -->
-<g id="node20" class="node"><title>b</title>
-<ellipse fill="none" stroke="blue" cx="438" cy="-90" rx="18" ry="18"></ellipse>
-</g>
-<!-- bb&#45;&gt;b -->
-<g id="edge27" class="edge"><title>bb-&gt;b</title>
-</g>
-<!-- a -->
-<g id="node18" class="node"><title>a</title>
-<ellipse fill="none" stroke="blue" cx="438" cy="-162" rx="18" ry="18"></ellipse>
-</g>
-<!-- a&#45;&gt;b -->
-<g id="edge17" class="edge"><title>a-&gt;b</title>
-<path fill="none" stroke="blue" d="M438,-143.831C438,-133 438,-119.288 438,-108.413"></path>
-</g>
-<!-- c -->
-<g id="node21" class="node"><title>c</title>
-<ellipse fill="none" stroke="blue" cx="384" cy="-18" rx="18" ry="18"></ellipse>
-</g>
-<!-- b&#45;&gt;c -->
-<g id="edge18" class="edge"><title>b-&gt;c</title>
-<path fill="none" stroke="blue" d="M427.072,-75.4297C417.704,-62.938 404.276,-45.034 394.911,-32.5486"></path>
-</g>
-<!-- d -->
-<g id="node23" class="node"><title>d</title>
-<ellipse fill="none" stroke="blue" cx="438" cy="-18" rx="18" ry="18"></ellipse>
-</g>
-<!-- b&#45;&gt;d -->
-<g id="edge20" class="edge"><title>b-&gt;d</title>
-<path fill="none" stroke="blue" d="M438,-71.8314C438,-61 438,-47.2876 438,-36.4133"></path>
-</g>
-<!-- e -->
-<g id="node25" class="node"><title>e</title>
-<ellipse fill="none" stroke="blue" cx="492" cy="-18" rx="18" ry="18"></ellipse>
-</g>
-<!-- b&#45;&gt;e -->
-<g id="edge22" class="edge"><title>b-&gt;e</title>
-<path fill="none" stroke="blue" d="M448.928,-75.4297C458.296,-62.938 471.724,-45.034 481.089,-32.5486"></path>
-</g>
-</g>
-</svg></div></div>
       <div class='step center' data-x='52000' data-y='0'>
     
 <h1>Building trees</h1>
+
+<h2>Constructing literals</h2>
 </div>
       <div class='step ' data-x='53000' data-y='0'>
     
@@ -1111,14 +1131,12 @@ end
 @html = Nokogiri::XML::Element.new('html', @doc)
 @doc &lt;&lt; @html
 @doc.to_html
-# =&gt; &lt;!DOCTYPE html PUBLIC
-#        -//W3C//DTD HTML 4.0 Transitional...
 </code></pre>
 <div class='notes' style='display:none;'>The default for doing these kind of things, but ; tedious to work with ; only HTML 4.01 (because of libxml2), optimized for parsing.
 </div></div>
       <div class='step ' data-x='54000' data-y='0'>
     
-<h1>Builder</h1>
+<h2>Builder syntax</h2>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <pre><code class="prettyprint ruby">HTML::Builder.new do
   html do
@@ -1130,11 +1148,11 @@ end
 </code></pre>
 <div class='notes' style='display:none;'>Can be a pain to keep track of `self`, some magic involved, but feels natural.
 
-Important that the result can be recombined, not the case with nokogiri.
+Important that the result can be recombined, not the case with Nokogiri::HTML::Builder.
 </div></div>
       <div class='step ' data-x='55000' data-y='0'>
     
-<h1>S-expressions</h1>
+<h2>S-expressions</h2>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <pre><code class="prettyprint lisp">('p ('em "hello, world"))
 </code></pre>
@@ -1263,10 +1281,6 @@ Q ?
 </div>
       <div class='step ' data-x='73000' data-y='0'>
     
-<h2>Conference talks</h2>
-</div>
-      <div class='step ' data-x='74000' data-y='0'>
-    
 <h2>Books</h2>
 
 <ul>
@@ -1274,7 +1288,7 @@ Q ?
 <li>An Introduction to Formal Languages and Automata by Peter Linz</li>
 </ul>
 </div>
-      <div class='step ' data-x='75000' data-y='0'>
+      <div class='step ' data-x='74000' data-y='0'>
     
 <h2>Security</h2>
 
@@ -1284,7 +1298,7 @@ Q ?
 <li><a href="https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet">XSS Filter Evasion Cheat Sheet</a></li>
 </ul>
 </div>
-      <div class='step ' data-x='76000' data-y='0'>
+      <div class='step ' data-x='75000' data-y='0'>
     
 <h2>Software</h2>
 

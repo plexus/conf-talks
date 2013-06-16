@@ -254,11 +254,23 @@ padding-left: 40px;
   font-size: 250px;
 }
 
-.think {
-  background-image: url(../larry_thumb.png);
+.thumb, .think, .cry {
   background-repeat: no-repeat;
   background-position: bottom right;
   background-size: 30%;
+}
+
+.thumb {
+  background-image: url(../larry_thumb.png);
+}
+
+.think {
+  background-image: url(../larry_think.png);
+}
+
+.cry {
+  background-image: url(../larry_cry.png);
+  background-size: 25%;
 }
 
 .statement {
