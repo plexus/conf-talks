@@ -233,7 +233,7 @@ graph {
   digit1[label="digit"]
   digit2[label="digit"]
   digit3[label="digit"]
-  digit3[label="digit"]
+  digit4[label="digit"]
 
   5[fontcolor="blue"]
   3[fontcolor="blue"]
@@ -676,6 +676,8 @@ be **liberal** in what you **accept**
 
 &nbsp;
 
+&nbsp;
+
 
 ---
 = class='statement center'
@@ -809,6 +811,10 @@ Other ideas : add file/line numbers in dev mode ; structural validation ; presen
 # Hexp
 
 ## Demo
+
+````
+https://github.com/plexus/hexp
+````
 
 ---
 = class='center'
