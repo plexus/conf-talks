@@ -488,10 +488,13 @@ Semantics of string are twofold
 ---
 =  class="center"
 
-```dot
+```dot-800
 digraph commmunication {
   edge[dir=none color=blue]
   node[label="" shape=circle color=blue]
+
+  z1[color=green];
+  c[color=green];
 
   subgraph sub_0 {
     x1 -> y1 -> z1;
@@ -525,12 +528,14 @@ digraph commmunication {
 ```
 
 ---
-=  class="center"
+=  class="center bigger"
 
-```dot
+```dot-800
 digraph commmunication {
   edge[dir=none color=blue]
   node[label="" shape=circle color=blue]
+
+  z1[color=green];
 
   c[color=red];
   f[color=red];
@@ -551,6 +556,53 @@ digraph commmunication {
     network[label=network shape=none];
     parser[label=parser shape=box];
     aa -> serializer -> network -> parser -> bb;
+  }
+
+  subgraph sub_2 {
+    a -> b -> c;
+    b -> d;
+    b -> e;
+    c -> f[color=red];
+    c -> g[color=red];
+    g -> h[color=red];
+  }
+
+  subgraph sub_3 {
+    rank="same";
+    edge[style="invisible",dir="none"];
+    y1 -> aa;
+    bb -> b;
+  }
+}
+```
+
+---
+= class='center'
+
+---
+=  class="center bigger"
+
+```dot-800
+digraph commmunication {
+  edge[dir=none color=blue]
+  node[label="" shape=circle color=blue]
+
+  c[color=red];
+  f[color=red];
+  g[color=red];
+  h[color=red];
+
+  subgraph sub_0 {
+    y1[label="???"]
+  }
+
+  subgraph sub_1 {
+    rankdir=LR;
+    rank=same;
+    node[shape=point];
+    network[label=network shape=none];
+    parser[label=parser shape=box];
+    aa -> network -> parser -> bb;
   }
 
   subgraph sub_2 {
@@ -691,6 +743,27 @@ Let someone else handle this hairy mess
 ---
 = class='center'
 
+# Why? (cont.)
+
+---
+= class='center statement'
+
+in case **security**
+
+is **not enough** for you
+
+---
+= class='center statement'
+
+**higher level** of abstraction
+
+is more **expressive**
+
+and more **productive**
+
+---
+= class='center'
+
 # How?
 
 ---
@@ -706,6 +779,10 @@ Let someone else handle this hairy mess
 # Apples and snakes architecture
 
 ---
+
+![](snakes_and_apples.png)
+
+---
 = class='statement center'
 
 Keep the **snakes** out of the app
@@ -715,14 +792,20 @@ parse/generate at the app boundary
 Inside the app, only **apples**
 
 ---
-
-![](snakes_and_apples.png)
-
----
 = class='center'
 
 # Building trees
 ## Constructing literals
+
+---
+= class='statement center'
+
+The data structure must be
+
+**composable** and
+
+**easy to reason** about
+
 ---
 
 ## Objects
@@ -733,6 +816,11 @@ Inside the app, only **apples**
 @doc << @html
 @doc.to_html
 ```
+
+* tedious
+* libxml2 means only HTML 4.01
+* but : correct
+* kind of composable
 
 ```notes
 The default for doing these kind of things, but ; tedious to work with ; only HTML 4.01 (because of libxml2), optimized for parsing.
@@ -752,11 +840,30 @@ HTML::Builder.new do
 end
 ```
 
+* implementations vary
+* need to return a Node/Tree, not a string
+* what is `self`?
+
 ```notes
 Can be a pain to keep track of `self`, some magic involved, but feels natural.
 
 Important that the result can be recombined, not the case with Nokogiri::HTML::Builder.
 ```
+
+---
+
+## Templating
+
+```haml
+%div
+  .big
+    = "Hello RuLu"
+```
+
+* HAML isn't Apples and Snakes
+* but it could be
+* disallow inserting HTML strings
+* recognize Node/Tree types
 
 ---
 
@@ -772,18 +879,13 @@ Important that the result can be recombined, not the case with Nokogiri::HTML::B
 [:p, [:em, "hello, world"]]
 ```
 
+* simple
+* lightweight
+* easy to program / reason
+
 ```notes
 Simple, lightweight, easy to reason about.
 ```
-
----
-= class='statement center'
-
-The data structure must be
-
-**composable** and
-
-**easy to reason** about
 
 ---
 
