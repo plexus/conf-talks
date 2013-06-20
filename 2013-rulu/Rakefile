@@ -49,3 +49,23 @@ task :preview => 'mdpress:build' do
   url = "http://arnebrasseur.net/rulu-#{secret}/index.html"
   sh "chromium-browser #{url}"
 end
+
+desc 'Publish the final result after the talk'
+task :publish => 'mdpress:build' do
+  require 'rainbow'
+  puts '='*80
+  puts 'Publising slides...'.center(80)
+  sh "scp -r presentation arnebrasseur@arnebrasseur.net:subdomains/www/talks/rulu2013 > /dev/null"
+  puts 'DONE!'.center(80).foreground(:green)
+  puts '='*80
+  puts
+  [
+    "Slides are available at".center(80),
+    'http://arnebrasseur.net/talks/rulu2013'.center(80).foreground(:red),
+    "Thank you! <3".center(80).foreground(:green)
+  ].each do |str|
+    puts str
+    puts
+  end
+  puts '='*80
+end

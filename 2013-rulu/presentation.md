@@ -8,12 +8,26 @@ images:
   - larry_thumb.png
   - larry_cry.png
   - temple.png
+  - rulu.png
 ---
+= class='logo center'
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
 
 # Web Linguistics
 ## Towards Higher Fluency
 
 by Arne Brasseur / [@plexus](http://twitter.com/plexus)
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
 
 ---
 = class='haiku'
@@ -577,9 +591,6 @@ digraph commmunication {
 ```
 
 ---
-= class='center'
-
----
 =  class="center bigger"
 
 ```dot-800
@@ -736,7 +747,7 @@ be **liberal** in what you **accept**
 
 HTML "parsers" are **rewriting engines**
 
-To stay safe we should stay strict
+To stay **safe** we should stay **strict**
 
 Let someone else handle this hairy mess
 

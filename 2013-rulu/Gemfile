@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'rainbow'
 gem 'mdpress', path: '/home/arne/github/mdpress' # github: 'plexus/mdpress', branch: 'rulu2013'
 gem 'rb-inotify'
 gem 'rake'

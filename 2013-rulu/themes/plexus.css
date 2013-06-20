@@ -288,3 +288,9 @@ padding-left: 40px;
 .dense code {
   font-size: 0.7em;
 }
+
+.logo {
+  background-image: url(../rulu.png);
+  background-repeat: no-repeat;
+  background-position: top center;
+}
