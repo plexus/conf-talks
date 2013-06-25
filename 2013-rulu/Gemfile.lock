@@ -1,5 +1,7 @@
-PATH
-  remote: /home/arne/github/mdpress
+GIT
+  remote: git://github.com/plexus/mdpress.git
+  revision: 2acb0ab0b3407c301f8ee7c8f2be11f0c1d1c591
+  branch: rulu2013
   specs:
     mdpress (0.0.14)
       hexp
@@ -14,19 +16,19 @@ GEM
       backports (~> 3.0, >= 3.0.3)
       ice_nine (~> 0.7.0)
     addressable (2.3.4)
-    backports (3.3.1)
+    backports (3.3.2)
     equalizer (0.0.5)
       adamantium (~> 0.0.6)
       backports (~> 3.0, >= 3.0.3)
     ffi (1.8.1)
-    hexp (0.0.1.pre3)
+    hexp (0.0.1)
       equalizer (~> 0.0.5)
       ice_nine (~> 0.7.0)
       nokogiri (~> 1.5.9)
     ice_nine (0.7.0)
     launchy (2.3.0)
       addressable (~> 2.3)
-    nokogiri (1.5.9)
+    nokogiri (1.5.10)
     rainbow (1.1.4)
     rake (10.0.4)
     rb-inotify (0.9.0)
