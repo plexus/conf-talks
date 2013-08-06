@@ -1,0 +1,29 @@
+require 'hexpress'
+
+def hr_div(hexp)
+  children = [[]]
+  hexp.children.each do |child|
+    if child.tag == :hr
+      children << []
+    else
+      children.last << child
+    end
+  end
+  H[hexp.tag, hexp.attributes, children.map {|ch| H[:div, ch].add_class(:hr_div)}]
+end
+
+namespace :hexpress do
+  task :build do
+    File.open('presentation.html', 'w') do |out|
+      doc = Hexpress::Converter.new.convert(
+        Kramdown::Document.new(File.read('presentation.md')).root
+      )
+
+      p doc
+      doc = doc.rewrite('body') {|body| hr_div(body)}
+      p doc
+
+      out << doc.to_html
+    end
+  end
+end

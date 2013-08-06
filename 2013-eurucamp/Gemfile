@@ -1,0 +1,15 @@
+#source 'https://rubygems.org'
+
+#gem 'rainbow'
+#gem 'rb-inotify'
+
+gem 'hexpress',
+  #github: 'plexus/hexpress',
+  path: '/home/arne/github/hexpress',
+  branch: 'eurucamp2013'
+
+gem 'hexp',
+  #github: 'plexus/hexpress',
+  path: '/home/arne/github/hexp'
+
+gem 'rake'

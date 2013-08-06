@@ -1,0 +1,39 @@
+PATH
+  remote: /home/arne/github/hexp
+  specs:
+    hexp (0.2.0)
+      equalizer (~> 0.0)
+      ice_nine (~> 0.8)
+      nokogiri (~> 1.6)
+      sass (~> 3.2)
+
+PATH
+  remote: /home/arne/github/hexpress
+  specs:
+    hexpress (0.0.1)
+      hexp (~> 0.0)
+      kramdown (~> 1.1)
+
+GEM
+  specs:
+    adamantium (0.0.11)
+      ice_nine (~> 0.8.0)
+    backports (3.3.3)
+    equalizer (0.0.5)
+      adamantium (~> 0.0.6)
+      backports (~> 3.0, >= 3.0.3)
+    ice_nine (0.8.0)
+    kramdown (1.1.0)
+    mini_portile (0.5.1)
+    nokogiri (1.6.0)
+      mini_portile (~> 0.5.0)
+    rake (10.1.0)
+    sass (3.2.9)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  hexp!
+  hexpress!
+  rake
