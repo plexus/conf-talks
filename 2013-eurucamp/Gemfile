@@ -13,3 +13,4 @@ gem 'hexp',
   path: '/home/arne/github/hexp'
 
 gem 'rake'
+gem 'rb-inotify'

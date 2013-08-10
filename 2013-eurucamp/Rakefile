@@ -1,16 +1,40 @@
 require 'hexpress'
-
+require_relative 'watch_task'
 
 namespace :hexpress do
-  task :build do
-    File.open('presentation.html', 'w') do |out|
-      doc = Hexpress::Document.new(File.read('presentation.md'), [
-          Hexpress::Processors::HrToSteps.new,
-          Hexpress::Processors::AddImpressJs.new
-        ]
-      )
 
-      out << doc.to_html
+  desc 'watch the presentation and theme for changes and rebuild'
+  watch ['presentation.md', 'stylesheet.css', 'images'] do
+    `rm /tmp/presentation.html ; cp presentation.html /tmp/presentation.html`
+    Rake::Task['hexpress:build'].execute
+    print `diff -u /tmp/presentation.html presentation.html`
+  end
+
+  desc 'build the presentation html'
+  task :build do
+    Dir['*.md'].each do |infile|
+      File.open(infile.sub(/md$/, 'html'), 'w') do |out|
+        include Hexpress::Processors
+
+        markdown = File.read(infile)
+        doc = Hexpress::Document.new(markdown) \
+              | HrToSteps \
+              | AddImpressJs \
+              | AddGoogleFont.new('Open Sans', %w[300 400 800 300italic 400italic 800italic]) \
+              | AddGoogleFont.new('Fauna One')
+
+
+        doc = doc.rewrite('head') do |head|
+          head << H[:link,
+              rel: 'stylesheet',
+              href: "file://#{File.expand_path('../stylesheet.css', __FILE__)}"
+          ]
+        end
+
+        #doc = doc | SelfContained
+
+        out << doc.to_html
+      end
     end
   end
 end
