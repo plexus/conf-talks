@@ -1,8 +1,5 @@
 #source 'https://rubygems.org'
 
-#gem 'rainbow'
-#gem 'rb-inotify'
-
 gem 'hexpress',
   #github: 'plexus/hexpress',
   path: '/home/arne/github/hexpress',
@@ -10,7 +7,8 @@ gem 'hexpress',
 
 gem 'hexp',
   #github: 'plexus/hexpress',
-  path: '/home/arne/github/hexp'
+  path: '/home/arne/github/hexp',
+  branch: 'eurucamp2013'
 
 gem 'kramdown',
   path: '/home/arne/github/kramdown'
