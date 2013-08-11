@@ -12,5 +12,8 @@ gem 'hexp',
   #github: 'plexus/hexpress',
   path: '/home/arne/github/hexp'
 
+gem 'kramdown',
+  path: '/home/arne/github/kramdown'
+
 gem 'rake'
 gem 'rb-inotify'

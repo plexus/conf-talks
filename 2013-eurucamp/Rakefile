@@ -1,40 +1,55 @@
 require 'hexpress'
+require 'fileutils'
+require 'tempfile'
 require_relative 'watch_task'
 
 namespace :hexpress do
 
   desc 'watch the presentation and theme for changes and rebuild'
-  watch ['presentation.md', 'stylesheet.css', 'images'] do
-    `rm /tmp/presentation.html ; cp presentation.html /tmp/presentation.html`
+  watch ['presentation.md', 'stylesheets', 'images', 'javascripts'] do
+    dest = Tempfile.new('presentation.html')
+    File.open('presentation.html') { |src| FileUtils.copy_stream(src, dest) }
+    dest.close
     Rake::Task['hexpress:build'].execute
-    print `diff -u /tmp/presentation.html presentation.html`
+    puts "="*80
+    print `diff -u #{dest.path} presentation.html`
   end
 
   desc 'build the presentation html'
   task :build do
-    Dir['*.md'].each do |infile|
-      File.open(infile.sub(/md$/, 'html'), 'w') do |out|
-        include Hexpress::Processors
+    Dir['p*.md'].each do |infile|
+      include Hexpress::Processors
 
-        markdown = File.read(infile)
-        doc = Hexpress::Document.new(markdown) \
-              | HrToSteps \
-              | AddImpressJs \
-              | AddGoogleFont.new('Open Sans', %w[300 400 800 300italic 400italic 800italic]) \
-              | AddGoogleFont.new('Fauna One')
+      doc = Hexpress::Document.new(File.read(infile))
 
+      doc = doc.process(
+        HrToSteps,
+        AddImpressJs.new('transition-duration' => 0),
+        AddGoogleFont.new('Open Sans', %w[300 400 800 300italic 400italic 800italic]),
+        AddGoogleFont.new('Fauna One'),
+        GraphvizDot.new('.language-dot'),
+        ->(doc) { add_custom_assets(doc) },
+        ->(doc) { doc.rewrite('pre[class~=language-ruby] code') {|code| code.add_class('prettyprint ruby') } }
+        #SelfContained
+      )
 
-        doc = doc.rewrite('head') do |head|
-          head << H[:link,
-              rel: 'stylesheet',
-              href: "file://#{File.expand_path('../stylesheet.css', __FILE__)}"
-          ]
-        end
-
-        #doc = doc | SelfContained
-
-        out << doc.to_html
-      end
+      File.write(infile.sub(/md$/, 'html'), doc.to_html)
     end
+  end
+
+  def add_custom_assets(doc)
+    doc.rewrite('head') do |head|
+      head
+          .add_child(H[:link, rel: 'stylesheet', href: file_uri_relative('stylesheets/stylesheet.css')])
+          .add_child(H[:link, rel: 'stylesheet', href: file_uri_relative('stylesheets/highlight.css')])
+          .add_child(H[:script, src: 'http://code.jquery.com/jquery-1.10.1.min.js'])
+          .add_child(H[:script, src: file_uri_relative('javascripts/impress_js_addons.js')])
+          .add_child(H[:script, src: file_uri_relative('javascripts/highlight.pack.js')])
+          .add_child(H[:script, 'hljs.initHighlightingOnLoad();'])
+    end
+  end
+
+  def file_uri_relative(path)
+    "file://#{File.expand_path(File.join('..', path), __FILE__)}"
   end
 end
