@@ -21,10 +21,12 @@ namespace :hexpress do
       include Hexpress::Processors
 
       doc = Hexpress::Document.new(File.read(infile))
+      #presentation = Hexpress::Presentation.new(doc, type: :revealjs)
 
       doc = doc.process(
-        HrToSteps,
-        AddImpressJs.new('transition-duration' => 0),
+        HrToSections.new('body', H[:div, class: 'step']),
+        ImpressJs::AddImpressJs.new('transition-duration' => 0),
+        ImpressJs::AutoOffsets.new,
         AddGoogleFont.new('Open Sans', %w[300 400 800 300italic 400italic 800italic]),
         AddGoogleFont.new('Fauna One'),
         GraphvizDot.new('.language-dot'),

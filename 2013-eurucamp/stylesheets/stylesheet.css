@@ -1,12 +1,13 @@
 body {
-	font-family: 'Fauna One', sans-serif;
-	line-height: 40px;
-	font-size: 32px;
-  background-color: #3e3
+	font-family: georgia, serif;
+	/* font-family: 'Fauna One', sans-serif; */
+	font-size: 45px;
+	line-height: 1.2em;
+  background-color: #A7FF99; /*#3f3;*/
 }
 
 .step {
-  width: 900px;
+  width: 1000px;
 }
 
 img {
@@ -15,6 +16,10 @@ img {
 
 h1, h2 {
 	font-weight: normal;
+}
+
+code {
+  font-size: 60%;
 }
 
 h1 {
@@ -37,4 +42,27 @@ h2 {
   border-radius: 5px;
   margin: 0.2em;
   padding: 0.1em;
+}
+
+.big {
+  text-align: center;
+  line-height: 2em;
+  font-size: 1.5em;
+}
+
+.center {
+  text-align: center;
+}
+
+form {
+  background-color: #efe;
+  padding: 1em;
+}
+
+.huge {
+  font-size: 250px;
+}
+
+li p {
+  margin: 0.2em 0;
 }

