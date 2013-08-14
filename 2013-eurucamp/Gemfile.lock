@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/tmm1/perftools.rb.git
+  revision: deb2947468a800908c3660faf683862e77f6e38b
+  specs:
+    perftools.rb (2.0.1)
+
 PATH
   remote: /home/arne/github/hexp
   specs:
@@ -35,6 +41,7 @@ GEM
     rake (10.1.0)
     rb-inotify (0.9.0)
       ffi (>= 0.5.0)
+    ruby-prof (0.13.0)
     sass (3.2.10)
 
 PLATFORMS
@@ -44,5 +51,7 @@ DEPENDENCIES
   hexp!
   hexpress!
   kramdown!
+  perftools.rb!
   rake
   rb-inotify
+  ruby-prof

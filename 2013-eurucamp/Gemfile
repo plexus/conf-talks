@@ -15,3 +15,5 @@ gem 'kramdown',
 
 gem 'rake'
 gem 'rb-inotify'
+gem 'ruby-prof'
+gem 'perftools.rb', :git => 'git://github.com/tmm1/perftools.rb.git'
