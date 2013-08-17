@@ -6,7 +6,7 @@
 by Arne Brasseur / [plexus](https://github.com/plexus)
 
 ---
-{: .noborder .whoami}
+{: .noborder .whoami .big}
 
 ### Who am I?
 
@@ -62,8 +62,12 @@ Inside the app, only **apples**
 # #langsec
 
 ---
+{:.big .smallerimg}
 
 ![Screenshot of the Langsec website (langsec.org)](images/langsec_website.png)
+{: width="850px"}
+
+[http://langsec.org](http://langsec.org)
 
 ---
 
@@ -75,8 +79,6 @@ Inside the app, only **apples**
 {:.bigsections}
 
 ## Langsec
-
-Stop ad-hoc recognition / validation / processing
 
 ![](images/occupy_babel_1.jpg)
 Photoshopped by <a href="http://www.anevern.com">Kythera of Anevern</a>.
@@ -103,7 +105,7 @@ The most common vulnerability
 More common than buffer overflows
 
 ---
-{:.bigheadings}
+{:.big}
 
 ## Preventing XSS
 
@@ -112,7 +114,7 @@ More common than buffer overflows
 Rails 3 : SafeBuffer + `html_safe`
 
 ---
-{:.big}
+{:.big .subsections}
 
 Whitelist > Blacklist
 
@@ -132,7 +134,7 @@ What is a String?
 ---
 {:.big}
 
-HTML is structured data,
+HTML is **structured data**,
 let's treat it as such
 
 ---
@@ -198,8 +200,6 @@ graph platypus {
 
 Identical "tree" is shared between speakers
 
-Because we speak the same language
-
 ---
 {:.heading}
 
@@ -210,10 +210,10 @@ Because we speak the same language
 ```dot
 digraph commmunication {
   edge[dir=none color=black penwidth=3]
-  node[label="" shape=circle color=blue style=filled]
+  node[label="" shape=circle fillcolor=white color=blue style=filled border=6]
 
-  z1[color=green];
-  c[color=green];
+  z1[fillcolor=green];
+  c[fillcolor=green];
 
   subgraph sub_0 {
     x1 -> y1 -> z1;
@@ -245,20 +245,21 @@ digraph commmunication {
   }
 }
 ```
+{: width="900px"}
 
 ---
 
 ```dot
 digraph commmunication {
   edge[dir=none color=black penwidth=3]
-  node[label="" shape=square color=blue style=filled]
+  node[label="" shape=circle fillcolor=white color=blue style=filled border=6]
 
-  z1[color=green];
+  z1[fillcolor=green];
 
-  c[color=red];
-  f[color=red];
-  g[color=red];
-  h[color=red];
+  c[fillcolor=red];
+  f[fillcolor=red];
+  g[fillcolor=red];
+  h[fillcolor=red];
 
   subgraph sub_0 {
     x1 -> y1 -> z1;
@@ -293,6 +294,7 @@ digraph commmunication {
   }
 }
 ```
+{: width="900px"}
 
 ---
 {:.heading}
@@ -302,24 +304,26 @@ digraph commmunication {
 ---
 {:.big}
 
-## So what if we ...
+## Try this at home
 
 Create a HTML **data structure**
 Serialize it **in one pass**
-In **pure Ruby**
 
 ---
 {:.bigsections}
 
 ## Benefits
 
-HTML generation is no longer ad-hoc
+HTML generation is
+**no longer ad-hoc**
 
-Output is guaranteed well-formed
+Output is
+guaranteed **well-formed**
 
-Output is strict (because browsers)
+Output is
+**strict** (because browsers)
 
-A new world of programming opportunities!
+A new world of programming opportunities! (a.k.a. **WIN!**)
 
 ---
 {:.heading}
@@ -349,14 +353,12 @@ API **inspired by jQuery**
 
 ---
 
-# Creating nodes
-
----
-
-## Objects
+## Creating nodes
 
 ```ruby
-div = Hexp::Node.new(:div, class: 'strong')
+para = Hexp::Node.new(:p, "Emacs > vi")
+div  = Hexp::Node.new(:div, {class: 'troll'}, [para])
+puts div.to_html
 ```
 
 ---
@@ -365,10 +367,10 @@ div = Hexp::Node.new(:div, class: 'strong')
 
 ```ruby
 list = Hexp.build do
-  ul do
-   3.times do |i|
-     li i.to_s
-   end
+  ol do
+    li "Go to Eurucamp"
+    li "Meet Ruby friends"
+    li "Troll the sh*t out of them"
   end
 end
 ```
@@ -392,7 +394,6 @@ toc = H[:ol, {class: 'toc'}, [
 ## Reusable 'Middleware'
 
 * Lint / validate
-* Populate forms
 * Add admin links
 * Inline CSS/JS/images
 
@@ -461,13 +462,20 @@ discount_field = H[:div, [
 * Powers this presentation
 
 ---
-{:.center}
+{:.big}
+
+# Fork me on Github!
+
+* [plexus/hexp](https://github.com/plexus/hexp)
+* [plexus/hexpress](https://github.com/plexus/hexpress)
+
+---
+{:.center .big}
 
 # Thank you!
 
-* [github.com/plexus/hexp](http://github.com/plexus/hexp)
-* [twitter.com/plexus](http://twitter.com/plexus)
-* [arnebrasseur.net](http://arnebrasseur.net)
+* Twitter/Github : @plexus
+* blog: [http://arnebrasseur.net](http://arnebrasseur.net)
 
 ---
 {:.center}

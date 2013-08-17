@@ -8,10 +8,12 @@ by Arne Brasseur / [plexus](https://github.com/plexus)
 
 ## Anecdote
 
-> "I learned MongoDB over the weekend"
+> "I learned MongoDB"
 
 ---
-{:.bigsections}
+{:.subsections .big}
+
+## Learning to learn
 
 There will not always be a coach
 
@@ -25,37 +27,26 @@ Becoming confident in learning will be your most important skill
 # Words, so many words
 
 ---
+
 {:.bigsections}
 
 ## Words, so many words
 
-Programmers use many special words
+![](images/chinese_map_smaller.jpg)
 
-It's like learning a new language
+```notes
+Programmers use special words
 
-Luckily, the 80/20 rule applies
+a new language
 
----
-{:.bigsections}
+80/20
 
-These words make things seem more complex then they are
-
-Most of this stuff is not rocket science
+make things seem more complex
 
 Find material that is at your level
 
 Gradually build up your vocab
-
----
-{:.bigsections}
-
-## In a couple of words
-
-**Rspec** is a popular unit testing framework
-
-**Unit-tests** are automated tests to check if your program is correct
-
-A **framework** is makes it easy to achieve a task by providing structure
+```
 
 ---
 {:.heading}
@@ -63,22 +54,28 @@ A **framework** is makes it easy to achieve a task by providing structure
 # Play, Feel, Experience
 
 ---
-{:.bigsections}
+{:.big}
 
-## Play, Feel, Experience
+## Anecdote
+
+> "Git got us in a mess"
+
+```notes
+Learning is best drive by experience
 
 Don't start out with dry theory
 
 Try stuff out, play, become engaged
 
 Be on the lookout for the moment where it's time to dig deeper
+```
 
 ---
-{:.big}
 
-## Anecdote
+## Play, Feel, Experience
 
-> "Git got us in a mess"
+![](images/play.jpg)
+
 
 ---
 {:.heading}
@@ -92,8 +89,6 @@ Be on the lookout for the moment where it's time to dig deeper
 
 Great starting point
 
-Just search for "... tutorial"
-
 Make sure to challenge yourself
 
 ![](images/screenshot_tutorial.png)
@@ -106,8 +101,6 @@ Make sure to challenge yourself
 Very engaging
 
 Look over the shoulder of experts
-
-Well known examples : Railscasts, Peepcode, Ruby Tapas
 
 ![](images/screenshot_railscasts.png)
 
@@ -131,24 +124,16 @@ Generated from the source code
 
 Explains every class/method
 
-Indispensable reference for day-to-day programming
+Reference for day-to-day programming
 
 ![](images/screenshot_apidoc.png)
 
 ---
-{:.bigsections}
+{:.big}
 
-## Source Code
+## Source code
 
-The ultimate documentation
-
-Not very beginner friendly
-
-But possible to find stuff for every level
-
-Don't be afraid to read some code from time to time
-
-![](images/screenshot_source_code.png)
+Use the source!
 
 ---
 {:.bigsections}

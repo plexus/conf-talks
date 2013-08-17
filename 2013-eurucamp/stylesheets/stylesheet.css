@@ -66,3 +66,7 @@ h1.railsgirls {
   font-size: 0.7em;
   font-style: italic;
 }
+
+.smallerimg img {
+  width: 750px;
+}
