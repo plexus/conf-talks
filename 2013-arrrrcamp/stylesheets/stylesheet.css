@@ -1,0 +1,114 @@
+html body .reveal * {
+  font-family: Raleway, sans-serif;
+}
+
+html body {
+  background-image: url(images/twitter_github.png);
+  background-repeat: no-repeat;
+  background-position: 95% 95%;
+  background-size: 25%;
+}
+
+.reveal .box {
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 0.2em;
+  padding: 0.1em;
+}
+
+.reveal .slides section {
+  width:100%;
+  height:100%;
+}
+
+section.fin {
+  height:30% !important;
+}
+
+.reveal .big p {
+  font-size: 1.8em;
+}
+
+.reveal section.noborder img {
+  border: none;
+}
+
+.reveal form {
+  border: 3px dashed rgb(255,100,0);
+  padding: 1em 0;
+}
+
+.reveal .huge {
+  font-size: 250px;
+}
+
+.reveal .heading h1, .reveal .heading h2, .reveal .heading p {
+  color: white;
+}
+
+body .reveal h2 {
+  margin-bottom: 0.8em;
+}
+
+li p {
+  margin: 0.2em 0;
+}
+
+html body .reveal pre * {
+  font-size: 30px;
+  line-height: 32px;
+  font-family: Inconsolata, monospace;
+}
+
+body .reveal pre code {
+  overflow: hidden;
+}
+
+.whoami img {
+  display: inline;
+  height: 128px;
+}
+
+h1.arrrrcamp {
+  background-image: url(images/pirate.png);
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: 35%;
+  width:100%;
+  height:100%;
+  text-shadow: 0 0 10px white;
+}
+
+.bigsections h2 {
+  margin-top: -200px;
+}
+
+.bigsections img {
+  width: 800px;
+}
+
+.bigsections .big p.aside {
+  font-size: 0.7em;
+  font-style: italic;
+}
+
+.logo img {
+  height: 150px;
+}
+
+.github-ribbon {
+  background-image: url(https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png);
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+.rubyconfar {
+  background-image: url(images/rubyconfar-2013.png);
+  background-repeat: no-repeat;
+  background-position: 50% 30%;
+  background-size: 80%;
+}
+
+.fin {
+  margin: 0 auto;
+}

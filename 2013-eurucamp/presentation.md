@@ -5,6 +5,9 @@
 
 by Arne Brasseur / [plexus](https://github.com/plexus)
 
+![](images/eurucamp-banner.png)
+{:.logo}
+
 ---
 {: .noborder .whoami .big}
 

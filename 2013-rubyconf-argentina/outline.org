@@ -1,0 +1,33 @@
+* hi, I'm Arne
+* Story : "Is our app secure"
+** Rails security issues made me think a lot about security
+** Upgrading to Rails 3 made me very conscious of XSS vulnerabilities
+** Asserting whether our app was secure or not was nearly impossible
+** Am I doing it wrong?
+* Technology to the rescue
+** Writing software is hard
+** We come up with things that help us write better software by
+*** Shifting mental burden from programmer to machine
+**** This prevents common mistakes
+**** This might mean an extra layer of abstraction
+***** which might actually simplify things by hiding away complexity
+***** but learning the abstraction might mean an (initial) cost in usability
+**** This might mean a certain "straightjacket"
+***** But this allows higher optimization (GC, parsing, generating, fn data structures)
+*** Examples
+**** Garbage collection
+***** Memory leaks, dangling pointers : easy mistakes to make, hard to trace and debug
+***** But : Initial skepticism, because of giving up some control
+**** Functional programming
+***** Lots of subtle bugs and time-based dependencies due to shared mutable state
+***** immutable + pure functions = laziness, memoization, parallelism
+***** But : perceived as harder to learn, some things (IO become a bit more involved)
+**** Rack, Liberator
+
+*** Higher reliability
+**** Secure, fault-tolerant, stable, correct
+**** More systematic, less ad-hoc
+*** Higher productivity
+**** Concise expression
+**** Reuse
+**** Leverage the system

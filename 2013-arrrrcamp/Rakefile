@@ -7,13 +7,13 @@ namespace :hexpress do
   extend Hexpress::ProcessorHelpers::ClassMethods
 
   desc 'watch the presentation and theme for changes and rebuild'
-  watch ['presentation.md', 'stylesheets/stylesheet.css', 'images', 'javascripts'] do
-    dest = Tempfile.new('presentation.html')
-    File.open('presentation.html') { |src| FileUtils.copy_stream(src, dest) }
+  watch ['functional_ruby.md', 'stylesheets/stylesheet.css', 'images', 'javascripts'] do
+    dest = Tempfile.new('functional_ruby.html')
+    File.open('functional_ruby.html') { |src| FileUtils.copy_stream(src, dest) }
     dest.close
     Rake::Task['hexpress:build'].execute
     puts "="*80
-    print `diff -u #{dest.path} presentation.html`
+    print `diff -u #{dest.path} functional_ruby.html`
   end
 
   task :profile do
@@ -32,16 +32,16 @@ namespace :hexpress do
     end
   end
 
-  desc 'build the presentation html'
+  desc 'build the functional_ruby html'
   task :build do
-    Dir['le*.md'].each do |infile|
+    Dir['*.md'].each do |infile|
       doc = markdown_to_doc(infile)
       File.write(infile.sub(/md$/, 'html'), doc.to_html)
     end
   end
 
   task :toc do
-    doc = markdown_to_doc('presentation.md').select('.heading') do |heading|
+    doc = markdown_to_doc('functional_ruby.md').select('.heading') do |heading|
       puts "- #{heading.text.strip}"
     end
   end
@@ -96,13 +96,15 @@ namespace :hexpress do
   end
 
   processor :override_svg_font, 'svg text[font-family]' do |text|
-    text.attr('font-family', 'Lato')
+    text.attr('font-family', 'Raleway')
   end
 
   processor :add_custom_assets, 'head' do |h|
-    h <<= H[:title, "Learn to Learn"]
+    h <<= H[:title, "Functional Patterns in Ruby"]
     h <<= H[:link, rel: 'stylesheet', href: file_uri_relative('stylesheets/stylesheet.css')]
     h <<= H[:link, rel: 'stylesheet', href: file_uri_relative('stylesheets/highlight.css')]
+    h <<= H[:link, rel: 'stylesheet', href: 'http://fonts.googleapis.com/css?family=Raleway']
+    h <<= H[:link, rel: 'stylesheet', href: 'http://fonts.googleapis.com/css?family=Inconsolata']
     h <<= H[:script, src: 'http://code.jquery.com/jquery-1.10.1.min.js']
     h <<= H[:script, src: file_uri_relative('javascripts/impress_js_addons.js')]
     h <<= H[:script, src: file_uri_relative('javascripts/highlight.pack.js')]
