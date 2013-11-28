@@ -23,7 +23,7 @@ PATH
 PATH
   remote: /home/arne/github/kramdown
   specs:
-    kramdown (1.1.0)
+    kramdown (1.2.0)
 
 GEM
   remote: https://rubygems.org/
