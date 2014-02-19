@@ -1,0 +1,59 @@
+GIT
+  remote: git://github.com/tmm1/perftools.rb.git
+  revision: deb2947468a800908c3660faf683862e77f6e38b
+  specs:
+    perftools.rb (2.0.1)
+
+PATH
+  remote: /home/arne/github/hexp
+  specs:
+    hexp (0.3.1)
+      equalizer (~> 0.0)
+      fzip (~> 0.1)
+      ice_nine (~> 0.9)
+      nokogiri (~> 1.6)
+      sass (~> 3.2)
+
+PATH
+  remote: /home/arne/github/kramdown
+  specs:
+    kramdown (1.2.0)
+
+PATH
+  remote: /home/arne/github/slippery
+  specs:
+    slippery (0.0.2)
+      hexp (~> 0.0)
+      kramdown (~> 1.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    equalizer (0.0.9)
+    ffi (1.9.0)
+    ffi (1.9.0-java)
+    fzip (0.2.0)
+    ice_nine (0.11.0)
+    mini_portile (0.5.2)
+    nokogiri (1.6.1)
+      mini_portile (~> 0.5.0)
+    nokogiri (1.6.1-java)
+      mini_portile (~> 0.5.0)
+    rake (10.1.0)
+    rb-inotify (0.9.0)
+      ffi (>= 0.5.0)
+    ruby-prof (0.13.0)
+    sass (3.2.14)
+
+PLATFORMS
+  java
+  ruby
+
+DEPENDENCIES
+  hexp!
+  kramdown!
+  perftools.rb!
+  rake
+  rb-inotify
+  ruby-prof
+  slippery!

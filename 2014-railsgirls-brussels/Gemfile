@@ -1,0 +1,19 @@
+source 'https://rubygems.org'
+
+gem 'slippery',
+  #github: 'plexus/slippery',
+  path: '/home/arne/github/slippery',
+  branch: 'eurucamp2013'
+
+gem 'hexp',
+  #github: 'plexus/hexp',
+  path: '/home/arne/github/hexp',
+  branch: 'eurucamp2013'
+
+gem 'kramdown',
+  path: '/home/arne/github/kramdown'
+
+gem 'rake'
+gem 'rb-inotify'
+gem 'ruby-prof'
+gem 'perftools.rb', :git => 'git://github.com/tmm1/perftools.rb.git'
