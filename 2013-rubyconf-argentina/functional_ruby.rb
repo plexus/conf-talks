@@ -1,4 +1,4 @@
-  ############
+  #%##########
   #############
   ####     #####
             #####
@@ -22,52 +22,55 @@
 
 #%######################################
 #
-# Functional programming
+# Lambdas
 #
 ########################################
 
-#
-# 1. Restrictions
-#
+a = 7
+fn = ->(b) { a + b }
+fn.(3) # => 10
 
-# Immutability
-x = 'Ola'.freeze
-y = 7
-z = true
+# CONS CELLS
 
-# Pure functions
-def square(x)
-  x * x
-end
+cons = ->(x,y) {
+  ->(f) {
+    f.(x,y)
+  }
+}
 
-# Not allowed
-x << 's'
-y += 1
-attr_writer / attr_accessor
+head = ->(c) {
+  c.(->(x,y) {
+      x
+    })
+}
 
-#
-# 2. Lambdas
-#
+tail = ->(c) {
+  c.(->(x,y) {
+      y
+    })
+}
 
-get,add = -> {
-  x = 0
-  [
-    -> { x },
-    -> { x += 1}
-  ]
-}.()
 
-add.() # =>
-add.() # =>
-add.() # =>
+list = cons.(1, cons.(3, cons.(7, nil)))
 
-#
-# 3. language support
-#
+nth = ->(list, n) {
+  n == 0 ? head.(list) : nth.(tail.(list), n-1)
+}
 
-# Enumerable / Enumerator / Proc
+idx = nth.curry.(list)
 
-map, inject, curry
+[1,2,3].map(&idx) # =>
+# ~> -:20:in `block in <main>': undefined method `call' for nil:NilClass (NoMethodError)
+# ~> 	from -:35:in `call'
+# ~> 	from -:35:in `block in <main>'
+# ~> 	from -:35:in `call'
+# ~> 	from -:35:in `block in <main>'
+# ~> 	from -:35:in `call'
+# ~> 	from -:35:in `block in <main>'
+# ~> 	from -:35:in `call'
+# ~> 	from -:35:in `block in <main>'
+# ~> 	from -:40:in `map'
+# ~> 	from -:40:in `<main>'
 
 #%######################################
 #
@@ -76,18 +79,23 @@ map, inject, curry
 ########################################
 
 class Bottle
-  attr_reader :size, :contents
+  attr_reader :label, :size, :contents
 
   def initialize(label, size, contents)
+    @label, @size, @contents = [label, size, contents].map(&:freeze)
   end
 
   def add(i)
+    self.class.new(label, size, contents + i)
   end
 
   def inspect
     "<#{@label} bottle, %.2f%%>" % (Float(@contents) / @size * 100)
   end
 end
+
+b = Bottle.new('malbec', 75, 0) # => <malbec bottle, 0.00%>
+b.add(20) # => <malbec bottle, 26.67%>
 
 #%######################################
 #
@@ -96,7 +104,13 @@ end
 ########################################
 
 class GoldenRatio
+  def call(x)
+  end
 end
+
+GoldenRatio.new.(7) # =>
+
+[1,2,5]
 
 #%######################################
 #
@@ -108,6 +122,8 @@ class Class
   def to_proc
   end
 end
+
+# %w[foo bar baz].map(&Regexp) # =>
 
 class Symbol
   def call(*args)
@@ -121,25 +137,28 @@ class Proc
   end
 end
 
+#nums = numbers.select(&:>.(50) & :<.(60))
+#nums # =>
+
 #%######################################
 #
 # Infinite lists
 #
 ########################################
 
+Inf = (1..Float::INFINITY)
+
 def squares
 end
 
-squares.take(20)
-
-infinite = (1..Float::INFINITY).lazy
+squares.take(20) # =>
 
 fizz =
 buzz =
 
 fizzbuzz =
 
-fizzbuzz.take(15).to_a
+#fizzbuzz.take(15).to_a
 
 #%######################################
 #
@@ -176,25 +195,13 @@ _0 = ->(f,x) { x }
 # Successor, i.e. n+1
 succ  = ->(n) { ->(f,x) { f.(n.(f,x)) } }
 
-_1 = succ.(_0)
-_2 = succ.(_1)
-_3 = succ.(_2)
-_4 = succ.(_3)
-
-R[_0] # => 0
-R[_3] # => 3
-R[_4] # => 4
-
 # Addition, apply f m times, then n times
 add = ->(n, m) { ->(f,x) { n.(f, m.(f,x)) } }
-
-R[add.(_2, _3)] # => 5
 
 # Predecessor, n - 1
 # Take a tuple (a=0, b=0) and turn it into (b, b+1), do that n times, so
 # (0,0) => (0,1) => (1,2), etc
 # After n times the first item of the tuple is n-1.
-# Caveat : a tuple in this case is a lambda that applies a lambda to two arguments
 pred = ->(n) {
     ->(f,x) {
       n.(
@@ -206,12 +213,13 @@ pred = ->(n) {
     }
   }
 
-R[pred.(_4)] # => 3
+R[pred.(_4)] # =>
 
 min = ->(m,n) {
     n.(pred, m)
 }
 
-R[min.(_4, _2)] # => 2
+R[min.(_4, _2)] # =>
 
 #%
+# ~> -:73: syntax error, unexpected '\n', expecting '='

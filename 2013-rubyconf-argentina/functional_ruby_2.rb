@@ -49,17 +49,43 @@ attr_writer / attr_accessor
 # 2. Lambdas
 #
 
-get,add = -> {
-  x = 0
-  [
-    -> { x },
-    -> { x += 1}
-  ]
-}.()
+a = 7
+fn = ->(b) { a + b }
+fn.(3) # => 10
 
-add.() # =>
-add.() # =>
-add.() # =>
+# CONS CELLS
+
+cons = ->(x,y) {
+  ->(f) {
+    f.(x,y)
+  }
+}
+
+head = ->(c) {
+  c.(->(x,y) {
+      x
+    })
+}
+
+tail = ->(c) {
+  c.(->(x,y) {
+      y
+    })
+}
+
+list = cons.(1, cons.(3, cons.(7, cons.(9, nil))))
+
+head.(tail.(list)) # => 3
+
+nth = ->(list, n) {
+  n == 0 ? head.(list) : nth.(tail.(list), n-1)
+}
+
+nth.(list, 1) # => 3
+
+idx = nth.curry.(list)
+
+[1,2,3].map(&idx) # => [3, 7, 9]
 
 #
 # 3. language support
@@ -103,7 +129,7 @@ class GoldenRatio
   end
 end
 
-########################################
+#%#######################################
 #
 # Let's have some fun
 #
@@ -129,26 +155,27 @@ end
 
 numbers = ([ ->{rand(100)} ] * 100).map(&:call)
 
-numbers.select(&:>.(50) & :<.(60)) # =>
+numbers.select(&:>.(50) & :<.(60)) # => [53, 52, 59, 53, 56, 56, 54, 55, 51, 58, 53, 57, 53]
 
-########################################
+#%#######################################
 #
 # Infinite lists
 #
 ########################################
 
+Inf = (1..Float::INFINITY)
+
 def squares
-  (1..Float::INFINITY).lazy.map { |i| i * i }
+  Inf.lazy.map { |i| i * i }
 end
 
 squares.take(20) # => #<Enumerator::Lazy: #<Enumerator::Lazy: #<Enumerator::Lazy: 1..Infinity>:map>:take(20)>
+squares.take(20).to_a # => [1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 256, 289, 324, 361, 400]
 
-infinite = (1..Float::INFINITY).lazy
+fizz = Inf.lazy.map { |i| ['Fizz',nil,nil][i%3] }
+buzz = Inf.lazy.map { |i| ['Buzz',nil,nil,nil,nil][i%5] }
 
-fizz = infinite.map { |i| ['Fizz',nil,nil][i%3] }
-buzz = infinite.map { |i| ['Buzz',nil,nil,nil,nil][i%5] }
-
-fizzbuzz = infinite.map do |i|
+fizzbuzz = Inf.lazy.map do |i|
   str = [fizz.next, buzz.next].join
   if str.empty?
     i
@@ -184,6 +211,11 @@ Hamster.iterate(0) {|i| i.next}.take(5) # => [0, 1, 2, 3, 4]
 # Lambda Calculus Arithmetic
 #
 ########################################
+# Integer arithmetic in the lambda calculus
+
+# This is our only admonission, it turns a lambda calculus "number" into an
+# actual interger, so we can inspect our results. For the rest we only use
+# lambdas
 
 R = ->(n) { n.(->(i) { i+1 }, 0) }
 
