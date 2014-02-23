@@ -1,0 +1,27 @@
+require 'slippery'
+
+Slippery::RakeTasks.new do |s|
+  s.options = {
+    type: :reveal_js,
+    theme: 'beige',
+    controls: false,
+    backgroundTransition: 'slide',
+    history: true,
+    plugins: [:notes]
+  }
+
+  s.processor 'head' do |head|
+    head << H[:title, 'Web Services, Past Present Future']
+  end
+
+  s.processor 'img' do |img|
+    %w[img/ img/orig].each do |prefix|
+      if File.exist?(prefix + img.attr('src'))
+        img = img.attr('src', prefix + img.attr('src'))
+      end
+    end
+    img
+  end
+
+  s.self_contained
+end

@@ -1,0 +1,104 @@
+* IoT http://radar.oreilly.com/2014/02/i-cyborg.html
+* API codex http://apicodex.3scale.net/content/Welcome
+* http://www.wired.com/opinion/2014/01/theres-no-good-way-to-patch-the-internet-of-things-and-thats-a-huge-problem/
+* http://www.business2community.com/tech-gadgets/api-industry-predictions-2014-0714464
+
+* Wikipedia
+** http://en.wikipedia.org/wiki/Web_API
+** http://en.wikipedia.org/wiki/Web_resource
+** http://en.wikipedia.org/wiki/Representational_state_transfer
+** http://en.wikipedia.org/wiki/Ajax_%28programming%29
+** http://en.wikipedia.org/wiki/Web_2.0
+** http://en.wikipedia.org/wiki/SOAP
+** http://en.wikipedia.org/wiki/Open_data
+** http://en.wikipedia.org/wiki/History_of_the_World_Wide_Web
+
+* Timeline
+** 1990 The first web server and browser are written
+** 1990-09 Berners-Lee and Cailliau pitch their ideas to the European Conference on Hypertext Technology
+** 1993 Mosaic
+** 1994 first international WWW conference
+** 1998 SOAP is designed
+** 1999 TBL expresses his vision of a semantic web
+
+** 2000 Fielding "Architectural Styles and the Design of Network-based Software Architectures" http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm
+** 2003-06-24 SOAP becomes a W3C recommendation
+** 2004-02-11 W3C Web Services Glossary http://www.w3.org/TR/2004/NOTE-ws-gloss-20040211/#webservice
+** 2004-06-01 First draft of The Atom Publishing Protocol (became RFC 5023) http://tools.ietf.org/html/rfc5023
+** 2004-10-05 First Web 2.0 Conference
+** 2004-10-12 W3C Workshop on Constraints and Capabilities for Web Services http://www.w3.org/2004/09/ws-cc-program.html
+** 2005-02-18 Jesse James Garrett coins the term Ajax http://www.adaptivepath.com/ideas/ajax-new-approach-web-applications/
+** 2006-03-14 Amazon launches S3
+** 2006-08-25 Amazon launches EC2
+
+** 2007-06-29 First iPhone released
+** 2008 : launch of apple and android app stores
+** 2008-09-23 Android initial release
+** 2009 GPS in phones
+** 2009-05 Data.gov launches
+** 2010-01 Data.gov.uk publicly launches
+** 2010-05-30 First version of the JSON-LD spec http://json-ld.org/spec/ED/json-ld-syntax/20100529/
+** 2011-05-04 First version of Collection+JSON https://github.com/collection-json/spec
+** 2011-06-13 First version of the HAL specification
+
+** 2012-04 Google announces Google glass
+** 2013-03-27 Zigbee IP is announced http://www.engadget.com/2013/03/27/zigbee-ip-spec-goes-public-offers-open-ipv6-mesh-networking/
+** 2013 Ember 1.0
+
+** 2014 ?
+
+Outline
+
+* Pre-history : Advent of the World Wide Web
+** events
+*** 1990 The first web server and browser are written
+*** 1990-09 Berners-Lee and Cailliau pitch their ideas to the European Conference on Hypertext Technology
+*** 1993 Mosaic
+*** 1994 first international WWW conference
+*** 1995- commercial browsers, big growth, until 2001 dot-com burst
+* Fielding : understanding the power of the web archictecture
+** Client-server
+** Stateless
+** Layered system
+** Uniform Interface
+*** Resource identifiers
+*** Resources
+*** Resource representations
+***
+
+* WWW is invented
+* WWW becomes unexpectedly popular
+* Fielding : why? what makes REST so special?
+* Web Services, use HTTP for machine-2-machine
+* Semantic web : a vision of a smarter web
+
+* lots of buzz around "web services" (i.e. SOAP)
+* AJAX, Web 2.0
+* The two main application platforms, browser + phone, grow up
+* PaaS
+
+* Metrics in our pockets : a smarter environment
+* Semantic web revisted : Open Data
+* REST revisited : Hypermedia formats
+
+* Quantified self
+* Internet of Things
+* NSA & Snowden : what have we lost?
+
+* the future ;
+* massive collecting of information
+* massive interconnectedness
+* meta-services, aggregation, discovery, directory
+* diversity in devices and interactions
+* further undermining/strengthening of privacy
+* change in politics and society : transparency and insights
+
+Major themes
+
+* CORBA > SOAP > REST > Hypermedia, i.e. what's up with this fielding dude anyway
+* The face of "computing" is changing. Desktops > Laptops > Phones > Wearable > Ubiquitous
+* We are gathering ever more data, and more data is ever more machine-consumable
+* We have already lost our privacy, it's not getting better
+* In the best case this will make our society and politics smarter, transparent, accountable
+* In the optimistic case this will give bigcorp more control over our lives and our society
+* I don't want to think about the non-optimistic case
