@@ -1,7 +1,11 @@
 require 'slippery'
 
-Slippery::RakeTasks.new do |s|
-  s.options = {
+def file_uri_relative(path)
+  "file://#{Pathname(__FILE__).dirname.join(path)}"
+end
+
+Slippery::RakeTasks.new do
+  self.options = {
     type: :reveal_js,
     theme: 'beige',
     controls: false,
@@ -10,11 +14,12 @@ Slippery::RakeTasks.new do |s|
     plugins: [:notes]
   }
 
-  s.processor 'head' do |head|
-    head << H[:title, 'Web Services, Past Present Future']
+  processor 'head' do |head|
+    head <<= H[:title, 'Web Services, Past Present Future']
+    head <<= H[:link, rel: 'stylesheet', href: file_uri_relative('css/style.css')]
   end
 
-  s.processor 'img' do |img|
+  processor 'img' do |img|
     %w[img/ img/orig].each do |prefix|
       if File.exist?(prefix + img.attr('src'))
         img = img.attr('src', prefix + img.attr('src'))
@@ -23,5 +28,19 @@ Slippery::RakeTasks.new do |s|
     img
   end
 
-  s.self_contained
+  processor '.disclaimer' do |section|
+    section.attr('data-background-color',"#dd1111")
+  end
+
+  processor 'section' do |section|
+    if section.select('h2').first && section.select('h2').first.text =~ /^\d{4}$/
+      section
+        .replace('h2') {|h2| h2.set_tag('h1')}
+        .replace('p') {|p| p.set_tag('h3')}
+    else
+      section
+    end
+  end
+
+  self_contained
 end

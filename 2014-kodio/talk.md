@@ -1,24 +1,126 @@
+{: .noborder}
 ![](Back_to_the_Future_poster_me_1024.png)
+
+---
+{:.disclaimer}
+
+# DISCLAIMER
 
 ----
 
-![](distributed_systems_3rd_edition.jpg)
+## Massively Connected World
+
+----
+
+## Pre-History
 
 ---
 
-![](distributed_systems_4rd_edition.jpg)
+## 1990
+
+Tim-Berners Lee invents the Web
 
 ---
 
-![](toc_web_services.png)
+## 1991
+
+PGP
+
+CORBA
+
+Sonic The Hedgehog
 
 ---
 
-# Objectives
+## 1992
 
-* two parallel but intertwined stories
-** how technology has changed
-** how the world has/is changing
+First smartphone, the IBM Simon
+
+---
+
+## 1993
+
+Open Society Institute
+
+Mosaic
+
+---
+
+## 1994
+
+First international WWW conference
+
+---
+
+## 1995
+
+WikiWikiWeb
+
+Amazon.com
+
+---
+
+## 1996
+
+Google
+
+---
+
+## 1997
+
+Deep Blue beats Kasparov
+
+---
+
+## 1998
+
+XML
+
+SOAP
+
+---
+
+## 1999
+
+HTTP/1.1
+
+Tim-Berners Lee expresses his vision of a semantic web
+
+---
+
+## 2000
+
+Fielding publishes "Architectural Styles and the Design of Network-based Software Architectures"
+
+---
+
+* WWW
+* Encryption
+* Portable computing
+* Read-Write Web
+* Semantic Web
+* AI
+* Open Data
+
+---
+
+# Web Services
+
+CORBA > SOAP > REST > Hypermedia
+
+---
+
+...
+
+---
+
+# Fielding
+
+What makes the web "tick"
+
+---
+
+...
 
 ----
 

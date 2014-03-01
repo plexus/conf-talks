@@ -1,0 +1,13 @@
+.reveal .noborder img {
+  border: none;
+}
+
+.reveal .expand img {
+  width: 100%;
+  height: 100%
+}
+
+.whoami img {
+  display: inline;
+  height: 128px;
+}
