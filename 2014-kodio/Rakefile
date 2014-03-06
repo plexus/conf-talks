@@ -1,15 +1,36 @@
 require 'slippery'
 
+class Hexp::Node
+  def first(selector)
+    select(selector).first
+  end
+
+  def delete(selector)
+    replace(selector) { [] }
+  end
+
+end
+
 def file_uri_relative(path)
   "file://#{Pathname(__FILE__).dirname.join(path)}"
 end
 
+# beige
+# default
+# moon
+# night
+# serif
+# simple
+# sky
+# solarized
+
 Slippery::RakeTasks.new do
   self.options = {
     type: :reveal_js,
-    theme: 'beige',
-    controls: false,
-    backgroundTransition: 'slide',
+    theme: 'sky',
+    #controls: false,
+    backgroundTransition: 'none',
+    transition: 'none',
     history: true,
     plugins: [:notes]
   }
@@ -40,6 +61,12 @@ Slippery::RakeTasks.new do
     else
       section
     end
+  end
+
+  processor '.expand' do |section|
+    src = section.first('img').attr('src')
+    section.attr('data-background', src)
+      .delete('img')
   end
 
   self_contained

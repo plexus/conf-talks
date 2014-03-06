@@ -1,10 +1,10 @@
+* Rest APIs must be hypertext driven http://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven
+* Selling the benefits of hypermedia http://soabits.blogspot.de/2013/12/selling-benefits-of-hypermedia.html
 * IoT http://radar.oreilly.com/2014/02/i-cyborg.html
 * API codex http://apicodex.3scale.net/content/Welcome
 * http://www.wired.com/opinion/2014/01/theres-no-good-way-to-patch-the-internet-of-things-and-thats-a-huge-problem/
 * http://www.business2community.com/tech-gadgets/api-industry-predictions-2014-0714464
-* Selling the benefits of hypermedia http://soabits.blogspot.de/2013/12/selling-benefits-of-hypermedia.html
 * Slides from Devin Rader (Twilio) https://onedrive.live.com/view.aspx?cid=E8348157304BCE63&resid=E8348157304BCE63!102224&app=PowerPoint&authkey=!ADWwKgmXGC4Q0X4&wdo=1
-* Rest APIs must be hypertext driven http://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven
 
 * Wikipedia
 ** http://en.wikipedia.org/wiki/Web_service
@@ -100,15 +100,3 @@ Outline
 * diversity in devices and interactions
 * further undermining/strengthening of privacy
 * change in politics and society : transparency and insights
-
-Major themes
-
-* CORBA > SOAP > REST > Hypermedia, i.e. what's up with this fielding dude anyway
-* The face of "computing" is changing. Desktops > Laptops > Phones > Wearable > Ubiquitous
-* We are gathering ever more data, and more data is ever more machine-consumable
-* The range of what that implies (pro+con) is huge
-
-* We have already lost our privacy, it's not getting better
-* In the best case this will make our society and politics smarter, transparent, accountable
-* In the optimistic case this will give bigcorp more control over our lives and our society
-* I don't want to think about the non-optimistic case

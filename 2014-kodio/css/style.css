@@ -11,3 +11,7 @@
   display: inline;
   height: 128px;
 }
+
+.bigger img {
+  height: 400px;
+}
