@@ -1,0 +1,5 @@
+source 'https://rubygems.org'
+
+gem 'slippery', path: '/home/arne/github/slippery'
+gem 'rake'
+gem 'pry'

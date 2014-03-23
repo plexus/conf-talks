@@ -1,0 +1,45 @@
+require 'slippery'
+require_relative 'hexp_hacks'
+
+Slippery::RakeTasks.new do
+  self.options = {
+    type: :reveal_js,
+    theme: 'sky',
+    backgroundTransition: 'slide',
+    transition: 'slide',
+    local: false
+  }
+
+  title 'Slippery Slides'
+  add_highlighting
+
+  processor 'section' do |section|
+    next section unless imgseq = section.first('.language-imgseq')
+
+    imgseq.text.each_line.map(&:strip).map do |img|
+      H[:section, 'data-background' => "img/#{img}"]
+    end
+  end
+
+  processor '.green' do |section|
+    section.attr('data-background-color', '#393')
+  end
+
+  processor 'head' do |head|
+    head <<= H[:link, rel: 'stylesheet', href: 'stylesheet.css']
+  end
+
+
+  processors << Slippery::Processors::GraphvizDot
+
+  processor 'section' do |section|
+    if section.text.strip == '' && section.attr('data-background').nil? && section.select('img').any?
+      []
+    else
+      section
+    end
+  end
+
+
+  self_contained
+end
