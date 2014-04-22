@@ -1,0 +1,83 @@
+/* .slide { */
+/*   width: 100%; */
+/*   text-align: left; */
+/*   border: 1px dotted blue; */
+/* } */
+
+@font-face {
+  font-family: "avenir-light";
+  src: url("fonts/avenir-light.eot");
+  src: url("fonts/avenir-light.eot?#iefix") format("embedded-opentype"), url("fonts/avenir-light.woff") format("woff"), url("fonts/avenir-light.ttf") format("truetype"), url("fonts/avenir-light.svg#avenir-light") format("svg");
+}
+
+body {
+  font-family: "avenir-light", Helvetica, sans-serif;
+  font-size: 50px;
+  font-weight: lighter;
+  letter-spacing: -1px;
+}
+
+.deck-container > .slide {
+  box-sizing: border-box;
+  padding: 1em;
+}
+
+h1 {
+  font-size: 3em;
+  text-align: center;
+  margin-top: 220px;
+}
+
+h1:after {
+  font-family: "Times New Roman", Times, serif;
+  content: "§";
+  display: block;
+  font-size: 610px;
+  font-weight: lighter;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  left: 0;
+  top: 0;
+  color: #eeeeee;
+  z-index: -1
+}
+
+h2 {
+  font-size: 1.5em;
+  width: 100%;
+  border-bottom: 1px solid;
+}
+
+pre {
+  font-size: 0.7em;
+}
+
+.code pre {
+  font-size: 0.6em;
+}
+
+.center-text {
+  text-align: center;
+}
+
+
+.slide .deck-before, .slide .deck-previous {
+  opacity: 0.4;
+}
+.slide .deck-before:not(.deck-child-current) .deck-before, .slide .deck-before:not(.deck-child-current) .deck-previous, .slide .deck-previous:not(.deck-child-current) .deck-before, .slide .deck-previous:not(.deck-child-current) .deck-previous {
+  opacity: 1;
+}
+.slide .deck-child-current {
+  opacity: 1;
+}
+
+dd p, dt p {
+  margin-top: 0;
+}
+
+.boutade {
+  text-align: center;
+  font-size: 1.4em;
+  line-height: 2em;
+}

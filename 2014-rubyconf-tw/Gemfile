@@ -1,0 +1,7 @@
+# A sample Gemfile
+source "https://rubygems.org"
+
+# gem "rails"
+gem 'slippery', path: '/home/arne/github/slippery'
+gem 'asset_packer', path: '/home/arne/github/asset_packer'
+gem 'pry'

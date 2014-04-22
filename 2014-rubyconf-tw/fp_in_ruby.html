@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<script src="assets/5ca7582261c421482436dfdf3af9bffe.js" type="text/javascript"></script><link href="assets/9f3db20cff823f68da33bfa3b4c78634.css" rel="stylesheet">
+<link href="assets/c9ebbba65e8e41025f78fa4ced91d6c6.css" rel="stylesheet">
+<script src="assets/e90da1516f1c9c98063f881f15e0b24a.js" type="text/javascript"></script><title>Functional Programming in Ruby | @plexus</title>
+<link rel="stylesheet" href="assets/c1cd938f43002a217f591a8a4303a896.css">
+<script src="assets/1a26d479f3ec3ab89467c042ab2b970b.js"></script><script>hljs.initHighlightingOnLoad();</script><link rel="stylesheet" type="text/css" href="assets/4ca5372aaeb0a51029c7bc7bdaee72a8.css">
+<link rel="stylesheet" type="text/css" href="assets/5f6fa609b560e7de6364aaed881a57f1.css">
+<meta charset="utf-8">
+</head>
+<body><div class="deck-container">
+<section class="slide">
+</section><section class="slide center" name="1">
+<p>Use the space bar or arrow keys to browse the slides.</p>
+</section><section class="slide center-text" name="2">
+<h2>Functional Programming in Ruby</h2>
+<p>RubyConf Taiwan 2014</p>
+<p>by Arne Brasseur / @plexus</p>
+</section><section class="slide bullet-points" name="3">
+<h2>Functional Programming</h2>
+<p class="slide">Values</p>
+<p class="slide">Functions</p>
+<p class="slide">Runtime support</p>
+</section><section class="slide" name="4">
+<h1>Values</h1>
+</section><section class="slide bullet-points" name="5">
+<h2>Variables</h2>
+<p class="slide">A name for a place</p>
+<p class="slide">What&rsquo;s in the place changes over time</p>
+<pre class="language-ruby slide"><code>x = 3
+x = 5
+x = nil
+</code></pre>
+</section><section class="slide bullet-points" name="6">
+<h2>Values</h2>
+<p class="slide">An unchangeable fact</p>
+<p class="slide">Different values can reflect facts related to different times</p>
+<pre class="language-ruby slide"><code>{ date: '2014-04-24', hungry: 'very' }
+{ date: '2014-04-25', hungry: 'not so much' }
+</code></pre>
+</section><section class="slide" name="7">
+<p><a href="http://www.youtube.com/watch?v=-6BsiVyC1kM">The Value of Values - Rich Hickey</a></p>
+<p>http://www.youtube.com/watch?v=-6BsiVyC1kM</p>
+</section><section class="slide bullet-points" name="8">
+<h2>Values in Ruby</h2>
+<pre class="language-ruby slide"><code>true, false, nil
+</code></pre>
+<pre class="language-ruby slide"><code>23, 42, 5.9999
+</code></pre>
+<pre class="language-ruby slide"><code>:foo, :bar
+</code></pre>
+<p class="slide">That&rsquo;s about it.</p>
+</section><section class="slide bullet-points" name="9">
+<h2>Values by Choice</h2>
+<p class="slide">The biggest virtue of a Ruby programmer is discipline</p>
+<p class="slide">Make liberal use of <code>freeze</code></p>
+<p class="slide">This includes aggregates: <code>Array</code>, <code>Hash</code>, <code>Object</code></p>
+</section><section class="slide bullet-points" name="10">
+<h2>Why Values?</h2>
+<p class="slide">Safe to share</p>
+<p class="slide">Easy to reason about</p>
+<p class="slide">Make the best interfaces</p>
+</section><section class="slide vocab" name="11">
+<h2>per&middot;sis&middot;tent</h2>
+<h3>/p&#601;r&#712;sist&#601;nt/</h3>
+<p><em>adjective</em></p>
+<p>Continuing to exist or endure over a prolonged period.</p>
+</section><section class="slide bullet-points" name="12">
+<h2>per&middot;sis&middot;tent</h2>
+<p class="slide">Old version stays available after &ldquo;change&rdquo;</p>
+</section><section class="slide code" name="13">
+<pre class="language-ruby"><code>class HTMLElement
+  attr_reader :tag, :attrs, :children
+
+  def initialize(tag, attrs, children)
+    @tag      = tag
+    @attrs    = attrs.freeze
+    @children = children.freeze
+  end
+
+  def set_attr(attr, value)
+    self.class.new(
+      tag,
+      attrs.merge(attr =&gt; value),
+      children
+    )
+  end
+end
+</code></pre>
+</section><section class="slide" name="14">
+<h1>Functions</h1>
+</section><section class="slide bullet-points" name="15">
+<h2>Pure Functions</h2>
+<p class="slide">Same input &rArr; same output</p>
+<p class="slide">No observable side effects</p>
+<p class="slide">Follows naturally from using values</p>
+</section><section class="slide boutade" name="16">
+<p>When everything is a value, programming is mapping one set of values to another.</p>
+</section><section class="slide bullet-points" name="17">
+<h2>Pure Functions</h2>
+<p class="slide">Have reproducible results</p>
+<p class="slide">Highly reusable</p>
+<p class="slide">Can be memoized</p>
+</section><section class="slide bullet-points" name="18">
+<h2>Computing Functions</h2>
+<p class="slide">Compose</p>
+<p class="slide">Partial application</p>
+<p class="slide">Closures</p>
+<p class="slide">Higher-order functions</p>
+</section><section class="slide bullet-points" name="19">
+<h2>Functions in Ruby</h2>
+<p class="slide">Ruby only has methods and lambdas</p>
+</section><section class="slide" name="20">
+<h1>Performance</h1>
+</section><section class="slide bullet-points" name="21">
+<p class="slide">Persistent collection</p>
+<p class="slide">Generational GC</p>
+<p class="slide">Tail-call optimization</p>
+<p class="slide">Compare apples to oranges</p>
+</section><section class="slide" name="22"></section><script src="assets/62c9a3f22c2b9ca5135709cc452273b8.js" type="text/javascript"></script><script src="assets/ef833260608fbde8e5ba177192f6e278.js" type="text/javascript"></script><script>$(function() { $.deck('.slide'); });</script>
+</div></body>
+</html>

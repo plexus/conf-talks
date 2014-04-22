@@ -1,0 +1,29 @@
+require 'slippery'
+
+Slippery::RakeTasks.new do
+  title "Functional Programming in Ruby | @plexus"
+  type :deck_js
+  add_highlighting
+
+  # Fathom
+  #js_options scrollLength: 0, displayMode: 'single'
+
+  # Deck.js
+  js_options extensions: ['navigation'], theme: nil, transition_theme: nil
+
+  pack_assets
+
+  processor 'head' do |head|
+    head
+      .add(H[:link, rel: 'stylesheet', type: 'text/css', href: 'my_assets/normalize.css'])
+      .add(H[:link, rel: 'stylesheet', type: 'text/css', href: 'my_assets/style.css'])
+      .add(H[:meta, charset: 'utf-8'])
+  end
+
+  processor '.bullet-points p, .bullet-points pre' do |para|
+    para.add_class('slide')
+  end
+end
+
+task :default => 'slippery:build:fp_in_ruby'
+task :watch   => 'slippery:watch:fp_in_ruby'
