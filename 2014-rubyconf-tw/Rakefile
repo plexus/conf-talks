@@ -14,10 +14,14 @@ Slippery::RakeTasks.new do
   pack_assets
 
   processor 'head' do |head|
-    head
-      .add(H[:link, rel: 'stylesheet', type: 'text/css', href: 'my_assets/normalize.css'])
-      .add(H[:link, rel: 'stylesheet', type: 'text/css', href: 'my_assets/style.css'])
-      .add(H[:meta, charset: 'utf-8'])
+    H[:head, head.attributes, head.children + [
+        H[:meta, charset: 'utf-8'],
+        H[:meta, name: 'viewport', content: 'width=1024'],
+        H[:meta, "http-equiv" => 'X-UA-Compatible', content: 'IE=edge,chrome=1'],
+        H[:link, rel: 'stylesheet', type: 'text/css', href: 'my_assets/normalize.css'],
+        H[:link, rel: 'stylesheet', type: 'text/css', href: 'my_assets/style.css'],
+      ]
+    ]
   end
 
   processor '.bullet-points p, .bullet-points pre' do |para|

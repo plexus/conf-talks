@@ -1,9 +1,3 @@
-/* .slide { */
-/*   width: 100%; */
-/*   text-align: left; */
-/*   border: 1px dotted blue; */
-/* } */
-
 @font-face {
   font-family: "avenir-light";
   src: url("fonts/avenir-light.eot");
@@ -18,8 +12,38 @@ body {
 }
 
 .deck-container > .slide {
-  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+       box-sizing: border-box;
   padding: 1em;
+  width: 100%;
+  height: 100%;
+  background-image: url(my_assets/ppt_bk.jpg);
+  background-size: 100% 100%;
+}
+
+.slide.full-image {
+  text-align: center;
+}
+
+.link-image img {
+  width: auto;
+  height: 75%;
+  margin: auto auto;
+  display: inline;
+  margin-top: -1em;
+}
+
+.full-image img {
+  width: auto;
+  height: 90%;
+  margin: auto auto;
+  display: inline;
+  margin-top: -1em;
+}
+
+.slide.first-page {
+  padding-top: 2em;
+  background-image: url(my_assets/first_page.jpg);
 }
 
 h1 {
@@ -55,9 +79,15 @@ pre {
 
 .code pre {
   font-size: 0.6em;
+  margin-top: 0;
 }
 
-.center-text {
+.lots-of-code pre {
+  font-size: 0.5em;
+  margin-top: 0;
+}
+
+.center {
   text-align: center;
 }
 
@@ -65,14 +95,16 @@ pre {
 .slide .deck-before, .slide .deck-previous {
   opacity: 0.4;
 }
+
 .slide .deck-before:not(.deck-child-current) .deck-before, .slide .deck-before:not(.deck-child-current) .deck-previous, .slide .deck-previous:not(.deck-child-current) .deck-before, .slide .deck-previous:not(.deck-child-current) .deck-previous {
   opacity: 1;
 }
+
 .slide .deck-child-current {
   opacity: 1;
 }
 
-dd p, dt p {
+dd p, dt p, ol p, ul p {
   margin-top: 0;
 }
 
@@ -80,4 +112,21 @@ dd p, dt p {
   text-align: center;
   font-size: 1.4em;
   line-height: 2em;
+}
+
+.hljs-symbol {
+  color: #0000bb;
+}
+
+.hljs-keyword {
+  color: #608000;
+}
+
+.whoami img {
+  display: inline;
+  height: 128px;
+}
+
+.whoami .bigger img {
+  height: 400px;
 }
