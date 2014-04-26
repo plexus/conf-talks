@@ -14,24 +14,42 @@
 <body><div class="deck-container">
 <section class="slide">
 <p class="center">Use the space bar or arrow keys to browse the slides.</p>
-</section><section class="slide center first-page" name="1">
+</section><section class="slide code" name="1">
+<pre><code>require 'typecheck'
+
+class Checked
+  extend Typecheck
+
+  typecheck '[Fixnum], String|#upcase -&gt; Symbol',
+  def foo(x, y)
+    :z
+  end
+end
+
+Checked.new([1,2,3], 'foo')
+#=&gt; :z
+Checked.new([1,2,:z], 'foo')
+#=&gt; raise Typecheck::TypeError
+
+</code></pre>
+</section><section class="slide center first-page" name="2">
 <h2>Functional Programming in Ruby</h2>
 <p>RubyConf Taiwan 2014</p>
 <p>by Arne Brasseur / &#30333;&#38463;&#20161; / @plexus</p>
-</section><section class="slide whoami center" name="2">
+</section><section class="slide whoami center" name="3">
 <p class="bigger"><img src="assets/1e7c34d6a92e8a4383ec3620c1001730.png" alt=""></p>
 
 <p><img src="assets/c638cff29d3d01d370ed00660049412f.png" alt=""> <img src="assets/40c3798236f8a9cf966e54c645d64604.png" alt=""></p>
-</section><section class="slide full-image" name="3">
+</section><section class="slide full-image" name="4">
 <p><img src="assets/845c5a9c11224220447336899147d535.jpg" alt=""></p>
-</section><section class="slide bullet-points" name="4">
+</section><section class="slide bullet-points" name="5">
 <h2>Functional Programming</h2>
 <p class="slide">Values</p>
 <p class="slide">Functions</p>
 <p class="slide">Runtime support</p>
-</section><section class="slide" name="5">
+</section><section class="slide" name="6">
 <h1>Values</h1>
-</section><section class="slide bullet-points" name="6">
+</section><section class="slide bullet-points" name="7">
 <h2>Variables</h2>
 <p class="slide">A name for a place</p>
 <p class="slide">What&rsquo;s in the place changes over time</p>
@@ -39,19 +57,19 @@
 x = 5
 x = nil
 </code></pre>
-</section><section class="slide bullet-points" name="7">
+</section><section class="slide bullet-points" name="8">
 <h2>Values</h2>
 <p class="slide">An unchangeable fact</p>
 <p class="slide">Different values can reflect facts related to different times</p>
-<pre class="language-ruby slide"><code>{ date: '2014-04-24', temperature: 28 }
-{ date: '2014-04-25', temperature: 31 }
+<pre class="language-ruby slide"><code>{ date: '2014-04-24', temperature: 27 }
+{ date: '2014-04-25', temperature: 29 }
 </code></pre>
-</section><section class="slide bullet-points" name="8">
+</section><section class="slide bullet-points" name="9">
 <h2>Why Values?</h2>
 <p class="slide">Safe to share</p>
 <p class="slide">Easy to reason about</p>
 <p class="slide">Make the best interfaces</p>
-</section><section class="slide bullet-points" name="9">
+</section><section class="slide bullet-points" name="10">
 <h2>Values in Ruby</h2>
 <pre class="language-ruby slide"><code>true, false, nil
 </code></pre>
@@ -61,159 +79,104 @@ x = nil
 </code></pre>
 <pre class="language-ruby slide"><code>Time, Date, Pathname
 </code></pre>
-</section><section class="slide bullet-points" name="10">
+</section><section class="slide bullet-points" name="11">
 <h2>Values by Choice</h2>
 <p class="slide">The biggest virtue of a Ruby programmer is discipline</p>
 <p class="slide">Make liberal use of <code>freeze</code></p>
 <p class="slide">Aggregates of values are also values</p>
-</section><section class="slide vocab" name="11">
-<h2>per&middot;sis&middot;tent</h2>
-<h3>/p&#601;r&#712;sist&#601;nt/</h3>
-<p><em>adjective</em></p>
-<p>Continuing to exist or endure over a prolonged period.</p>
-</section><section class="slide bullet-points" name="12">
-<h2>per&middot;sis&middot;tent</h2>
-<p class="slide">Old version stays available after &ldquo;change&rdquo;</p>
-<p class="slide">Can be done in an optimized way</p>
-</section><section class="slide bullet-points" name="13">
-<h2>Persistent Collections</h2>
-<p class="slide">Share memory but keep immutable semantics</p>
-<p class="slide">Simple example: linked list</p>
-</section><section class="slide bullet-points" name="14">
-<h2>Persistent Collections</h2>
-<p class="slide">Holy grail: &ldquo;Hash Array Mapped Trie&rdquo; (AKA Ideal Hash Tree)</p>
-<p class="slide"><code>gem "hamster"</code> has Hash, List, Set, Stack, Vector, &hellip;</p>
-</section><section class="slide center" name="15">
-<p><img src="assets/56212622c7335e47f0f3421308e1858a.png" alt="The Value of Values - Rich Hickey"></p>
-<p><a href="http://www.youtube.com/watch?v=-6BsiVyC1kM">http://bit.ly/value_of_values</a></p>
-</section><section class="slide" name="16">
+</section><section class="slide" name="12">
 <h1>Example</h1>
-</section><section class="slide center" name="17">
-<h2>Example: Flashcards</h2>
-<p><img src="assets/b4af6e08e7984afb5f476a9dbee4d399.png" alt=""></p>
-</section><section class="slide code" name="18">
-<pre class="language-ruby"><code>class Card
-  def initialize(*args)
-    @front, @back, @interval, @factor = *args
+</section><section class="slide code" name="13">
+<pre class="language-ruby"><code>class HTMLElement
+  attr_reader :tag, :attrs, :children
+
+  def initialize(tag, attrs, children)
+    @tag      = tag
+    @attrs    = attrs.freeze
+    @children = children.freeze
   end
 
-  def score!(rating)
-    update_interval!(rating)
-    update_factor!(rating)
-    self
-  end
-
-  def inspect
-    "#&lt;Card interval: #{@interval} "+
-        "factor: #{@factor}&gt;"
-  end
-end
-</code></pre>
-</section><section class="slide code" name="19">
-<pre class="language-ruby"><code>class Card
-  MIN_FACTOR = 1.3
-
-  def update_interval!(rating)
-    @interval = @interval * @factor
-  end
-
-  def update_factor!(rating)
-    @factor += (rating-1) * 0.15
-    @factor  = [MIN_FACTOR, @factor].max
-  end
-end
-</code></pre>
-</section><section class="slide code" name="20">
-<pre class="language-ruby"><code>card = Card.new('&#33274;&#28771;', 'Taiwan', 10, 2.5)
-# =&gt; #&lt;Card interval: 10 factor: 2.5&gt;
-
-card.score!(1)
-# =&gt; #&lt;Card interval: 25.0 factor: 2.5&gt;
-card.score!(3)
-# =&gt; #&lt;Card interval: 62.5 factor: 2.8&gt;
-card.score!(3)
-# =&gt; #&lt;Card interval: 175.0 factor: 3.099&gt;
-card.score!(0)
-# =&gt; #&lt;Card interval: 10 factor: 2.949&gt;
-card.score!(0)
-# =&gt; #&lt;Card interval: 10 factor: 2.8&gt;
-</code></pre>
-</section><section class="slide code" name="21">
-<pre class="language-ruby"><code>class Card
-  include Anima.new(:front, :back, :rating)
-
-  extend Forwardable
-  def_delegators :rating, :interval, :factor
-
-  def score!(score)
+  def set_attr(attr, value)
     self.class.new(
-      front: front,
-      back: back,
-      rating: Rating.new(
-        score: score,
-        previous: rating
-      )
+      tag,
+      attrs.merge(attr =&amp;gt; value),
+      children
     )
   end
 end
 </code></pre>
-</section><section class="slide code" name="22">
-<pre class="language-ruby"><code>class Rating
-  include Anima.new(:score, :previous)
+</section><section class="slide code" name="14">
+<pre class="language-ruby"><code>gem 'anima'
+gem 'adamantium'
+</code></pre>
+<pre class="language-ruby"><code>class HTMLElement
+  include Anima.new(:tag, :attrs, :children)
+  include Anima::Update
+  include Adamantium
 
-  def interval
-    previous.interval * previous.factor
-  end
-
-  def factor
-    [ MIN_FACTOR,
-      previous.factor + (score-1)*0.15].max
+  def set_attr(attr, value)
+    update( attrs: attrs.merge(attr =&gt; value) )
   end
 end
-
-NullRating =
-  Struct.new(:interval, :factor).new(10, 2.5)
 </code></pre>
+</section><section class="slide vocab" name="15">
+<h2>per&middot;sis&middot;tent</h2>
+<h3>/p&#601;r&#712;sist&#601;nt/</h3>
+<p><em>adjective</em></p>
+<p>Continuing to exist or endure over a prolonged period.</p>
+</section><section class="slide bullet-points" name="16">
+<h2>per&middot;sis&middot;tent</h2>
+<p class="slide">Old version stays available after &ldquo;change&rdquo;</p>
+<p class="slide">Can be done in an optimized way</p>
+</section><section class="slide bullet-points" name="17">
+<h2>Persistent Collections</h2>
+<p class="slide">Share memory but keep immutable semantics</p>
+<p class="slide">Simple example: linked list</p>
+</section><section class="slide" name="18">
+<pre><code> List1
+   |
+ +---+   +---+   +---+
+ | x |--&gt;|   |--&gt;|   |--&gt; nil
+ +---+   +---+   +---+
 
-</section><section class="slide code" name="23">
-<pre class="language-ruby"><code>card = Card.new(
-  front: '&#33274;&#28771;', back: 'Taiwan', rating: NullRating
-)
-# =&gt; #&lt;Card interval: 10 factor: 2.5&gt;
 
-card = card.score!(1)
-# =&gt; #&lt;Card interval: 25.0 factor: 2.5&gt;
-card = card.score!(3)
-# =&gt; #&lt;Card interval: 62.5 factor: 2.8&gt;
-card = card.score!(3)
-# =&gt; #&lt;Card interval: 175.0 factor: 3.099&gt;
-card = card.score!(0)
-# =&gt; #&lt;Card interval: 10 factor: 2.949&gt;
-card = card.score!(0)
-# =&gt; #&lt;Card interval: 10 factor: 2.8&gt;
+ List2   List1
+   |       |
+ +---+   +---+   +---+   +---+
+ |   |--&gt;| x |--&gt;|   |--&gt;|   |--&gt; nil
+ +---+   +---+   +---+   +---+
 </code></pre>
-</section><section class="slide" name="24">
+</section><section class="slide bullet-points" name="19">
+<h2>Persistent Collections</h2>
+<p class="slide">Holy grail: &ldquo;Hash Array Mapped Trie&rdquo;</p>
+<p class="slide"><code>gem "hamster"</code> has Hash, List, Set, Stack, Vector, &hellip;</p>
+<p class="slide"><code>github: headius/clojr</code> wraps the Clojure data structures.</p>
+</section><section class="slide center" name="20">
+<p><img src="assets/56212622c7335e47f0f3421308e1858a.png" alt="The Value of Values - Rich Hickey"></p>
+<p><a href="http://www.youtube.com/watch?v=-6BsiVyC1kM">http://bit.ly/value_of_values</a></p>
+</section><section class="slide" name="21">
 <h1>Functions</h1>
-</section><section class="slide bullet-points" name="25">
+</section><section class="slide bullet-points" name="22">
 <h2>Pure Functions</h2>
 <p class="slide">Same input &rArr; same output</p>
 <p class="slide">No observable side effects</p>
 <p class="slide">Follows naturally from using values</p>
-</section><section class="slide boutade" name="26">
+</section><section class="slide boutade" name="23">
 <p>When everything is a value, programming is mapping one set of values to another.</p>
-</section><section class="slide bullet-points" name="27">
+</section><section class="slide bullet-points" name="24">
 <h2>Pure Functions</h2>
-<p class="slide">Have reproducible results</p>
-<p class="slide">Highly reusable</p>
+<p class="slide">Reproducible results</p>
+<p class="slide">Naturally parallel</p>
+<p class="slide">Location independent</p>
 <p class="slide">Can be memoized</p>
-</section><section class="slide bullet-points" name="28">
+</section><section class="slide bullet-points" name="25">
 <h2>Pure Functions</h2>
 <p class="slide">Build a core that is purely functional</p>
 <p class="slide">Call from an &ldquo;imperative shell&rdquo;</p>
 <p class="slide">Best of both worlds</p>
-</section><section class="slide" name="29">
+</section><section class="slide" name="26">
 <h1>Example</h1>
-</section><section class="slide lots-of-code" name="30">
+</section><section class="slide lots-of-code" name="27">
 <pre class="language-ruby"><code>def parse_cli_options(argv)
   opts = OptionParser.new do |opts|
     opts.on('--version', 'Print version') do |name|
@@ -234,7 +197,7 @@ card = card.score!(0)
   { filename: filenames }
 end
 </code></pre>
-</section><section class="slide code" name="31">
+</section><section class="slide code" name="28">
 <pre class="language-ruby"><code>def run
   result = parse_cli_options(ARGV)
 
@@ -249,40 +212,53 @@ end
   Kernel.exit(result.fetch(:exit_code, 0))
 end
 </code></pre>
-</section><section class="slide bullet-points" name="32">
+</section><section class="slide bullet-points" name="29">
 <h2>Computing Functions</h2>
 <p class="slide">Functions as the unit of reuse</p>
 <p class="slide">Combine functions into bigger functions</p>
-<p class="slide">Possible in Ruby, but doesn&rsquo;t come natural</p>
 <p class="slide"><code>funkify</code> gem has interesting approach</p>
-</section><section class="slide bullet-points" name="33">
-<h2>Computing Functions</h2>
-<p class="slide">Closures</p>
-<p class="slide">Function Composition</p>
-<p class="slide">Partial application</p>
-<p class="slide">Higher-order functions</p>
-</section><section class="slide" name="34">
+</section><section class="slide code" name="30">
+<pre class="language-ruby"><code>def pred_or(preds)
+  -&gt;(value) { preds.any?{|pred| pred.(value) } }
+end
+
+def parse_type_list(choices)
+  types = choices.split('|').map(&amp;:strip)
+  pred_or [
+    pred_or(
+      types.map {|choice|
+        method(:check).to_proc.curry(choice)
+      }
+    ),
+    pred_or(
+      types.map {|choice|
+        method(:raise).to_proc.curry(choice)
+      }
+    )
+  ]
+end
+</code></pre>
+</section><section class="slide" name="31">
 <h1>Performance</h1>
-</section><section class="slide bullet-points" name="35">
+</section><section class="slide bullet-points" name="32">
 <h2>Performance</h2>
 <p class="slide">Smart persistent data structures</p>
 <p class="slide">Generational GC</p>
 <p class="slide">Tail-Call Optimization</p>
 <p class="slide">Measure!</p>
-</section><section class="slide boutade" name="36">
+</section><section class="slide boutade" name="33">
 <p>Consider the benefits of value semantics when making performance comparisons.</p>
-</section><section class="slide" name="37">
+</section><section class="slide" name="34">
 <h1>Conclusion</h1>
-</section><section class="slide bullet-points" name="38">
+</section><section class="slide bullet-points" name="35">
 <h2>Conclusion</h2>
 <p class="slide">Ruby can have the best of both worlds</p>
 <p class="slide">Try it!</p>
 <p class="slide">Start with values, see where the journey takes you</p>
-</section><section class="slide link-image center" name="39">
+</section><section class="slide link-image center" name="36">
 <p><img src="assets/ee549c9f05b9b6860eb0a3aa8501f9f4.png" alt=""></p>
 <p>http://leanpub.com/happylambda</p>
-
-</section><section class="slide" name="40">
+</section><section class="slide" name="37">
 <h1>Thank You</h1></section><script src="assets/62c9a3f22c2b9ca5135709cc452273b8.js" type="text/javascript"></script><script src="assets/ef833260608fbde8e5ba177192f6e278.js" type="text/javascript"></script><script>$(function() { $.deck('.slide'); });</script>
 </div></body>
 </html>

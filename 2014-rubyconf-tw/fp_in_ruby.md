@@ -4,6 +4,28 @@
 Use the space bar or arrow keys to browse the slides.
 
 ---
+{:.code}
+
+```
+require 'typecheck'
+
+class Checked
+  extend Typecheck
+
+  typecheck '[Fixnum], String|#upcase -> Symbol',
+  def foo(x, y)
+    :z
+  end
+end
+
+Checked.new([1,2,3], 'foo')
+#=> :z
+Checked.new([1,2,:z], 'foo')
+#=> raise Typecheck::TypeError
+
+```
+
+---
 {:.center .first-page}
 
 ## Functional Programming in Ruby
@@ -66,8 +88,8 @@ An unchangeable fact
 Different values can reflect facts related to different times
 
 ```ruby
-{ date: '2014-04-24', temperature: 28 }
-{ date: '2014-04-25', temperature: 31 }
+{ date: '2014-04-24', temperature: 27 }
+{ date: '2014-04-25', temperature: 29 }
 ```
 
 ---
@@ -114,6 +136,53 @@ Make liberal use of `freeze`
 Aggregates of values are also values
 
 ---
+
+# Example
+
+---
+{:.code}
+
+```ruby
+class HTMLElement
+  attr_reader :tag, :attrs, :children
+
+  def initialize(tag, attrs, children)
+    @tag      = tag
+    @attrs    = attrs.freeze
+    @children = children.freeze
+  end
+
+  def set_attr(attr, value)
+    self.class.new(
+      tag,
+      attrs.merge(attr =&gt; value),
+      children
+    )
+  end
+end
+```
+
+---
+{:.code}
+
+```ruby
+gem 'anima'
+gem 'adamantium'
+```
+
+```ruby
+class HTMLElement
+  include Anima.new(:tag, :attrs, :children)
+  include Anima::Update
+  include Adamantium
+
+  def set_attr(attr, value)
+    update( attrs: attrs.merge(attr => value) )
+  end
+end
+```
+
+---
 {:.vocab}
 
 ## per·sis·tent
@@ -143,13 +212,33 @@ Share memory but keep immutable semantics
 Simple example: linked list
 
 ---
+{:code}
+
+```
+ List1
+   |
+ +---+   +---+   +---+
+ | x |-->|   |-->|   |--> nil
+ +---+   +---+   +---+
+
+
+ List2   List1
+   |       |
+ +---+   +---+   +---+   +---+
+ |   |-->| x |-->|   |-->|   |--> nil
+ +---+   +---+   +---+   +---+
+```
+
+---
 {:.bullet-points}
 
 ## Persistent Collections
 
-Holy grail: "Hash Array Mapped Trie" (AKA Ideal Hash Tree)
+Holy grail: "Hash Array Mapped Trie"
 
 `gem "hamster"` has Hash, List, Set, Stack, Vector, ...
+
+`github: headius/clojr` wraps the Clojure data structures.
 
 ---
 {:.center}
@@ -157,142 +246,6 @@ Holy grail: "Hash Array Mapped Trie" (AKA Ideal Hash Tree)
 ![The Value of Values - Rich Hickey](my_assets/value_of_values.png)
 
 [http://bit.ly/value_of_values](http://www.youtube.com/watch?v=-6BsiVyC1kM)
-
----
-
-# Example
-
----
-{:.center}
-
-## Example: Flashcards
-
-![](my_assets/anki.png)
-
----
-{:.code}
-
-```ruby
-class Card
-  def initialize(*args)
-    @front, @back, @interval, @factor = *args
-  end
-
-  def score!(rating)
-    update_interval!(rating)
-    update_factor!(rating)
-    self
-  end
-
-  def inspect
-    "#<Card interval: #{@interval} "+
-        "factor: #{@factor}>"
-  end
-end
-```
-
----
-{:.code}
-
-```ruby
-class Card
-  MIN_FACTOR = 1.3
-
-  def update_interval!(rating)
-    @interval = @interval * @factor
-  end
-
-  def update_factor!(rating)
-    @factor += (rating-1) * 0.15
-    @factor  = [MIN_FACTOR, @factor].max
-  end
-end
-```
-
----
-{:.code}
-
-```ruby
-card = Card.new('臺灣', 'Taiwan', 10, 2.5)
-# => #<Card interval: 10 factor: 2.5>
-
-card.score!(1)
-# => #<Card interval: 25.0 factor: 2.5>
-card.score!(3)
-# => #<Card interval: 62.5 factor: 2.8>
-card.score!(3)
-# => #<Card interval: 175.0 factor: 3.099>
-card.score!(0)
-# => #<Card interval: 10 factor: 2.949>
-card.score!(0)
-# => #<Card interval: 10 factor: 2.8>
-```
-
----
-{:.code}
-
-```ruby
-class Card
-  include Anima.new(:front, :back, :rating)
-
-  extend Forwardable
-  def_delegators :rating, :interval, :factor
-
-  def score!(score)
-    self.class.new(
-      front: front,
-      back: back,
-      rating: Rating.new(
-        score: score,
-        previous: rating
-      )
-    )
-  end
-end
-```
-
----
-{:.code}
-
-```ruby
-class Rating
-  include Anima.new(:score, :previous)
-
-  def interval
-    previous.interval * previous.factor
-  end
-
-  def factor
-    [ MIN_FACTOR,
-      previous.factor + (score-1)*0.15].max
-  end
-end
-
-NullRating =
-  Struct.new(:interval, :factor).new(10, 2.5)
-```
-
-
----
-{:.code}
-
-```ruby
-card = Card.new(
-  front: '臺灣', back: 'Taiwan', rating: NullRating
-)
-# => #<Card interval: 10 factor: 2.5>
-
-card = card.score!(1)
-# => #<Card interval: 25.0 factor: 2.5>
-card = card.score!(3)
-# => #<Card interval: 62.5 factor: 2.8>
-card = card.score!(3)
-# => #<Card interval: 175.0 factor: 3.099>
-card = card.score!(0)
-# => #<Card interval: 10 factor: 2.949>
-card = card.score!(0)
-# => #<Card interval: 10 factor: 2.8>
-```
 
 ---
 
@@ -319,9 +272,11 @@ When everything is a value, programming is mapping one set of values to another.
 
 ## Pure Functions
 
-Have reproducible results
+Reproducible results
 
-Highly reusable
+Naturally parallel
+
+Location independent
 
 Can be memoized
 
@@ -393,22 +348,32 @@ Functions as the unit of reuse
 
 Combine functions into bigger functions
 
-Possible in Ruby, but doesn't come natural
-
 `funkify` gem has interesting approach
 
 ---
-{:.bullet-points}
+{:.code}
 
-## Computing Functions
+```ruby
+def pred_or(preds)
+  ->(value) { preds.any?{|pred| pred.(value) } }
+end
 
-Closures
-
-Function Composition
-
-Partial application
-
-Higher-order functions
+def parse_type_list(choices)
+  types = choices.split('|').map(&:strip)
+  pred_or [
+    pred_or(
+      types.map {|choice|
+        method(:check).to_proc.curry(choice)
+      }
+    ),
+    pred_or(
+      types.map {|choice|
+        method(:raise).to_proc.curry(choice)
+      }
+    )
+  ]
+end
+```
 
 ---
 
@@ -453,7 +418,6 @@ Start with values, see where the journey takes you
 ![](my_assets/happy_lambda_cover_smaller.png)
 
 http://leanpub.com/happylambda
-
 
 ---
 
