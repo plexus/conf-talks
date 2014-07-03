@@ -1,0 +1,139 @@
+@font-face {
+  font-family: "avenir-light";
+  src: url(../assets/6ff7532b27d4d7f84d14462d92131d14.eot);
+  src: url(../assets/6ff7532b27d4d7f84d14462d92131d14.eot?#iefix) format("embedded-opentype"), url(../assets/17c770a6d3156ac2a3038b6f7dbdc545.woff) format("woff"), url(../assets/7490173f36be6e772b11268ad5894cb9.ttf) format("truetype"), url(../assets/f49bd5366647bda4f02e422173d43160.svg#avenir-light) format("svg");
+}
+
+body {
+  font-family: "avenir-light", Helvetica, sans-serif;
+  font-size: 50px;
+  font-weight: lighter;
+  letter-spacing: -1px;
+}
+
+.deck-container > .slide {
+  -moz-box-sizing: border-box;
+       box-sizing: border-box;
+  padding: 1em;
+  width: 100%;
+  height: 100%;
+ // background-image: url(../my_assets/ppt_bk.jpg);
+  background-size: 100% 100%;
+}
+
+.slide.full-image {
+  text-align: center;
+}
+
+.link-image img {
+  width: auto;
+  height: 75%;
+  margin: auto auto;
+  display: inline;
+  margin-top: -1em;
+}
+
+.full-image img {
+  width: auto;
+  height: 90%;
+  margin: auto auto;
+  display: inline;
+  margin-top: -1em;
+}
+
+.slide.first-page {
+  padding-top: 2em;
+//  background-image: url(../my_assets/first_page.jpg);
+}
+
+h1 {
+  font-size: 3em;
+  text-align: center;
+  margin-top: 220px;
+}
+
+h1:after {
+  font-family: "Times New Roman", Times, serif;
+  content: "§";
+  display: block;
+  font-size: 610px;
+  font-weight: lighter;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  left: 0;
+  top: 0;
+  color: #eeeeee;
+  z-index: -1
+}
+
+h2 {
+  font-size: 1.5em;
+  width: 100%;
+  border-bottom: 1px solid;
+}
+
+pre {
+  font-size: 0.7em;
+}
+
+.code pre {
+  font-size: 0.6em;
+  margin-top: 0;
+}
+
+.lots-of-code pre {
+  font-size: 0.5em;
+  margin-top: 0;
+}
+
+.center {
+  text-align: center;
+}
+
+
+.slide .deck-before, .slide .deck-previous {
+  opacity: 0.4;
+}
+
+.slide .deck-before:not(.deck-child-current) .deck-before, .slide .deck-before:not(.deck-child-current) .deck-previous, .slide .deck-previous:not(.deck-child-current) .deck-before, .slide .deck-previous:not(.deck-child-current) .deck-previous {
+  opacity: 1;
+}
+
+.slide .deck-child-current {
+  opacity: 1;
+}
+
+dd p, dt p, ol p, ul p {
+  margin-top: 0;
+}
+
+.boutade {
+  text-align: center;
+  font-size: 1.4em;
+  line-height: 2em;
+}
+
+.definition {
+  text-align: center;
+  font-size: 1.4em;
+  line-height: 2em;
+}
+
+
+.hljs-symbol {
+  color: #0000bb;
+}
+
+.hljs-keyword {
+  color: #608000;
+}
+
+.whoami img {
+  display: inline;
+  height: 128px;
+}
+
+.whoami .bigger img {
+  height: 400px;
+}

@@ -1,0 +1,335 @@
+<!DOCTYPE >
+<html>
+<head>
+<script src="assets/5ca7582261c421482436dfdf3af9bffe.js" type="text/javascript"></script><link href="assets/9f3db20cff823f68da33bfa3b4c78634.css" rel="stylesheet">
+<link href="assets/c9ebbba65e8e41025f78fa4ced91d6c6.css" rel="stylesheet">
+<script src="assets/e90da1516f1c9c98063f881f15e0b24a.js" type="text/javascript"></script><title>Building Hypermedia APIs with Yaks | @plexus</title>
+<link rel="stylesheet" href="assets/c1cd938f43002a217f591a8a4303a896.css">
+<script src="assets/1a26d479f3ec3ab89467c042ab2b970b.js"></script><script>hljs.initHighlightingOnLoad();</script><meta charset="utf-8">
+<meta name="viewport" content="width=1024">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<link rel="stylesheet" type="text/css" href="assets/4ca5372aaeb0a51029c7bc7bdaee72a8.css">
+<link rel="stylesheet" type="text/css" href="assets/6a54868b940cfb9c746ce6c83ac5efaf.css">
+</head>
+<body><div class="deck-container">
+<section class="slide">
+<p class="center">Use the space bar or arrow keys to browse the slides.</p>
+</section><section class="slide center first-page" name="1">
+<h2>Building Hypermedia APIs with Yaks</h2>
+<p>Ruby User Group Berlin, July 2014</p>
+<p>by Arne Brasseur / &#30333;&#38463;&#20161; / @plexus</p>
+</section><section class="slide definition" name="2">
+<p>Je n&rsquo;ai fait celle-ci plus longue que parce que je n&rsquo;ai pas eu le loisir de la faire plus courte.</p>
+<p>&mdash; Blaise Pascal</p>
+</section><section class="slide center full-image" name="3">
+<p><img src="assets/c403fd78568663fb0b94189a08d2e689.jpg" alt=""></p>
+<p>Dictionary</p>
+</section><section class="slide center full-image" name="4">
+<p><img src="assets/ee798d9e399838c939e84c21825d6bcc.jpg" alt=""></p>
+<p>Rich Hickey</p>
+</section><section class="slide center full-image" name="5">
+<p><img src="assets/946747084be4a00a7c7422f8f7b7feae.jpg" alt=""></p>
+<p>Marouane Fellaini</p>
+</section><section class="slide" name="6">
+<h1>rest</h1>
+</section><section class="slide" name="7">
+<h2>rest</h2>
+<ol><li><p>A bodily state characterized by minimal functional and metabolic activities.</p></li></ol>
+<p>&mdash; Merriam-Webster</p>
+</section><section class="slide expand" name="8">
+<p><img src="assets/723c3f8ba09d3c5d8e8b28bbac74f51d.gif" alt=""></p>
+</section><section class="slide" name="9">
+<h2>rest</h2>
+<p>7. To remain for action or accomplishment. <em>The answer rests with you.</em></p>
+<p>&mdash; Merriam-Webster</p>
+</section><section class="slide" name="10">
+<h1>REST</h1>
+</section><section class="slide bullet-points" name="11">
+<h2>REST</h2>
+<p>&ldquo;Representational State Transfer&rdquo;</p>
+<ul>
+<li class="slide"><p>Roy Fielding, 2000</p></li>
+<li class="slide"><p>Architectural Style for Networked Systems</p></li>
+<li class="slide"><p>After the fact description of how HTTP + HTML behave</p></li>
+</ul>
+</section><section class="slide" name="12">
+<h1>Architecture</h1>
+</section><section class="slide expand" name="13">
+<p><img src="assets/f44abb7c328b90e16a877594fed3b679.jpg" alt=""></p>
+</section><section class="slide bullet-points" name="14">
+<h2>Architectural Style</h2>
+<p>A Set of constraints</p>
+<p>e.g.</p>
+<ul>
+<li class="slide"><p>All components must have the same interface</p></li>
+<li class="slide"><p>The system consists of layers that work independently</p></li>
+</ul>
+</section><section class="slide expand" name="15">
+<p><img src="assets/b6340513f170e1537d6cec879e0af51c.jpg" alt=""></p>
+</section><section class="slide expand" name="16">
+<p><img src="assets/a2d2a20b7dd0dd42a652a58d33f0f0f7.jpg" alt=""></p>
+</section><section class="slide" name="17">
+<h2>REST</h2>
+<p>In order to obtain a uniform interface, multiple architectural constraints are needed.</p>
+<p>REST is defined by four interface constraints.</p>
+<p>&mdash; Roy Fielding</p>
+</section><section class="slide bullet-points" name="18">
+<h2>Interface Constraints</h2>
+<ul>
+<li class="slide"><p>identification of resources</p></li>
+<li class="slide"><p>manipulation of resources through representations</p></li>
+<li class="slide"><p>self-descriptive messages</p></li>
+<li class="slide"><p>hypermedia as the engine of application state</p></li>
+</ul>
+</section><section class="slide" name="19">
+<h2>Uhhhh&hellip; WAT?</h2>
+<ul>
+<li><p>Resources</p></li>
+<li><p>Messages</p></li>
+<li><p>Hypermedia</p></li>
+</ul>
+</section><section class="slide center full-image" name="20">
+<p><img src="assets/c403fd78568663fb0b94189a08d2e689.jpg" alt=""></p>
+<p>Dictionary</p>
+</section><section class="slide definition" name="21">
+<p>The key abstraction in REST is a resource. Anything that can be named can be a resource: a document or image, a service (today&rsquo;s weather), a collection of other resources, a non-virtual object (e.g. a person), etc.</p>
+</section><section class="slide definition" name="22">
+<p>Any concept that might be the target of an author&rsquo;s hypertext reference must fit within the definition of a resource.</p>
+
+</section><section class="slide definition" name="23">
+<p>A resource is a conceptual mapping to an entity, not the entity that corresponds to the mapping at any particular point in time.</p>
+<p>&mdash; Roy Fielding</p>
+</section><section class="slide definition" name="24">
+<p>The Tao that can be spoken is not the eternal Tao<br>
+The name that can be named is not the eternal name</p>
+<p>&mdash; &#32769;&#23376; (Lao-Tze)</p>
+</section><section class="slide definition" name="25">
+<p>REST components perform actions on a resource by using a representation to capture the current or intended state of that resource and transferring that representation between components.</p>
+<p>&mdash; Roy Fielding</p>
+</section><section class="slide expand" name="26">
+<p><img src="assets/fe5fca0b3b73fab328bd002dcd4fc0ce.png" alt=""></p>
+
+</section><section class="slide" name="27">
+<h1>hy&middot;per&middot;me&middot;dia</h1>
+</section><section class="slide definition" name="28">
+<h2>hy&middot;per&middot;text</h2>
+<p>A software system allowing extensive cross-referencing between related sections of text and associated graphic material.</p>
+<p>&mdash; Merriam-Webster</p>
+</section><section class="slide definition" name="29">
+<h2>hy&middot;per&middot;text</h2>
+<p>Text + links</p>
+<p>&mdash; Hypermedia for dummies</p>
+</section><section class="slide definition" name="30">
+<p>Hypermedia is the simultaneous presentation of <strong>information and controls</strong> such that the <strong>information becomes the affordance</strong> through which the user/client <strong>obtains choices and selects actions</strong>.</p>
+<p>&mdash; Roy Fielding</p>
+</section><section class="slide definition" name="31">
+<h2>Affordance</h2>
+<p>The set of possible actions the user is made aware of</p>
+</section><section class="slide" name="32">
+<h1>Represent</h1>
+</section><section class="slide lots-of-code" name="33">
+<pre><code>{
+  "id": 9,
+  "name": "&#23380;&#23376;",
+  "pinyin": "Kongzi",
+  "latinized": "Confucius",
+  "_links": {
+    "self":    { "href": "http://lit.example.com/authors/kongzi"  },
+    "profile": { "href": "http://lit.example.com/profiles/scholar" },
+    "http://lit.example.com/rels/quotes": [{
+      "href": "http://lit.example.com/kongzi/quotes/{?query}",
+      "templated": true,
+      "title": "Search for quotes"
+    }]
+  },
+  "_embedded": {
+    "http://lit.example.com/rel/works": [
+      {
+        "id": 11,
+        "chinese_name": "&#35542;&#35486;",
+        "english_name": "Analects",
+        "_links": {
+          "self":    { "href": "http://lit.example.com/work/11" },
+          "profile": { "href": "http://lit.example.com/profiles/work" }
+        },
+        "_embedded": {
+          "http://lit.example.com/rel/quotes": [
+            {
+              "id": 17,
+              "chinese": "&#24260;&#28954;&#12290;&#23376;&#36864;&#26397;&#65292;&#26352;&#65306;&ldquo;&#20663;&#20154;&#20046;&#65311;&rdquo; &#19981;&#21839;&#39340;&#12290;"
+            },
+            {
+              "id": 18,
+              "chinese": "&#23376;&#26352;&#65306;&ldquo;&#20854;&#24661;&#20046;&#65281;&#24049;&#25152;&#19981;&#27442;&#12289;&#21247;&#26045;&#26044;&#20154;&#12290;&rdquo;"
+            }
+          ],
+          "http://lit.example.com/rel/era": {
+            "id": 99,
+            "name": "Zhou Dynasty"
+          }
+        }
+      },
+</code></pre>
+</section><section class="slide" name="34">
+<pre><code>$ curl -sv -H 'Accept: application/hal+json' http://yaks-airports.herokuapp.com/airports
+&gt; GET /airports HTTP/1.1
+&gt; Host: yaks-airports.herokuapp.com
+&gt; Accept: application/hal+json
+&gt;
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: application/hal+json
+&lt; Content-Length: 23887
+&lt; Connection: keep-alive
+&lt;
+{
+  "count": 7733,
+  "offset": 0,
+  "_links": {
+    "next": { "href": "/airports?offset=20" }
+  },
+  "_embedded": {
+    "rels:airports": [
+...
+</code></pre>
+</section><section class="slide" name="35">
+<h2>Hypermedia Affordances</h2>
+<ul>
+<li><p>Links for embedded resources</p></li>
+<li><p>Outbound links</p></li>
+<li><p>Templated Queries (forms)</p></li>
+</ul>
+</section><section class="slide" name="36">
+<h1>Yaks</h1>
+</section><section class="slide expand" name="37">
+<p><img src="assets/f7e3efe32fa2fb4ce709117ddf01f869.jpg" alt=""></p>
+</section><section class="slide expand" name="38">
+<p><img src="assets/8735a26ba85e7d3569de336c08768e37.jpg" alt=""></p>
+</section><section class="slide expand" name="39">
+<p><img src="assets/958792d7035533f7f71a3f2749851957.jpg" alt=""></p>
+</section><section class="slide" name="40">
+<iframe src="http://www.ebaumsworld.com/media/embed/24101" width="100%" height="100%" frameborder="0"></iframe>
+</section><section class="slide" name="41">
+<h2>Web Standards</h2>
+<ul>
+<li><p>RFC4288 Media types</p></li>
+<li><p>RFC5988 Web Linking</p></li>
+<li><p>RFC6906 The &ldquo;profile&rdquo; link relation</p></li>
+<li><p>RFC6570 URI Templates.</p></li>
+</ul>
+
+</section><section class="slide expand" name="42">
+<p><img src="assets/97f305d101613a26bf80ad101030d387.png" alt=""></p>
+
+</section><section class="slide" name="43">
+<h2>Multi-format</h2>
+<pre class="language-ruby"><code>Yaks::Format.mime_types()
+#=&gt;
+{:hal =&gt;
+   "application/hal+json",
+ :json_api =&gt;
+   "application/vnd.api+json",
+ :collection_json =&gt;
+   "application/vnd.collection+json"
+}
+</code></pre>
+</section><section class="slide" name="44">
+<pre class="language-ruby"><code>class Country
+  def airports #...
+  def airlines #...
+end
+
+class Airline
+  def country #...
+end
+
+class Airport
+  def country #...
+end
+</code></pre>
+</section><section class="slide lots-of-code" name="45">
+<pre><code>module API
+
+class CountryMapper &lt; BaseMapper
+  attributes :id, :name, :iso3166_1_alpha_2, :dst_type
+
+  link :self, '/countries/{id}'
+  link 'airports', '/countries/{id}/airports'
+  link 'airlines', '/countries/{id}/airlines'
+
+  def id
+    country.iso3166_1_alpha_2
+  end
+end
+
+end
+</code></pre>
+</section><section class="slide lots-of-code" name="46">
+<pre><code>module API
+
+class AirportMapper &lt; BaseMapper
+  link :self, '/airports/{id}'
+  link 'flightstats',
+    'http://flightstats.com/airportDetails?code={iata_code}'
+  link 'wikipdia', :wikipedia_link
+
+  attributes :id, :name, :city, :country_name, :iata_code
+
+  has_one :country
+
+  def wikipedia_link
+    "https://en.wikipedia.org" + ...
+  end
+end
+
+end
+</code></pre>
+</section><section class="slide lots-of-code" name="47">
+<pre class="language-ruby"><code>module API
+
+class AirlineMapper &lt; BaseMapper
+  link :self, '/airlines/{id}'
+
+  attributes :id, :name, :alt_name, :iata_code, :active
+
+  has_one :country
+
+  def active
+    airline.active == "Y"
+  end
+end
+
+end
+</code></pre>
+</section><section class="slide lots-of-code" name="48">
+<pre class="language-ruby"><code>module API
+  def self.yaks
+    @yaks ||= Yaks.new do
+      namespace API
+
+      rel_template 'http://api.example.com/docs/rels/{rel}'
+
+      after do |result|
+        JSON.pretty_generate result
+      end
+    end
+  end
+end
+
+pp API.yaks.serialize(Airport.all, env: rack_env)
+</code></pre>
+</section><section class="slide expand" name="49">
+<p><img src="assets/f20baf9ca88848fc34dd3f1f5cb06b00.png" alt=""></p>
+</section><section class="slide" name="50">
+<h1>Demo</h1>
+</section><section class="slide" name="51">
+<h1>Q?</h1>
+</section><section class="slide" name="52">
+<ul>
+<li><p>Why name it &ldquo;Yaks&rdquo;</p></li>
+<li><p>What about support for X? (Siren, JSON-LD, Atom)</p></li>
+<li><p>What about forms/actions?</p></li>
+<li><p>Do you use convention over configuration?</p></li>
+<li><p>How about Rack integration?</p></li>
+</ul></section><script src="assets/62c9a3f22c2b9ca5135709cc452273b8.js" type="text/javascript"></script><script src="assets/ef833260608fbde8e5ba177192f6e278.js" type="text/javascript"></script><script>$(function() { $.deck('.slide'); });</script>
+</div></body>
+</html>
