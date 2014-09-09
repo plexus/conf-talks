@@ -1,0 +1,36 @@
+* Programming Paradigms
+
+  Main point: values and functions can mean two different things
+
+** Imperative
+
+   Imperative programming is a programming paradigm that describes
+   computation in terms of statements that change a program state.
+
+   - statements
+   - state
+
+   Imperative programming is a programming paradigm that describes
+   computation in terms of statements that change a program state over
+   time.
+
+** Functional Programming
+
+   Functional programming is a programming paradigm, that treats
+   computation as the evaluation of mathematical functions and avoids
+   state and mutable data. It is a declarative programming paradigm,
+   which means programming is done with expressions.
+
+   Functional programming is a programming paradigm that describes
+   computation in terms of functions that compute values.
+
+   In functional programming,
+
+   - functions
+   - values
+
+* Why Functional?
+* Functional Ruby
+** How much "functional" do we already get?
+** What are people already doing?
+** Where could we be heading?

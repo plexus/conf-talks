@@ -1,0 +1,10 @@
+#+TITLE: Drawing Owls with Overtone
+
+2014-08-16 Lightning.io, Świnoujście, Poland
+
+A lightning talk by Arne Brasseur, @plexus
+
+* Overtone
+
+** Clojure Library for musical synthesis, composition, performance
+** Sits on top of the SuperCollider Engine

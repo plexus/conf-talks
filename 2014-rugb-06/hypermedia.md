@@ -485,3 +485,4 @@ pp API.yaks.serialize(Airport.all, env: rack_env)
 * What about forms/actions?
 * Do you use convention over configuration?
 * How about Rack integration?
+* Why not just `Yaks.configure do`

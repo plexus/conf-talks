@@ -1,0 +1,215 @@
+<!DOCTYPE >
+<html>
+<head>
+<link href="file:///home/arne/github/slippery/assets/reveal.js/css/reveal.min.css" rel="stylesheet">
+<link href="file:///home/arne/github/slippery/assets/reveal.js/css/theme/sky.css" rel="stylesheet">
+<title>Functional Programming in Ruby | @plexus</title>
+<link rel="stylesheet" href="file:///home/arne/github/slippery/assets/highlight.js/highlight-0.8.default.min.css">
+<script src="file:///home/arne/github/slippery/assets/highlight.js/highlight-0.8.min.js"></script><script>hljs.initHighlightingOnLoad();</script><meta charset="utf-8">
+<meta name="viewport" content="width=1024">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+<section><h1>Functional Programming in Ruby</h1>
+<h2>&nbsp;</h2>
+<h2>Frozen Rails, Helsinki</h2>
+<h2>11/12 September 2014</h2>
+</section><section name="1">
+<p style="float: left; margin-left: 150px;"><img src="img/avatar.jpg" alt=""></p>
+
+<h1 style="margin-top: 150px;">@plexus</h1>
+</section><section class="dark" fullscreen-img="img/assembler.jpg" name="2">
+<p><a href="https://www.flickr.com/photos/pablobd/4760973863">Image: @pablobd/4760973863</a></p>
+</section><section class="fragments" name="3">
+<h2>Imperative Programming</h2>
+<ul>
+<li class="fragment"><p>What we&rsquo;ve done since forever</p></li>
+<li class="fragment"><p>All about state</p></li>
+<li class="fragment"><p>Statements change the state</p></li>
+</ul>
+</section><section class="fragments" name="4">
+<h2>State = Place</h2>
+<p class="fragment">An area where you can store some data</p>
+<p class="fragment">Register, Memory, Variable</p>
+</section><section class="fragments" name="5">
+<h2>Imperative Evolved</h2>
+<ul>
+<li class="fragment">
+<p>Procedural programming
+</p>
+<ul><li class="fragment"><p>Group statements together in procedures</p></li></ul>
+</li>
+<li class="fragment">
+<p>Object Oriented Programming
+</p>
+<ul><li class="fragment"><p>Group mutable state in objects</p></li></ul>
+</li>
+</ul>
+</section><section fullscreen-img="img/maths.jpg" name="6">
+<p><a href="https://www.flickr.com/photos/35064820@N00/3950391591">Image: @tkamenick/3950391591</a></p>
+</section><section class="bullet-points fragments" name="7">
+<h2>Functional Programming</h2>
+<p class="fragment">Programming with <strong>Values</strong></p>
+<p class="fragment">No mutable state</p>
+<p class="fragment">Once &ldquo;born&rdquo; a value is completely determined</p>
+</section><section class="bullet-points fragments" name="8">
+<h2>Functional Programming</h2>
+<p class="fragment">Programming with <strong>Pure Functions</strong></p>
+<p class="fragment">Only relies on arguments, not on state</p>
+<p class="fragment">No observable side effects</p>
+</section><section class="heading" name="9">
+<h1>Why Functional?</h1>
+</section><section name="10">
+<p><img src="img/tarpit.png" alt="Article: Out of the tarpit"></p>
+</section><section name="11">
+<blockquote><p>Functional programming goes a long way towards avoiding the problems of state-derived complexity. This has very significant benefits for testing, as well as for reasoning.</p></blockquote>
+</section><section class="bullet-points" name="12">
+<h2>Times Are Changing</h2>
+<ul>
+<li><p>1995 Ruby</p></li>
+<li><p>2003 Scala</p></li>
+<li><p>2005 F#</p></li>
+<li><p>2007 Clojure</p></li>
+<li><p>2012 Elixir</p></li>
+</ul>
+<p class="fragment">The future is multi-paradigm</p>
+</section><section class="bullet-points" name="13">
+<h2>Multi-paradigm</h2>
+<p>FP as information model</p>
+<p>OO for organization</p>
+<p>Reference types to manage state</p>
+<p>Actor model to manage concurrency</p>
+</section><section name="14">
+<h2>Multi-paradigm</h2>
+<blockquote><p>The main weakness of functional programming is the flip side of its main strength &mdash; namely that problems arise when (as is often the case) the system to be built must maintain state of some kind.</p></blockquote>
+</section><section class="bullet-points fragments" name="15">
+<h2>Times Are Changing</h2>
+<ul>
+<li class="fragment"><p>Current CPU limit: 3-4 GHz</p></li>
+<li class="fragment"><p>&lt; 2005, only single cores</p></li>
+<li class="fragment"><p>Now: 8, 16, 32 cores, and more</p></li>
+<li class="fragment"><p>New limit: Can our software parallelize?</p></li>
+</ul>
+</section><section class="heading" name="16">
+<h1>Information Model</h1>
+</section><section class="bullet-points" name="17">
+<h2>Information Model</h2>
+<p>OO has a flawed concept of</p>
+<ul>
+<li><p>Value</p></li>
+<li><p>State</p></li>
+<li><p>Identity</p></li>
+<li><p>Time</p></li>
+<li><p>Behavior</p></li>
+</ul>
+<p>This leads to accidental complexity</p>
+</section><section class="bullet-points" name="18">
+<h2>Values</h2>
+<p>In OO only the most basic entities are immutable</p>
+<p>Information consists of facts</p>
+<p>What fact does a mutable object represent?</p>
+</section><section class="bullet-points" name="19">
+<p>OO: There is only one river</p>
+<p>FP: I can never step in the same river twice</p>
+</section><section name="20">
+
+</section><section class="bullet-points" name="21">
+<h2>Ruby: a bit of everything</h2>
+<p>It&rsquo;s a Smalltalk<br>
+It&rsquo;s a Bash<br>
+It&rsquo;s a Perl<br>
+It&rsquo;s a LISP</p>
+</section><section class="bullet-points fragments" name="22">
+<h2>Ruby: a Bit of Everything</h2>
+<p class="fragment">Most obvious trait: OOP</p>
+<p class="fragment">But also some functional: lambdas, map, reduce</p>
+<p class="fragment">But: no functional culture</p>
+</section><section class="bullet-points fragments" name="23">
+<h2>Functional Ruby?</h2>
+<ul>
+<li class="fragment"><p>Values + Pure functions are the exception</p></li>
+<li class="fragment"><p>Recursion is discouraged</p></li>
+<li class="fragment">
+<p>No generalized laziness
+</p>
+<ul><li class="fragment"><p>evaluation must be strict because pure functions are the exception</p></li></ul>
+</li>
+</ul>
+</section><section class="bullet-points fragments" name="24">
+<h2>Functional Ruby?</h2>
+<ul>
+<li class="fragment">
+<p>No functional batteries included (compose, curry, partial, juxt, etc.)
+</p>
+<ul><li class="fragment"><p>Limited built-in higher order functions</p></li></ul>
+</li>
+<li class="fragment"><p>Mixing lambdas+blocks is awkward</p></li>
+</ul>
+</section><section class="bullet-points fragments" name="25">
+<h2>Risks of encapsulation</h2>
+<ul>
+<li class="fragment"><p>False sense of security (is it threadsafe?)</p></li>
+<li class="fragment">
+<p>Limited reuse and extension
+</p>
+<ul><li class="fragment"><p>data is invisible, use cases have to be thought of up front</p></li></ul>
+</li>
+<li class="fragment"><p>Result: subclassing, redefining private/protected API, monkey patching</p></li>
+<li class="fragment"><p>All because: I don&rsquo;t trust you handling my (mutable) data</p></li>
+</ul>
+</section><section class="bullet-points fragments" name="26">
+<h2>Sanity through purity</h2>
+<ul>
+<li class="fragment"><p>Values &rArr; Pure Functions &rArr; Persistent Data Structures</p></li>
+<li class="fragment"><p>These go hand in hand, you have to have all three</p></li>
+<li class="fragment"><p>Not revolutionary in itself, but huge enabler</p></li>
+</ul>
+</section><section class="bullet-points fragments" name="27">
+<h2>Sanity through purity</h2>
+<ul>
+<li class="fragment"><p>Sharing is safe, always, with anyone</p></li>
+<li class="fragment"><p>A value is always consistent: no need for read locks</p></li>
+</ul>
+</section><section class="bullet-points fragments" name="28">
+<h2>Sane Concurrency</h2>
+<ul>
+<li class="fragment"><p>STM, Compare-and-swap, Actors</p></li>
+<li class="fragment"><p>Because of referential transparency</p></li>
+<li class="fragment"><p>Doable in (J)Ruby</p></li>
+</ul>
+</section><section class="bullet-points fragments" name="29">
+<h2>Parallelizable By Default</h2>
+<p class="fragment">Because of referential transparency</p>
+<p class="fragment">Doable in (J)Ruby</p>
+</section><section class="bullet-points fragments" name="30">
+<h2>Memoizable By Default</h2>
+<p class="fragment">Because of referential transparency</p>
+<p class="fragment">Doable in Ruby</p>
+</section><section name="31">
+<p>It&rsquo;s a dependency graph!</p>
+<p>The system can reorder statements, optimize them away</p>
+<p>Not doable in Ruby</p>
+</section><section name="32">
+<p>The Reporting Problem</p>
+<p>How to view a consistent snapshot of the world? Stop the world?</p>
+</section><section name="33">
+<p>Presents!</p>
+<p>Undo/Redo for free</p>
+<p>Savepoints for free</p>
+</section><section name="34">
+<p>Functional Ruby: it&rsquo;s already happening</p>
+<p>Data structures with value semantics</p>
+<p>Immutable Struct: a dozen gems do this</p>
+<p>Persistent Vector, Set, Map: Hamster, Clojr, persistent-data-structures</p>
+</section><section name="35">
+<p>But, cultural problem: ruby core believes in &ldquo;one true Array, one true Hash&rdquo;</p>
+<p>We risk creating isolated mini-ecosystems with their own data structures, libraries, semantics</p>
+</section><section name="36">
+<p>Examples/Refactorings:</p>
+<p>STM with Clojr</p></section>
+</div></div>
+<script src="file:///home/arne/github/slippery/assets/reveal.js/lib/js/head.min.js" type="text/javascript"></script><script src="file:///home/arne/github/slippery/assets/reveal.js/js/reveal.js" type="text/javascript"></script><script>Reveal.initialize({"dependencies":[{"src":"https://rawgit.com/regisb/reveal.js-fullscreen-img/master/fullscreen-img.js"}],"history":true,"transition":"none","width":1500,"height":1000});</script>
+</body>
+</html>
