@@ -1,71 +1,82 @@
 <!DOCTYPE >
 <html>
 <head>
-<link href="file:///home/arne/github/slippery/assets/reveal.js/css/reveal.min.css" rel="stylesheet">
-<link href="file:///home/arne/github/slippery/assets/reveal.js/css/theme/sky.css" rel="stylesheet">
+<link href="assets/2b695b65cd882c71a63ecf3a5a2f6066.css" rel="stylesheet">
+<link href="assets/7a165e20747bf5fe7f71dc429045f386.css" rel="stylesheet">
 <title>Functional Programming in Ruby | @plexus</title>
-<link rel="stylesheet" href="file:///home/arne/github/slippery/assets/highlight.js/highlight-0.8.default.min.css">
-<script src="file:///home/arne/github/slippery/assets/highlight.js/highlight-0.8.min.js"></script><script>hljs.initHighlightingOnLoad();</script><meta charset="utf-8">
+<link rel="stylesheet" href="assets/c1cd938f43002a217f591a8a4303a896.css">
+<script src="assets/8f16b5edb7f88bfec561d7749e3c2241.js"></script><script>hljs.initHighlightingOnLoad();</script><meta charset="utf-8">
 <meta name="viewport" content="width=1024">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="assets/a7603970a1cba6caee850af53d5c1570.css">
 </head>
 <body>
 <div class="reveal"><div class="slides">
-<section><h1>Functional Programming in Ruby</h1>
+<section>
+<p class="center">Use the space bar or arrow keys to browse the slide.</p>
+</section><section class="center" style="font-size: 70%" name="1">
+<h1>Functional Programming in Ruby</h1>
 <h2>&nbsp;</h2>
 <h2>Frozen Rails, Helsinki</h2>
 <h2>11/12 September 2014</h2>
-</section><section name="1">
-<p style="float: left; margin-left: 150px;"><img src="img/avatar.jpg" alt=""></p>
+
+<p><a href="http://arnebrasseur.net/talks/frozenrails2014">http://arnebrasseur.net/talks/frozenrails2014</a></p>
+</section><section name="2">
+<p style="float: left; margin-left: 150px;"><img src="assets/151132f1ab2cddced0baeeecb0821898.jpg" alt=""></p>
 
 <h1 style="margin-top: 150px;">@plexus</h1>
-</section><section class="dark" fullscreen-img="img/assembler.jpg" name="2">
+</section><section class="heading double" name="3">
+<h1>Programming Paradigms</h1>
+</section><section class="dark" fullscreen-img="img/assembler.jpg" name="4" data-background="img/assembler.jpg">
 <p><a href="https://www.flickr.com/photos/pablobd/4760973863">Image: @pablobd/4760973863</a></p>
-</section><section class="fragments" name="3">
-<h2>Imperative Programming</h2>
-<ul>
-<li class="fragment"><p>What we&rsquo;ve done since forever</p></li>
-<li class="fragment"><p>All about state</p></li>
-<li class="fragment"><p>Statements change the state</p></li>
-</ul>
-</section><section class="fragments" name="4">
-<h2>State = Place</h2>
-<p class="fragment">An area where you can store some data</p>
-<p class="fragment">Register, Memory, Variable</p>
 </section><section class="fragments" name="5">
-<h2>Imperative Evolved</h2>
-<ul>
-<li class="fragment">
-<p>Procedural programming
-</p>
-<ul><li class="fragment"><p>Group statements together in procedures</p></li></ul>
-</li>
-<li class="fragment">
-<p>Object Oriented Programming
-</p>
-<ul><li class="fragment"><p>Group mutable state in objects</p></li></ul>
-</li>
-</ul>
-</section><section fullscreen-img="img/maths.jpg" name="6">
+<h2>Imperative Programming</h2>
+<p class="fragment">State + Statements</p>
+<p class="fragment">Modeled after the machine</p>
+</section><section class="fragments" name="6">
+<h2>Evolutionary Steps</h2>
+<p class="fragment">Procedural, group statements</p>
+<p class="fragment">Object Oriented, group state</p>
+<p class="fragment">Still imperative at heart</p>
+</section><section class="fragments" name="7">
+<h2>Place Oriented Programming</h2>
+<p class="fragment">State is kept in &ldquo;places&rdquo;</p>
+<p class="fragment">Register, Memory, Variable</p>
+<p class="fragment">What&rsquo;s in a place can change</p>
+</section><section class="fragments" name="8">
+<h2>Place Oriented Programming</h2>
+<p class="fragment">Old information is overwritten with new</p>
+<p class="fragment">Done for efficiency</p>
+<p class="fragment">But facts don&rsquo;t change, they incorporate time</p>
+<pre class="language-ruby fragment"><code>{ date: '2014-09-10', temperature: 19 }
+{ date: '2014-09-11', temperature: 17 }
+</code></pre>
+</section><section fullscreen-img="img/maths.jpg" name="9" data-background="img/maths.jpg">
 <p><a href="https://www.flickr.com/photos/35064820@N00/3950391591">Image: @tkamenick/3950391591</a></p>
-</section><section class="bullet-points fragments" name="7">
+</section><section class="fragments" name="10">
 <h2>Functional Programming</h2>
-<p class="fragment">Programming with <strong>Values</strong></p>
-<p class="fragment">No mutable state</p>
-<p class="fragment">Once &ldquo;born&rdquo; a value is completely determined</p>
-</section><section class="bullet-points fragments" name="8">
+<p class="fragment">Modeled after mathematical functions</p>
+<p class="fragment">Based on human reasoning, not machine design</p>
+</section><section class="fragments" name="11">
+<h2>Functional Programming</h2>
+<p class="fragment">Programming with <strong>Immutable Values</strong></p>
+<p class="fragment">Can be &ldquo;simple&rdquo;: <code>42</code>, <code>:foo</code></p>
+<p class="fragment">Or composite, lists, sets, maps</p>
+</section><section class="fragments" name="12">
 <h2>Functional Programming</h2>
 <p class="fragment">Programming with <strong>Pure Functions</strong></p>
 <p class="fragment">Only relies on arguments, not on state</p>
 <p class="fragment">No observable side effects</p>
-</section><section class="heading" name="9">
+</section><section class="heading double" name="13">
 <h1>Why Functional?</h1>
-</section><section name="10">
-<p><img src="img/tarpit.png" alt="Article: Out of the tarpit"></p>
-</section><section name="11">
-<blockquote><p>Functional programming goes a long way towards avoiding the problems of state-derived complexity. This has very significant benefits for testing, as well as for reasoning.</p></blockquote>
-</section><section class="bullet-points" name="12">
+</section><section fullscreen-img="img/silicon.jpg" class="dark" name="14" data-background="img/silicon.jpg">
+<p><a href="https://www.flickr.com/photos/rbulmahn/8028283618">Image: rbulmahn/8028283618</a></p>
+</section><section fullscreen-img="img/tarpit.png" name="15" data-background="img/tarpit.png">
+</section><section name="16">
+<blockquote><p>Functional programming goes a long way towards avoiding the problems of state-derived complexity. This has very significant benefits.</p></blockquote>
+</section><section name="17">
+<blockquote><p>The main weakness of functional programming is that problems arise when the system to be built must maintain state of some kind.</p></blockquote>
+</section><section class="bullet-points" name="18">
 <h2>Times Are Changing</h2>
 <ul>
 <li><p>1995 Ruby</p></li>
@@ -74,142 +85,214 @@
 <li><p>2007 Clojure</p></li>
 <li><p>2012 Elixir</p></li>
 </ul>
-<p class="fragment">The future is multi-paradigm</p>
-</section><section class="bullet-points" name="13">
-<h2>Multi-paradigm</h2>
-<p>FP as information model</p>
-<p>OO for organization</p>
-<p>Reference types to manage state</p>
-<p>Actor model to manage concurrency</p>
-</section><section name="14">
-<h2>Multi-paradigm</h2>
-<blockquote><p>The main weakness of functional programming is the flip side of its main strength &mdash; namely that problems arise when (as is often the case) the system to be built must maintain state of some kind.</p></blockquote>
-</section><section class="bullet-points fragments" name="15">
-<h2>Times Are Changing</h2>
-<ul>
-<li class="fragment"><p>Current CPU limit: 3-4 GHz</p></li>
-<li class="fragment"><p>&lt; 2005, only single cores</p></li>
-<li class="fragment"><p>Now: 8, 16, 32 cores, and more</p></li>
-<li class="fragment"><p>New limit: Can our software parallelize?</p></li>
-</ul>
-</section><section class="heading" name="16">
-<h1>Information Model</h1>
-</section><section class="bullet-points" name="17">
-<h2>Information Model</h2>
-<p>OO has a flawed concept of</p>
-<ul>
-<li><p>Value</p></li>
-<li><p>State</p></li>
-<li><p>Identity</p></li>
-<li><p>Time</p></li>
-<li><p>Behavior</p></li>
-</ul>
-<p>This leads to accidental complexity</p>
-</section><section class="bullet-points" name="18">
-<h2>Values</h2>
-<p>In OO only the most basic entities are immutable</p>
-<p>Information consists of facts</p>
-<p>What fact does a mutable object represent?</p>
-</section><section class="bullet-points" name="19">
-<p>OO: There is only one river</p>
-<p>FP: I can never step in the same river twice</p>
-</section><section name="20">
+<p class="fragment">The future is functional/multi-paradigm</p>
+</section><section name="19">
+<h2>Multi-Paradigm</h2>
+<p>OOTTP: FP + Relational</p>
+<p>Clojure: FP + Reference Types</p>
+<p>Haskell: FP + Type System</p>
+<p>Ruby: ?</p>
+</section><section class="center" name="20">
+<p><img src="assets/37dbc7f2ff4dd546a69bf5cba42fcc9c.png" alt=""></p>
 
-</section><section class="bullet-points" name="21">
-<h2>Ruby: a bit of everything</h2>
-<p>It&rsquo;s a Smalltalk<br>
-It&rsquo;s a Bash<br>
-It&rsquo;s a Perl<br>
-It&rsquo;s a LISP</p>
-</section><section class="bullet-points fragments" name="22">
-<h2>Ruby: a Bit of Everything</h2>
-<p class="fragment">Most obvious trait: OOP</p>
-<p class="fragment">But also some functional: lambdas, map, reduce</p>
-<p class="fragment">But: no functional culture</p>
-</section><section class="bullet-points fragments" name="23">
-<h2>Functional Ruby?</h2>
-<ul>
-<li class="fragment"><p>Values + Pure functions are the exception</p></li>
-<li class="fragment"><p>Recursion is discouraged</p></li>
-<li class="fragment">
-<p>No generalized laziness
-</p>
-<ul><li class="fragment"><p>evaluation must be strict because pure functions are the exception</p></li></ul>
-</li>
-</ul>
-</section><section class="bullet-points fragments" name="24">
-<h2>Functional Ruby?</h2>
-<ul>
-<li class="fragment">
-<p>No functional batteries included (compose, curry, partial, juxt, etc.)
-</p>
-<ul><li class="fragment"><p>Limited built-in higher order functions</p></li></ul>
-</li>
-<li class="fragment"><p>Mixing lambdas+blocks is awkward</p></li>
-</ul>
-</section><section class="bullet-points fragments" name="25">
-<h2>Risks of encapsulation</h2>
-<ul>
-<li class="fragment"><p>False sense of security (is it threadsafe?)</p></li>
-<li class="fragment">
-<p>Limited reuse and extension
-</p>
-<ul><li class="fragment"><p>data is invisible, use cases have to be thought of up front</p></li></ul>
-</li>
-<li class="fragment"><p>Result: subclassing, redefining private/protected API, monkey patching</p></li>
-<li class="fragment"><p>All because: I don&rsquo;t trust you handling my (mutable) data</p></li>
-</ul>
-</section><section class="bullet-points fragments" name="26">
-<h2>Sanity through purity</h2>
-<ul>
-<li class="fragment"><p>Values &rArr; Pure Functions &rArr; Persistent Data Structures</p></li>
-<li class="fragment"><p>These go hand in hand, you have to have all three</p></li>
-<li class="fragment"><p>Not revolutionary in itself, but huge enabler</p></li>
-</ul>
-</section><section class="bullet-points fragments" name="27">
-<h2>Sanity through purity</h2>
-<ul>
-<li class="fragment"><p>Sharing is safe, always, with anyone</p></li>
-<li class="fragment"><p>A value is always consistent: no need for read locks</p></li>
-</ul>
-</section><section class="bullet-points fragments" name="28">
-<h2>Sane Concurrency</h2>
-<ul>
-<li class="fragment"><p>STM, Compare-and-swap, Actors</p></li>
-<li class="fragment"><p>Because of referential transparency</p></li>
-<li class="fragment"><p>Doable in (J)Ruby</p></li>
-</ul>
-</section><section class="bullet-points fragments" name="29">
-<h2>Parallelizable By Default</h2>
-<p class="fragment">Because of referential transparency</p>
-<p class="fragment">Doable in (J)Ruby</p>
-</section><section class="bullet-points fragments" name="30">
-<h2>Memoizable By Default</h2>
-<p class="fragment">Because of referential transparency</p>
-<p class="fragment">Doable in Ruby</p>
+
+
+
+
+
+
+
+
+
+
+</section><section class="heading" name="21">
+<h1>FP in Practice</h1>
+</section><section name="22">
+<h2>Composite Values</h2>
+</section><section class="center big-image" name="23">
+<p><img src="assets/ebf04e43360f26c9812dcf00859859f5.jpg" alt="Book cover: Purely Functional Data Structures"></p>
+</section><section class="center big-image bigger" name="24">
+<p><img src="assets/af6661fe2631197240496d583de010d7.svg" alt=""></p>
+<p><a href="http://commons.wikimedia.org/wiki/File:Purely_functional_tree_before.svg">Image by VineetKumar</a></p>
+</section><section class="center big-image bigger" name="25">
+<p><img src="assets/087f24804d278ff615cb3f2f99de6c3e.svg" alt=""></p>
+<p><a href="http://commons.wikimedia.org/wiki/File:Purely_functional_tree_after.svg">Image by VineetKumar</a></p>
+</section><section class="fragments" name="26">
+<h2>Functional Data Structures</h2>
+<p class="fragment">Memory Efficient</p>
+<p class="fragment">Speed guarantees: typically O(log n)</p>
+<p class="fragment">Value semantics with minimal sacrifice</p>
+</section><section name="27">
+<p>Skip the next part?</p>
+<p>concurrency?</p>
+</section><section class="dark" fullscreen-img="img/river.jpg" name="28" data-background="img/river.jpg">
+<p><a href="https://www.flickr.com/photos/rowlandk/13899208228">Image: rowlandk/13899208228</a></p>
+</section><section class="fragments" name="29">
+<h2>Dealing With Change</h2>
+<p class="fragment">Programs are processes</p>
+<p class="fragment">They cause change over time</p>
+<p class="fragment">By overwriting old data OO loses sense of time</p>
+<p class="fragment">There is only &ldquo;now&rdquo;</p>
+<p class="fragment">Need to stop the world to get consistent data</p>
+</section><section class="fragments" name="30">
+<h2>Identities</h2>
+<p class="fragment">Name given to a sequence of values that are causally related</p>
+<p class="fragment">There is always one value &ldquo;current&rdquo;.</p>
+<p class="fragment">Think of git branches</p>
+<p class="fragment">River = river04ca, river596d, river80e9, &hellip;</p>
+<p class="fragment">A way of explicitly managing state over time</p>
+<p class="fragment">OO conflates values and identities</p>
 </section><section name="31">
-<p>It&rsquo;s a dependency graph!</p>
-<p>The system can reorder statements, optimize them away</p>
-<p>Not doable in Ruby</p>
-</section><section name="32">
-<p>The Reporting Problem</p>
-<p>How to view a consistent snapshot of the world? Stop the world?</p>
-</section><section name="33">
-<p>Presents!</p>
-<p>Undo/Redo for free</p>
-<p>Savepoints for free</p>
-</section><section name="34">
-<p>Functional Ruby: it&rsquo;s already happening</p>
-<p>Data structures with value semantics</p>
-<p>Immutable Struct: a dozen gems do this</p>
-<p>Persistent Vector, Set, Map: Hamster, Clojr, persistent-data-structures</p>
+<h2>Identities</h2>
+<pre><code>(def river (atom
+  (for [_ (range 10)]
+    [(rand 100) (rand 100)])))
+;; ([4.816 90.156] [32.374 33.889] ...)
+
+(defn move-particle [[x y]]
+  [(+ 1 x) (+ (rand) y -0.5)])
+
+(defn flow [r]
+  (map move-particle r))
+
+(swap! river flow)
+;; ([5.816 90.419] [33.374 34.177] ...)
+
+(swap! river flow)
+;; ([6.816 90.372] [34.374 33.938] ...)
+
+</code></pre>
+</section><section class="fragments" name="32">
+<h2>Sanity through purity</h2>
+<p class="fragment">Values + Pure Functions + Persistent Data Structures</p>
+<p class="fragment">These go hand in hand, you have to have all three</p>
+<p class="fragment">Not revolutionary in itself, but enables so much</p>
+</section><section fullscreen-img="img/rubies.jpg" name="33" data-background="img/rubies.jpg">
+</section><section class="fragments" name="34">
+<h2>Ruby</h2>
+<p class="fragment">Some functional inspiration</p>
+<p class="fragment">Lambdas, blocks, map, reduce, freeze</p>
+<p class="fragment">But no functional culture</p>
+<p class="fragment">(Almost) everything is mutable</p>
 </section><section name="35">
-<p>But, cultural problem: ruby core believes in &ldquo;one true Array, one true Hash&rdquo;</p>
-<p>We risk creating isolated mini-ecosystems with their own data structures, libraries, semantics</p>
-</section><section name="36">
-<p>Examples/Refactorings:</p>
-<p>STM with Clojr</p></section>
+<h2>Gems</h2>
+<h3>Immutable Structs</h3>
+<p>anima, concord, adamantium,</p>
+<p>value_struct, value, values,</p>
+<p>immutable_struct, immutable, attr_immutable,</p>
+<p>value_object_struct, hamsterdam,</p>
+<p>closed_struct, functional_accessor</p>
+</section><section class="code" name="36">
+<pre class="language-ruby"><code>class Ukulele
+  include Anima.new(:color, :tuning)
+
+  # def initialize(attrs)
+  # attr_reader :color, :tuning
+  # def ==(other)
+  # def eql?(other)
+  # def equal?(other)
+end
+
+u1 = Ukulele.new(color: 'green',
+                 tuning: [:G, :C, :E, :A])
+u2 = Ukulele.new(color: 'green',
+                 tuning: [:G, :C, :E, :A])
+u1 == u2 # =&gt; true
+</code></pre>
+</section><section name="37">
+<h2>Gems</h2>
+<h4>Hamster</h4>
+<p>Pure Ruby implementation of Vector, Set, Map, List</p>
+<h4>persitent-data-structures</h4>
+<p>Native implementation for JRuby</p>
+<h4>Clojr</h4>
+<p>Clojure data structures and reference types for JRuby</p>
+</section><section class="code" name="38">
+<pre class="language-ruby"><code>require 'hamster'
+
+person = Hamster.hash(name: "Simon", gender: :male)
+  # =&gt; {name: "Simon", gender: :male}
+
+person[:name]
+  # =&gt; "Simon"
+person.get(:gender)
+  # =&gt; :male
+friend = person.put(:name, "James")
+  # =&gt; {:name =&gt; "James", :gender =&gt; :male}
+person
+  # =&gt; {:name =&gt; "Simon", :gender =&gt; :male}
+</code></pre>
+</section><section class="code" name="39">
+<pre class="language-ruby"><code>Hamster.interval(10_000, 1_000_000).filter do |number|
+  prime?(number)
+end.take(3)
+  # =&gt; 0.0009s
+</code></pre>
+<pre class="language-ruby"><code>(10_000..1_000_000).select do |number|
+  prime?(number)
+end.take(3)
+  # =&gt; 10s
+</code></pre>
+</section><section class="fragments" name="40">
+<h2>Ruby</h2>
+<p class="fragment">Increasingly people are programming in this style</p>
+<p class="fragment">But ecosystem is small and fragmented</p>
+<p class="fragment">Ruby Core cares very little</p>
+<p class="fragment">Time to move on?</p>
+</section><section class="big-image" fullscreen-img="img/road.jpg" name="41" data-background="img/road.jpg">
+<p><a href="https://www.flickr.com/photos/weinand/5313296821">Image: Daniel Weinand</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</section>
 </div></div>
-<script src="file:///home/arne/github/slippery/assets/reveal.js/lib/js/head.min.js" type="text/javascript"></script><script src="file:///home/arne/github/slippery/assets/reveal.js/js/reveal.js" type="text/javascript"></script><script>Reveal.initialize({"dependencies":[{"src":"https://rawgit.com/regisb/reveal.js-fullscreen-img/master/fullscreen-img.js"}],"history":true,"transition":"none","width":1500,"height":1000});</script>
+<script src="assets/8244e91e3efc1ad6285d9beb8125fe4b.js" type="text/javascript"></script><script src="assets/e1e39b646fdf31ab1352cb14bee76d84.js" type="text/javascript"></script><script>Reveal.initialize({"dependencies":[],"history":true,"transition":"none","backgroundTransition":"none","width":1500,"height":1000,"loop":true,"include_assets":true});</script>
 </body>
 </html>

@@ -1,3 +1,10 @@
+
+{:.center}
+Use the space bar or arrow keys to browse the slide.
+
+---
+{:.center style="font-size: 70%"}
+
 # Functional Programming in Ruby
 
 ## &nbsp;
@@ -5,6 +12,9 @@
 ## Frozen Rails, Helsinki
 
 ## 11/12 September 2014
+
+
+[http://arnebrasseur.net/talks/frozenrails2014](http://arnebrasseur.net/talks/frozenrails2014)
 
 ---
 
@@ -16,6 +26,11 @@
 # @plexus
 
 ---
+{:.heading.double}
+
+# Programming Paradigms
+
+---
 {: .dark fullscreen-img="img/assembler.jpg"}
 
 [Image: @pablobd/4760973863](https://www.flickr.com/photos/pablobd/4760973863)
@@ -25,28 +40,47 @@
 
 ## Imperative Programming
 
-* What we've done since forever
-* All about state
-* Statements change the state
+State + Statements
+
+Modeled after the machine
 
 ---
 {:.fragments}
 
-## State = Place
+## Evolutionary Steps
 
-An area where you can store some data
+Procedural, group statements
+
+Object Oriented, group state
+
+Still imperative at heart
+
+---
+{:.fragments}
+
+## Place Oriented Programming
+
+State is kept in "places"
 
 Register, Memory, Variable
 
+What's in a place can change
+
 ---
 {:.fragments}
 
-## Imperative Evolved
+## Place Oriented Programming
 
-* Procedural programming
-  * Group statements together in procedures
-* Object Oriented Programming
-  * Group mutable state in objects
+Old information is overwritten with new
+
+Done for efficiency
+
+But facts don't change, they incorporate time
+
+```ruby
+{ date: '2014-09-10', temperature: 19 }
+{ date: '2014-09-11', temperature: 17 }
+```
 
 ---
 {: fullscreen-img="img/maths.jpg"}
@@ -54,18 +88,27 @@ Register, Memory, Variable
 [Image: @tkamenick/3950391591](https://www.flickr.com/photos/35064820@N00/3950391591)
 
 ---
-{: .bullet-points .fragments}
+{: .fragments}
 
 ## Functional Programming
 
-Programming with **Values**
+Modeled after mathematical functions
 
-No mutable state
-
-Once "born" a value is completely determined
+Based on human reasoning, not machine design
 
 ---
-{: .bullet-points .fragments}
+{: .fragments}
+
+## Functional Programming
+
+Programming with **Immutable Values**
+
+Can be "simple": `42`, `:foo`
+
+Or composite, lists, sets, maps
+
+---
+{: .fragments}
 
 ## Functional Programming
 
@@ -76,17 +119,25 @@ Only relies on arguments, not on state
 No observable side effects
 
 ---
-{: .heading}
+{: .heading.double}
 
 # Why Functional?
 
 ---
+{: fullscreen-img="img/silicon.jpg" .dark}
 
-![Article: Out of the tarpit](img/tarpit.png)
+[Image: rbulmahn/8028283618](https://www.flickr.com/photos/rbulmahn/8028283618)
+
+---
+{: fullscreen-img="img/tarpit.png"}
 
 ---
 
-> Functional programming goes a long way towards avoiding the problems of state-derived complexity. This has very significant benefits for testing, as well as for reasoning.
+> Functional programming goes a long way towards avoiding the problems of state-derived complexity. This has very significant benefits.
+
+---
+
+> The main weakness of functional programming is that problems arise when the system to be built must maintain state of some kind.
 
 ---
 {: .bullet-points }
@@ -100,213 +151,415 @@ No observable side effects
 * 2012 Elixir
 
 {: .fragment}
-The future is multi-paradigm
-
----
-{: .bullet-points }
-
-## Multi-paradigm
-
-FP as information model
-
-OO for organization
-
-Reference types to manage state
-
-Actor model to manage concurrency
+The future is functional/multi-paradigm
 
 ---
 
-## Multi-paradigm
+## Multi-Paradigm
 
-> The main weakness of functional programming is the flip side of its main strength — namely that problems arise when (as is often the case) the system to be built must maintain state of some kind.
+OOTTP: FP + Relational
+
+Clojure: FP + Reference Types
+
+Haskell: FP + Type System
+
+Ruby: ?
 
 ---
-{: .bullet-points .fragments }
+{:.center}
 
-## Times Are Changing
+![](img/boundaries.png)
 
-* Current CPU limit: 3-4 GHz
-* < 2005, only single cores
-* Now: 8, 16, 32 cores, and more
-* New limit: Can our software parallelize?
+
+<!-- --- -->
+<!-- {: .bullet-points .fragments } -->
+
+<!-- ## Times Are Changing -->
+
+<!-- * Current CPU limit: 3-4 GHz -->
+<!-- * < 2005, only single cores -->
+<!-- * Now: 8, 16, 32 cores, and more -->
+<!-- * New limit: Can our software parallelize? -->
+
+
+<!-- --- -->
+<!-- {: .bullet-points } -->
+
+<!-- ## Multi-paradigm Examples -->
+
+<!-- FP as information model -->
+
+<!-- OO for organization -->
+
+<!-- Reference types or relational storage to manage state -->
+
+<!-- Actor model to manage concurrency -->
 
 ---
 {: .heading }
 
-# Information Model
-
----
-{: .bullet-points }
-
-## Information Model
-
-OO has a flawed concept of
-
-* Value
-* State
-* Identity
-* Time
-* Behavior
-
-This leads to accidental complexity
-
----
-{: .bullet-points }
-
-## Values
-
-In OO only the most basic entities are immutable
-
-Information consists of facts
-
-What fact does a mutable object represent?
-
----
-{: .bullet-points }
-
-OO: There is only one river
-
-FP: I can never step in the same river twice
+# FP in Practice
 
 ---
 
+## Composite Values
 
 ---
-{: .bullet-points}
+{:.center .big-image}
 
-## Ruby: a bit of everything
-
-It's a Smalltalk
-It's a Bash
-It's a Perl
-It's a LISP
+![Book cover: Purely Functional Data Structures](img/okasaki.jpg)
 
 ---
-{: .bullet-points .fragments }
+{:.center .big-image .bigger}
 
-## Ruby: a Bit of Everything
+![](img/tree_before.svg)
 
-Most obvious trait: OOP
-
-But also some functional: lambdas, map, reduce
-
-But: no functional culture
+[Image by VineetKumar](http://commons.wikimedia.org/wiki/File:Purely_functional_tree_before.svg)
 
 ---
-{: .bullet-points .fragments }
+{:.center .big-image .bigger}
 
-## Functional Ruby?
+![](img/tree_after.svg)
 
-* Values + Pure functions are the exception
-* Recursion is discouraged
-* No generalized laziness
-  * evaluation must be strict because pure functions are the exception
+[Image by VineetKumar](http://commons.wikimedia.org/wiki/File:Purely_functional_tree_after.svg)
 
 ---
-{: .bullet-points .fragments }
+{:.fragments}
 
-## Functional Ruby?
+## Functional Data Structures
 
-* No functional batteries included (compose, curry, partial, juxt, etc.)
-  * Limited built-in higher order functions
-* Mixing lambdas+blocks is awkward
+Memory Efficient
 
----
-{: .bullet-points .fragments }
+Speed guarantees: typically O(log n)
 
-## Risks of encapsulation
-
-* False sense of security (is it threadsafe?)
-* Limited reuse and extension
-  * data is invisible, use cases have to be thought of up front
-* Result: subclassing, redefining private/protected API, monkey patching
-* All because: I don't trust you handling my (mutable) data
+Value semantics with minimal sacrifice
 
 ---
-{: .bullet-points .fragments }
+
+Skip the next part?
+
+concurrency?
+
+---
+{: .dark fullscreen-img="img/river.jpg"}
+
+[Image: rowlandk/13899208228](https://www.flickr.com/photos/rowlandk/13899208228)
+
+---
+{: .fragments}
+
+## Dealing With Change
+
+Programs are processes
+
+They cause change over time
+
+By overwriting old data OO loses sense of time
+
+There is only "now"
+
+Need to stop the world to get consistent data
+
+---
+{:.fragments}
+
+## Identities
+
+Name given to a sequence of values that are causally related
+
+There is always one value "current".
+
+Think of git branches
+
+River = river04ca, river596d, river80e9, ...
+
+A way of explicitly managing state over time
+
+OO conflates values and identities
+
+---
+
+## Identities
+
+```
+(def river (atom
+  (for [_ (range 10)]
+    [(rand 100) (rand 100)])))
+;; ([4.816 90.156] [32.374 33.889] ...)
+
+(defn move-particle [[x y]]
+  [(+ 1 x) (+ (rand) y -0.5)])
+
+(defn flow [r]
+  (map move-particle r))
+
+(swap! river flow)
+;; ([5.816 90.419] [33.374 34.177] ...)
+
+(swap! river flow)
+;; ([6.816 90.372] [34.374 33.938] ...)
+
+```
+
+---
+{: .fragments}
 
 ## Sanity through purity
 
-* Values ⇒ Pure Functions ⇒ Persistent Data Structures
-* These go hand in hand, you have to have all three
-* Not revolutionary in itself, but huge enabler
+Values + Pure Functions + Persistent Data Structures
+
+These go hand in hand, you have to have all three
+
+Not revolutionary in itself, but enables so much
 
 ---
-{: .bullet-points .fragments }
-
-## Sanity through purity
-
-* Sharing is safe, always, with anyone
-* A value is always consistent: no need for read locks
+{: fullscreen-img="img/rubies.jpg"}
 
 ---
-{: .bullet-points .fragments }
+{:.fragments}
 
-## Sane Concurrency
+## Ruby
 
-* STM, Compare-and-swap, Actors
-* Because of referential transparency
-* Doable in (J)Ruby
+Some functional inspiration
 
----
-{: .bullet-points .fragments }
+Lambdas, blocks, map, reduce, freeze
 
-## Parallelizable By Default
+But no functional culture
 
-Because of referential transparency
-
-Doable in (J)Ruby
-
----
-{: .bullet-points .fragments }
-
-## Memoizable By Default
-
-Because of referential transparency
-
-Doable in Ruby
+(Almost) everything is mutable
 
 ---
 
-It's a dependency graph!
+## Gems
 
-The system can reorder statements, optimize them away
+### Immutable Structs
 
-Not doable in Ruby
+anima, concord, adamantium,
+
+value\_struct, value, values,
+
+immutable\_struct, immutable, attr\_immutable,
+
+value\_object\_struct, hamsterdam,
+
+closed\_struct, functional\_accessor
+
+---
+{:.code}
+
+```ruby
+class Ukulele
+  include Anima.new(:color, :tuning)
+
+  # def initialize(attrs)
+  # attr_reader :color, :tuning
+  # def ==(other)
+  # def eql?(other)
+  # def equal?(other)
+end
+
+u1 = Ukulele.new(color: 'green',
+                 tuning: [:G, :C, :E, :A])
+u2 = Ukulele.new(color: 'green',
+                 tuning: [:G, :C, :E, :A])
+u1 == u2 # => true
+```
 
 ---
 
-The Reporting Problem
+## Gems
 
-How to view a consistent snapshot of the world? Stop the world?
+#### Hamster
 
----
+Pure Ruby implementation of Vector, Set, Map, List
 
-Presents!
+#### persitent-data-structures
 
-Undo/Redo for free
+Native implementation for JRuby
 
-Savepoints for free
+#### Clojr
 
----
-
-Functional Ruby: it's already happening
-
-Data structures with value semantics
-
-Immutable Struct: a dozen gems do this
-
-Persistent Vector, Set, Map: Hamster, Clojr, persistent-data-structures
+Clojure data structures and reference types for JRuby
 
 ---
+{:.code}
 
-But, cultural problem: ruby core believes in "one true Array, one true Hash"
+``` ruby
+require 'hamster'
 
-We risk creating isolated mini-ecosystems with their own data structures, libraries, semantics
+person = Hamster.hash(name: "Simon", gender: :male)
+  # => {name: "Simon", gender: :male}
+
+person[:name]
+  # => "Simon"
+person.get(:gender)
+  # => :male
+friend = person.put(:name, "James")
+  # => {:name => "James", :gender => :male}
+person
+  # => {:name => "Simon", :gender => :male}
+```
 
 ---
+{:.code}
 
-Examples/Refactorings:
+``` ruby
+Hamster.interval(10_000, 1_000_000).filter do |number|
+  prime?(number)
+end.take(3)
+  # => 0.0009s
+```
 
-STM with Clojr
+``` ruby
+(10_000..1_000_000).select do |number|
+  prime?(number)
+end.take(3)
+  # => 10s
+```
+
+---
+{:.fragments}
+
+## Ruby
+
+Increasingly people are programming in this style
+
+But ecosystem is small and fragmented
+
+Ruby Core cares very little
+
+Time to move on?
+
+---
+{: .big-image fullscreen-img="img/road.jpg" }
+
+[Image: Daniel Weinand](https://www.flickr.com/photos/weinand/5313296821)
+
+<!-- --- -->
+<!-- {: .bullet-points} -->
+
+<!-- ## Ruby: a bit of everything -->
+
+<!-- It's a Smalltalk -->
+<!-- It's a Bash -->
+<!-- It's a Perl -->
+<!-- It's a LISP -->
+
+<!-- --- -->
+<!-- {: .bullet-points .fragments } -->
+
+<!-- ## Ruby: a Bit of Everything -->
+
+<!-- Most obvious trait: OOP -->
+
+<!-- But also some functional: lambdas, map, reduce -->
+
+<!-- But: no functional culture -->
+
+<!-- --- -->
+<!-- {: .bullet-points .fragments } -->
+
+<!-- ## Functional Ruby? -->
+
+<!-- * Values + Pure functions are the exception -->
+<!-- * Recursion is discouraged -->
+<!-- * No generalized laziness -->
+<!--   * evaluation must be strict because pure functions are the exception -->
+
+<!-- --- -->
+<!-- {: .bullet-points .fragments } -->
+
+<!-- ## Functional Ruby? -->
+
+<!-- * No functional batteries included (compose, curry, partial, juxt, etc.) -->
+<!--   * Limited built-in higher order functions -->
+<!-- * Mixing lambdas+blocks is awkward -->
+
+<!-- --- -->
+<!-- {: .bullet-points .fragments } -->
+
+<!-- ## Risks of encapsulation -->
+
+<!-- * False sense of security (is it threadsafe?) -->
+<!-- * Limited reuse and extension -->
+<!--   * data is invisible, use cases have to be thought of up front -->
+<!-- * Result: subclassing, redefining private/protected API, monkey patching -->
+<!-- * All because: I don't trust you handling my (mutable) data -->
+
+<!-- --- -->
+<!-- {: .bullet-points .fragments } -->
+
+<!-- ## Sanity through purity -->
+
+<!-- * Values ⇒ Pure Functions ⇒ Persistent Data Structures -->
+<!-- * These go hand in hand, you have to have all three -->
+<!-- * Not revolutionary in itself, but huge enabler -->
+
+<!-- --- -->
+<!-- {: .bullet-points .fragments } -->
+
+<!-- ## Sanity through purity -->
+
+<!-- * Sharing is safe, always, with anyone -->
+<!-- * A value is always consistent: no need for read locks -->
+
+<!-- --- -->
+<!-- {: .bullet-points .fragments } -->
+
+<!-- ## Sane Concurrency -->
+
+<!-- * STM, Compare-and-swap, Actors -->
+<!-- * Because of referential transparency -->
+<!-- * Doable in (J)Ruby -->
+
+<!-- --- -->
+<!-- {: .bullet-points .fragments } -->
+
+<!-- ## Parallelizable By Default -->
+
+<!-- Because of referential transparency -->
+
+<!-- Doable in (J)Ruby -->
+
+<!-- --- -->
+<!-- {: .bullet-points .fragments } -->
+
+<!-- ## Memoizable By Default -->
+
+<!-- Because of referential transparency -->
+
+<!-- Doable in Ruby -->
+
+<!-- --- -->
+
+<!-- It's a dependency graph! -->
+
+<!-- The system can reorder statements, optimize them away -->
+
+<!-- Not doable in Ruby -->
+
+<!-- --- -->
+
+<!-- The Reporting Problem -->
+
+<!-- How to view a consistent snapshot of the world? Stop the world? -->
+
+<!-- --- -->
+
+<!-- Presents! -->
+
+<!-- Undo/Redo for free -->
+
+<!-- Savepoints for free -->
+
+<!-- --- -->
+
+<!-- But, cultural problem: ruby core believes in "one true Array, one true Hash" -->
+
+<!-- We risk creating isolated mini-ecosystems with their own data structures, libraries, semantics -->
+
+<!-- --- -->
+
+<!-- Examples/Refactorings: -->
+
+<!-- STM with Clojr -->

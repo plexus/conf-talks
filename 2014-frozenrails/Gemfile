@@ -2,3 +2,4 @@ source 'https://rubygems.org'
 
 gem 'slippery', path: '/home/arne/github/slippery'
 gem 'hexp', path: '/home/arne/github/hexp'
+gem 'asset_packer', path: '/home/arne/github/asset_packer'

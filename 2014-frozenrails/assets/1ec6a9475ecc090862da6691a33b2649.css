@@ -1,5 +1,5 @@
 body {
-  background: url(img/noisy.png) repeat scroll 0% 0% transparent;
+  background: url(../assets/b713e1e3f3651ac7ab042ba20b8441e9.png) repeat scroll 0% 0% transparent;
 }
 
 body .reveal .slides {
@@ -28,12 +28,8 @@ body .reveal img {
   color: black;
 }
 
-.reveal .code pre {
-  font-size: 0.8em;
-}
-
-body .reveal pre code {
-  max-height: 800px;
+.code {
+  font-size: 2.5em;
 }
 
 .reveal section[fullscreen-img] a, .reveal .big-image a {
@@ -55,9 +51,9 @@ body .reveal pre code {
   height: 100%;
 }
 
-/* .heading { */
-/*   height: 50%; */
-/* } */
+.heading {
+  height: 50%;
+}
 
 .reveal .big-image img {
   width: 40%;
@@ -77,13 +73,9 @@ body .reveal pre code {
   width: 100%;
   text-align: center;
   left: 0;
-  top: -5%;
+  top: 50px;
   color: #eeeeee;
   z-index: -1
-}
-
-.heading.double h1:after {
-  top: 15%;
 }
 
 
@@ -119,7 +111,10 @@ body .reveal blockquote {
   box-shadow: 0px 0px 0px 0px rgba(0,0,0,0);
 }
 
-.hljs-symbol { color: #268bd2; }
-.hljs-constant { color: #b58900; }
-.hljs-string { color: #2aa198; }
-.hljs-keyword { color: #859900; }
+/*********************************************
+ * Fullscreen images
+ *********************************************/
+.fullscreen {
+  background-size: cover;
+  -moz-background-size: cover;
+}

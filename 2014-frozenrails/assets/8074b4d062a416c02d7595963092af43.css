@@ -1,5 +1,5 @@
 body {
-  background: url(img/noisy.png) repeat scroll 0% 0% transparent;
+  background: url(../assets/b713e1e3f3651ac7ab042ba20b8441e9.png) repeat scroll 0% 0% transparent;
 }
 
 body .reveal .slides {
@@ -77,13 +77,9 @@ body .reveal pre code {
   width: 100%;
   text-align: center;
   left: 0;
-  top: -5%;
+  top: 15%;
   color: #eeeeee;
   z-index: -1
-}
-
-.heading.double h1:after {
-  top: 15%;
 }
 
 

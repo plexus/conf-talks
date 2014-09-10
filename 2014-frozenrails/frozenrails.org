@@ -34,3 +34,36 @@
 ** How much "functional" do we already get?
 ** What are people already doing?
 ** Where could we be heading?
+
+
+* What
+* Why
+* How
+
+Persistent Data Structures
+Referential Transparency
+Concurrency
+
+* Slides
+** Title slide
+
+   Impromptu chat. Helsinki. Bit sick. Festival...
+
+** @plexus
+
+   Ruby, Clojure, Rubymonsters, Ember, Ticketsolve, Yaks
+
+** History
+
+   Ruby almost 20 years old. Where will it be in 20 years?
+
+   We need to think about paradigms: how we express ourselves in code,
+   how we compose systems. We live increasingly in a multi-paradigm
+   world, both the programmer and the language designer need to be
+   aware of the strengths and weaknesses and mix and match
+   accordingly.
+
+** Imperative
+
+   Modelled after the machine: CPU, registers, memory, program
+   counter.
