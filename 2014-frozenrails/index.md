@@ -40,7 +40,7 @@ Use the space bar or arrow keys to browse the slide.
 
 ## Imperative Programming
 
-State + Statements
+**State** + **Instructions**
 
 Modeled after the machine
 
@@ -49,33 +49,32 @@ Modeled after the machine
 
 ## Evolutionary Steps
 
-Procedural, group statements
+Procedural, group instructions
 
-Object Oriented, group state
+Object oriented, group state
 
-Still imperative at heart
+**Still imperative** at heart
+
+---
+
+## Place Oriented Programming
+
+---
+
+## PLOP
 
 ---
 {:.fragments}
 
-## Place Oriented Programming
+## PLOP
 
 State is kept in "places"
 
-Register, Memory, Variable
+What's in a place changes over time
 
-What's in a place can change
+Old information is **overwritten** with new
 
----
-{:.fragments}
-
-## Place Oriented Programming
-
-Old information is overwritten with new
-
-Done for efficiency
-
-But facts don't change, they incorporate time
+But real facts don't change, they incorporate time
 
 ```ruby
 { date: '2014-09-10', temperature: 19 }
@@ -90,18 +89,9 @@ But facts don't change, they incorporate time
 ---
 {: .fragments}
 
-## Functional Programming
+## Values
 
-Modeled after mathematical functions
-
-Based on human reasoning, not machine design
-
----
-{: .fragments}
-
-## Functional Programming
-
-Programming with **Immutable Values**
+Not state, but **Immutable Values**
 
 Can be "simple": `42`, `:foo`
 
@@ -110,13 +100,41 @@ Or composite, lists, sets, maps
 ---
 {: .fragments}
 
-## Functional Programming
+## Functions
 
-Programming with **Pure Functions**
+Not instructions and procedures, but **Pure Functions**
 
 Only relies on arguments, not on state
 
 No observable side effects
+
+Referentially Transparent
+
+---
+{: .fragments}
+
+## Referential Transparency
+
+Memoizable
+
+Parallelizable
+
+Retryable
+
+Easy reasoning
+
+Easy debugging and testing
+
+---
+{:.dark fullscreen-img="img/crystal.jpg"}
+
+[Image: photoholic1](https://www.flickr.com/photos/lenbo/2220987208)
+
+
+<!-- The combination of values and purity seems simple but has profound -->
+<!-- implications. It helps both humans and machines to make assumptions -->
+<!-- about, and hence reason about, the code. Referential transparency -->
+<!-- makes many optimizations possible. -->
 
 ---
 {: .heading.double}
@@ -163,7 +181,7 @@ Clojure: FP + Reference Types
 
 Haskell: FP + Type System
 
-Ruby: ?
+Ruby: FP + OO? FauxO?
 
 ---
 {:.center}
@@ -228,89 +246,115 @@ Ruby: ?
 
 ## Functional Data Structures
 
+Value semantics, like making copies
+
+Old versions stay accessible (persistent)
+
 Memory Efficient
 
 Speed guarantees: typically O(log n)
 
-Value semantics with minimal sacrifice
+<!-- --- -->
+<!-- {: .dark fullscreen-img="img/river.jpg"} -->
+
+<!-- [Image: rowlandk/13899208228](https://www.flickr.com/photos/rowlandk/13899208228) -->
+
+<!-- --- -->
+<!-- {:.heading} -->
+
+<!-- # Parallelism -->
+
+<!-- --- -->
+<!-- {: .dark fullscreen-img="img/threads.jpg"} -->
+
+<!-- [Image: thomasfisherlibrary](https://www.flickr.com/photos/thomasfisherlibrary/6235265642) -->
+
+<!-- --- -->
+
+<!-- ## Pure Functions -->
+
+
+
+<!-- --- -->
+<!-- {: .fragments} -->
+
+<!-- ## Dealing With Change -->
+
+<!-- Programs are processes -->
+
+<!-- They cause change over time -->
+
+<!-- By overwriting old data OO loses sense of time -->
+
+<!-- There is only "now" -->
+
+<!-- Need to stop the world to get consistent data -->
+
+<!-- --- -->
+<!-- {:.fragments} -->
+
+<!-- ## Identities -->
+
+<!-- Name given to a sequence of values that are causally related -->
+
+<!-- There is always one value "current". -->
+
+<!-- Think of git branches -->
+
+<!-- River = river04ca, river596d, river80e9, ... -->
+
+<!-- A way of explicitly managing state over time -->
+
+<!-- OO conflates values and identities -->
+
+<!-- --- -->
+
+<!-- ## Identities -->
+
+<!-- ``` -->
+<!-- (def river (atom -->
+<!--   (for [_ (range 10)] -->
+<!--     [(rand 100) (rand 100)]))) -->
+<!-- ;; ([4.816 90.156] [32.374 33.889] ...) -->
+
+<!-- (defn move-particle [[x y]] -->
+<!--   [(+ 1 x) (+ (rand) y -0.5)]) -->
+
+<!-- (defn flow [r] -->
+<!--   (map move-particle r)) -->
+
+<!-- (swap! river flow) -->
+<!-- ;; ([5.816 90.419] [33.374 34.177] ...) -->
+
+<!-- (swap! river flow) -->
+<!-- ;; ([6.816 90.372] [34.374 33.938] ...) -->
+
+<!-- ``` -->
 
 ---
+{:.center}
 
-Skip the next part?
+### Object Orientation
 
-concurrency?
+#### Sanity Through Encapsulation
 
 ---
-{: .dark fullscreen-img="img/river.jpg"}
+{:.center}
 
-[Image: rowlandk/13899208228](https://www.flickr.com/photos/rowlandk/13899208228)
+### Functional Programming
+
+#### Sanity Through Purity
 
 ---
 {: .fragments}
 
-## Dealing With Change
-
-Programs are processes
-
-They cause change over time
-
-By overwriting old data OO loses sense of time
-
-There is only "now"
-
-Need to stop the world to get consistent data
-
----
-{:.fragments}
-
-## Identities
-
-Name given to a sequence of values that are causally related
-
-There is always one value "current".
-
-Think of git branches
-
-River = river04ca, river596d, river80e9, ...
-
-A way of explicitly managing state over time
-
-OO conflates values and identities
-
----
-
-## Identities
-
-```
-(def river (atom
-  (for [_ (range 10)]
-    [(rand 100) (rand 100)])))
-;; ([4.816 90.156] [32.374 33.889] ...)
-
-(defn move-particle [[x y]]
-  [(+ 1 x) (+ (rand) y -0.5)])
-
-(defn flow [r]
-  (map move-particle r))
-
-(swap! river flow)
-;; ([5.816 90.419] [33.374 34.177] ...)
-
-(swap! river flow)
-;; ([6.816 90.372] [34.374 33.938] ...)
-
-```
-
----
-{: .fragments}
-
-## Sanity through purity
+## Sanity Through Purity
 
 Values + Pure Functions + Persistent Data Structures
 
 These go hand in hand, you have to have all three
 
-Not revolutionary in itself, but enables so much
+Not revolutionary, but impact is huge
 
 ---
 {: fullscreen-img="img/rubies.jpg"}
@@ -324,9 +368,22 @@ Some functional inspiration
 
 Lambdas, blocks, map, reduce, freeze
 
+Even lazy enumerators
+
 But no functional culture
 
 (Almost) everything is mutable
+
+---
+{:.fragments}
+
+## Ruby
+
+Still possible to code in a purely functional way
+
+Many people are doing just that
+
+Community and ecosystem seem slow to catch up
 
 ---
 
@@ -426,12 +483,12 @@ Increasingly people are programming in this style
 
 But ecosystem is small and fragmented
 
-Ruby Core cares very little
+Is ruby-core paying attention?
 
-Time to move on?
+Are you?
 
 ---
-{: .big-image fullscreen-img="img/road.jpg" }
+{: .dark fullscreen-img="img/road.jpg" }
 
 [Image: Daniel Weinand](https://www.flickr.com/photos/weinand/5313296821)
 
