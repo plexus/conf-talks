@@ -2,6 +2,38 @@
 {:.center}
 Use the space bar or arrow keys to browse the slide.
 
+Some of the images are pretty big, so if you see an empty slide then wait a bit.
+
+---
+{:.center}
+
+# 青
+
+---
+{: fullscreen-img="img/qing.png"}
+
+---
+
+<div class="center">
+<h1> 青</h1>
+</div>
+
+1\. green; if about grass, plants, mountain etc.
+2\. blue; if about the sky, a stone etc.
+3\. black; if about hair, cloth etc.
+4\. young
+
+---
+
+<div class="center">
+<h1> 青</h1>
+</div>
+
+* 生 “growth of plants”
+* 丹 “cinnabar”
+
+ Cinnabar was used for dying items red, implying color. Giving the meaning "color of growing plants", hence blue-green.
+
 ---
 {:.center style="font-size: 70%"}
 
@@ -26,6 +58,11 @@ Use the space bar or arrow keys to browse the slide.
 # @plexus
 
 ---
+{:.center}
+
+![](img/happylambda.png)
+
+---
 {:.heading.double}
 
 # Programming Paradigms
@@ -40,7 +77,7 @@ Use the space bar or arrow keys to browse the slide.
 
 ## Imperative Programming
 
-**State** + **Instructions**
+State + Instructions
 
 Modeled after the machine
 
@@ -70,8 +107,6 @@ Object oriented, group state
 
 State is kept in "places"
 
-What's in a place changes over time
-
 Old information is **overwritten** with new
 
 But real facts don't change, they incorporate time
@@ -100,30 +135,28 @@ Or composite, lists, sets, maps
 ---
 {: .fragments}
 
-## Functions
+## Pure Functions
 
-Not instructions and procedures, but **Pure Functions**
-
-Only relies on arguments, not on state
+Same input ⇒ same output
 
 No observable side effects
 
-Referentially Transparent
+Follows naturally from using values
+
+---
+
+> An expression is said to be referentially transparent if it can be replaced with its value without changing the behavior of a program.
 
 ---
 {: .fragments}
 
 ## Referential Transparency
 
-Memoizable
+Memoizable, Lazy evaluation
 
 Parallelizable
 
-Retryable
-
-Easy reasoning
-
-Easy debugging and testing
+Easy reasoning, refactoring, debugging, testing
 
 ---
 {:.dark fullscreen-img="img/crystal.jpg"}
@@ -135,11 +168,6 @@ Easy debugging and testing
 <!-- implications. It helps both humans and machines to make assumptions -->
 <!-- about, and hence reason about, the code. Referential transparency -->
 <!-- makes many optimizations possible. -->
-
----
-{: .heading.double}
-
-# Why Functional?
 
 ---
 {: fullscreen-img="img/silicon.jpg" .dark}
@@ -181,7 +209,7 @@ Clojure: FP + Reference Types
 
 Haskell: FP + Type System
 
-Ruby: FP + OO? FauxO?
+Ruby: ?
 
 ---
 {:.center}
@@ -216,11 +244,7 @@ Ruby: FP + OO? FauxO?
 ---
 {: .heading }
 
-# FP in Practice
-
----
-
-## Composite Values
+# Data Structures
 
 ---
 {:.center .big-image}
@@ -241,19 +265,6 @@ Ruby: FP + OO? FauxO?
 
 [Image by VineetKumar](http://commons.wikimedia.org/wiki/File:Purely_functional_tree_after.svg)
 
----
-{:.fragments}
-
-## Functional Data Structures
-
-Value semantics, like making copies
-
-Old versions stay accessible (persistent)
-
-Memory Efficient
-
-Speed guarantees: typically O(log n)
-
 <!-- --- -->
 <!-- {: .dark fullscreen-img="img/river.jpg"} -->
 
@@ -272,7 +283,6 @@ Speed guarantees: typically O(log n)
 <!-- --- -->
 
 <!-- ## Pure Functions -->
-
 
 
 <!-- --- -->
@@ -334,27 +344,16 @@ Speed guarantees: typically O(log n)
 ---
 {:.center}
 
-### Object Orientation
+## Object Orientation
 
-#### Sanity Through Encapsulation
+### Sanity Through Encapsulation
 
 ---
 {:.center}
 
-### Functional Programming
+## Functional Programming
 
-#### Sanity Through Purity
-
----
-{: .fragments}
-
-## Sanity Through Purity
-
-Values + Pure Functions + Persistent Data Structures
-
-These go hand in hand, you have to have all three
-
-Not revolutionary, but impact is huge
+### Sanity Through Purity
 
 ---
 {: fullscreen-img="img/rubies.jpg"}
@@ -368,11 +367,7 @@ Some functional inspiration
 
 Lambdas, blocks, map, reduce, freeze
 
-Even lazy enumerators
-
-But no functional culture
-
-(Almost) everything is mutable
+Even lazy enumerators <span class="fragment">;)</span>
 
 ---
 {:.fragments}
@@ -381,9 +376,32 @@ But no functional culture
 
 Still possible to code in a purely functional way
 
-Many people are doing just that
+Use objects, but make them values
 
-Community and ecosystem seem slow to catch up
+Have a core of "pure" domain logic
+
+Handle state and side effects outside of that
+
+---
+{:.fragments}
+
+## Values in Ruby
+
+```ruby
+true, false, nil
+```
+
+```ruby
+23, 42, 5.9999
+```
+
+```ruby
+:foo, :bar
+```
+
+```ruby
+Time, Date, Pathname
+```
 
 ---
 
@@ -475,17 +493,47 @@ end.take(3)
 ```
 
 ---
-{:.fragments}
+{:.code}
 
-## Ruby
+```ruby
+list  = Clojr::STM::Ref.new
+count = Clojr::STM::Ref.new
 
-Increasingly people are programming in this style
+Clojr::STM.dosync do
+  list.set(Clojr::Persistent::Vector.new(*1..100))
+  count.set(0)
+end
+```
 
-But ecosystem is small and fragmented
+---
+{:.code}
 
-Is ruby-core paying attention?
+```ruby
+10.times.map do
+  Thread.new do
+    10.times do
+      Clojr::STM.dosync do
+        i1, i2 = rand(100), rand(100)
+        old_list = list.deref
+        new_list.assoc(i1, old_list[i2])
+        new_list.assoc(i2, old_list[i1])
+        list.set(new_list)
+        count.set(count.deref + 1)
+      end
+    end
+  end
+end.map(&:join)
+```
 
-Are you?
+---
+{:.code}
+
+```ruby
+p list.deref
+# => [99, 10, 79, 64, 40, 59, ...]
+p count.deref
+# => 100
+```
 
 ---
 {: .dark fullscreen-img="img/road.jpg" }
