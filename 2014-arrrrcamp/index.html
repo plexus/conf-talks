@@ -1,0 +1,361 @@
+<!DOCTYPE >
+<html>
+<head>
+<link href="assets/2b695b65cd882c71a63ecf3a5a2f6066.css" rel="stylesheet">
+<link href="assets/7a165e20747bf5fe7f71dc429045f386.css" rel="stylesheet">
+<title>Functional Programming in Ruby | @plexus</title>
+<link rel="stylesheet" href="assets/c1cd938f43002a217f591a8a4303a896.css">
+<script src="assets/8f16b5edb7f88bfec561d7749e3c2241.js"></script><script>hljs.initHighlightingOnLoad();</script><meta charset="utf-8">
+<meta name="viewport" content="width=1024">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<link rel="stylesheet" type="text/css" href="assets/a7603970a1cba6caee850af53d5c1570.css">
+<script type="text/javascript">	    var _gaq = _gaq || [];
+	    _gaq.push(['_setAccount', 'UA-16178122-1']);
+	    _gaq.push(['_trackPageview']);
+
+	    (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	    })();
+</script>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+<section>
+<p class="center">Use the space bar or arrow keys to browse the slide.</p>
+<p>Some of the images are pretty big, so if you see an empty slide then wait a bit.</p>
+</section><section class="center" name="1">
+<h1>&#38738;</h1>
+</section><section fullscreen-img="img/qing.png" name="2" data-background="img/qing.png">
+</section><section name="3">
+<div class="center">
+<h1> &#38738;</h1>
+</div>
+<p>1. green; if about grass, plants, mountain etc.<br>
+2. blue; if about the sky, a stone etc.<br>
+3. black; if about hair, cloth etc.<br>
+4. young</p>
+</section><section name="4">
+<div class="center">
+<h1> &#38738;</h1>
+</div>
+<ul>
+<li><p>&#29983; &ldquo;growth of plants&rdquo;</p></li>
+<li><p>&#20025; &ldquo;cinnabar&rdquo;</p></li>
+</ul>
+<p>Cinnabar was used for dying items red, implying color. Giving the meaning &ldquo;color of growing plants&rdquo;, hence blue-green.</p>
+</section><section class="center" style="font-size: 70%" name="5">
+<h1>Functional Programming in Ruby</h1>
+<h2>&nbsp;</h2>
+<h2>Frozen Rails, Helsinki</h2>
+<h2>11/12 September 2014</h2>
+
+<p><a href="http://arnebrasseur.net/talks/frozenrails2014">http://arnebrasseur.net/talks/frozenrails2014</a></p>
+</section><section name="6">
+<p style="float: left; margin-left: 150px;"><img src="assets/151132f1ab2cddced0baeeecb0821898.jpg" alt=""></p>
+
+<h1 style="margin-top: 150px;">@plexus</h1>
+</section><section class="center" name="7">
+<p><img src="assets/ee549c9f05b9b6860eb0a3aa8501f9f4.png" alt=""></p>
+</section><section class="heading double" name="8">
+<h1>Programming Paradigms</h1>
+</section><section class="dark" fullscreen-img="img/assembler.jpg" name="9" data-background="img/assembler.jpg">
+<p><a href="https://www.flickr.com/photos/pablobd/4760973863">Image: @pablobd/4760973863</a></p>
+</section><section class="fragments" name="10">
+<h2>Imperative Programming</h2>
+<p class="fragment">State + Instructions</p>
+<p class="fragment">Modeled after the machine</p>
+</section><section class="fragments" name="11">
+<h2>Evolutionary Steps</h2>
+<p class="fragment">Procedural, group instructions</p>
+<p class="fragment">Object oriented, group state</p>
+<p class="fragment"><strong>Still imperative</strong> at heart</p>
+</section><section name="12">
+<h2>Place Oriented Programming</h2>
+</section><section name="13">
+<h2>PLOP</h2>
+</section><section class="fragments" name="14">
+<h2>PLOP</h2>
+<p class="fragment">State is kept in &ldquo;places&rdquo;</p>
+<p class="fragment">Old information is <strong>overwritten</strong> with new</p>
+<p class="fragment">But real facts don&rsquo;t change, they incorporate time</p>
+<pre class="language-ruby fragment"><code>{ date: '2014-09-10', temperature: 19 }
+{ date: '2014-09-11', temperature: 17 }
+</code></pre>
+</section><section fullscreen-img="img/maths.jpg" name="15" data-background="img/maths.jpg">
+<p><a href="https://www.flickr.com/photos/35064820@N00/3950391591">Image: @tkamenick/3950391591</a></p>
+</section><section class="fragments" name="16">
+<h2>Values</h2>
+<p class="fragment">Not state, but <strong>Immutable Values</strong></p>
+<p class="fragment">Can be &ldquo;simple&rdquo;: <code>42</code>, <code>:foo</code></p>
+<p class="fragment">Or composite, lists, sets, maps</p>
+</section><section class="fragments" name="17">
+<h2>Pure Functions</h2>
+<p class="fragment">Same input &rArr; same output</p>
+<p class="fragment">No observable side effects</p>
+<p class="fragment">Follows naturally from using values</p>
+</section><section name="18">
+<blockquote><p>An expression is said to be referentially transparent if it can be replaced with its value without changing the behavior of a program.</p></blockquote>
+</section><section class="fragments" name="19">
+<h2>Referential Transparency</h2>
+<p class="fragment">Memoizable, Lazy evaluation</p>
+<p class="fragment">Parallelizable</p>
+<p class="fragment">Easy reasoning, refactoring, debugging, testing</p>
+</section><section class="dark" fullscreen-img="img/crystal.jpg" name="20" data-background="img/crystal.jpg">
+<p><a href="https://www.flickr.com/photos/lenbo/2220987208">Image: photoholic1</a></p>
+
+
+</section><section fullscreen-img="img/silicon.jpg" class="dark" name="21" data-background="img/silicon.jpg">
+<p><a href="https://www.flickr.com/photos/rbulmahn/8028283618">Image: rbulmahn/8028283618</a></p>
+</section><section fullscreen-img="img/tarpit.png" name="22" data-background="img/tarpit.png">
+</section><section name="23">
+<blockquote><p>Functional programming goes a long way towards avoiding the problems of state-derived complexity. This has very significant benefits.</p></blockquote>
+</section><section name="24">
+<blockquote><p>The main weakness of functional programming is that problems arise when the system to be built must maintain state of some kind.</p></blockquote>
+</section><section class="bullet-points" name="25">
+<h2>Times Are Changing</h2>
+<ul>
+<li><p>1995 Ruby</p></li>
+<li><p>2003 Scala</p></li>
+<li><p>2005 F#</p></li>
+<li><p>2007 Clojure</p></li>
+<li><p>2012 Elixir</p></li>
+</ul>
+<p class="fragment">The future is functional/multi-paradigm</p>
+</section><section name="26">
+<h2>Multi-Paradigm</h2>
+<p>OOTTP: FP + Relational</p>
+<p>Clojure: FP + Reference Types</p>
+<p>Haskell: FP + Type System</p>
+<p>Ruby: ?</p>
+</section><section class="center" name="27">
+<p><img src="assets/37dbc7f2ff4dd546a69bf5cba42fcc9c.png" alt=""></p>
+
+
+
+
+
+
+
+
+
+
+
+</section><section class="heading" name="28">
+<h1>Data Structures</h1>
+</section><section class="center big-image" name="29">
+<p><img src="assets/ebf04e43360f26c9812dcf00859859f5.jpg" alt="Book cover: Purely Functional Data Structures"></p>
+</section><section class="center big-image bigger" name="30">
+<p><img src="assets/af6661fe2631197240496d583de010d7.svg" alt=""></p>
+<p><a href="http://commons.wikimedia.org/wiki/File:Purely_functional_tree_before.svg">Image by VineetKumar</a></p>
+</section><section class="center big-image bigger" name="31">
+<p><img src="assets/087f24804d278ff615cb3f2f99de6c3e.svg" alt=""></p>
+<p><a href="http://commons.wikimedia.org/wiki/File:Purely_functional_tree_after.svg">Image by VineetKumar</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</section><section class="center" name="32">
+<h2>Object Orientation</h2>
+<h3>Sanity Through Encapsulation</h3>
+</section><section class="center" name="33">
+<h2>Functional Programming</h2>
+<h3>Sanity Through Purity</h3>
+</section><section fullscreen-img="img/rubies.jpg" name="34" data-background="img/rubies.jpg">
+</section><section class="fragments" name="35">
+<h2>Ruby</h2>
+<p class="fragment">Some functional inspiration</p>
+<p class="fragment">Lambdas, blocks, map, reduce, freeze</p>
+<p class="fragment">Even lazy enumerators <span class="fragment">;)</span></p>
+</section><section class="fragments" name="36">
+<h2>Ruby</h2>
+<p class="fragment">Still possible to code in a purely functional way</p>
+<p class="fragment">Use objects, but make them values</p>
+<p class="fragment">Have a core of &ldquo;pure&rdquo; domain logic</p>
+<p class="fragment">Handle state and side effects outside of that</p>
+</section><section class="fragments" name="37">
+<h2>Values in Ruby</h2>
+<pre class="language-ruby fragment"><code>true, false, nil
+</code></pre>
+<pre class="language-ruby fragment"><code>23, 42, 5.9999
+</code></pre>
+<pre class="language-ruby fragment"><code>:foo, :bar
+</code></pre>
+<pre class="language-ruby fragment"><code>Time, Date, Pathname
+</code></pre>
+</section><section name="38">
+<h2>Gems</h2>
+<h3>Immutable Structs</h3>
+<p>anima, concord, adamantium,</p>
+<p>value_struct, value, values,</p>
+<p>immutable_struct, immutable, attr_immutable,</p>
+<p>value_object_struct, hamsterdam,</p>
+<p>closed_struct, functional_accessor</p>
+</section><section class="code" name="39">
+<pre class="language-ruby"><code>class Ukulele
+  include Anima.new(:color, :tuning)
+
+  # def initialize(attrs)
+  # attr_reader :color, :tuning
+  # def ==(other)
+  # def eql?(other)
+  # def equal?(other)
+end
+
+u1 = Ukulele.new(color: 'green',
+                 tuning: [:G, :C, :E, :A])
+u2 = Ukulele.new(color: 'green',
+                 tuning: [:G, :C, :E, :A])
+u1 == u2 # =&gt; true
+</code></pre>
+</section><section name="40">
+<h2>Gems</h2>
+<h4>Hamster</h4>
+<p>Pure Ruby implementation of Vector, Set, Map, List</p>
+<h4>persitent-data-structures</h4>
+<p>Native implementation for JRuby</p>
+<h4>Clojr</h4>
+<p>Clojure data structures and reference types for JRuby</p>
+</section><section class="code" name="41">
+<pre class="language-ruby"><code>require 'hamster'
+
+person = Hamster.hash(name: "Simon", gender: :male)
+  # =&gt; {name: "Simon", gender: :male}
+
+person[:name]
+  # =&gt; "Simon"
+person.get(:gender)
+  # =&gt; :male
+friend = person.put(:name, "James")
+  # =&gt; {:name =&gt; "James", :gender =&gt; :male}
+person
+  # =&gt; {:name =&gt; "Simon", :gender =&gt; :male}
+</code></pre>
+</section><section class="code" name="42">
+<pre class="language-ruby"><code>Hamster.interval(10_000, 1_000_000).filter do |number|
+  prime?(number)
+end.take(3)
+  # =&gt; 0.0009s
+</code></pre>
+<pre class="language-ruby"><code>(10_000..1_000_000).select do |number|
+  prime?(number)
+end.take(3)
+  # =&gt; 10s
+</code></pre>
+</section><section class="code" name="43">
+<pre class="language-ruby"><code>list  = Clojr::STM::Ref.new
+count = Clojr::STM::Ref.new
+
+Clojr::STM.dosync do
+  list.set(Clojr::Persistent::Vector.new(*1..100))
+  count.set(0)
+end
+</code></pre>
+</section><section class="code" name="44">
+<pre class="language-ruby"><code>10.times.map do
+  Thread.new do
+    10.times do
+      Clojr::STM.dosync do
+        i1, i2 = rand(100), rand(100)
+        old_list = list.deref
+        new_list.assoc(i1, old_list[i2])
+        new_list.assoc(i2, old_list[i1])
+        list.set(new_list)
+        count.set(count.deref + 1)
+      end
+    end
+  end
+end.map(&amp;:join)
+</code></pre>
+</section><section class="code" name="45">
+<pre class="language-ruby"><code>p list.deref
+# =&gt; [99, 10, 79, 64, 40, 59, ...]
+p count.deref
+# =&gt; 100
+</code></pre>
+</section><section class="dark" fullscreen-img="img/road.jpg" name="46" data-background="img/road.jpg">
+<p><a href="https://www.flickr.com/photos/weinand/5313296821">Image: Daniel Weinand</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</section>
+</div></div>
+<script src="assets/8244e91e3efc1ad6285d9beb8125fe4b.js" type="text/javascript"></script><script src="assets/e1e39b646fdf31ab1352cb14bee76d84.js" type="text/javascript"></script><script>Reveal.initialize({"dependencies":[],"history":true,"transition":"none","backgroundTransition":"none","width":1500,"height":1000,"loop":true,"include_assets":true});</script>
+</body>
+</html>
