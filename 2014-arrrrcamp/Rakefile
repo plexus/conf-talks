@@ -69,5 +69,8 @@ GA
   end
 end
 
+desc 'build'
 task :default => 'slippery:build:index'
+
+desc 'watch'
 task :watch   => 'slippery:watch:index'

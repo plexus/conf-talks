@@ -5,9 +5,49 @@ Use the space bar or arrow keys to browse the slide.
 Some of the images are pretty big, so if you see an empty slide then wait a bit.
 
 ---
+{:.code}
+
+```ruby
+# Convert a lambda numeral to an integer
+R = ->(n) { n.(->(i) { i+1 }, 0) }
+
+# Zero, i.e. apply a function to an argument zero times
+_0 = ->(f,x) { x }
+
+succ = ->(n)    { ->(f,x) { f.(n.(f,x)) } }
+add  = ->(n, m) { ->(f,x) { n.(f, m.(f,x)) } }
+
+_1 = succ.(_0) ; _2 = succ.(_1)
+_3 = succ.(_2) ; _4 = succ.(_3)
+
+R[_0] # => 0
+R[_3] # => 3
+R[add.(_2, _3)] # => 5
+```
+
+---
+{: fullscreen-img="img/myth2.png"}
+
+---
+{: fullscreen-img="img/karaoke.jpg"}
+
+---
+{:.big-image .bigger .center}
+
+![](img/hater.png)
+
+---
+{:.big-image .bigger .center}
+
+![](img/tomash.jpg)
+
+---
+{: fullscreen-img="img/rubystdlib.png"}
+
+---
 {:.center style="font-size: 70%"}
 
-# Functional Programming in Ruby
+# Functional Programming for Rubyists
 
 ## &nbsp;
 
@@ -27,9 +67,42 @@ Some of the images are pretty big, so if you see an empty slide then wait a bit.
 # @plexus
 
 ---
+{: fullscreen-img="img/rievanpol.jpg"}
+
+---
+{: fullscreen-img="img/radler.jpg"}
+
+---
+{:.center .big-image}
+
+![](img/aaron.png)
+
+---
+{:.code}
+
+```c
+/*
+ *  Document-class: ObjectSpace::WeakMap
+ *
+ *  An ObjectSpace::WeakMap object holds references to
+ *  any objects, but those objects can get garbage
+ *  collected.
+ *
+ *  This class is mostly used internally by WeakRef,
+ *  please use +lib/weakref.rb+ for the public
+ *  interface.
+ */
+
+VALUE rb_cWeakMap = rb_define_class_under(
+  rb_mObjSpace, "WeakMap", rb_cObject);
+```
+
+---
 {:.center}
 
 ![](img/happylambda.png)
+
+https://leanpub.com/happylambda
 
 ---
 {:.heading.double}
@@ -62,6 +135,14 @@ Object oriented, group state
 **Still imperative** at heart
 
 ---
+{: fullscreen-img="img/maths.jpg"}
+
+[Image: @tkamenick/3950391591](https://www.flickr.com/photos/35064820@N00/3950391591)
+
+---
+{: fullscreen-img="img/lisp.jpg"}
+
+---
 
 ## Place Oriented Programming
 
@@ -86,9 +167,13 @@ But real facts don't change, they incorporate time
 ```
 
 ---
-{: fullscreen-img="img/maths.jpg"}
+{:.fragments}
 
-[Image: @tkamenick/3950391591](https://www.flickr.com/photos/35064820@N00/3950391591)
+## "New Wave" FP
+
+Purely Functional Programming
+
+Immutable Values + Pure Functions
 
 ---
 {: .fragments}
@@ -97,9 +182,9 @@ But real facts don't change, they incorporate time
 
 Not state, but **Immutable Values**
 
-Can be "simple": `42`, `:foo`
+Both for primitives: `42`, `:foo`
 
-Or composite, lists, sets, maps
+And composites: lists, sets, maps
 
 ---
 {: .fragments}
@@ -143,6 +228,7 @@ Easy reasoning, refactoring, debugging, testing
 
 [Image: rbulmahn/8028283618](https://www.flickr.com/photos/rbulmahn/8028283618)
 
+
 ---
 {: fullscreen-img="img/tarpit.png"}
 
@@ -169,21 +255,20 @@ Easy reasoning, refactoring, debugging, testing
 The future is functional/multi-paradigm
 
 ---
+{:.fragments}
 
 ## Multi-Paradigm
 
 OOTTP: FP + Relational
 
-Clojure: FP + Reference Types
-
 Haskell: FP + Type System
+
+Clojure: FP + Reference Types
 
 Ruby: ?
 
 ---
-{:.center}
-
-![](img/boundaries.png)
+{: fullscreen-img="img/boundaries.png"}
 
 
 <!-- --- -->
@@ -310,22 +395,31 @@ Ruby: ?
 
 <!-- ``` -->
 
----
-{:.center}
+<!-- --- -->
+<!-- {:.center} -->
 
-## Object Orientation
+<!-- ## Object Orientation -->
 
-### Sanity Through Encapsulation
+<!-- ### Sanity Through Encapsulation -->
 
----
-{:.center}
+<!-- --- -->
+<!-- {:.center} -->
 
-## Functional Programming
+<!-- ## Functional Programming -->
 
-### Sanity Through Purity
+<!-- ### Sanity Through Purity -->
 
 ---
 {: fullscreen-img="img/rubies.jpg"}
+
+<!-- --- -->
+<!-- {:.fragments} -->
+
+<!-- ## Ruby -->
+
+<!-- > multi-paradigm: object-oriented, imperative, functional, reflective -->
+
+<!-- > Influenced by Ada, C++, CLU, Dylan, Eiffel, Lua, Lisp, Perl, Python, Smalltalk -->
 
 ---
 {:.fragments}
@@ -336,7 +430,9 @@ Some functional inspiration
 
 Lambdas, blocks, map, reduce, freeze
 
-Even lazy enumerators <span class="fragment">;)</span>
+Lazy enumerators
+
+What else?
 
 ---
 {:.fragments}
@@ -389,6 +485,12 @@ value\_object\_struct, hamsterdam,
 closed\_struct, functional\_accessor
 
 ---
+
+## Gems: Anima, Concord
+
+Replacement for struct
+
+---
 {:.code}
 
 ```ruby
@@ -400,6 +502,7 @@ class Ukulele
   # def ==(other)
   # def eql?(other)
   # def equal?(other)
+  # def to_h
 end
 
 u1 = Ukulele.new(color: 'green',
@@ -411,19 +514,37 @@ u1 == u2 # => true
 
 ---
 
-## Gems
+## Gems: Adamantium
 
-#### Hamster
+Freeze and memoize
 
-Pure Ruby implementation of Vector, Set, Map, List
+---
+{:.code}
 
-#### persitent-data-structures
+```ruby
+class Point
+  include Concord.new(:x, :y), Adamantium
+  def vector_length
+    Math.sqrt(x*x + y*y)
+  end
+  memoize :vector_length
+  def to_a
+    [x, y]
+  end
+  memoize :to_a
+end
 
-Native implementation for JRuby
+Point.new(4,4).vector_length # => 5.656854249492381
+Point.new(4,4).to_a << 7
+# ~> can't modify frozen Array (RuntimeError)
+```
 
-#### Clojr
+---
 
-Clojure data structures and reference types for JRuby
+
+### Gems: Hamster
+
+Purely Functional Data Structures in Pure Ruby
 
 ---
 {:.code}
@@ -444,22 +565,28 @@ person
   # => {:name => "Simon", :gender => :male}
 ```
 
+<!-- --- -->
+<!-- {:.code} -->
+
+<!-- ``` ruby -->
+<!-- Hamster.interval(10_000, 1_000_000).filter do |number| -->
+<!--   prime?(number) -->
+<!-- end.take(3) -->
+<!--   # => 0.0009s -->
+<!-- ``` -->
+
+<!-- ``` ruby -->
+<!-- (10_000..1_000_000).select do |number| -->
+<!--   prime?(number) -->
+<!-- end.take(3) -->
+<!--   # => 10s -->
+<!-- ``` -->
+
 ---
-{:.code}
 
-``` ruby
-Hamster.interval(10_000, 1_000_000).filter do |number|
-  prime?(number)
-end.take(3)
-  # => 0.0009s
-```
+## Gems: Clojr
 
-``` ruby
-(10_000..1_000_000).select do |number|
-  prime?(number)
-end.take(3)
-  # => 10s
-```
+Wraps Clojure Data Structures and STM for JRuby
 
 ---
 {:.code}
@@ -502,6 +629,49 @@ p list.deref
 # => [99, 10, 79, 64, 40, 59, ...]
 p count.deref
 # => 100
+```
+
+---
+
+## Gems: Funkify
+
+Haskell-like Currying and Partial Function Application
+
+---
+{:.code}
+
+```ruby
+module Fun
+  include Funkify
+  auto_curry
+
+  def mul(a,b) a * b end
+  def add(a,b) a + b end
+end
+
+include Fun
+
+(mul(5) * add(7)).(3) # => 50
+```
+
+---
+{:.code}
+
+```ruby
+module Composable
+  def compose(other)
+    ->(*args) do
+      other.(self.(*args))
+    end
+  end
+  alias * compose
+end
+
+Proc.send(:include, Composable)
+Method.send(:include, Composable)
+
+(method(:mul).to_proc.curry.(5)
+  * method(:add).to_proc.curry.(7)).(3) # => 50
 ```
 
 ---
