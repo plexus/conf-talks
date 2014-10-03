@@ -8,7 +8,7 @@ Some of the images are pretty big, so if you see an empty slide then wait a bit.
 {:.code}
 
 ```ruby
-# Convert a lambda numeral to an integer
+# Convert a Church numeral to an integer
 R = ->(n) { n.(->(i) { i+1 }, 0) }
 
 # Zero, i.e. apply a function to an argument zero times
@@ -29,17 +29,13 @@ R[add.(_2, _3)] # => 5
 {: fullscreen-img="img/myth2.png"}
 
 ---
-{: fullscreen-img="img/karaoke.jpg"}
-
----
-{:.big-image .bigger .center}
-
-![](img/hater.png)
-
----
 {:.big-image .bigger .center}
 
 ![](img/tomash.jpg)
+
+---
+{: fullscreen-img="img/karaoke.jpg"}
+
 
 ---
 {: fullscreen-img="img/rubystdlib.png"}
@@ -135,27 +131,9 @@ Object oriented, group state
 **Still imperative** at heart
 
 ---
-{: fullscreen-img="img/maths.jpg"}
-
-[Image: @tkamenick/3950391591](https://www.flickr.com/photos/35064820@N00/3950391591)
-
----
-{: fullscreen-img="img/lisp.jpg"}
-
----
-
-## Place Oriented Programming
-
----
-
-## PLOP
-
----
 {:.fragments}
 
-## PLOP
-
-State is kept in "places"
+## Place Oriented Programming
 
 Old information is **overwritten** with new
 
@@ -167,9 +145,16 @@ But real facts don't change, they incorporate time
 ```
 
 ---
-{:.fragments}
+{: fullscreen-img="img/maths.jpg"}
 
-## "New Wave" FP
+[Image: @tkamenick/3950391591](https://www.flickr.com/photos/35064820@N00/3950391591)
+
+---
+{: fullscreen-img="img/lisp.jpg"}
+
+---
+
+## Purely Functional Programming
 
 Purely Functional Programming
 
