@@ -1,0 +1,19 @@
+require 'slippery'
+
+Slippery::RakeTasks.new do
+  title "A Hypermedia Success Story | @plexus"
+  # type :deck_js
+
+  add_highlighting :default, '8.2'
+
+  pack_assets
+
+  # reveal_js
+  js_options theme: 'sky',
+             transition: 'none',
+             backgroundTransition: 'none',
+             width: 1500,  #1680,
+             height: 1000,  #1050
+             loop: true
+
+end

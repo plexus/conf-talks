@@ -1,0 +1,10 @@
+GET /api/shows
+
+
+{
+  ...,
+  "_links": {
+    "previous": "/api/shows"
+    "next": "/api/shows?offset=40"
+  }
+}

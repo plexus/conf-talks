@@ -1,0 +1,23 @@
+<html><head><link href='assets/de1b70e22db1eaf4af6297cd2a40b324.css' rel='stylesheet'><link href='assets/7a165e20747bf5fe7f71dc429045f386.css' rel='stylesheet'><title>A Hypermedia Success Story | @plexus</title><link rel='stylesheet' href='assets/c1cd938f43002a217f591a8a4303a896.css'><script src='assets/8f16b5edb7f88bfec561d7749e3c2241.js'></script><script>hljs.initHighlightingOnLoad();</script></head><body><div class='reveal'><div class='slides'><section><h1>A hypermedia Success Story</h1>
+</section><section name='1'>
+<h2>Hypermedia</h2>
+<p>An API that works like the web</p>
+</section><section name='2'>
+<pre><code>$ curl https://bacontheatre.ticketsolve.com/api/
+{
+  &quot;id&quot;: 212,
+  &quot;name&quot;: &quot;Bacon Theatre&quot;,
+  &quot;currency&quot;: &quot;GBP&quot;,
+  &quot;_links&quot;: {
+    &quot;profile&quot;: [ { &quot;href&quot;: &quot;http://api.ticketsolve.com/profile/account&quot; } ],
+    &quot;self&quot;: { &quot;href&quot;: &quot;/api/accounts/212&quot; },
+    &quot;http://api.ticketsolve.com/rel/shows&quot;: { &quot;href&quot;: &quot;/api/shows&quot; },
+    &quot;http://api.ticketsolve.com/rel/show&quot;: {
+      &quot;href&quot;: &quot;/api/shows/{id}&quot;,
+      &quot;templated&quot;: true
+    },
+    &quot;http://api.ticketsolve.com/rel/cart&quot;: { &quot;href&quot;: &quot;/api/cart&quot; },
+    &quot;http://api.ticketsolve.com/rel/home&quot;: { &quot;href&quot;: &quot;http://www.bacontheatre.co.uk/&quot; }
+  }
+}
+</code></pre></section></div></div><script src='assets/8244e91e3efc1ad6285d9beb8125fe4b.js' type='text/javascript'></script><script src='assets/e1e39b646fdf31ab1352cb14bee76d84.js' type='text/javascript'></script><script>Reveal.initialize({"dependencies":[],"history":true,"include_assets":true,"transition":"none","backgroundTransition":"none","width":1500,"height":1000,"loop":true});</script></body></html>

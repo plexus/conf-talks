@@ -1,0 +1,41 @@
+require 'slippery'
+
+Slippery::RakeTasks.new do
+  title "Learn to Learn"
+  type :reveal_js
+
+  # reveal_js
+  js_options theme: 'beige',
+             transition: 'none',
+             backgroundTransition: 'none',
+             # width: 1500,  #1680,
+             # height: 1000,  #1050
+             loop: true
+
+  pack_assets
+
+  ga = <<GA
+	    var _gaq = _gaq || [];
+	    _gaq.push(['_setAccount', 'UA-16178122-1']);
+	    _gaq.push(['_trackPageview']);
+
+	    (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	    })();
+GA
+
+  replace 'head' do |head|
+    head.append(
+      H[:meta, charset: 'utf-8'],
+      H[:meta, name: 'viewport', content: 'width=1024'],
+      H[:meta, "http-equiv" => 'X-UA-Compatible', content: 'IE=edge,chrome=1'],
+      H[:script, {type: 'text/javascript'}, ga],
+      H[:title, "Learn to Learn"],
+      H[:link, rel: 'stylesheet', href: 'stylesheets/stylesheet.css'],
+    )
+  end
+
+  replace('.language-notes') { [] }
+end

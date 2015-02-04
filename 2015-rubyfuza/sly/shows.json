@@ -1,0 +1,20 @@
+GET /api/shows
+
+{
+  "count": 20,
+  "offset": 0,
+  "_embedded": {
+    "http://api.ticketsolve.com/rel/shows": [
+      {
+        "id": 873524955,
+        "name": "Mini Maestros",
+        "dates": ["2015-02-04", "2015-02-11", "2015-02-25"],
+        ...
+      },
+      {
+        "id": 873525031,
+        "name": "Little Artist Club",
+        "dates": ["2015-02-07","2015-02-14"],
+        ...
+      }
+      ...

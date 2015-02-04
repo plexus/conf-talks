@@ -1,0 +1,20 @@
+{
+  ...
+  "_embedded": {
+    "http://api.ticketsolve.com/rel/ticket_prices": [
+      {
+        "id": 35,
+        "name": "Full Price",
+        ...
+        "_controls": {
+          "change_quantity": {
+            "name": "change_quantity",
+            "method": "POST",
+            "href": "/api/cart/ticket_line_items",
+            "media_type": "application/x-www-form-urlencoded",
+            "fields": [
+              {"name": "quantity", "type": "number" },
+              {"name": "ticket_price_id", "type": "hidden",
+               "value": 35 },
+              {"name": "ticket_allocation_ids", "type": "hidden",
+               "value": "62" }

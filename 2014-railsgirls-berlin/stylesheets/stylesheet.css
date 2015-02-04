@@ -1,0 +1,68 @@
+/* .reveal .box { */
+/*   border: 1px solid black; */
+/*   border-radius: 5px; */
+/*   margin: 0.2em; */
+/*   padding: 0.1em; */
+/* } */
+
+/* .reveal .big p { */
+/*   font-size: 1.8em; */
+/* } */
+
+/* .reveal section.noborder img { */
+/*   border: none; */
+/* } */
+
+/* .reveal form { */
+/*   border: 3px dashed rgb(255,100,0); */
+/*   padding: 1em 0; */
+/* } */
+
+/* .reveal .huge { */
+/*   font-size: 250px; */
+/* } */
+
+/* body .reveal h2 { */
+/*   margin-bottom: 0.8em; */
+/* } */
+
+/* li p { */
+/*   margin: 0.2em 0; */
+/* } */
+
+/* body .reveal pre { */
+/*   font-size: 0.7em; */
+/* } */
+
+/* body .reveal pre code { */
+/*   overflow: hidden; */
+/* } */
+
+/* .whoami img { */
+/*   display: inline; */
+/*   height: 128px; */
+/* } */
+
+h1.railsgirls {
+  background-image: url(images/railsgirls_bln.png);
+  background-repeat: no-repeat;
+  background-position: top center;
+  padding-top: 100px;
+}
+
+/* .bigsections h2 { */
+/*   margin-top: -200px; */
+/* } */
+
+/* .bigsections img { */
+/*   width: 800px; */
+/* } */
+
+/* .bigsections .big p.aside { */
+/*   font-size: 0.7em; */
+/*   font-style: italic; */
+/* } */
+
+/* .logo img { */
+/*   height: 150px; */
+/* } */
