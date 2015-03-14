@@ -19,3 +19,4 @@ class CartMapper < BaseMapper
          label: 'promotion_code.label',
          value: ->{ cart.promotion_code.code }
   end
+end

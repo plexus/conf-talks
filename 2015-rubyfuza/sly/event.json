@@ -1,10 +1,9 @@
+GET /api/events/60
 {
   "id": 60,
   "day": "2015-02-16",
   "duration": "90",
-  "venue": "The Basement",
-  "soldout": false,
-  "_embedded": {
+  ...
     "http://api.ticketsolve.com/rel/ticket_prices": [
       {
         "id": 35,
@@ -19,5 +18,3 @@
         ...
       }
     ]
-  }
-}

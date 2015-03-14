@@ -1,0 +1,5 @@
+* [[http://www.nytimes.com/2015/02/22/opinion/sunday/nicholas-kristof-straight-talk-for-white-men.html?smid%3Dtw-share&_r%3D0][Article about influence of unconscious bias]]
+* [[http://www.latimes.com/business/la-fi-women-tech-20150222-story.html#page%3D1][Why are women leaving the tech industry in droves?]]
+
+
+[[http://slides.seld.be/?file%3D2015-01-27%2BBehind%2Bthe%2BScenes%2Bof%2BMaintaining%2Ban%2BOpen%2BSource%2BProject.html][Behind The Scenes of Maintaining an Open Source Project]]

@@ -1,0 +1,10 @@
+GET /api/shows
+
+
+{
+  ...,
+  "_links": {
+    "previous": "/api/shows?month=2015-01"
+    "next": "/api/shows?month=2015-03"
+  }
+}

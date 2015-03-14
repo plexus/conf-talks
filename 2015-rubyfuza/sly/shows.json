@@ -1,9 +1,7 @@
 GET /api/shows
 
 {
-  "count": 20,
-  "offset": 0,
-  "_embedded": {
+  ...
     "http://api.ticketsolve.com/rel/shows": [
       {
         "id": 873524955,
