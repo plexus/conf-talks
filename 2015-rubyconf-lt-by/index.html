@@ -1,0 +1,238 @@
+<html><head><link href='assets/de1b70e22db1eaf4af6297cd2a40b324.css' rel='stylesheet'><link href='assets/7a165e20747bf5fe7f71dc429045f386.css' rel='stylesheet'><title>Hypermedia in Practice | @plexus</title><link rel='stylesheet' href='assets/c1cd938f43002a217f591a8a4303a896.css'><script src='assets/8f16b5edb7f88bfec561d7749e3c2241.js'></script><script>hljs.initHighlightingOnLoad();</script><meta charset='utf-8'><meta name='viewport' content='width=1024'><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><link rel='stylesheet' type='text/css' href='assets/1ea79c26a7aa47f5451893bf92f788d3.css'><script type='text/javascript'>var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-16178122-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script></head><body><div class='reveal'><div class='slides'><section><p class='center'>Use the space bar or arrow keys to browse the slide.</p>
+<p>Some of the images are pretty big, so if you see an empty slide then wait a bit.</p>
+</section><section class='center' style='font-size: 70%' name='1'>
+<h1>Hypermedia In Practice</h1>
+<h2> </h2>
+<h2>RubyConf.{LT,BY}</h2>
+<h2>21/22 March 2015</h2>
+<p><a href='http://arnebrasseur.net/talks/2015-rubyconf-lt-by'>http://arnebrasseur.net/talks/2015-rubyconf-lt-by</a></p>
+</section><section name='2'>
+<p style='float: left; margin-left: 150px;'><img src='assets/151132f1ab2cddced0baeeecb0821898.jpg' alt=''></p>
+
+<h1 style='margin-top: 150px;'>@plexus</h1>
+</section><section class='center big-image huge' name='3'>
+<p> </p>
+<p> </p>
+<p><img src='assets/7bbcea77e172fd9aaae41959cca1e6a4.png' alt=''></p>
+</section><section class='heading' name='4'>
+<h1>A Story</h1>
+</section><section fullscreen-img='img/once_upon_a_time.jpg' name='5' data-background='img/once_upon_a_time.jpg'>
+</section><section class='fragments' name='6'>
+<h2>A Story</h2>
+<p class='fragment'>September 2013: Rails app is 6 years old</p>
+<p class='fragment'>Co-tenancy styling nightmare</p>
+<p class='fragment'>Decided time to build a new front-end</p>
+</section><section class='fragments' name='7'>
+<h2>New Front End</h2>
+<p class='fragment'>Ember app</p>
+<p class='fragment'>Responsive Design</p>
+<p class='fragment'>Hypermedia API</p>
+</section><section class='fragments' name='8'>
+<h2>New Front End</h2>
+<p class='fragment'>Feature-flagged “slices”</p>
+<p class='fragment'>Work from show listing to checkout</p>
+<p class='fragment'>Roll out to volunteer customers</p>
+
+</section><section fullscreen-img='img/steps_show_listing.png' name='9' data-background='img/steps_show_listing.png'>
+</section><section fullscreen-img='img/steps_events.png' name='10' data-background='img/steps_events.png'>
+</section><section fullscreen-img='img/steps_book_tickets.png' name='11' data-background='img/steps_book_tickets.png'>
+</section><section fullscreen-img='img/steps_cart.png' name='12' data-background='img/steps_cart.png'>
+</section><section fullscreen-img='img/steps_checkout.png' name='13' data-background='img/steps_checkout.png'>
+</section><section fullscreen-img='img/steps_payment.png' name='14' data-background='img/steps_payment.png'>
+</section><section fullscreen-img='img/steps_confirmation.png' name='15' data-background='img/steps_confirmation.png'>
+</section><section class='fragments' name='16'>
+<h2>Current Status</h2>
+<p class='fragment'>Finished end-to-end</p>
+<p class='fragment'>In use by a handful of customers</p>
+<p class='fragment'>Filling in missing features</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</section><section class='heading center' name='17'>
+<h1>Hypermedia*</h1>
+<p>*also known as REST</p>
+</section><section fullscreen-img='img/api_like_the_web.jpg' name='18' data-background='img/api_like_the_web.jpg'>
+</section><section name='19'>
+<h2>REST</h2>
+<blockquote><p>“Architectural Styles and the Design of Network-based Software Architectures”</p></blockquote>
+<p class='center'>— Roy Fielding (<a href='http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm'>2000</a>)</p>
+</section><section name='20'>
+
+
+
+
+
+<h2>REST ?</h2>
+<p><img src='assets/5e43b1e76e22ba0023d2113e3f4b5f64.png' alt=''></p>
+</section><section class='fragments' name='21'>
+<h2>Rails-style “RESTful”</h2>
+<p class='fragment'>Based on pre-shared conventions</p>
+<p class='fragment'>Great for exposing DB structure over HTTP</p>
+<p class='fragment'>Lacks the most important properties of the web</p>
+</section><section class='fragments' name='22'>
+<h2>“RESTful” vs REST</h2>
+<p class='fragment'>Does a browser know the “conventions” your site uses?</p>
+<p class='fragment'>Do you need a browser update when URLs change?</p>
+<p class='fragment'>No!</p>
+</section><section name='23'>
+
+
+
+
+
+
+
+
+<h2>Hypermedia</h2>
+<blockquote><p>Hypermedia is the simultaneous presentation of <strong>information and controls</strong> such that the <strong>information becomes the affordance</strong> through which the consumer <strong>obtains choices and selects actions</strong></p></blockquote>
+<p class='center'>— Roy Fielding</p>
+</section><section name='24'>
+<h2>Affordance</h2>
+<blockquote><p>The set of possible actions the user is made aware of</p></blockquote>
+</section><section class='fragments' name='25'>
+<h2>REST (2000)</h2>
+<p class='fragment'>After the fact description of how the web works</p>
+<p class='fragment'>Term has been misused (tip: use “resourceful” for what Rails does)</p>
+<p class='fragment'>“Real REST” now referred to as Hypermedia</p>
+</section><section class='heading' name='26'>
+<h1>Hypermedia APIs</h1>
+</section><section class='fragments' name='27'>
+<h2>Hypermedia APIs</h2>
+<p class='fragment'>Data + Affordances</p>
+<p class='fragment'>Can be JSON, HTML, EDN, …</p>
+<p class='fragment'>Existing web standards being repurposed</p>
+</section><section class='fragments' name='28'>
+<h2>Some Vocab</h2>
+<p class='fragment'><strong>Resource</strong><br>
+Anything abstract or concrete you can refer to</p>
+<p class='fragment'><strong>URI</strong><br>
+Identifier for a resource (URL: pointer to ~)</p>
+<p class='fragment'><strong>Representation</strong> (also: Entity)<br>
+Serialization of a resource. Specific to <em>Format</em> and <em>Time</em></p>
+</section><section class='heading center' name='29'>
+<h1>Media types</h1>
+<h2>RFC 4288</h2>
+</section><section class='text-scale-3' name='30'>
+<pre><code>Network Working Group                                           N. Freed
+Request for Comments: 4288                              Sun Microsystems
+BCP: 13                                                       J. Klensin
+Obsoletes: 2048                                            December 2005
+Category: Best Current Practice
+
+
+         Media Type Specifications and Registration Procedures
+
+Abstract
+
+   This document defines procedures for the specification and
+   registration of media types for use in MIME and other Internet
+   protocols.
+</code></pre>
+</section><section name='31'>
+<h2>Media Types</h2>
+<blockquote><p>Accept: text/html</p></blockquote>
+<blockquote><p>Content-type: application/vnd.collection+json</p></blockquote>
+</section><section class='fragments' name='32'>
+<h2>Media Types</h2>
+<p class='fragment'>Originated in email as MIME types</p>
+<p class='fragment'>Mechanism for labeling content</p>
+<p class='fragment'>IANA keeps a registry</p>
+</section><section class='heading center' name='33'>
+<h1>Web Linking</h1>
+<h2>RFC5988</h2>
+</section><section class='text-scale-3' name='34'>
+<pre><code>Internet Engineering Task Force (IETF)                     M. Nottingham
+Request for Comments: 5988                                  October 2010
+Updates: 4287
+Category: Standards Track
+ISSN: 2070-1721
+
+
+                              Web Linking
+
+Abstract
+
+   This document specifies relation types for Web links, and defines a
+   registry for them.  It also defines the use of such links in HTTP
+   headers with the Link header field.
+</code></pre>
+</section><section class='text-scale-3' name='35'>
+<h2>Rels</h2>
+<pre class='language-html'><code>&lt;link rel=&quot;stylesheet&quot;
+  href=&quot;/stylesheets.css&quot;
+  type=&quot;text/css&quot;&gt;
+
+&lt;link rel=&quot;alternate&quot;
+  type=&quot;application/atom+xml&quot;
+  href=&quot;/feed.xml&quot;&gt;
+
+&lt;link rel=&quot;author&quot;
+  href=&quot;https://plus.google.com/u/0/112268398775525141261&quot;&gt;
+
+&lt;link rel=&quot;self&quot; href=&quot;http://blog.url.com/feed.xml&quot; /&gt;
+</code></pre>
+</section><section class='fragments' name='36'>
+<h2>Rels</h2>
+<p class='fragment'>Originated in HTML</p>
+<p class='fragment'>Usage spread: XFN, Atom</p>
+<p class='fragment'>Microformats &amp; IETF keep a registry</p>
+</section><section class='fragments' name='37'>
+<h2>Rels</h2>
+<p class='fragment'>Can be registered keyword: alternate, self</p>
+<p class='fragment'>Or custom by using URIs</p>
+<p class='fragment'>Simply identifiers, but great to point to docs</p>
+</section><section class='fragments' name='38'>
+<h1 class='fragment'>Ship it!</h1>
+</section><section name='39'>
+<p>Interesting bits</p>
+<ul><li><p>invalidates</p></li><li><p>ErrorMapper</p></li><li><p>FormError</p></li><li><p>change_quantity</p></li><li><p>presence/abscence of form control reflects on GUI</p></li><li><p>Ember hypermedia<br>
+** resource/link/form objects<br>
+** creates right type</p></li></ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</section><section fullscreen-img='img/fin.jpg' name='40' data-background='img/fin.jpg'></section></div></div><script src='assets/8244e91e3efc1ad6285d9beb8125fe4b.js' type='text/javascript'></script><script src='assets/e1e39b646fdf31ab1352cb14bee76d84.js' type='text/javascript'></script><script>Reveal.initialize({"dependencies":[],"history":true,"transition":"none","backgroundTransition":"none","width":1500,"height":1000,"loop":true,"include_assets":true});</script></body></html>
