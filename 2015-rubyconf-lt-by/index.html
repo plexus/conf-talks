@@ -1,4 +1,4 @@
-<html><head><link href='assets/de1b70e22db1eaf4af6297cd2a40b324.css' rel='stylesheet'><link href='assets/7a165e20747bf5fe7f71dc429045f386.css' rel='stylesheet'><title>Hypermedia in Practice | @plexus</title><link rel='stylesheet' href='assets/c1cd938f43002a217f591a8a4303a896.css'><script src='assets/8f16b5edb7f88bfec561d7749e3c2241.js'></script><script>hljs.initHighlightingOnLoad();</script><meta charset='utf-8'><meta name='viewport' content='width=1024'><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><link rel='stylesheet' type='text/css' href='assets/1ea79c26a7aa47f5451893bf92f788d3.css'><script type='text/javascript'>var _gaq = _gaq || [];
+<html><head><link href='assets/de1b70e22db1eaf4af6297cd2a40b324.css' rel='stylesheet'><link href='assets/7a165e20747bf5fe7f71dc429045f386.css' rel='stylesheet'><title>Hypermedia in Practice | @plexus</title><link rel='stylesheet' href='assets/c1cd938f43002a217f591a8a4303a896.css'><script src='assets/8f16b5edb7f88bfec561d7749e3c2241.js'></script><script>hljs.initHighlightingOnLoad();</script><meta charset='utf-8'><meta name='viewport' content='width=1024'><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><link rel='stylesheet' type='text/css' href='assets/f18bd94ec5aba7568f6d335491fbe136.css'><script type='text/javascript'>var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-16178122-1']);
 _gaq.push(['_trackPageview']);
 
@@ -7,133 +7,72 @@ _gaq.push(['_trackPageview']);
 	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
+</script><script type='text/javascript'>setTimeout(function() {
+  var attrs = document.getElementsByClassName('hljs-attribute');
+  for (var i=0 ; i < attrs.length ; i++) {
+    var node = attrs[i];
+    var text = node.textContent;
+    if (text == "_links" || text == "_embedded" || text == "_controls") {
+      var strong = document.createElement('strong');
+      node.parentNode.insertBefore(strong, node);
+      node.parentNode.removeChild(node);
+      strong.appendChild(node);
+    }
+  }
+}, 1000);
 </script></head><body><div class='reveal'><div class='slides'><section><p class='center'>Use the space bar or arrow keys to browse the slide.</p>
 <p>Some of the images are pretty big, so if you see an empty slide then wait a bit.</p>
-</section><section class='center' style='font-size: 70%' name='1'>
+</section><section fullscreen-img='img/rgsoc.png' name='1' data-background='img/rgsoc.png'>
+</section><section class='center' name='2'>
+<p><img src='assets/e36b8633239def6e20866b7bc6265cad.jpg' alt=''></p>
+</section><section fullscreen-img='img/rgsoc_sponsors.png' name='3' data-background='img/rgsoc_sponsors.png'>
+</section><section fullscreen-img='img/rgsoc_logos.png' name='4' data-background='img/rgsoc_logos.png'>
+</section><section fullscreen-img='img/rgsoc_teams.png' name='5' data-background='img/rgsoc_teams.png'>
+
+
+</section><section class='center' style='font-size: 70%' name='6'>
 <h1>Hypermedia In Practice</h1>
 <h2> </h2>
 <h2>RubyConf.{LT,BY}</h2>
 <h2>21/22 March 2015</h2>
 <p><a href='http://arnebrasseur.net/talks/2015-rubyconf-lt-by'>http://arnebrasseur.net/talks/2015-rubyconf-lt-by</a></p>
-</section><section name='2'>
+</section><section name='7'>
 <p style='float: left; margin-left: 150px;'><img src='assets/151132f1ab2cddced0baeeecb0821898.jpg' alt=''></p>
 
 <h1 style='margin-top: 150px;'>@plexus</h1>
-</section><section class='center big-image huge' name='3'>
+</section><section class='center big-image huge' name='8'>
 <p> </p>
 <p> </p>
 <p><img src='assets/7bbcea77e172fd9aaae41959cca1e6a4.png' alt=''></p>
-</section><section class='heading' name='4'>
+</section><section class='heading' name='9'>
 <h1>A Story</h1>
-</section><section fullscreen-img='img/once_upon_a_time.jpg' name='5' data-background='img/once_upon_a_time.jpg'>
-</section><section class='fragments' name='6'>
+</section><section fullscreen-img='img/once_upon_a_time.jpg' name='10' data-background='img/once_upon_a_time.jpg'>
+</section><section class='fragments' name='11'>
 <h2>A Story</h2>
 <p class='fragment'>September 2013: Rails app is 6 years old</p>
 <p class='fragment'>Co-tenancy styling nightmare</p>
 <p class='fragment'>Decided time to build a new front-end</p>
-</section><section class='fragments' name='7'>
+</section><section class='fragments' name='12'>
 <h2>New Front End</h2>
 <p class='fragment'>Ember app</p>
 <p class='fragment'>Responsive Design</p>
 <p class='fragment'>Hypermedia API</p>
-</section><section class='fragments' name='8'>
-<h2>New Front End</h2>
-<p class='fragment'>Feature-flagged “slices”</p>
-<p class='fragment'>Work from show listing to checkout</p>
-<p class='fragment'>Roll out to volunteer customers</p>
-
-</section><section fullscreen-img='img/steps_show_listing.png' name='9' data-background='img/steps_show_listing.png'>
-</section><section fullscreen-img='img/steps_events.png' name='10' data-background='img/steps_events.png'>
-</section><section fullscreen-img='img/steps_book_tickets.png' name='11' data-background='img/steps_book_tickets.png'>
-</section><section fullscreen-img='img/steps_cart.png' name='12' data-background='img/steps_cart.png'>
-</section><section fullscreen-img='img/steps_checkout.png' name='13' data-background='img/steps_checkout.png'>
-</section><section fullscreen-img='img/steps_payment.png' name='14' data-background='img/steps_payment.png'>
-</section><section fullscreen-img='img/steps_confirmation.png' name='15' data-background='img/steps_confirmation.png'>
-</section><section class='fragments' name='16'>
-<h2>Current Status</h2>
-<p class='fragment'>Finished end-to-end</p>
-<p class='fragment'>In use by a handful of customers</p>
-<p class='fragment'>Filling in missing features</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</section><section class='heading center' name='17'>
+</section><section class='heading center' name='13'>
 <h1>Hypermedia*</h1>
 <p>*also known as REST</p>
-</section><section fullscreen-img='img/api_like_the_web.jpg' name='18' data-background='img/api_like_the_web.jpg'>
-</section><section name='19'>
+</section><section name='14'>
 <h2>REST</h2>
 <blockquote><p>“Architectural Styles and the Design of Network-based Software Architectures”</p></blockquote>
 <p class='center'>— Roy Fielding (<a href='http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm'>2000</a>)</p>
-</section><section name='20'>
-
-
-
-
-
-<h2>REST ?</h2>
-<p><img src='assets/5e43b1e76e22ba0023d2113e3f4b5f64.png' alt=''></p>
-</section><section class='fragments' name='21'>
-<h2>Rails-style “RESTful”</h2>
-<p class='fragment'>Based on pre-shared conventions</p>
-<p class='fragment'>Great for exposing DB structure over HTTP</p>
-<p class='fragment'>Lacks the most important properties of the web</p>
-</section><section class='fragments' name='22'>
-<h2>“RESTful” vs REST</h2>
-<p class='fragment'>Does a browser know the “conventions” your site uses?</p>
-<p class='fragment'>Do you need a browser update when URLs change?</p>
-<p class='fragment'>No!</p>
-</section><section name='23'>
-
-
-
-
-
-
-
-
-<h2>Hypermedia</h2>
-<blockquote><p>Hypermedia is the simultaneous presentation of <strong>information and controls</strong> such that the <strong>information becomes the affordance</strong> through which the consumer <strong>obtains choices and selects actions</strong></p></blockquote>
-<p class='center'>— Roy Fielding</p>
-</section><section name='24'>
-<h2>Affordance</h2>
-<blockquote><p>The set of possible actions the user is made aware of</p></blockquote>
-</section><section class='fragments' name='25'>
-<h2>REST (2000)</h2>
+</section><section class='fragments' name='15'>
+<h2>REST</h2>
 <p class='fragment'>After the fact description of how the web works</p>
-<p class='fragment'>Term has been misused (tip: use “resourceful” for what Rails does)</p>
+<p class='fragment'>Term has been misused</p>
 <p class='fragment'>“Real REST” now referred to as Hypermedia</p>
-</section><section class='heading' name='26'>
-<h1>Hypermedia APIs</h1>
-</section><section class='fragments' name='27'>
-<h2>Hypermedia APIs</h2>
-<p class='fragment'>Data + Affordances</p>
-<p class='fragment'>Can be JSON, HTML, EDN, …</p>
-<p class='fragment'>Existing web standards being repurposed</p>
-</section><section class='fragments' name='28'>
+
+
+
+</section><section class='fragments' name='16'>
 <h2>Some Vocab</h2>
 <p class='fragment'><strong>Resource</strong><br>
 Anything abstract or concrete you can refer to</p>
@@ -141,11 +80,57 @@ Anything abstract or concrete you can refer to</p>
 Identifier for a resource (URL: pointer to ~)</p>
 <p class='fragment'><strong>Representation</strong> (also: Entity)<br>
 Serialization of a resource. Specific to <em>Format</em> and <em>Time</em></p>
-</section><section class='heading center' name='29'>
+</section><section name='17'>
+<blockquote><p>REST components perform actions on a <strong>resource</strong> by using a <strong>representation</strong> of the current or intended state of that resource and transferring those representations.</p></blockquote>
+<p class='center'>— Roy Fielding</p>
+</section><section name='18'>
+<blockquote style='width: 90%;'><p>The Web is an Internet-scale distributed hypermedia system. The Internet is about interconnecting information networks across boundaries. <strong>Distributed hypermedia provides a uniform means of accessing services through the embedding of action controls within the presentation of information retrieved from remote sites.</strong></p></blockquote>
+<p class='center'>— Fielding</p>
+</section><section name='19'>
+<blockquote style='width: 50%;'><p>embedding of action controls within the presentation of information</p></blockquote>
+<p class='center'>— Fielding</p>
+</section><section class='text-scale-5' name='20'>
+<h2>Embedded Controls</h2>
+<pre class='language-html'><code>&lt;ul&gt;
+  &lt;li&gt;in-&lt;/li&gt;
+  &lt;li&gt;for-&lt;/li&gt;
+  &lt;li&gt;ma-&lt;/li&gt;
+  &lt;li&gt;tion&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;a href=&quot;...&quot;&gt;action&lt;/a&gt;
+&lt;form action=&quot;...&quot; method=&quot;...&quot;&gt;controls&lt;/form&gt;
+</code></pre>
+</section><section name='21'>
+<p><img src='assets/5e43b1e76e22ba0023d2113e3f4b5f64.png' alt=''></p>
+<p class='fragment'>Resources + Representations? Yes</p>
+<p class='fragment'>Embedded Action Controls? No</p>
+<p class='fragment'>Not hyper{text,media} driven is NOT REST</p>
+</section><section class='fragments' name='22'>
+<h2>Rails-style “RESTful”</h2>
+<p class='fragment'>Based on pre-shared conventions</p>
+<p class='fragment'>Great for exposing DB structure over HTTP</p>
+<p class='fragment'>Better called “Resourceful”</p>
+</section><section class='fragments' name='23'>
+<h2>“RESTful” vs REST</h2>
+<p class='fragment'>Does a browser know the “conventions” your site uses?</p>
+<p class='fragment'>Do you need a browser update when a site change?</p>
+<p class='fragment'>No! Why not?<br>
+Uniform interface: Embedded action controls! (links + forms)</p>
+</section><section class='heading' name='24'>
+<h1>Hypermedia APIs</h1>
+</section><section fullscreen-img='img/api_like_the_web.jpg' name='25' data-background='img/api_like_the_web.jpg'>
+</section><section class='fragments' name='26'>
+<h2>Hypermedia APIs</h2>
+<p class='fragment'>Data + Controls</p>
+<p class='fragment'>Can be JSON, HTML, XML, …</p>
+<p class='fragment'>Existing web standards are being repurposed</p>
+</section><section class='heading center' name='27'>
 <h1>Media types</h1>
 <h2>RFC 4288</h2>
-</section><section class='text-scale-3' name='30'>
-<pre><code>Network Working Group                                           N. Freed
+</section><section class='text-scale-3' name='28'>
+<pre style='background-color: white'>
+Network Working Group                                           N. Freed
 Request for Comments: 4288                              Sun Microsystems
 BCP: 13                                                       J. Klensin
 Obsoletes: 2048                                            December 2005
@@ -159,21 +144,24 @@ Abstract
    This document defines procedures for the specification and
    registration of media types for use in MIME and other Internet
    protocols.
-</code></pre>
-</section><section name='31'>
+
+
+</pre>
+</section><section name='29'>
 <h2>Media Types</h2>
 <blockquote><p>Accept: text/html</p></blockquote>
 <blockquote><p>Content-type: application/vnd.collection+json</p></blockquote>
-</section><section class='fragments' name='32'>
+</section><section class='fragments' name='30'>
 <h2>Media Types</h2>
 <p class='fragment'>Originated in email as MIME types</p>
 <p class='fragment'>Mechanism for labeling content</p>
 <p class='fragment'>IANA keeps a registry</p>
-</section><section class='heading center' name='33'>
+</section><section class='heading center' name='31'>
 <h1>Web Linking</h1>
 <h2>RFC5988</h2>
-</section><section class='text-scale-3' name='34'>
-<pre><code>Internet Engineering Task Force (IETF)                     M. Nottingham
+</section><section class='text-scale-3' name='32'>
+<pre style='background-color: white'>
+Internet Engineering Task Force (IETF)                     M. Nottingham
 Request for Comments: 5988                                  October 2010
 Updates: 4287
 Category: Standards Track
@@ -187,8 +175,9 @@ Abstract
    This document specifies relation types for Web links, and defines a
    registry for them.  It also defines the use of such links in HTTP
    headers with the Link header field.
-</code></pre>
-</section><section class='text-scale-3' name='35'>
+
+</pre>
+</section><section class='text-scale-3' name='33'>
 <h2>Rels</h2>
 <pre class='language-html'><code>&lt;link rel=&quot;stylesheet&quot;
   href=&quot;/stylesheets.css&quot;
@@ -203,19 +192,396 @@ Abstract
 
 &lt;link rel=&quot;self&quot; href=&quot;http://blog.url.com/feed.xml&quot; /&gt;
 </code></pre>
-</section><section class='fragments' name='36'>
+</section><section class='fragments' name='34'>
 <h2>Rels</h2>
 <p class='fragment'>Originated in HTML</p>
 <p class='fragment'>Usage spread: XFN, Atom</p>
 <p class='fragment'>Microformats &amp; IETF keep a registry</p>
-</section><section class='fragments' name='37'>
+</section><section class='fragments' name='35'>
 <h2>Rels</h2>
 <p class='fragment'>Can be registered keyword: alternate, self</p>
 <p class='fragment'>Or custom by using URIs</p>
 <p class='fragment'>Simply identifiers, but great to point to docs</p>
-</section><section class='fragments' name='38'>
-<h1 class='fragment'>Ship it!</h1>
+</section><section class='heading' name='36'>
+<h1>Story Time</h1>
+</section><section class='fragments' name='37'>
+<h2>New Front End</h2>
+<p class='fragment'>Feature-flagged “slices”</p>
+<p class='fragment'>Work from show listing to checkout</p>
+<p class='fragment'>Roll out to volunteer customers</p>
+</section><section fullscreen-img='img/steps_show_listing.png' name='38' data-background='img/steps_show_listing.png'>
 </section><section name='39'>
+<h2>Step 1: Listing page</h2>
+</section><section name='40'>
+<h2><strike>Step 1: Listing page</strike></h2>
+<h2>Step 0: Groundwork</h2>
+</section><section class='fragments' name='41'>
+<h2>Groundwork</h2>
+<p class='fragment'>Did a ton of research</p>
+<p class='fragment'>Decided to use ActiveModel::Serializers, JSON-API, Ember</p>
+<p class='fragment'>In the end only Ember stuck</p>
+</section><section class='fragments' name='42'>
+<h2>Backend Stack</h2>
+<p class='fragment'>AMS (at the time) lacking stewardship, buggy</p>
+<p class='fragment'>No intermediate representation</p>
+<p class='fragment'>JSON-API unstable and lacking hypermedia controls</p>
+</section><section fullscreen-img='img/knowlegde_change_graph.png' name='43' data-background='img/knowlegde_change_graph.png'>
+</section><section class='yak-heading center' name='44'>
+<h1>Yaks</h1>
+</section><section class='center big-image' name='45'>
+<p><img src='assets/8802bcb27f73bd1398a2c13bb229acc2.jpg' alt=''> <img src='assets/bd3d5bfcfc61f33b41d82b34a6aacfcc.jpg' alt=''></p>
+</section><section class='fragments' name='46'>
+<h2>Yaks</h2>
+<p class='fragment'>v0.0.0 written over a weekend</p>
+<p class='fragment'>Already did what AMS was doing before (for us)</p>
+<p class='fragment'>Made it easy to switch to HAL</p>
+</section><section class='fragments' name='47'>
+<h2>Step 1: Listing page</h2>
+<p class='fragment'>Implement <code>/api/shows</code></p>
+<p class='fragment'>For now shows will link to the legacy show pages</p>
+<p class='fragment'>Needs pagination</p>
+</section><section class='text-scale-5' name='48'>
+<pre class='language-ruby'><code>class ShowMapper &lt; BaseMapper
+  attributes :id, :name, :dates, :description
+
+  link rels[:events], &#x27;/api/shows/{id}/events&#x27;
+  link rels[:legacy], &#x27;/shows/{id}/events&#x27;
+
+  has_many :venues
+  has_one :event_category
+end
+</code></pre>
+</section><section name='49'>
+<h2>Yaks Pipeline</h2>
+<p>Model →①→ Yaks::Resource →②→ Raw Data →③→ Bytes</p>
+<ul><li><p>① Mapper (CartMapper)</p></li><li><p>② Format (Yaks::Format::HAL)</p></li><li><p>③ Serializer (Yaks::Serializer::JSON)</p></li></ul>
+</section><section class='text-scale-5' name='50'>
+<h2>Yaks::Resource</h2>
+<pre class='language-ruby'><code>Yaks::Resource.new(
+  attributes: {
+    first_name: &quot;Arne&quot;,
+    last_name: &quot;Brasseur&quot;,
+    city: &quot;Berlin&quot;,
+    country: &quot;Germany&quot;
+  },
+  ...
+)
+</code></pre>
+</section><section class='text-scale-5' name='51'>
+<h2>Yaks::Resource</h2>
+<pre class='language-ruby'><code>Yaks::Resource.new(
+  ...,
+  links: [
+    Yaks::Resource::Link.new(
+      rel: &#x27;collection&#x27;, uri: &#x27;/api/users&#x27;),
+    Yaks::Resource::Link.new(
+      rel: &#x27;http://arnebrasseur.net/rel/talks&#x27;,
+      uri: &#x27;/api/talks&#x27;),
+  ],
+  ...
+)
+</code></pre>
+</section><section class='text-scale-5' name='52'>
+<h2>Yaks::Resource</h2>
+<pre class='language-ruby'><code>Yaks::Resource.new(
+  ...,
+  subresources: [
+    Yaks::Resource.new(
+      attributes: { },
+      links: [ ]
+      subresources: [ ]
+    )
+  ],
+  ...
+)
+</code></pre>
+</section><section class='text-scale-5' name='53'>
+<h2>Yaks::Resource</h2>
+<pre class='language-ruby'><code>Yaks::Resource.new(
+  ...,
+  forms: [
+    Yaks::Resource::Form.new(
+      method: &#x27;POST&#x27;,
+      action: &#x27;/api/talk&#x27;,
+      fields: [...]
+    )
+  ]
+)
+</code></pre>
+</section><section class='text-scale-2' name='54'>
+<pre class='language-json'><code>{ &quot;id&quot;: 7,
+  &quot;name&quot;: &quot;The Two Gentlemen of Verona&quot;,
+  &quot;dates&quot;: [&quot;2015-03-26&quot;, &quot;2015-03-27&quot;],
+  &quot;description&quot;: &quot;Our two gentlemen seek travel, adventure, and love.&quot;,
+  &quot;_links&quot;: {
+    &quot;self&quot;: {&quot;href&quot;: &quot;/api/shows/7&quot;},
+    &quot;profile&quot;: [{&quot;href&quot;: &quot;http://api.ticketsolve.com/profile/show&quot;}],
+    &quot;http://.../rel/events&quot;: {&quot;href&quot;: &quot;/api/shows/7/events&quot;},
+    &quot;http://.../rel/legacy&quot;: {&quot;href&quot;: &quot;/shows/7/events&quot;}
+  },
+  &quot;_embedded&quot;: {
+    &quot;http://api.ticketsolve.com/rel/venues&quot;: [
+      { &quot;name&quot;: &quot;Jerome Hynes Theatre&quot;, ... },
+      &quot;_links&quot;: { ... }
+    ],
+    &quot;http://api.ticketsolve.com/rel/event_category&quot;: {
+      &quot;name&quot;: &quot;Drama&quot;,
+      &quot;_links&quot;: { ... }
+    }
+</code></pre>
+</section><section class='text-scale-1' name='55'>
+<pre class='language-ruby'><code>class CollectionMapper &lt; Yaks::CollectionMapper
+   attributes :count, :offset
+   link :previous, -&gt;{ previous_link }
+   link :next,     -&gt;{ next_link     }
+
+   def offset ; params.fetch(&#x27;offset&#x27;) { 0 }.to_i ; end
+   def count  ; full_collection.count             ; end
+
+   alias full_collection collection
+
+   def collection
+     full_collection.offset(offset).limit(page_size)
+   end
+
+   def previous_link
+     URITemplate.new(&quot;#{env[&#x27;PATH_INFO&#x27;]}{?o}&quot;).expand(o: offset - page_size)
+   end
+
+   def next_link
+     URITemplate.new(&quot;#{env[&#x27;PATH_INFO&#x27;]}{?o}&quot;).expand(o: offset + page_size)
+  end
+end
+</code></pre>
+</section><section name='56'>
+<blockquote style='width: 100%'><p>GET /api/shows?offset=50</p></blockquote>
+<pre class='language-json'><code>{
+  &quot;count&quot;: 120,
+  &quot;offset&quot;: 50,
+  &quot;_links&quot;: {
+    &quot;profile&quot;: [{&quot;href&quot;: &quot;http://api.ticketsolve.com/profile/collection&quot;}],
+    &quot;previous&quot;: {&quot;href&quot;: &quot;/api/shows&quot;},
+    &quot;next&quot;:     {&quot;href&quot;: &quot;/api/shows?offset=100&quot;},
+  },
+  &quot;_embedded&quot;: {
+    &quot;http://api.ticketsolve.com/rel/shows&quot;: [
+      ...
+    ]
+  }
+}
+</code></pre>
+</section><section name='57'>
+<h2>Step 2: Events Page</h2>
+</section><section fullscreen-img='img/steps_events.png' name='58' data-background='img/steps_events.png'>
+</section><section fullscreen-img='img/steps_book_tickets.png' name='59' data-background='img/steps_book_tickets.png'>
+</section><section fullscreen-img='img/events_calendar.png' name='60' data-background='img/events_calendar.png'>
+</section><section class='fragments' name='61'>
+<h2>List or Calendar</h2>
+<p class='fragment'>First attempt: decision logic in frontend</p>
+<p class='fragment'>We can do better</p>
+<p class='fragment'>API drives UI</p>
+</section><section name='62'>
+<pre class='language-json'><code>{
+  &quot;count&quot;: 120,
+  &quot;_links&quot;: {
+    &quot;profile&quot;: [
+      {&quot;href&quot;: &quot;http://api.ticketsolve.com/profile/collection&quot;},
+      {&quot;href&quot;: &quot;http://api.ticketsolve.com/profile/event_calendar&quot;}
+    ],
+    &quot;previous&quot;: {&quot;href&quot;: &quot;/api/shows7/events?year_month=2015-02&quot;},
+    &quot;next&quot;:     {&quot;href&quot;: &quot;/api/shows7/events?year_month=2015-04&quot;},
+    &quot;http://api.ticketsolve.com/rel/date_range&quot;: {
+      &quot;href&quot;: &quot;/api/shows/7/events/?year_month={year}-{month}&quot;
+    }
+  },
+  &quot;_embedded&quot;: {
+    &quot;http://api.ticketsolve.com/rel/events&quot;: [ ... ]
+  }
+}
+</code></pre>
+</section><section name='63'>
+<pre class='language-json'><code>{
+  &quot;count&quot;: 120,
+  &quot;offset&quot;: 50,
+  &quot;_links&quot;: {
+    &quot;profile&quot;: [
+      { &quot;href&quot;: &quot;http://api.ticketsolve.com/profile/collection&quot; },
+      { &quot;href&quot;: &quot;http://api.ticketsolve.com/profile/event_list&quot; }
+    ],
+    &quot;previous&quot;: {&quot;href&quot;: &quot;/api/shows7/events&quot;},
+    &quot;next&quot;:     {&quot;href&quot;: &quot;/api/shows7/events?offset=100&quot;},
+  },
+  &quot;_embedded&quot;: {
+    &quot;http://api.ticketsolve.com/rel/events&quot;: [ ... ]
+  }
+}
+</code></pre>
+</section><section class='fragments' name='64'>
+<h2>Adding Ticket To Cart</h2>
+<p class='fragment'>First attempt: “template” line item + JSON-PATCH</p>
+<p class='fragment'>Eventually added form controls to Yaks</p>
+<p class='fragment'>Simplified things a lot</p>
+</section><section class='text-scale-5' name='65'>
+<pre class='language-ruby'><code>class TicketPriceMapper &lt; BaseMapper
+  attributes :id, :name, :price
+
+  form :change_quantity do
+    action &#x27;/api/cart/ticket_line_items&#x27;
+    method &#x27;POST&#x27;
+    media_type &#x27;application/x-www-form-urlencoded&#x27;
+
+    number :quantity
+    hidden :ticket_price_id,
+      value: -&gt; { id }
+    hidden :ticket_allocation_ids,
+      value: -&gt; { ticket_allocation_ids.join(&#x27;,&#x27;) }
+  end
+end
+</code></pre>
+</section><section class='text-scale-5' name='66'>
+<pre class='language-json'><code>&quot;_controls&quot;: {
+  &quot;change_quantity&quot;: {
+    &quot;name&quot;: &quot;change_quantity&quot;,
+    &quot;method&quot;: &quot;POST&quot;,
+    &quot;media_type&quot;: &quot;application/x-www-form-urlencoded&quot;,
+    &quot;fields&quot;: [
+      { &quot;name&quot;: &quot;quantity&quot;, &quot;type&quot;: &quot;number&quot; },
+      { &quot;name&quot;: &quot;ticket_price_id&quot;,
+        &quot;type&quot;: &quot;hidden&quot;, &quot;value&quot;: 47 },
+      { &quot;name&quot;: &quot;ticket_allocation_ids&quot;,
+        &quot;type&quot;: &quot;hidden&quot;, &quot;value&quot;: &quot;64&quot; }
+    ],
+    &quot;href&quot;: &quot;/api/cart/ticket_line_items&quot;
+  }
+}
+</code></pre>
+</section><section class='text-scale-3' name='67'>
+<pre class='language-coffeescript'><code>Ticketbooth.NumericSpinnerComponent = Ember.Component.extend
+  changeQuantity: Em.computed.alias &quot;subject.controls.change_quantity&quot;
+
+  setQuantity: (newQty)-&gt;
+    @get(&quot;changeQuantity&quot;).submit({&quot;quantity&quot;: newQty})
+
+  actions:
+    increment: -&gt;
+      newQty = @get(&quot;actionQuantity&quot;) + 1
+      return @setQuantity(newQty)
+
+    decrement: -&gt;
+      newQty = @get(&quot;actionQuantity&quot;) - 1
+      return if newQty &lt; 0
+      return @setQuantity(newQty)
+</code></pre>
+</section><section class='text-scale-5' name='68'>
+<p><strong><code>numeric-spinner.hbs</code></strong></p>
+<pre class='language-handlebars'><code>{{input class=&quot;numeric-spinner-value&quot;
+        type=&quot;text&quot;
+        value=quantity}}
+
+{{#if changeQuantityControl}}
+  &lt;button {{action &#x27;decrement&#x27;}}&gt;-&lt;/button&gt;
+  &lt;button {{action &#x27;increment&#x27;}}&gt;+&lt;/button&gt;
+{{/if}}
+</code></pre>
+<p> </p>
+<p><strong><code>ticket-price.hbs</code></strong></p>
+<pre class='language-handlebars'><code>{{numeric-spinner subject=ticketPrice}}
+</code></pre>
+</section><section name='69'>
+<h2>Step 3: Cart</h2>
+</section><section fullscreen-img='img/steps_cart.png' name='70' data-background='img/steps_cart.png'>
+</section><section class='fragments' name='71'>
+<h2>Cart</h2>
+<p class='fragment'>This one is easy now: just lots of forms</p>
+<p class='fragment'>Change Quantity, Remove line item, Empty Cart</p>
+<p class='fragment'>Form control present ⇒ UI control present</p>
+</section><section name='72'>
+</section><section name='73'>
+<h2>Step 4: Checkout</h2>
+</section><section fullscreen-img='img/steps_checkout.png' name='74' data-background='img/steps_checkout.png'>
+</section><section class='heading' name='75'>
+<h1>DEMO</h1>
+<h2>yaks-html</h2>
+</section><section class='fragments' name='76'>
+<h2>Checkout</h2>
+<p class='fragment'>Another big form</p>
+<p class='fragment'>Validation, pre-filling, error reporting</p>
+<p class='fragment'>Just like HTML: Form fields contain everything</p>
+</section><section class='text-scale-3' name='77'>
+<pre class='language-json'><code>&quot;fields&quot;: [
+  {
+    &quot;name&quot;: &quot;first_name&quot;,
+    &quot;label&quot;: &quot;views.checkout.first_name&quot;,
+    &quot;type&quot;: &quot;text&quot;,
+    &quot;required&quot;: true,
+    &quot;value&quot;: &quot;Foo&quot;,
+    &quot;maxlength&quot;: 96
+  },
+  {
+    &quot;name&quot;: &quot;address&quot;,
+    &quot;label&quot;: &quot;views.checkout.address&quot;,
+    &quot;type&quot;: &quot;textarea&quot;,
+    &quot;required&quot;: true,
+    &quot;rows&quot;: 2,
+    &quot;value&quot;: &quot;&quot;,
+    &quot;error&quot;: { &quot;blank&quot;: &quot;can&#x27;t be blank&quot; }
+  }
+]
+</code></pre>
+</section><section fullscreen-img='img/steps_payment.png' name='78' data-background='img/steps_payment.png'>
+</section><section fullscreen-img='img/steps_confirmation.png' name='79' data-background='img/steps_confirmation.png'>
+</section><section class='fragments' name='80'>
+<h2>Current Status</h2>
+<p class='fragment'>Finished end-to-end</p>
+<p class='fragment'>In use by a handful of customers</p>
+<p class='fragment'>Filling in missing features</p>
+
+</section><section class='center' style='font-size: 200%;' name='81'>
+<h1>Q?</h1>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</section><section class='center' name='82'>
+<p><img src='assets/f20baf9ca88848fc34dd3f1f5cb06b00.png' alt=''></p>
+</section><section class='heading' name='83'>
+<h1>Ship it!</h1>
+
+</section><section class='text-scale-4' name='84'>
+<blockquote style='width:100%'><p>Content-type: application/halo+json</p></blockquote>
+<pre class='language-json'><code>{
+  &quot;id&quot;: 5,
+  &quot;expires_at&quot;: &quot;2017-02-11T01:23:32+00:00&quot;,
+  &quot;total&quot;: 50.0,
+  &quot;item_count&quot;: 2,
+  &quot;_links&quot;: {
+    &quot;profile&quot;: [
+      {&quot;href&quot;: &quot;http://api.ticketsolve.com/profile/cart&quot;}
+    ],
+    &quot;self&quot;: {&quot;href&quot;: &quot;/api/cart&quot;},
+    &quot;http://api.ticketsolve.com/rel/checkout&quot;: {
+      &quot;href&quot;: &quot;/api/checkout&quot;
+    }
+  },
+  &quot;_embedded&quot;: { ... },
+  &quot;_controls&quot;: { ... }
+}
+</code></pre>
+
+</section><section name='85'>
 <p>Interesting bits</p>
 <ul><li><p>invalidates</p></li><li><p>ErrorMapper</p></li><li><p>FormError</p></li><li><p>change_quantity</p></li><li><p>presence/abscence of form control reflects on GUI</p></li><li><p>Ember hypermedia<br>
 ** resource/link/form objects<br>
@@ -235,4 +601,34 @@ Abstract
 
 
 
-</section><section fullscreen-img='img/fin.jpg' name='40' data-background='img/fin.jpg'></section></div></div><script src='assets/8244e91e3efc1ad6285d9beb8125fe4b.js' type='text/javascript'></script><script src='assets/e1e39b646fdf31ab1352cb14bee76d84.js' type='text/javascript'></script><script>Reveal.initialize({"dependencies":[],"history":true,"transition":"none","backgroundTransition":"none","width":1500,"height":1000,"loop":true,"include_assets":true});</script></body></html>
+</section><section fullscreen-img='img/fin.jpg' name='86' data-background='img/fin.jpg'>
+
+
+
+
+
+
+
+
+
+
+
+
+</section><section class='text-scale-5' name='87'>
+<pre class='language-ruby'><code>class CartMapper &lt; BaseMapper
+  attributes :id, :expires_at, :total, :item_count
+  link :self, &#x27;/api/cart&#x27;
+
+  has_many :line_items,
+           collection_mapper: LineItemCollectionMapper
+  has_one :promotion_code
+
+  form :promotion_code do
+    method &#x27;POST&#x27;
+    action &#x27;/api/cart/promotion_code&#x27;
+
+    text :code, label: &#x27;promotion_code.label&#x27;,
+         value: -&gt;{ cart.promotion_code.code }
+  end
+end
+</code></pre></section></div></div><script src='assets/8244e91e3efc1ad6285d9beb8125fe4b.js' type='text/javascript'></script><script src='assets/e1e39b646fdf31ab1352cb14bee76d84.js' type='text/javascript'></script><script>Reveal.initialize({"dependencies":[],"history":true,"transition":"none","backgroundTransition":"none","width":1500,"height":1000,"loop":true,"include_assets":true});</script></body></html>

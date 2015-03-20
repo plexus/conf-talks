@@ -1,5 +1,5 @@
 body {
-  background: url(img/noisy.png) repeat scroll 0% 0% transparent;
+  background: url(../assets/b713e1e3f3651ac7ab042ba20b8441e9.png) repeat scroll 0% 0% transparent;
 }
 
 body .reveal .slides {
@@ -52,7 +52,7 @@ body .reveal pre code {
 }
 
 .yak-heading {
-  background-image: url(img/big_yak.png);
+  background-image: url(../assets/a771017cdbdc4b275172a23731773a67.png);
   background-repeat: no-repeat;
   height: 800px;
   background-position: 15% 50%;
@@ -171,8 +171,7 @@ body .reveal blockquote {
   font-size: 2.6rem;
 }
 
-.hljs-symbol, .hljs-tag { color: #268bd2 !important; }
-.hljs-constant, .hljs-title { color: #b58900 !important; }
+.hljs-symbol { color: #268bd2; }
+.hljs-constant { color: #b58900; }
 .hljs-string { color: #2aa198; }
-/* .hljs-keyword, .hljs-attribute { color: #859900; } */
-.hljs-keyword, .hljs-attribute { color: #667500; }
+.hljs-keyword, .hljs-attribute { color: #859900; }

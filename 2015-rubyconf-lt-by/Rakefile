@@ -23,6 +23,7 @@ Slippery::RakeTasks.new do
         H[:meta, "http-equiv" => 'X-UA-Compatible', content: 'IE=edge,chrome=1'],
         H[:link, rel: 'stylesheet', type: 'text/css', href: 'style.css'],
         H[:script, {type: 'text/javascript'}, File.read('ga.js')],
+        H[:script, {type: 'text/javascript'}, File.read('highlight_hal.js')],
       ]
     ]
   end
@@ -38,6 +39,14 @@ Slippery::RakeTasks.new do
       else
         ch.add_class('fragment')
       end
+    end
+  end
+
+  processor '.hljs-attribute' do |attr|
+    if %w[_links _controls _embedded].include?(attr.text.strip)
+      H[:strong, attr]
+    else
+      attr
     end
   end
 end
