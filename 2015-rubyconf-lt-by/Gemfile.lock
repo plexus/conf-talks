@@ -1,4 +1,11 @@
 PATH
+  remote: /home/arne/github/asset_packer
+  specs:
+    asset_packer (0.2.0)
+      hexp (~> 0.4.6)
+      mime-types (~> 2.2)
+
+PATH
   remote: /home/arne/github/slippery
   specs:
     slippery (0.4.0)
@@ -16,9 +23,6 @@ GEM
     adamantium (0.2.0)
       ice_nine (~> 0.11.0)
       memoizable (~> 0.4.0)
-    asset_packer (0.2.0)
-      hexp (~> 0.4.6)
-      mime-types (~> 2.2)
     celluloid (0.16.0)
       timers (~> 4.0.0)
     concord (0.1.5)
@@ -58,4 +62,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  asset_packer!
   slippery!
