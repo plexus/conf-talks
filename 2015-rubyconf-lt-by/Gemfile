@@ -1,4 +1,3 @@
 source 'https://rubygems.org'
 
-gem 'slippery', path: '/home/arne/github/slippery'
-gem 'asset_packer', path: '/home/arne/github/asset_packer'
+gem 'slippery', '0.4.1'
