@@ -4,6 +4,37 @@ Use the space bar or arrow keys to browse the slide.
 Some of the images are pretty big, so if you see an empty slide then wait a bit.
 
 ---
+{:.center style="font-size: 70%"}
+
+# Hypermedia In Practice
+
+## &nbsp;
+
+## `/RubyConf\.(LT|BY)/`
+
+## 21/22 March 2015
+
+[http://arnebrasseur.net/talks/2015-rubyconf-lt-by](http://arnebrasseur.net/talks/2015-rubyconf-lt-by)
+
+---
+{: fullscreen-img="img/rock.jpg"}
+
+---
+{: fullscreen-img="img/mysterytour.jpg"}
+
+---
+{: fullscreen-img="img/karaoke.jpg"}
+
+---
+{: fullscreen-img="img/rubykaraoke.jpg"}
+
+---
+{: fullscreen-img="img/potato.jpg"}
+
+---
+{: fullscreen-img="img/whiterussian.gif"}
+
+---
 {: fullscreen-img="img/rgsoc.png"}
 
 ---
@@ -22,7 +53,8 @@ Some of the images are pretty big, so if you see an empty slide then wait a bit.
 
 ---
 
-http://railsgirlssummerofcode.org/campaign/
+{: .center style="font-size: 180%"}
+http://**railsgirls**summer**of**code.org/
 
 ---
 {:.center style="font-size: 70%"}
@@ -43,7 +75,6 @@ http://railsgirlssummerofcode.org/campaign/
 ![](img/avatar.jpg)
 
 
-{: style="margin-top: 70px;"}
 # @plexus
 
 {: style="border: 0;  box-shadow: 0px 0px 0px 0px rgba(0,0,0,0); font-size: 100%;"}
@@ -54,6 +85,9 @@ ClojureBridge   Chestnut
 Yaks            Slippery
 Emacs Berlin    Euruject
 </pre>
+
+---
+{: fullscreen-img="img/github.png"}
 
 ---
 {: .center .big-image .huge}
@@ -179,7 +213,7 @@ Serialization of a resource. Specific to _Format_ and _Time_
 ---
 
 {: style="width: 90%;"}
-> The Web is a distributed hypermedia system. The Internet connects information networks across boundaries. **Distributed hypermedia** provides a **uniform means** of accessing services **through the embedding of action controls within the presentation of information.**
+> **Distributed hypermedia** provides a **uniform means** of accessing services **through the embedding of action controls within the presentation of information.**
 
 {:.center}
 — Fielding
@@ -187,7 +221,7 @@ Serialization of a resource. Specific to _Format_ and _Time_
 ---
 
 {: style="width: 50%;"}
-> embedding of action controls within the presentation of information
+> embedding of **action controls** within the presentation of information
 
 {:.center}
 — Fielding
@@ -437,11 +471,11 @@ Work from show listing to checkout
 Roll out to volunteer customers
 
 ---
-{: fullscreen-img="img/new_frontend.png"}
-
----
 
 ## Step 1: Listing page
+
+---
+{: fullscreen-img="img/new_frontend.png"}
 
 ---
 
@@ -475,14 +509,14 @@ JSON-API unstable and lacking hypermedia controls
 {: fullscreen-img="img/knowlegde_change_graph.png"}
 
 ---
-{: .yak-heading .center}
-
-# Yaks
-
----
 {:.center .big-image}
 
 ![](img/alvear.jpg) ![](img/alvear-hostel.jpg)
+
+---
+{: .yak-heading .center}
+
+# Yaks
 
 ---
 {:.fragments}
@@ -502,7 +536,7 @@ Made it easy to switch to HAL
 
 Since then: 427 commit, 32 releases, 12 contributors
 
-Support for HAL, JSON-API, Collection+JSON, HTML, HALO, Transit
+Support for HAL, JSON-API, Collection+JSON, HTML, Transit.
 
 Mutation tested, battle tested
 
@@ -535,6 +569,24 @@ end
 ---
 {:.text-scale-5}
 
+## HAL
+
+Hypertext Application Language
+
+{: style="width:100%"}
+> application/hal+json
+
+``` json
+{
+  <attributes>,
+  "_links": { <rel => link>},
+  "_embedded": { <rel => resource> },
+}
+```
+
+---
+{:.text-scale-5}
+
 ``` json
 {
   "id": 7,
@@ -551,24 +603,6 @@ end
       "name": "Drama",
     }
   }
-}
-```
-
----
-{:.text-scale-5}
-
-## HAL
-
-Hypertext Application Language
-
-{: style="width:100%"}
-> application/hal+json
-
-``` json
-{
-  <attributes>,
-  "_links": { <rel => link>},
-  "_embedded": { <rel => resource> },
 }
 ```
 
