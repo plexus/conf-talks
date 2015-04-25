@@ -26,6 +26,9 @@ Some of the images are pretty big, so if you see an empty slide then wait a bit.
 # What is it?
 
 ---
+{:.fragments}
+
+## What is it
 
 A library for building APIs
 
@@ -34,17 +37,32 @@ It serializes objects
 It's specialized in Hypermedia
 
 ---
+{:.text-scale-5}
+
+```ruby
+Customer.find(27)
+```
+
+---
+{:.heading}
+
+# DEMO
+
+---
 {:.heading}
 
 # Why?
 
 ---
+{:.fragments}
 
-We needed it (we = Ticketsolve)
+## Why I built Yaks
 
-Not a lot available for Hypermedia
+Building hypermedia API + Ember app for Ticketsolve
 
 No existing libraries fitted the bill
+
+Developing in the open would improve quality
 
 ---
 {:.heading}
@@ -52,8 +70,11 @@ No existing libraries fitted the bill
 # Community
 
 ---
+{:.fragments}
 
-Small and friendly
+## Community
+
+Still young, small but friendly
 
 Github issues, Gitter chat
 
@@ -65,10 +86,13 @@ Main contributions: improvements to specific formats
 # How to contribute?
 
 ---
+{:.fragments}
+
+## How to contribute?
 
 Use it! report back!
 
-Join the discussion
+Scratch your own itch
 
 Coding and non-coding skills needed
 
@@ -78,20 +102,15 @@ Coding and non-coding skills needed
 # What's happening?
 
 ---
+{:.fragments}
+
+## What's happening?
 
 Recent focus: improving mutation coverage
 
 Better testing story
 
 Better docs, examples
-
----
-
-Format support: Siren, JSON-LD
-
-Read-write support
-
-Better HTML output
 
 ---
 {:.heading}
@@ -108,7 +127,7 @@ Several issues marked `ROSSConf` or `Beginner Friendly` in Github
 
 Ruby / HTML / CSS task
 
-Fun task because creative and immediate feedback
+Fun task because **creative** and **immediate feedback**
 
 ---
 
