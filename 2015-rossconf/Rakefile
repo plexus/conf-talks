@@ -13,7 +13,6 @@ Slippery::RakeTasks.new do
              height: 1000,  #1050
              loop: true
 
-
   pack_assets
 
   processor 'head' do |head|

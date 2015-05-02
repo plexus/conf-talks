@@ -1,5 +1,5 @@
 GEM
-  remote: https://api.rubygems.org/
+  remote: https://rubygems.org/
   specs:
     adamantium (0.2.0)
       ice_nine (~> 0.11.0)

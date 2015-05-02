@@ -19,6 +19,11 @@ Some of the images are pretty big, so if you see an empty slide then wait a bit.
 
 ### Arne Brasseur
 
+---
+{: fullscreen-img="img/karaoke_terrence.jpg"}
+
+---
+{: fullscreen-img="img/karaoke_charles.jpg"}
 
 ---
 {:.heading}
@@ -37,11 +42,72 @@ It serializes objects
 It's specialized in Hypermedia
 
 ---
+{:.text-scale-6}
+
+```ruby
+customer = Customer.find(27)
+yaks = Yaks.new
+
+json = yaks.call(
+  customer,
+  mapper: CustomerMapper,
+  env: rack_env
+)
+```
+
+---
 {:.text-scale-5}
 
 ```ruby
-Customer.find(27)
+class CustomerMapper < Yaks::Mapper
+  attributes :first_name, :last_name, :age
+
+  def age
+    Date.today - customer.date_of_birth
+  end
+
+  link :self,   '/api/customer/{id}'
+  link :orders, '/api/customer/{id}/orders',
+    if: -> { is_logged_in_customer? }
+end
 ```
+
+---
+{:.fragments .text-scale-6}
+
+Three main name spaces
+
+```ruby
+Yaks::Mapper*
+Yaks::Resource*
+Yaks::Format*
+```
+
+Very flexible and configurable
+
+---
+{:.text-scale-4}
+
+Central representation `Yaks::Resource`
+
+```ruby
+Yaks::Resource.new(
+  type: "customer",
+  attributes: {
+    first_name: "Arne",
+    last_name: "Brasseur"
+  },
+  links: [
+    Yaks::Resource::Link.new(rel: :self, uri: "/customer/5")
+  ],
+  forms: [
+    Yaks::Resource::Form.new(...)
+  ]
+)
+```
+
+Turned into many output formats: HAL, JSON API, Collection+JSON, HTML, HALO, Transit
+
 
 ---
 {:.heading}
@@ -81,8 +147,9 @@ Github issues, Gitter chat
 Main contributions: improvements to specific formats
 
 ---
-{:.heading}
+{:.heading style="margin-top: 62px"}
 
+{: style="margin-top: -62px"}
 # How to contribute?
 
 ---
@@ -97,8 +164,9 @@ Scratch your own itch
 Coding and non-coding skills needed
 
 ---
-{:.heading}
+{:.heading style="margin-top: 62px"}
 
+{: style="margin-top: -62px"}
 # What's happening?
 
 ---
@@ -108,18 +176,21 @@ Coding and non-coding skills needed
 
 Recent focus: improving mutation coverage
 
-Better testing story
+Improve support for various formats
 
 Better docs, examples
 
 ---
-{:.heading}
+{:.heading style="margin-top: 62px"}
 
+{: style="margin-top: -62px"}
 # This afternoon
 
 ---
+{:.text-scale-6 .center}
 
-Several issues marked `ROSSConf` or `Beginner Friendly` in Github
+Several issues marked __`ROSSConf`__
+or __`Beginner Friendly`__ in Github
 
 ---
 
@@ -164,8 +235,6 @@ class FooMapper < Yaks::Mapper
   end
 end
 ```
-
-Slightly more advanced task
 
 ---
 
