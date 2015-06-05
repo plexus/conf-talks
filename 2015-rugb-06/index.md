@@ -1,5 +1,13 @@
 # Growing a LISP
 
+Talk done at the Ruby User Group Berlin, 4 June 2015
+
+Dedicated to Guy Steele
+
+Use the space bar or arrow keys to navigate
+
+These slides will make more sense if you read the [speaker notes](arnebrasseur.net/talks/2015-rugb-06-lisp/notes.txt).
+
 ----
 
 ## Characters

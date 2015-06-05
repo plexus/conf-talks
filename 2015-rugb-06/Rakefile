@@ -1,7 +1,7 @@
 require 'slippery'
 
 Slippery::RakeTasks.new do
-  title "ROSSConf: Yaks | @plexus"
+  title "Growing a LISP | @plexus"
   type :reveal_js
 
   # reveal_js
@@ -20,7 +20,7 @@ Slippery::RakeTasks.new do
         H[:meta, name: 'viewport', content: 'width=1024'],
         H[:meta, "http-equiv" => 'X-UA-Compatible', content: 'IE=edge,chrome=1'],
         H[:link, rel: 'stylesheet', type: 'text/css', href: 'style.css'],
-        #H[:script, {type: 'text/javascript'}, File.read('ga.js')],
+        H[:script, {type: 'text/javascript'}, File.read('../ga.js')],
       ]
     ]
   end
