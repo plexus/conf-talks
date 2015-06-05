@@ -1,10 +1,10 @@
 if [ -z "$1" ] ; then
-  echo Usage: $0 <talk directory>
-  exit
+  echo "Usage: $0 <talk directory>"
+  exit 1
 fi
 
 if [ ! -d "$1" ] ; then
-  echo $1 is not a directory. Are you in the right spot?
+  echo "$1 is not a directory. Are you in the right spot?"
   exit
 fi
 
