@@ -476,17 +476,32 @@ binding:
 
 ---
 
-## Recursion
+## Let's use it!
 
 ```
 (def map
-     (lambda (f l)
+     (lambda (fn l)
        (if (nil? l)
            nil
-         (cons (f (car l)) (map f (cdr l))))))
+         (cons (fn (car l)) (map fn (cdr l))))))
 
 (map (lambda (x) (* x x)) '(1 2 3))
 ==> (2 4 9)
+```
+
+---
+
+## Let's use it!
+
+```
+(def reduce
+     (lambda (fn val l)
+       (if (nil? l)
+           val
+         (reduce fn (fn val (car l)) (cdr l)))))
+
+(reduce + 0 '(1 2 3))
+==> 6
 ```
 
 ---
@@ -509,4 +524,20 @@ binding:
 
 ```
 :trollface:
+```
+
+---
+
+## ClojureBridge
+
+```
+Saturday 11 July, 9:00 - 17:00
+
+(InstallFest on Friday)
+
+**Coaches Training**
+
+Next Thursday, 19:30
+
+6Wunderkinder (Alexanderplatz)
 ```
