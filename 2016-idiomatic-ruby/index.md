@@ -1,5 +1,3 @@
-<!-- IDIOMS AND IDIOMATIC: WHAT AND WHY -->
-
 ---
 {:.center}
 
@@ -13,17 +11,34 @@
 
 ## You say idiomatic
 
+{:.big}
 What does it mean?
 
-Why do we want it?
+{:.big}
+Why would we want it?
 
 ---
 
 ## Idiomatic
 
+{:.big}
 **id·i·o·mat·ic** \i-dē-ə-ˈma-tik\ _adjective_
 
+{:.big}
 Relating to, or conforming to idiom
+
+---
+
+## Idiom
+
+From Ancient Greek
+
+**ἴδιος** _ídios_
+personal, one's own;  peculiar, separate
+
+
+**ἰδίωμα** ‎_idíōma_
+a peculiarity, a peculiar phraseology, an idiom
 
 ---
 
@@ -32,46 +47,42 @@ Relating to, or conforming to idiom
 **id·i·om** \i-dē-əm\ _noun_
 
 1. a way of speaking that is particular to a specific group
-2. a peculiar phrase or expression that is commonly understood, even though its
-meaning isn't self-obvious
-
----
-
-## Idiom (1)
-
-“Eurospeak”
-British English
-SMS-language
+2. a peculiar phrase or expression that is commonly understood, even though its meaning isn't self-obvious
 
 ---
 
 ## Idiom (2)
 
-kick the bucket
-and Bob's your uncle
-pulling your leg
+{:.big}
+2. a peculiar phrase or expression that is commonly understood, even though its meaning isn't self-obvious
+
+{:.big}
+to kick the bucket
+I'm pulling your leg
+I wouldn't put it past him
 
 ---
 
-## Ruby idioms
+## Ruby idioms (2)
 
+{:.big}
 Think: "tiny design pattern"
 
 ---
 
-## Ruby idioms
+<!-- ## Ruby idioms (2) -->
 
-Optionally executable
+<!-- Optionally executable -->
 
-``` ruby
-if __FILE__ = $0
-  # ...
-end
-```
+<!-- ``` ruby -->
+<!-- if __FILE__ = $0 -->
+<!--   # ... -->
+<!-- end -->
+<!-- ``` -->
 
----
+<!-- --- -->
 
-## Ruby idioms
+## Ruby idioms (2)
 
 A method that memoizes
 
@@ -83,7 +94,7 @@ end
 
 ---
 
-## Ruby idioms
+## Ruby idioms (2)
 
 Method pre-condition
 
@@ -95,81 +106,249 @@ def filter_negatives(list)
 end
 ```
 
+
+---
+
+## Idiom (1)
+
+{:.big}
+1. a way of speaking that is particular to a specific group
+
+{:.big}
+“Eurospeak”
+British English
+High school language
+
+---
+
+## Ruby idioms (1)
+
+{:.big}
+Rails Ruby
+ruby-core Ruby
+Seattle.rb Ruby
+DataMapper/ROM Ruby
+
+---
+
+## Ruby idioms
+
+{:.big}
+Have evolved over time
+
+<!-- --- -->
+
+<!-- ## Middle Ruby -->
+
+<!-- {:.small} -->
+<!-- ``` ruby -->
+<!-- module SOAP -->
+
+<!-- class WSDLDriverFactory -->
+<!--   def ... -->
+<!--   end -->
+
+<!-- private -->
+
+<!--   def ... -->
+<!--   end -->
+<!-- end -->
+<!-- ``` -->
+
+---
+
+## Middle Ruby
+
+``` ruby
+def create_method_obj(names, params)
+  o = Object.new
+  for idx in 0 ... params.length
+    o.instance_variable_set('@' + names[idx],
+      params[idx])
+  end
+  o
+end
+```
+
+---
+
+## Middle Ruby
+
+{:.small}
+``` ruby
+/Content-Disposition:.* filename="?([^\";]*)"?/ni.match(h)
+filename = ($1 or "")
+if /Mac/ni.match(env_table['HTTP_USER_AGENT']) and
+    /Mozilla/ni.match(env_table['HTTP_USER_AGENT']) and
+    (not /MSIE/ni.match(env_table['HTTP_USER_AGENT']))
+  filename = CGI::unescape(filename)
+end
+```
+
+---
+
+## Middle Ruby
+
+``` ruby
+class CGI
+  def CGI::escape(string)
+    # ...
+  end
+
+  def CGI::unescapeHTML(string)
+    # ...
+  end
+end
+```
+
 ---
 
 ## Idiomatic
 
-Confirming to idiom(1) (which tends to use idiom(2))
+{:.big}
+Confirming to idiom(1)
 
+{:.big}
 Sounding “natural”
 
+---
 
+## Idiomatic Code
+
+{:.big}
+Takes advantage of the language
+
+{:.big}
+Is more easily understood by others
 
 ---
-{:.center}
 
-<!-- RUBY STYLE: A HISTORY LESSON -->
+## Consistency
 
-# A short history of Ruby idiom
+{:.big}
+Important for projects
+
+{:.big}
+Shared ownership
+
+{:.big}
+Reduced cognitive overhead
+
+---
+
+## Evolution of
+
+## Ruby idiom
+
+{:.big}
+First, second, and modern era
 
 ---
 
 ## The first era: 1995-2005
 
-“The primal ooze”
+{:.big}
+“The primordial ooze”
 
+{:.big}
 Ruby is still very niche
-Early adopters from Perl or C
+Early adopters from Perl, C, LISP, Smalltalk
 Diversity of styles
 
 ---
 
 ## The second era: 2005-2010
 
+{:.big}
 “Rails runaway train”
 
+{:.big}
 Adoption booms through Rails
-Ruby lauded for flexibility and creativity (_why!)
 Idiom crystalizes around Rails
+Still lots of flexibility and creativity (_why!)
 
 ---
 
-## The third era: 2010-2015
+## The modern era: 2010-2015
 
+{:.big}
 “They grow up so fast”
 
+{:.big}
 Big Rails apps maintained for 5+ years
-Search for best practices, consolidation
+Desire for best practices, consistency
 Wide adoption of a common style
 
 ---
 
-## The third era: 2010-2015
+## The modern era: 2010-2015
 
+{:.big}
+“The parallel track”
+
+{:.big}
 Resurgence of a “pure Ruby” crowd
 More open to novel approaches
-Develop their own idiom
+Develop their own idioms
 
 ---
 
-<!-- A BRIGHT NEW RUBY FUTURE -->
+## Who makes the rules?
 
-<!-- Since then a lot has been happening in programming language development. New -->
-<!-- languages like Rust, Elixir, Elm, Go, Idris are introducing new paradigms. -->
-<!-- Functional programming has gone mainstream, and Rubyists are starting to pay -->
-<!-- attention. We're seeing a new wave of experimentation. Some of the resulting -->
-<!-- code may look foreign at first, but we would be wise not to dismiss it too -->
-<!-- quickly because it's "not idiomatic". -->
+{:.big}
+In theory: descriptivist, style guide captures what “the people” do
 
-## Language developments
+{:.big}
+In practice: well known influencers
 
-Since 2009 several game changers
+---
 
-* Go
-* Idris
-* Elixir
-* Elm
-* Rust
+## Downsides
+
+{:.big}
+Extra hurdle for newcomers
+
+{:.big}
+Treating idiom as normative hampers innovation
+
+---
+
+## Times are changing
+
+{:.big}
+The only constant is change
+
+{:.big}
+When a society changes, its language changes
+
+{:.big}
+When it comes into contact with other language groups, its language changes
+
+---
+
+## Times are changing
+
+{:.big}
+Distributed systems, parallelization
+
+{:.big}
+Concurrency models, type systems
+
+{:.big}
+Go, Idris, Elixir, Elm, Rust
+
+---
+
+## Porting concepts to Ruby
+
+{:.big}
+Monads, functional composition, transducers, CSP
+
+{:.big}
+Unseen in Ruby
+
+{:.big}
+Will look unfamliar by necessity
 
 ---
 
@@ -180,9 +359,14 @@ json_string = get_json_from_somewhere
 
 result =
   Try { JSON.parse(json_string) } >-> json {
-    Try { json["dividend"].to_i / json["divisor"].to_i }
+    Try { json["dividend"].to_i /
+          json["divisor"].to_i }
   }
 ```
+
+---
+
+## Kleisli
 
 ```ruby
 maybe_user =
@@ -216,7 +400,7 @@ result.fmap { |value|
 ```ruby
 transformation = t(:map_array, t(:symbolize_keys)
  .>> t(:rename_keys, user_name: :user))
- .>> t(:wrap, :address, [:city, :street, :zipcode])
+ .>> t(:wrap, :address, [:city, :street])
 ```
 
 ---
@@ -236,6 +420,49 @@ T.transduce(
 
 ---
 
+## Agent
+
+``` ruby
+cw = channel!(Integer, 1)
+cr = channel!(Integer, 1)
+
+select! do |s|
+  s.case(cr, :receive) { |value| perform(value) }
+  s.case(cw, :send, 3)
+end
+```
+
+---
+
+## Conclusion
+
+{:.big}
+Idiom is fluid, treat it as such
+
+{:.big}
+Programming is a form of expression, find your own voice
+
+{:.big}
+“Idiomatic” does not imply “good” and vice versa, look beyond face-value
+
+---
+{:.center}
+
+## @plexus
+
+{:.img-yaks}
+![](img/yaks.png)
+
+{:.img-chestnut}
+![](img/chestnut.png)
+
+{:style="padding-left: 120px;"}
+### Yaks &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Chestnut
+
+---
+{:.center}
+
+{:style="padding-top: 350px;"}
 # FIN
 
 ---

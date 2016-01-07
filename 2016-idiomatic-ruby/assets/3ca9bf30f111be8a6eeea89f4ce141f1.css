@@ -1,5 +1,5 @@
 body {
-  background: url(../shared/noisy.png) repeat scroll 0% 0% transparent;
+  background: url(../assets/b713e1e3f3651ac7ab042ba20b8441e9.png) repeat scroll 0% 0% transparent;
 }
 
 body .reveal .slides {
@@ -25,7 +25,7 @@ body .reveal .slides blockquote {
 }
 
 body .reveal pre {
-  font-size: 95%;
+  font-size: 75%;
   box-shadow: 0px 0px 0px;
   width: 100%
 }
@@ -36,7 +36,7 @@ body .reveal pre code {
 }
 
 body .reveal p {
-  /* font-size: 110%; */
+  font-size: 110%;
   margin-top: 1.5em;
 }
 
@@ -54,22 +54,9 @@ body .reveal .big {
     font-size: 140%;
 }
 
-body .reveal .small {
-    font-size: 80%;
-}
-
 .img-transducers  {
     text-align: center;
 }
 .img-transducers img {
     width: 1000px;
-}
-
-.img-yaks img, .img-chestnut img{
-  height: 650px;
-  float: left;
-  border: 0 !important;
-  padding-left: 175px;
-  box-shadow: none !important;
-  background-color: inherit !important;
 }

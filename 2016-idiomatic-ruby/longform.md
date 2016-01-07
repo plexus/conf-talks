@@ -17,15 +17,29 @@ In programming we, too, have idioms. They are like tiny design patterns, ways of
 doing things "in the small" that have been proven to work well, and are part of
 idiom programmers share.
 
+This is the Ruby idiom for having a file with library code that can also be
+executed directly:
+
 ``` ruby
 if __FILE__ = $0
 
 end
 ```
 
+This is the Ruby idiom for a function that memoizes:
+
 ``` ruby
 def sum
   @sum ||= @left + @right
+end
+```
+
+This is the Ruby idiom for doing precondition checks:
+
+``` ruby
+def filter_negatives(list)
+  raise "list can't be empty" if list.empty?
+  # ...
 end
 ```
 
@@ -78,7 +92,8 @@ simply arbitrary: use of whitecase, camelcase vs snake case, `proc {}` vs
 `Proc.new {}`, `foo` vs `foo()`. When code within the same file or project uses
 these things inconsitently, there are constantly things that look a bit out of
 place, thus wasting brain cycles that could have gone to understanding the
-program.
+program. Consistency eases refactoring, encourages shared ownership, and eases
+pair-programming.
 
 But there's a danger with style guides: they can cause a language to become
 stuck in its past. To see how far in the past, we need to only look at Chinese,
@@ -123,3 +138,53 @@ creative programming comes at a price. Maybe these monkey patches and custom
 DSLs weren't such a good idea to start with. Then _why disappears, discouraged
 and driven away at last, as we would later learn, by the pain of maintaining his
 own coding exploits. The wild days are over.
+
+In 2011 Bozhidar Batsov starts writing the Ruby Style Guide. In 2012 work starts
+on Rubocop. Awareness of "good style" and "being idiomatic" increases".
+Gradually people fall in line, and present day Ruby code, especially in
+open-source projects, is surprisingly consistent.
+
+Since then a lot has been happening in programming language development. New
+languages like Rust, Elixir, Elm, Go, Idris are introducing new paradigms.
+Functional programming has gone mainstream, and Rubyists are starting to pay
+attention. We're seeing a new wave of experimentation. Some of the resulting
+code may look foreign at first, but we would be wise not to dismiss it too
+quickly because it's "not idiomatic".
+
+They want the same guarantees, reliability, expressiveness, concurrency
+constructs, that they've seen elsewhere. Distributed systems, multicore
+processing, fast and cheap random access memory, all of these change the context
+in which we as programmers operate, and so our code must change as well.
+
+Here's an example from the Transproc library, used heavily by ROM
+
+```ruby
+transformation = t(:map_array, t(:symbolize_keys)
+ .>> t(:rename_keys, user_name: :user))
+ .>> t(:wrap, :address, [:city, :street, :zipcode])
+```
+
+And here's an example from the "transducers" gem
+
+```ruby
+require 'transducers'
+T = Transducers
+T.transduce(T.compose(T.map(:succ), T.filter(:even?)), :<<, [], 0..9)
+# => [2, 4, 6, 8, 10]
+```
+
+And then there's Kleisli. Here's just one example from the documentation
+
+```ruby
+require "kleisli"
+
+json_string = get_json_from_somewhere
+
+result = Try { JSON.parse(json_string) } >-> json {
+  Try { json["dividend"].to_i / json["divisor"].to_i }}
+```
+
+All of these look "weird" at first, because they implement features on top of
+Ruby that didn't exist before. Transproc does functional compositions,
+Transducers implements, well, transducers, and Kleisli implements a number of
+useful monads.

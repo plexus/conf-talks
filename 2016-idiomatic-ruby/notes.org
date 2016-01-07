@@ -46,6 +46,68 @@ separate”).
    most efficient or elegant means to achieve a particular result or behavior.
 
 
+* old code
+
+** stdlib
+
+#+BEGIN_SRC
+class CGI
+  def CGI::escape(string)
+    #...
+  end
+
+  def CGI::unescapeHTML(string)
+    string.gsub(/&(.*?);/n) do
+      match = $1.dup
+      case match
+      when /\Aamp\z/ni           then '&'
+      when /\Aquot\z/ni          then '"'
+      when /\Agt\z/ni            then '>'
+      when /\Alt\z/ni            then '<'
+      when /\A#0*(\d+)\z/n       then
+#+END_SRC
+
+#+BEGIN_SRC
+        /Content-Disposition:.* filename="?([^\";]*)"?/ni.match(head)
+	filename = ($1 or "")
+	if /Mac/ni.match(env_table['HTTP_USER_AGENT']) and
+	    /Mozilla/ni.match(env_table['HTTP_USER_AGENT']) and
+	    (not /MSIE/ni.match(env_table['HTTP_USER_AGENT']))
+	  filename = CGI::unescape(filename)
+	end
+#+END_SRC
+
+#+BEGIN_SRC
+module SOAP
+
+
+class WSDLDriverFactory
+  class FactoryError < StandardError; end
+
+  def ...
+  end
+
+private
+
+  def ...
+  end
+end
+#+END_SRC
+
+#+BEGIN_SRC
+    def create_method_obj(names, params)
+      o = Object.new
+      for idx in 0 ... params.length
+        o.instance_variable_set('@' + names[idx], params[idx])
+      end
+      o
+    end
+#+END_SRC
+
+- explicit return
+- foo()
+
+
 * Libraries
 
 *** transducers
@@ -185,6 +247,14 @@ Old habits die hard
 
 - Pathname
 - Enumerator
+
+* Ruby idioms(1)
+
+- ruby-core Ruby
+- Rails Ruby
+- DataMapper / ROM
+- Lotus Ruby
+- Thoughtbot Ruby
 
 * Outline
 
