@@ -116,7 +116,6 @@ end
 
 {:.big}
 “Eurospeak”
-British English
 High school language
 
 ---
@@ -206,7 +205,7 @@ end
 ## Idiomatic
 
 {:.big}
-Confirming to idiom(1)
+Conforming to idiom(1)
 
 {:.big}
 Sounding “natural”

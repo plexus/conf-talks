@@ -80,10 +80,7 @@ class CGI
 #+BEGIN_SRC
 module SOAP
 
-
 class WSDLDriverFactory
-  class FactoryError < StandardError; end
-
   def ...
   end
 
