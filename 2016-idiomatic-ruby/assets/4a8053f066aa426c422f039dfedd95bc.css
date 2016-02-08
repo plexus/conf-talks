@@ -30,11 +30,6 @@ body .slide h2 {
   font-size: 70px
 }
 
-body .slide p, li {
-  font-size: 35px
-}
-
-.hljs {
-    /* darker default color */
-    color: #2F393D;
+body .slide p {
+  font-size: 70px
 }

@@ -1,11 +1,19 @@
 ---
-{:.center}
+{:#cover}
 
-# “Burn Your
+## Burn Your Idiomatic Ruby
 
-# Idiomatic Ruby”
+_A RubyConf Australia talk by [Arne Brasseur](http://arnebrasseur.net)_
 
-## — @plexus
+
+![](img/rome_burns.jpg){:.cover}
+
+{:.attribution}
+Image: [Fiddling while Rome burns](https://www.flickr.com/photos/shenamt/11015203525) by Shena Tschofen
+
+<style>
+
+</style>
 
 ---
 
@@ -173,6 +181,7 @@ end
 
 ## Middle Ruby
 
+{:.linum}
 {:.small}
 ``` ruby
 /Content-Disposition:.* filename="?([^\";]*)"?/ni.match(h)

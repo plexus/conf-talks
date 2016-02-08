@@ -1,3 +1,3 @@
 source 'https://rubygems.org'
 
-gem 'slippery', '0.4.1'
+gem 'slippery', path: '/home/arne/github/slippery'
