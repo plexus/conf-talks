@@ -19,36 +19,15 @@ Image: [Fiddling while Rome burns](https://www.flickr.com/photos/shenamt/1101520
 
 ## You say idiomatic
 
-{:.big}
 What does it mean?
 
-{:.big}
 Why would we want it?
 
 ---
 
 ## Idiomatic
 
-{:.big}
 **id·i·o·mat·ic** \i-dē-ə-ˈma-tik\ _adjective_
-
-{:.big}
-Relating to, or conforming to idiom
-
----
-
-## Idiom
-
-From Ancient Greek
-
-**ἴδιος** _ídios_
-personal, one's own;  peculiar, separate
-
-
-**ἰδίωμα** ‎_idíōma_
-a peculiarity, a peculiar phraseology, an idiom
-
----
 
 ## Idiom
 
@@ -61,19 +40,16 @@ a peculiarity, a peculiar phraseology, an idiom
 
 ## Idiom (2)
 
-{:.big}
 2. a peculiar phrase or expression that is commonly understood, even though its meaning isn't self-obvious
 
-{:.big}
-to kick the bucket
-I'm pulling your leg
-I wouldn't put it past him
+* to kick the bucket
+* I'm pulling your leg
+* I wouldn't put it past him
 
 ---
 
 ## Ruby idioms (2)
 
-{:.big}
 Think: "tiny design pattern"
 
 ---
@@ -119,28 +95,39 @@ end
 
 ## Idiom (1)
 
-{:.big}
 1. a way of speaking that is particular to a specific group
 
-{:.big}
-“Eurospeak”
-High school language
+* “Eurospeak”
+* High school language
 
 ---
 
 ## Ruby idioms (1)
 
-{:.big}
-Rails Ruby
-ruby-core Ruby
-Seattle.rb Ruby
-DataMapper/ROM Ruby
+* Rails Ruby
+* ruby-core Ruby
+* Seattle.rb Ruby
+* DataMapper/ROM Ruby
+
+---
+
+## Seattle.rb Ruby
+
+```
+def self.filter_files files, ignore = DEFAULT_IGNORE
+  ignore_paths = if ignore.respond_to? :read then
+                   ignore.read
+                 elsif File.exists? ignore then
+                   File.read ignore
+                 end
+   # ...
+end
+```
 
 ---
 
 ## Ruby idioms
 
-{:.big}
 Have evolved over time
 
 <!-- --- -->
@@ -213,33 +200,26 @@ end
 
 ## Idiomatic
 
-{:.big}
 Conforming to idiom(1)
 
-{:.big}
 Sounding “natural”
 
 ---
 
 ## Idiomatic Code
 
-{:.big}
 Takes advantage of the language
 
-{:.big}
 Is more easily understood by others
 
 ---
 
 ## Consistency
 
-{:.big}
 Important for projects
 
-{:.big}
 Shared ownership
 
-{:.big}
 Reduced cognitive overhead
 
 ---
@@ -248,53 +228,44 @@ Reduced cognitive overhead
 
 ## Ruby idiom
 
-{:.big}
-First, second, and modern era
+Early, Middle, and Modern Ruby
 
 ---
 
-## The first era: 1995-2005
+## Early Ruby: 1995-2005
 
-{:.big}
 “The primordial ooze”
 
-{:.big}
 Ruby is still very niche
 Early adopters from Perl, C, LISP, Smalltalk
 Diversity of styles
 
 ---
 
-## The second era: 2005-2010
+## Middle Ruby: 2005-2010
 
-{:.big}
 “Rails runaway train”
 
-{:.big}
 Adoption booms through Rails
 Idiom crystalizes around Rails
 Still lots of flexibility and creativity (_why!)
 
 ---
 
-## The modern era: 2010-2015
+## Modern Ruby: 2010-2015
 
-{:.big}
 “They grow up so fast”
 
-{:.big}
 Big Rails apps maintained for 5+ years
 Desire for best practices, consistency
 Wide adoption of a common style
 
 ---
 
-## The modern era: 2010-2015
+## Modern Ruby: 2010-2015
 
-{:.big}
 “The parallel track”
 
-{:.big}
 Resurgence of a “pure Ruby” crowd
 More open to novel approaches
 Develop their own idioms
@@ -303,59 +274,54 @@ Develop their own idioms
 
 ## Who makes the rules?
 
-{:.big}
 In theory: descriptivist, style guide captures what “the people” do
 
-{:.big}
 In practice: well known influencers
 
 ---
 
 ## Downsides
 
-{:.big}
 Extra hurdle for newcomers
 
-{:.big}
 Treating idiom as normative hampers innovation
+
+---
+
+![](img/gh-chart-1.svg){:style="width: 100%"}
+
+---
+
+![](img/gh-chart-2.svg){:style="width: 100%"}
 
 ---
 
 ## Times are changing
 
-{:.big}
 The only constant is change
 
-{:.big}
 When a society changes, its language changes
 
-{:.big}
 When it comes into contact with other language groups, its language changes
 
 ---
 
 ## Times are changing
 
-{:.big}
 Distributed systems, parallelization
 
-{:.big}
 Concurrency models, type systems
 
-{:.big}
 Go, Idris, Elixir, Elm, Rust
 
 ---
 
 ## Porting concepts to Ruby
 
-{:.big}
 Monads, functional composition, transducers, CSP
 
-{:.big}
 Unseen in Ruby
 
-{:.big}
 Will look unfamliar by necessity
 
 ---
@@ -453,24 +419,9 @@ Programming is a form of expression, find your own voice
 {:.big}
 “Idiomatic” does not imply “good” and vice versa, look beyond face-value
 
----
-{:.center}
-
-## @plexus
-
-{:.img-yaks}
-![](img/yaks.png)
-
-{:.img-chestnut}
-![](img/chestnut.png)
-
-{:style="padding-left: 120px;"}
-### Yaks &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Chestnut
 
 ---
-{:.center}
 
-{:style="padding-top: 350px;"}
 # FIN
 
 ---

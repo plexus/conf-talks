@@ -49,5 +49,5 @@ pre {
 }
 
 .slide pre code:not(:only-child)::before {
-  margin-left: -2.5em;
+  margin-left: -4em;
 }

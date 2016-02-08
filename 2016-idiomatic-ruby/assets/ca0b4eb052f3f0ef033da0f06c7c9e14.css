@@ -42,12 +42,3 @@ body .slide p, li {
 body .slide {
   font-family: 'EB Garamond', serif;
 }
-
-pre {
-  border-left: 1px solid #ccc;
-  padding-left: 0.5em;
-}
-
-.slide pre code:not(:only-child)::before {
-  margin-left: -2.5em;
-}
