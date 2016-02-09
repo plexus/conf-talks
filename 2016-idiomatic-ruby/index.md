@@ -1,9 +1,9 @@
----
+----
 {:#cover}
 
 ## Burn Your Idiomatic Ruby
 
-_A RubyConf Australia talk by [Arne Brasseur](http://arnebrasseur.net)_
+_A RubyConf Australia talk by [**Arne Brasseur**](http://arnebrasseur.net)_
 
 
 ![](img/rome_burns.jpg){:.cover}
@@ -25,11 +25,10 @@ Why would we want it?
 
 ---
 
-## Idiomatic
-
-**id·i·o·mat·ic** \i-dē-ə-ˈma-tik\ _adjective_
-
 ## Idiom
+
+<!-- **id·i·o·mat·ic** \i-dē-ə-ˈma-tik\ _adjective_ -->
+<!-- Related or conforming to idiom. -->
 
 **id·i·om** \i-dē-əm\ _noun_
 
@@ -38,19 +37,28 @@ Why would we want it?
 
 ---
 
-## Idiom (2)
+## Idiom²
 
+{:style="counter-reset: list 1;"}
 2. a peculiar phrase or expression that is commonly understood, even though its meaning isn't self-obvious
 
-* to kick the bucket
-* I'm pulling your leg
-* I wouldn't put it past him
+_“to kick the bucket”_
+_“you're pulling my leg”_
+_“I wouldn't put it past him”_
 
 ---
 
-## Ruby idioms (2)
+## Aussie idioms²
 
-Think: "tiny design pattern"
+_“spit the dummy”_
+_“fair dinkum”_
+_“get on the turps”_
+
+---
+
+## Ruby idioms²
+
+Think: “tiny design pattern”
 
 ---
 
@@ -66,7 +74,7 @@ Think: "tiny design pattern"
 
 <!-- --- -->
 
-## Ruby idioms (2)
+## Ruby idioms²
 
 A method that memoizes
 
@@ -93,16 +101,24 @@ end
 
 ---
 
-## Idiom (1)
+## Idiom¹
 
-1. a way of speaking that is particular to a specific group
+A way of speaking that is particular to a specific group
 
 * “Eurospeak”
 * High school language
 
 ---
 
-## Ruby idioms (1)
+## Idiom¹
+
+Differs from group to group: _“Aussie”_ vs. _“'Murican”_
+
+Evolves over time: Early, middle, late English
+
+---
+
+## Ruby idioms¹
 
 * Rails Ruby
 * ruby-core Ruby
@@ -126,81 +142,9 @@ end
 
 ---
 
-## Ruby idioms
-
-Have evolved over time
-
-<!-- --- -->
-
-<!-- ## Middle Ruby -->
-
-<!-- {:.small} -->
-<!-- ``` ruby -->
-<!-- module SOAP -->
-
-<!-- class WSDLDriverFactory -->
-<!--   def ... -->
-<!--   end -->
-
-<!-- private -->
-
-<!--   def ... -->
-<!--   end -->
-<!-- end -->
-<!-- ``` -->
-
----
-
-## Middle Ruby
-
-``` ruby
-def create_method_obj(names, params)
-  o = Object.new
-  for idx in 0 ... params.length
-    o.instance_variable_set('@' + names[idx],
-      params[idx])
-  end
-  o
-end
-```
-
----
-
-## Middle Ruby
-
-{:.linum}
-{:.small}
-``` ruby
-/Content-Disposition:.* filename="?([^\";]*)"?/ni.match(h)
-filename = ($1 or "")
-if /Mac/ni.match(env_table['HTTP_USER_AGENT']) and
-    /Mozilla/ni.match(env_table['HTTP_USER_AGENT']) and
-    (not /MSIE/ni.match(env_table['HTTP_USER_AGENT']))
-  filename = CGI::unescape(filename)
-end
-```
-
----
-
-## Middle Ruby
-
-``` ruby
-class CGI
-  def CGI::escape(string)
-    # ...
-  end
-
-  def CGI::unescapeHTML(string)
-    # ...
-  end
-end
-```
-
----
-
 ## Idiomatic
 
-Conforming to idiom(1)
+Conforming to idiom¹
 
 Sounding “natural”
 
@@ -232,6 +176,52 @@ Early, Middle, and Modern Ruby
 
 ---
 
+## Middle Ruby
+
+``` ruby
+def create_method_obj(names, params)
+  o = Object.new
+  for idx in 0 ... params.length
+    o.instance_variable_set('@' + names[idx],
+      params[idx])
+  end
+  o
+end
+```
+
+---
+
+## Middle Ruby
+
+{:.linum}
+``` ruby
+/Content-Disposition:.* filename="?([^\";]*)"?/ni.match(h)
+filename = ($1 or "")
+if /Mac/ni.match(env_table['HTTP_USER_AGENT']) and
+    /Mozilla/ni.match(env_table['HTTP_USER_AGENT']) and
+    (not /MSIE/ni.match(env_table['HTTP_USER_AGENT']))
+  filename = CGI::unescape(filename)
+end
+```
+
+---
+
+## Middle Ruby
+
+``` ruby
+class CGI
+  def CGI::escape(string)
+    # ...
+  end
+
+  def CGI::unescapeHTML(string)
+    # ...
+  end
+end
+```
+
+---
+
 ## Early Ruby: 1995-2005
 
 “The primordial ooze”
@@ -248,7 +238,7 @@ Diversity of styles
 
 Adoption booms through Rails
 Idiom crystalizes around Rails
-Still lots of flexibility and creativity (_why!)
+Still lots of flexibility and creativity (Why the Lucky Stiff!)
 
 ---
 
@@ -410,95 +400,16 @@ end
 
 ## Conclusion
 
-{:.big}
 Idiom is fluid, treat it as such
 
-{:.big}
 Programming is a form of expression, find your own voice
 
-{:.big}
 “Idiomatic” does not imply “good” and vice versa, look beyond face-value
 
 
 ---
 
 # FIN
-
----
-
----
-
----
-
-## Idiom
-
-From Ancient Greek
-
-&nbsp;
-
-**ἴδιος** (_ídios_)
-“private, personal, one's own;  peculiar, separate”.
-
-&nbsp;
-
-**ἰδιοῦσθαι** ‎(_idioûsthai_)
-“to make one's own, appropriate to oneself”
-
-&nbsp;
-
-**ἰδίωμα** ‎(_idíōma_)
-“a peculiarity, property, a peculiar phraseology, idiom”
-
----
-
-## Idiot
-From Ancient Greek, Latin
-
-&nbsp;
-
-**ἴδιος** (_ídios_)
-“private, personal, one's own;  peculiar, separate”.
-
-&nbsp;
-
-**ἰδιώτης** (_idiōtēs_) “person lacking professional skill, a private citizen, individual”
-
-&nbsp;
-
-In Late Latin:
-
-&nbsp;
-
-**idiota**
-“uneducated or ignorant person”
-
----
-
-## Idiom
-
-A way a certain group of people speak.
-
-_I had studied Arabic before, but was not familiar with the local idiom._
-
-An expression whose meaning can't be inferred from the words that make up the expression.
-
-_you're pulling my leg_, _in your neck of the woods_, _I’ve been a rubyist for donkey’s years._
-
-The style of a particular artist or school or movement
-
----
-
-## Idiomatic
-
-The "natural" way to phrase something
-
-_come with me_ vs _follow me along_
-
----
-
-It's about being able to personally express yourself.
-
-It's about being understood.
 
 ---
 

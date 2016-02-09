@@ -34,6 +34,8 @@ Slippery::RakeTasks.new do
     ]
   end
 
+  transform('body') {|body| body.set_children(body.children.drop(1)) }
+
   transform 'section[fullscreen-img]' do |section|
     section.attr('data-background', section.attr('fullscreen-img'))
   end
@@ -60,9 +62,6 @@ Slippery::RakeTasks.new do
     H[:li, p.text]
   end
 
-  transform '.attribution' do |p|
-    p.set_tag(:figcaption)
-  end
 
   transform 'pre.linum' do |pre|
     H[:pre, pre.text.lines.map{|l| H[:code, {class: "ruby"}, l]}]
