@@ -1,50 +1,45 @@
 <!DOCTYPE html>
-<html><head><link href='assets/38b7430b5ca5b0ee5308d3cca6a8b055.css' rel='stylesheet'><title>Burn Your Idiomatic Ruby</title><link rel='stylesheet' href='assets/c1cd938f43002a217f591a8a4303a896.css'><script src='assets/8f16b5edb7f88bfec561d7749e3c2241.js'></script><script>hljs.initHighlightingOnLoad();</script><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><link rel='stylesheet' type='text/css' href='assets/5a0ca255fce9de83dde16a0f27d788fe.css'><link rel='stylesheet' type='text/css' href='assets/70df056b70919b859603ddf5d059c702.css'><link href='assets/5d4fe9d9aa9ba7c7410c8351c7aada20.css' rel='stylesheet' type='text/css'></head><body class='shower list'><section class='slide' id='cover' name='1'>
+<html><head><link href='assets/38b7430b5ca5b0ee5308d3cca6a8b055.css' rel='stylesheet'><title>Burn Your Idiomatic Ruby</title><link rel='stylesheet' href='assets/c1cd938f43002a217f591a8a4303a896.css'><script src='assets/8f16b5edb7f88bfec561d7749e3c2241.js'></script><script>hljs.initHighlightingOnLoad();</script><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><link rel='stylesheet' type='text/css' href='assets/5a0ca255fce9de83dde16a0f27d788fe.css'><link rel='stylesheet' type='text/css' href='assets/1323b843cb905302bfd20d81dbd60185.css'><link href='assets/5d4fe9d9aa9ba7c7410c8351c7aada20.css' rel='stylesheet' type='text/css'></head><body class='shower list'><section class='slide' id='cover' name='1'>
 <h2>Burn Your Idiomatic Ruby</h2>
 <p><em>A RubyConf Australia talk by <a href='http://arnebrasseur.net'><strong>Arne Brasseur</strong></a></em></p>
 
-<p><img src='assets/6c3882de069924ea15257fe0b35992b1.jpg' alt='' class='cover'></p>
+<p><img src='assets/f991b62d39c248d14407901afad3502a.jpg' alt='' class='cover'></p>
 <p class='attribution'>Image: <a href='https://www.flickr.com/photos/shenamt/11015203525'>Fiddling while Rome burns</a> by Shena Tschofen</p>
-<style>
 
-</style>
 
-</section><section class='slide' name='2'>
-<h2>You say idiomatic</h2>
-<p>What does it mean?</p>
-<p>Why would we want it?</p>
+
+
+</section><section class='slide chapter' name='2'>
+<h2>Chapter 1</h2>
+<p>idiom enters the stage</p>
 </section><section class='slide' name='3'>
 <h2>Idiom</h2>
 
 <p><strong>id·i·om</strong> \i-dē-əm\ <em>noun</em></p>
-<ol><li>a way of speaking that is particular to a specific group</li><li>a peculiar phrase or expression that is commonly understood, even though its meaning isn’t self-obvious</li></ol>
+<ol><li>a peculiar phrase or expression that is commonly understood, even though its meaning isn’t self-obvious; a colloquial metaphor</li><li>a way of speaking that is particular to a specific group</li></ol>
 </section><section class='slide' name='4'>
-<h2>Idiom²</h2>
-<ol style='counter-reset: list 1;'><li>a peculiar phrase or expression that is commonly understood, even though its meaning isn’t self-obvious</li></ol>
+<h2>Idiom¹</h2>
+<ol><li>a peculiar phrase or expression that is commonly understood, even though its meaning isn’t self-obvious</li></ol>
 <p><em>“to kick the bucket”</em><br>
 <em>“you’re pulling my leg”</em><br>
 <em>“I wouldn’t put it past him”</em></p>
 </section><section class='slide' name='5'>
-<h2>Aussie idioms²</h2>
+<h2>Aussie idioms¹</h2>
 <p><em>“spit the dummy”</em><br>
-<em>“fair dinkum”</em><br>
-<em>“get on the turps”</em></p>
+<em>“flat out like a lizard drinking”</em><br>
+<em>“fair suck of the sauce bottle”</em></p>
 </section><section class='slide' name='6'>
-<h2>Ruby idioms²</h2>
+<h2>Ruby idioms¹</h2>
 <p>Think: “tiny design pattern”</p>
 </section><section class='slide' name='7'>
-
-
-
-
-<h2>Ruby idioms²</h2>
+<h2>Ruby idioms¹</h2>
 <p>A method that memoizes</p>
 <pre class='language-ruby'><code>def sum
   @sum ||= @left + @right
 end
 </code></pre>
 </section><section class='slide' name='8'>
-<h2>Ruby idioms (2)</h2>
+<h2>Ruby idioms¹</h2>
 <p>Method pre-condition</p>
 <pre class='language-ruby'><code>def filter_negatives(list)
   raise &quot;list can&#x27;t be empty&quot; if list.empty?
@@ -54,46 +49,36 @@ end
 </code></pre>
 
 </section><section class='slide' name='9'>
-<h2>Idiom¹</h2>
-<p>A way of speaking that is particular to a specific group</p>
+<h2>Idiom²</h2>
+<ol style='counter-reset: list 1;'><li>A way of speaking that is particular to a specific group</li></ol>
 <ul><li>“Eurospeak”</li><li>High school language</li></ul>
 </section><section class='slide' name='10'>
-<h2>Idiom¹</h2>
+<h2>Idiom²</h2>
 <p>Differs from group to group: <em>“Aussie”</em> vs. <em>“’Murican”</em></p>
 <p>Evolves over time: Early, middle, late English</p>
 </section><section class='slide' name='11'>
-<h2>Ruby idioms¹</h2>
-<ul><li>Rails Ruby</li><li>ruby-core Ruby</li><li>Seattle.rb Ruby</li><li>DataMapper/ROM Ruby</li></ul>
+<h2>Ruby idioms²</h2>
+<p>Differs from group to group</p>
+<ul><li>ruby-core Ruby</li><li>Rails Ruby</li><li>Seattle.rb Ruby</li><li>DataMapper/ROM Ruby</li></ul>
 </section><section class='slide' name='12'>
 <h2>Seattle.rb Ruby</h2>
-<pre><code>def self.filter_files files, ignore = DEFAULT_IGNORE
-  ignore_paths = if ignore.respond_to? :read then
-                   ignore.read
-                 elsif File.exists? ignore then
-                   File.read ignore
-                 end
-   # ...
-end
+<pre><code class='ruby'>def self.filter_files files, ignore = DEFAULT_IGNORE
+</code><code class='ruby'>  ignore_paths = if ignore.respond_to? :read then
+</code><code class='ruby'>                   ignore.read
+</code><code class='ruby'>                 elsif File.exists? ignore then
+</code><code class='ruby'>                   File.read ignore
+</code><code class='ruby'>                 end
+</code><code class='ruby'>   # ...
+</code><code class='ruby'>end
 </code></pre>
-</section><section class='slide' name='13'>
-<h2>Idiomatic</h2>
-<p>Conforming to idiom¹</p>
-<p>Sounding “natural”</p>
+</section><section class='slide chapter' name='13'>
+<h2>Chapter 2</h2>
+<p>in which Ruby’s idiom evolves</p>
 </section><section class='slide' name='14'>
-<h2>Idiomatic Code</h2>
-<p>Takes advantage of the language</p>
-<p>Is more easily understood by others</p>
-</section><section class='slide' name='15'>
-<h2>Consistency</h2>
-<p>Important for projects</p>
-<p>Shared ownership</p>
-<p>Reduced cognitive overhead</p>
-</section><section class='slide' name='16'>
-<h2>Evolution of</h2>
-<h2>Ruby idiom</h2>
+<h2>Evolution of Ruby idiom</h2>
 <p>Early, Middle, and Modern Ruby</p>
-</section><section class='slide' name='17'>
-<h2>Middle Ruby</h2>
+</section><section class='slide' name='15'>
+<h2>Early/Middle Ruby</h2>
 <pre class='language-ruby'><code>def create_method_obj(names, params)
   o = Object.new
   for idx in 0 ... params.length
@@ -103,18 +88,18 @@ end
   o
 end
 </code></pre>
-</section><section class='slide' name='18'>
-<h2>Middle Ruby</h2>
+</section><section class='slide' name='16'>
+<h2>Early/Middle Ruby</h2>
 <pre><code class='ruby'>/Content-Disposition:.* filename=&quot;?([^\&quot;;]*)&quot;?/ni.match(h)
 </code><code class='ruby'>filename = ($1 or &quot;&quot;)
-</code><code class='ruby'>if /Mac/ni.match(env_table[&#x27;HTTP_USER_AGENT&#x27;]) and
-</code><code class='ruby'>    /Mozilla/ni.match(env_table[&#x27;HTTP_USER_AGENT&#x27;]) and
+</code><code class='ruby'>
+</code><code class='ruby'>if /Mozilla/ni.match(env_table[&#x27;HTTP_USER_AGENT&#x27;]) and
 </code><code class='ruby'>    (not /MSIE/ni.match(env_table[&#x27;HTTP_USER_AGENT&#x27;]))
 </code><code class='ruby'>  filename = CGI::unescape(filename)
 </code><code class='ruby'>end
 </code></pre>
-</section><section class='slide' name='19'>
-<h2>Middle Ruby</h2>
+</section><section class='slide' name='17'>
+<h2>Early/Middle Ruby</h2>
 <pre class='language-ruby'><code>class CGI
   def CGI::escape(string)
     # ...
@@ -125,58 +110,83 @@ end
   end
 end
 </code></pre>
-</section><section class='slide' name='20'>
+
+</section><section class='slide' name='18'>
 <h2>Early Ruby: 1995-2005</h2>
 <p>“The primordial ooze”</p>
 <p>Ruby is still very niche<br>
 Early adopters from Perl, C, LISP, Smalltalk<br>
 Diversity of styles</p>
-</section><section class='slide' name='21'>
+</section><section class='slide' name='19'>
 <h2>Middle Ruby: 2005-2010</h2>
 <p>“Rails runaway train”</p>
 <p>Adoption booms through Rails<br>
 Idiom crystalizes around Rails<br>
 Still lots of flexibility and creativity (Why the Lucky Stiff!)</p>
-</section><section class='slide' name='22'>
+</section><section class='slide' name='20'>
 <h2>Modern Ruby: 2010-2015</h2>
 <p>“They grow up so fast”</p>
 <p>Big Rails apps maintained for 5+ years<br>
 Desire for best practices, consistency<br>
 Wide adoption of a common style</p>
-</section><section class='slide' name='23'>
+</section><section class='slide' name='21'>
+<h2>Modern Ruby: 2010-2015</h2>
+<p>Wide adoption of a common style</p>
+<ul><li>2011 Ruby Style Guide</li><li>2012 Rubocop</li></ul>
+</section><section class='slide' name='22'>
 <h2>Modern Ruby: 2010-2015</h2>
 <p>“The parallel track”</p>
 <p>Resurgence of a “pure Ruby” crowd<br>
 More open to novel approaches<br>
 Develop their own idioms</p>
+</section><section class='slide chapter' name='23'>
+<h2>Chapter 3</h2>
+<p>in which idiom prevails</p>
 </section><section class='slide' name='24'>
-<h2>Who makes the rules?</h2>
-<p>In theory: descriptivist, style guide captures what “the people” do</p>
-<p>In practice: well known influencers</p>
+<h2>Idiomatic</h2>
+<p>Conforming to idiom²</p>
+<p>Sounding “natural”</p>
 </section><section class='slide' name='25'>
+<h2>Idiomatic Code</h2>
+<p>Takes advantage of the language</p>
+<p>Is more easily understood by others</p>
+<p>Is consistent</p>
+</section><section class='slide' name='26'>
+<h2>Consistency</h2>
+<p>Important for projects</p>
+<p>Shared ownership</p>
+<p>Reduced cognitive overhead</p>
+</section><section class='slide' name='27'>
+<h2>Who makes the rules?</h2>
+<p>In theory: descriptivist, style guide captures what people do</p>
+<p>In practice: well known influencers</p>
+</section><section class='slide' name='28'>
 <h2>Downsides</h2>
 <p>Extra hurdle for newcomers</p>
 <p>Treating idiom as normative hampers innovation</p>
-</section><section class='slide' name='26'>
+</section><section class='slide' name='29'>
 <p><img src='assets/5a64bf983f3d3b7943dfc0bcb4501b30.svg' alt='' style='width: 100%'></p>
-</section><section class='slide' name='27'>
+</section><section class='slide' name='30'>
 <p><img src='assets/5fe9bcd38bba3321a517b9450052b889.svg' alt='' style='width: 100%'></p>
-</section><section class='slide' name='28'>
+</section><section class='slide chapter' name='31'>
+<h2>Chapter 4</h2>
+<p>a whole new idiom</p>
+</section><section class='slide' name='32'>
 <h2>Times are changing</h2>
 <p>The only constant is change</p>
 <p>When a society changes, its language changes</p>
 <p>When it comes into contact with other language groups, its language changes</p>
-</section><section class='slide' name='29'>
+</section><section class='slide' name='33'>
 <h2>Times are changing</h2>
 <p>Distributed systems, parallelization</p>
 <p>Concurrency models, type systems</p>
 <p>Go, Idris, Elixir, Elm, Rust</p>
-</section><section class='slide' name='30'>
+</section><section class='slide' name='34'>
 <h2>Porting concepts to Ruby</h2>
 <p>Monads, functional composition, transducers, CSP</p>
 <p>Unseen in Ruby</p>
 <p>Will look unfamliar by necessity</p>
-</section><section class='slide' name='31'>
+</section><section class='slide' name='35'>
 <h2>Kleisli</h2>
 <pre class='language-ruby'><code>json_string = get_json_from_somewhere
 
@@ -186,7 +196,7 @@ result =
           json[&quot;divisor&quot;].to_i }
   }
 </code></pre>
-</section><section class='slide' name='32'>
+</section><section class='slide' name='36'>
 <h2>Kleisli</h2>
 <pre class='language-ruby'><code>maybe_user =
   Maybe(user) &gt;-&gt; user {
@@ -195,7 +205,7 @@ result =
     Maybe(address.street)
   }
 </code></pre>
-</section><section class='slide' name='33'>
+</section><section class='slide' name='37'>
 <h2>Kleisli</h2>
 <p>From Call Sheet</p>
 <pre class='language-ruby'><code>result.fmap { |value|
@@ -206,13 +216,13 @@ result =
   Left(StepFailure.new(step_name, value))
 }
 </code></pre>
-</section><section class='slide' name='34'>
+</section><section class='slide' name='38'>
 <h2>Transproc</h2>
 <pre class='language-ruby'><code>transformation = t(:map_array, t(:symbolize_keys)
  .&gt;&gt; t(:rename_keys, user_name: :user))
  .&gt;&gt; t(:wrap, :address, [:city, :street])
 </code></pre>
-</section><section class='slide' name='35'>
+</section><section class='slide' name='39'>
 <h2>Transducers</h2>
 <pre class='language-ruby'><code>T.transduce(
   T.compose(
@@ -223,7 +233,7 @@ result =
 )
 # =&gt; [2, 4, 6, 8, 10]
 </code></pre>
-</section><section class='slide' name='36'>
+</section><section class='slide' name='40'>
 <h2>Agent</h2>
 <pre class='language-ruby'><code>cw = channel!(Integer, 1)
 cr = channel!(Integer, 1)
@@ -233,13 +243,11 @@ select! do |s|
   s.case(cw, :send, 3)
 end
 </code></pre>
-</section><section class='slide' name='37'>
+</section><section class='slide' name='41'>
 <h2>Conclusion</h2>
 <p>Idiom is fluid, treat it as such</p>
 <p>Programming is a form of expression, find your own voice</p>
 <p>“Idiomatic” does not imply “good” and vice versa, look beyond face-value</p>
 
-</section><section class='slide' name='38'>
-<h1>FIN</h1>
-</section><section class='slide' name='39'>
-<p>“”</p></section><script src='assets/a3b20c8ec6c5c4b05bcb38d98d132244.js' type='text/javascript'></script></body></html>
+</section><section class='slide chapter' name='42'>
+<h2 style='padding-left: 300px; padding-top: 150px;'>FIN</h2></section><script src='assets/a3b20c8ec6c5c4b05bcb38d98d132244.js' type='text/javascript'></script><div id='overlay'>@plexus</div></body></html>

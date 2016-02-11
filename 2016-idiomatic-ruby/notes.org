@@ -267,6 +267,16 @@ Old habits die hard
 -- new developments
 -- creativity and joy --> rubyists are poets at heart, let them express themselves
 
+- Idiom¹ natural language
+- Idiom¹ Ruby
+- Idiom²¹ Ruby examples
+- Idiom² natural language
+- Idiom² Ruby
+- Idiom² Ruby examples
+
+
+
+
 
 * Why idiomatic
 

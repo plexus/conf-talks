@@ -6,22 +6,24 @@
 _A RubyConf Australia talk by [**Arne Brasseur**](http://arnebrasseur.net)_
 
 
-![](img/rome_burns.jpg){:.cover}
+![](img/burning_plane.jpg){:.cover}
 
 {:.attribution}
 Image: [Fiddling while Rome burns](https://www.flickr.com/photos/shenamt/11015203525) by Shena Tschofen
 
-<style>
 
-</style>
+<!-- ![](img/rome_burns.jpg){:.cover} -->
+
+<!-- {:.attribution} -->
+<!-- Image: [Fiddling while Rome burns](https://www.flickr.com/photos/shenamt/11015203525) by Shena Tschofen -->
+
 
 ---
+{:.chapter}
 
-## You say idiomatic
+## Chapter 1
 
-What does it mean?
-
-Why would we want it?
+idiom enters the stage
 
 ---
 
@@ -32,14 +34,13 @@ Why would we want it?
 
 **id·i·om** \i-dē-əm\ _noun_
 
-1. a way of speaking that is particular to a specific group
-2. a peculiar phrase or expression that is commonly understood, even though its meaning isn't self-obvious
+1. a peculiar phrase or expression that is commonly understood, even though its meaning isn't self-obvious; a colloquial metaphor
+2. a way of speaking that is particular to a specific group
 
 ---
 
-## Idiom²
+## Idiom¹
 
-{:style="counter-reset: list 1;"}
 2. a peculiar phrase or expression that is commonly understood, even though its meaning isn't self-obvious
 
 _“to kick the bucket”_
@@ -48,33 +49,21 @@ _“I wouldn't put it past him”_
 
 ---
 
-## Aussie idioms²
+## Aussie idioms¹
 
 _“spit the dummy”_
-_“fair dinkum”_
-_“get on the turps”_
+_“flat out like a lizard drinking”_
+_“fair suck of the sauce bottle”_
 
 ---
 
-## Ruby idioms²
+## Ruby idioms¹
 
 Think: “tiny design pattern”
 
 ---
 
-<!-- ## Ruby idioms (2) -->
-
-<!-- Optionally executable -->
-
-<!-- ``` ruby -->
-<!-- if __FILE__ = $0 -->
-<!--   # ... -->
-<!-- end -->
-<!-- ``` -->
-
-<!-- --- -->
-
-## Ruby idioms²
+## Ruby idioms¹
 
 A method that memoizes
 
@@ -86,7 +75,7 @@ end
 
 ---
 
-## Ruby idioms (2)
+## Ruby idioms¹
 
 Method pre-condition
 
@@ -101,16 +90,17 @@ end
 
 ---
 
-## Idiom¹
+## Idiom²
 
-A way of speaking that is particular to a specific group
+{:style="counter-reset: list 1;"}
+2. A way of speaking that is particular to a specific group
 
 * “Eurospeak”
 * High school language
 
 ---
 
-## Idiom¹
+## Idiom²
 
 Differs from group to group: _“Aussie”_ vs. _“'Murican”_
 
@@ -118,10 +108,12 @@ Evolves over time: Early, middle, late English
 
 ---
 
-## Ruby idioms¹
+## Ruby idioms²
 
-* Rails Ruby
+Differs from group to group
+
 * ruby-core Ruby
+* Rails Ruby
 * Seattle.rb Ruby
 * DataMapper/ROM Ruby
 
@@ -129,6 +121,7 @@ Evolves over time: Early, middle, late English
 
 ## Seattle.rb Ruby
 
+{:.linum}
 ```
 def self.filter_files files, ignore = DEFAULT_IGNORE
   ignore_paths = if ignore.respond_to? :read then
@@ -141,42 +134,21 @@ end
 ```
 
 ---
+{:.chapter}
 
-## Idiomatic
+## Chapter 2
 
-Conforming to idiom¹
-
-Sounding “natural”
-
----
-
-## Idiomatic Code
-
-Takes advantage of the language
-
-Is more easily understood by others
+in which Ruby's idiom evolves
 
 ---
 
-## Consistency
-
-Important for projects
-
-Shared ownership
-
-Reduced cognitive overhead
-
----
-
-## Evolution of
-
-## Ruby idiom
+## Evolution of Ruby idiom
 
 Early, Middle, and Modern Ruby
 
 ---
 
-## Middle Ruby
+## Early/Middle Ruby
 
 ``` ruby
 def create_method_obj(names, params)
@@ -191,14 +163,14 @@ end
 
 ---
 
-## Middle Ruby
+## Early/Middle Ruby
 
 {:.linum}
 ``` ruby
 /Content-Disposition:.* filename="?([^\";]*)"?/ni.match(h)
 filename = ($1 or "")
-if /Mac/ni.match(env_table['HTTP_USER_AGENT']) and
-    /Mozilla/ni.match(env_table['HTTP_USER_AGENT']) and
+
+if /Mozilla/ni.match(env_table['HTTP_USER_AGENT']) and
     (not /MSIE/ni.match(env_table['HTTP_USER_AGENT']))
   filename = CGI::unescape(filename)
 end
@@ -206,7 +178,7 @@ end
 
 ---
 
-## Middle Ruby
+## Early/Middle Ruby
 
 ``` ruby
 class CGI
@@ -219,6 +191,7 @@ class CGI
   end
 end
 ```
+
 
 ---
 
@@ -254,6 +227,15 @@ Wide adoption of a common style
 
 ## Modern Ruby: 2010-2015
 
+Wide adoption of a common style
+
+* 2011 Ruby Style Guide
+* 2012 Rubocop
+
+---
+
+## Modern Ruby: 2010-2015
+
 “The parallel track”
 
 Resurgence of a “pure Ruby” crowd
@@ -261,10 +243,45 @@ More open to novel approaches
 Develop their own idioms
 
 ---
+{:.chapter}
+
+## Chapter 3
+
+in which idiom prevails
+
+---
+
+## Idiomatic
+
+Conforming to idiom²
+
+Sounding “natural”
+
+---
+
+## Idiomatic Code
+
+Takes advantage of the language
+
+Is more easily understood by others
+
+Is consistent
+
+---
+
+## Consistency
+
+Important for projects
+
+Shared ownership
+
+Reduced cognitive overhead
+
+---
 
 ## Who makes the rules?
 
-In theory: descriptivist, style guide captures what “the people” do
+In theory: descriptivist, style guide captures what people do
 
 In practice: well known influencers
 
@@ -283,6 +300,13 @@ Treating idiom as normative hampers innovation
 ---
 
 ![](img/gh-chart-2.svg){:style="width: 100%"}
+
+---
+{:.chapter}
+
+## Chapter 4
+
+a whole new idiom
 
 ---
 
@@ -408,9 +432,7 @@ Programming is a form of expression, find your own voice
 
 
 ---
+{:.chapter}
 
-# FIN
-
----
-
-“”
+{:style="padding-left: 300px; padding-top: 150px;"}
+## FIN

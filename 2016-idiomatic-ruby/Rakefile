@@ -34,7 +34,11 @@ Slippery::RakeTasks.new do
     ]
   end
 
-  transform('body') {|body| body.set_children(body.children.drop(1)) }
+  transform('body') do |body|
+    body
+      .set_children(body.children.drop(1))
+      .add_child(H[:div, {id: "overlay"}, "@plexus"])
+  end
 
   transform 'section[fullscreen-img]' do |section|
     section.attr('data-background', section.attr('fullscreen-img'))
