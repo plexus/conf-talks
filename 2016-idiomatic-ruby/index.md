@@ -9,7 +9,7 @@ _A RubyConf Australia talk by [**Arne Brasseur**](http://arnebrasseur.net)_
 ![](img/burning_plane.jpg){:.cover}
 
 {:.attribution}
-Image: [Fiddling while Rome burns](https://www.flickr.com/photos/shenamt/11015203525) by Shena Tschofen
+Image: [Bomber in Flames](https://www.flickr.com/photos/gbaku/3298229052) by John Atherton
 
 
 <!-- ![](img/rome_burns.jpg){:.cover} -->
@@ -34,22 +34,22 @@ idiom enters the stage
 
 **id·i·om** \i-dē-əm\ _noun_
 
-1. a peculiar phrase or expression that is commonly understood, even though its meaning isn't self-obvious; a colloquial metaphor
+1. a peculiar expression that is commonly understood; a colloquial metaphor
 2. a way of speaking that is particular to a specific group
 
 ---
 
 ## Idiom¹
 
-2. a peculiar phrase or expression that is commonly understood, even though its meaning isn't self-obvious
+2. a peculiar expression that is commonly understood; a colloquial metaphor
 
-_“to kick the bucket”_
-_“you're pulling my leg”_
-_“I wouldn't put it past him”_
+<!-- _“to kick the bucket”_ -->
+<!-- _“you're pulling my leg”_ -->
+<!-- _“I wouldn't put it past him”_ -->
 
----
+<!-- --- -->
 
-## Aussie idioms¹
+<!-- ## Aussie idioms¹ -->
 
 _“spit the dummy”_
 _“flat out like a lizard drinking”_
@@ -87,7 +87,6 @@ def filter_negatives(list)
 end
 ```
 
-
 ---
 
 ## Idiom²
@@ -102,9 +101,11 @@ end
 
 ## Idiom²
 
-Differs from group to group: _“Aussie”_ vs. _“'Murican”_
+Can change over two dimensions
 
-Evolves over time: Early, middle, late English
+* From group to group: _“Aussie”_ vs. _“'Murican”_
+
+* Over time: Early, middle, modern English
 
 ---
 
@@ -142,13 +143,7 @@ in which Ruby's idiom evolves
 
 ---
 
-## Evolution of Ruby idiom
-
-Early, Middle, and Modern Ruby
-
----
-
-## Early/Middle Ruby
+## Ruby anno 2004
 
 ``` ruby
 def create_method_obj(names, params)
@@ -163,7 +158,7 @@ end
 
 ---
 
-## Early/Middle Ruby
+## Ruby anno 2004
 
 {:.linum}
 ``` ruby
@@ -178,7 +173,7 @@ end
 
 ---
 
-## Early/Middle Ruby
+## Ruby anno 2004
 
 ``` ruby
 class CGI
@@ -192,6 +187,11 @@ class CGI
 end
 ```
 
+---
+
+## Evolution of Ruby idiom
+
+Early, Middle, and Modern Ruby
 
 ---
 
@@ -285,13 +285,6 @@ In theory: descriptivist, style guide captures what people do
 
 In practice: well known influencers
 
----
-
-## Downsides
-
-Extra hurdle for newcomers
-
-Treating idiom as normative hampers innovation
 
 ---
 
@@ -300,6 +293,14 @@ Treating idiom as normative hampers innovation
 ---
 
 ![](img/gh-chart-2.svg){:style="width: 100%"}
+
+---
+
+## Downsides
+
+Extra hurdle for newcomers
+
+Treating idiom as normative hampers innovation
 
 ---
 {:.chapter}
