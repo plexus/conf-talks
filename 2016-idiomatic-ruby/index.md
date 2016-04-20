@@ -1,10 +1,40 @@
+---
+
+{:style="float:left; margin-right: 2em;"}
+![](img/avatar-short-hair.jpg)
+
+Arne Brasseur
+
+Twitter/Github: @plexus
+
+----
+
+![](img/railsgirls_bln.png){:.cover}
+
+----
+
+![](img/rails-girls-brussels-6-638.jpg){:.cover}
+
+----
+
+![](img/cb1.jpg){:.cover}
+
+----
+
+![](img/ruby_lambik.png){:.cover}
+
+----
+
+![](img/lambdaisland.png){:.cover}
+
 ----
 {:#cover}
 
 ## Burn Your Idiomatic Ruby
 
-_A RubyConf Australia talk by [**Arne Brasseur**](http://arnebrasseur.net)_
+_by [**Arne Brasseur**](http://arnebrasseur.net)_
 
+_BRUG, Brussels, 19 April 2016_
 
 ![](img/burning_plane.jpg){:.cover}
 
@@ -43,17 +73,35 @@ idiom enters the stage
 
 2. a peculiar expression that is commonly understood; a colloquial metaphor
 
-<!-- _“to kick the bucket”_ -->
-<!-- _“you're pulling my leg”_ -->
-<!-- _“I wouldn't put it past him”_ -->
+_“you're pulling my leg”_
+_“Dat is een ander paar mouwen”_
+_“Jouer avec les pieds de quelqu’un”_
 
-<!-- --- -->
+---
+
+_“Avaler par le trou du dimanche”_
+_“c'est à Houte-si-plou les bains de pied”_
+_“les doigts dans le nez”_
+_“avoir un oeuf à peler avec quelqu'un”_
+_“affonner une biere”_
+_“raconter des carabistouilles”_
+
+---
+
+_“avoir la tete dans le cul”_
+_“on boit un coup ou on s'encule”_
+_“couter la peau du cul”_
+_“se peler le cul”_
+_“avoir le feu au cul”_
+
+<!-- _“to kick the bucket”_ -->
+<!-- _“I wouldn't put it past him”_ -->
 
 <!-- ## Aussie idioms¹ -->
 
-_“spit the dummy”_
-_“flat out like a lizard drinking”_
-_“fair suck of the sauce bottle”_
+<!-- _“spit the dummy”_ -->
+<!-- _“flat out like a lizard drinking”_ -->
+<!-- _“fair suck of the sauce bottle”_ -->
 
 ---
 
@@ -103,7 +151,7 @@ end
 
 Can change over two dimensions
 
-* From group to group: _“Aussie”_ vs. _“'Murican”_
+* From group to group
 
 * Over time: Early, middle, modern English
 
@@ -160,6 +208,78 @@ end
 
 ## Ruby anno 2004
 
+``` ruby
+def create_method_obj(names, params)
+  o = Object.new
+  params.length.times do |idx|
+    o.instance_variable_set('@' + names[idx],
+      params[idx])
+  end
+  o
+end
+```
+
+---
+
+## Ruby anno 2004
+
+``` ruby
+def create_method_obj(names, params)
+  o = Object.new
+  params.each.with_index do |param, idx|
+    o.instance_variable_set('@' + names[idx],
+      param)
+  end
+  o
+end
+```
+
+---
+
+## Ruby anno 2004
+
+``` ruby
+def create_method_obj(names, params)
+  o = Object.new
+  params.zip(names).each do |param, name|
+    o.instance_variable_set('@' + name, param)
+  end
+  o
+end
+```
+
+---
+
+## Ruby anno 2004
+
+``` ruby
+def create_method_obj(names, params)
+  returning Object.new do
+    params.zip(names).each do |param, name|
+      o.instance_variable_set('@' + name, param)
+    end
+  end
+end
+```
+
+---
+
+## Ruby anno 2016
+
+``` ruby
+def create_method_obj(names, params)
+  Object.new.tap do |o|
+    params.zip(names).each do |param, name|
+      o.instance_variable_set("@#{name}", param)
+    end
+  end
+end
+```
+
+---
+
+## Ruby anno 2004
+
 {:.linum}
 ``` ruby
 /Content-Disposition:.* filename="?([^\";]*)"?/ni.match(h)
@@ -184,6 +304,23 @@ class CGI
   def CGI::unescapeHTML(string)
     # ...
   end
+end
+```
+
+---
+
+## Modern version
+
+{:.linum}
+``` ruby
+filename = h
+  .match /Content-Disposition:.* filename="?([^\";]*)"?/ni
+  &.captures
+  &.fetch(0, "")
+
+if env_table['HTTP_USER_AGENT'] =~ /Mozilla/ni
+    && env_table['HTTP_USER_AGENT'] !~ /MSIE/ni
+  filename = CGI.unescape(filename)
 end
 ```
 

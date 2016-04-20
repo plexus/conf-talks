@@ -239,6 +239,8 @@ Language features also change idiom
 - stabby lambda
 - Pathname
 - Enumerator vs Enumerable
+- "try" operator &.
+
 
 Old habits die hard
 
