@@ -115,11 +115,9 @@ Chance of collission
 Answer: namespaced keywords
 
 ``` clojure
-{:my.audio.lib/codec "ogg-vorbis"
- :transfer/codec "base64"}
+{:my.audio.lib/encoding :ogg-vorbis
+ :transfer/encoding     :base64}
 ```
-
-Heavily used in `clojure.spec`
 
 ---
 
@@ -133,13 +131,13 @@ Heavily used in `clojure.spec`
 Shorthand for a keyword in the current namespace
 
 ``` clojure
-::codec        ;;     :my.audio.lib/codec
+::encoding        ;;     :my.audio.lib/encoding
 ```
 
 Shorthand for a keyword in an aliased namespace
 
 ``` clojure
-::t/codec      ;;     :transfer/codec
+::t/encoding      ;;     :transfer/encoding
 ```
 
 More shorthands coming!
@@ -170,7 +168,7 @@ We have a Robot Chef which works with recipes
 
 ``` clojure
 (def tomato-sauce-recipe
-  {:robochef/ingredients [1 :can "peeled tomatoes"
+  {:robochef/ingredients [250 :g "peeled tomatoes"
                           3 :clove "garlic"
                           5 :g "pepper"]
    :robochef/steps ["heat a pan"
@@ -213,11 +211,11 @@ This registers specs in a **global registry**, `:robochef/recipe`, `:robochef/in
 ## Basic usage
 
 ``` clojure
-(s/describe :robochef/ingredients)
-;;=> (* (cat :amount number? :unit keyword? :name string?))
-
 (s/valid? :robochef/ingredients [5 :g "tea"])
 ;;=> true
+
+(s/conform ::ingredients [5 :g "tea"])
+;; [{:amount 5, :unit :g, :name "tea"}]
 ```
 
 ----
@@ -225,13 +223,19 @@ This registers specs in a **global registry**, `:robochef/recipe`, `:robochef/in
 ## More interesting features
 
 ``` clojure
-(s/conform ::ingredients [5 :g "tea"])
-;; [{:amount 5, :unit :g, :name "tea"}]
+(s/valid? :robochef/ingredients ["10" :g "tea"])
+;;=> false
 
 (s/explain-str ::ingredients ["10" :g "tea"])
 ;; In: [0] val: "10" fails spec:
 ;;   :robochef/ingredients at: [:amount] predicate: number?
+```
 
+----
+
+## More interesting features
+
+``` clojure
 (s/exercise ::ingredients 2)
 ;; ([() []]
 ;;  [(0 :Hi "0") [{:amount 0, :unit :Hi, :name "0"}]])
@@ -282,7 +286,7 @@ Name of a registered spec
 <!-- * `coll-of` -->
 <!-- * `map-of` -->
 
-Two advanced types of specs:
+Two "advanced" types of specs:
 
 * `keys` for dealing with maps
 * "regexp" for dealing with sequences
@@ -300,7 +304,7 @@ Done with `s/keys`
 (s/def ::ingredients ,,,)
 
 (s/valid? ::recipe
-          {::ingredients [1 :can "peeled tomatoes"
+          {::ingredients [250 :g "peeled tomatoes"
                           3 :clove "garlic"
                           5 :g "pepper"]})
 ```
@@ -321,8 +325,7 @@ Done with `s/keys`
 ## `s/keys` "naturally extensible"
 
 ``` clojure
-(s/def ::recipe (s/keys :req [::ingredients]
-                        :opt [::steps]))
+(s/def ::recipe (s/keys))
 
 (def recipe {::ingredients [,,,]
              ::steps [,,,]
@@ -396,7 +399,7 @@ The conformed result is a **map** that can easily be consumed with Clojure's **d
 {:style="padding-top: 1em"}
 Each alternative gets a **name**
 
-The conformed result is a **vector** can be used with `core.match` **pattern matching**
+The conformed result is a two-element **vector** which can be used with `core.match` **pattern matching**
 
 
 <!-- ---- -->
@@ -565,11 +568,19 @@ The conformed result is a **vector** can be used with `core.match` **pattern mat
 (s/fdef cook! :args (s/cat :recipe ::recipe)
               :ret  number?)
 
-(s/instrument #'cook!)
-(s/unstrument #'cook!)
+(s/instrument-all)
+;; (s/unstrument-all)
 ```
 
-This also works for **macros**, so we get **compile-time checks**!
+---
+
+## Instrumenting functions
+
+A macro is **just a function** that takes **"code as data"** and returns "code as data"
+
+We can **instrument it** just like function
+
+**Macro-expension** happens at compile time, so we get **compile-time checks**!
 
 <!-- ---- -->
 
