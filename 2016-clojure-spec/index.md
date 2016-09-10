@@ -5,13 +5,25 @@
 
 A presentation by [Arne Brasseur](https://devblog.arnebrasseur.net)
 
-for [PolyConf 2016](http://polyconf.com/).
+for [ClojuTRE 2016](http://clojutre.org/).
 
-30 June 2016
+10 September 2016
 
 ----
 
 ![](img/lambdaisland-slide.png){:.cover}
+
+---
+
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Especially for <a href="https://twitter.com/hashtag/ClojuTRE?src=hash">#ClojuTRE</a>, sign up this weekend and get your first month free with this coupon link <a href="https://t.co/HkHoSxnkjP">https://t.co/HkHoSxnkjP</a></p>&mdash; Lambda Island (@lambdaisland) <a href="https://twitter.com/lambdaisland/status/774203033286742016">September 9, 2016</a></blockquote>
+<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+&nbsp;
+
+
+{:style="font-size: 2rem"}
+[https://lambdaisland.com/coupon/CLOJUTRE2016](https://lambdaisland.com/coupon/CLOJUTRE2016)
 
 ----
 
@@ -29,136 +41,124 @@ New library in Clojure 1.9 (now in alpha)
 
 ## Somebody please think of the types!
 
-I know your type system can do this
+Clojure is a **dynamic language**, for better or worse
 
-Clojure is a dynamic language, for better or worse
+Specs give you some of the benefits of a type system (+ more)
 
-Yes, specs are (mostly) checked at runtime, still immensely useful
-
-Interesting to see how a dynlang handles these concerns
+Interesting precedent for how a dynlang handles these concerns
 
 ---
 
-## Agenda
+## Somebody please think of the types!
 
-`10` What does Clojure data look like?
-`20` How do I create and register a spec?
-`30` What can I do with specs?
-`40` `GOTO 20`
+Main difference: **runtime** vs **compile time** checks
 
----
+Specs are checked at runtime = overhead = only in dev env
 
-## Agenda
+But: macro expension checked at compile time
 
-`10` What does Clojure data look like?
-`20` How do I create and register a spec?
-`21` &nbsp;&nbsp; Maps
-`22` &nbsp;&nbsp; Sequences
-`30` What can I do with specs?
-`40` `GOTO 20`
+<!-- --- -->
 
----
+<!-- ## Agenda -->
 
-## Agenda
+<!-- `10` What does Clojure data look like? -->
+<!-- `20` How do I create and register a spec? -->
+<!-- `30` What can I do with specs? -->
+<!-- `40` `GOTO 20` -->
 
-`10` What does Clojure data look like?
-`20` How do I create and register a spec?
-`30` What can I do with specs?
-`30` &nbsp;&nbsp; Instrumenting Functions & Macros
-`31` &nbsp;&nbsp; Generative Testing
-`40` `GOTO 20`
+<!-- --- -->
 
----
+<!-- ## Agenda -->
 
-## Data in Clojure
+<!-- `10` What does Clojure data look like? -->
+<!-- `20` How do I create and register a spec? -->
+<!-- `21` &nbsp;&nbsp; Maps -->
+<!-- `22` &nbsp;&nbsp; Sequences -->
+<!-- `30` What can I do with specs? -->
+<!-- `40` `GOTO 20` -->
 
-Vectors `[]` and Maps `{}` are main data structures
+<!-- --- -->
 
-Clojurists like "unadorned" data: structs/records mainly used for interop
+<!-- ## Agenda -->
 
-Result: maps and keywords everywhere
+<!-- `10` What does Clojure data look like? -->
+<!-- `20` How do I create and register a spec? -->
+<!-- `30` What can I do with specs? -->
+<!-- `30` &nbsp;&nbsp; Instrumenting Functions & Macros -->
+<!-- `31` &nbsp;&nbsp; Generative Testing -->
+<!-- `40` `GOTO 20` -->
 
-``` clojure
-{:uri "/"
- :method :post
- :headers {"Accept" "*/*"}}
-```
+<!-- --- -->
 
-----
+<!-- ## Data in Clojure -->
 
-## Keywords
+<!-- Vectors `[]` and Maps `{}` are main data structures -->
 
-Like Ruby's `Symbol`, lightweight immutable string
+<!-- Clojurists like "unadorned" data: structs/records mainly used for interop -->
 
-{:style="margin-bottom: 0"}
-Used for:
+<!-- Result: maps and keywords everywhere -->
 
-* key lookup in maps/records
-* "enum"
-
-``` clojure
-:created-on
-:put
-:cemerick.friend/identity
-```
-
-----
-
-![](img/keywords-everywhere.png){:.cover}
-
-----
-
-## Keywords everywhere
-
-Chance of collission
-
-Answer: namespaced keywords
-
-``` clojure
-{:my.audio.lib/encoding :ogg-vorbis
- :transfer/encoding     :base64}
-```
-
----
-
-## Namespaced keywords
-
-``` clojure
-(ns my.audio.lib
-  (:require [transfer :as t]))
-```
-
-Shorthand for a keyword in the current namespace
-
-``` clojure
-::encoding        ;;     :my.audio.lib/encoding
-```
-
-Shorthand for a keyword in an aliased namespace
-
-``` clojure
-::t/encoding      ;;     :transfer/encoding
-```
-
-More shorthands coming!
+<!-- ``` clojure -->
+<!-- {:uri "/" -->
+<!--  :method :post -->
+<!--  :headers {"Accept" "*/*"}} -->
+<!-- ``` -->
 
 <!-- ---- -->
 
-<!-- ## Let's get started! -->
+<!-- ## Keywords -->
 
-<!-- Opt-in to Clojure 1.9 alpha release -->
+<!-- Like Ruby's `Symbol`, lightweight immutable string -->
 
-<!-- `project.clj` -->
+<!-- {:style="margin-bottom: 0"} -->
+<!-- Used for: -->
+
+<!-- * key lookup in maps/records -->
+<!-- * "enum" -->
 
 <!-- ``` clojure -->
-<!-- (defproject robochef "0.1.0-SNAPSHOT" -->
-<!--   :dependencies [[org.clojure/clojure "1.9.0-alpha8"]]) -->
+<!-- :created-on -->
+<!-- :put -->
+<!-- :cemerick.friend/identity -->
 <!-- ``` -->
+
+<!-- ---- -->
+
+<!-- ![](img/keywords-everywhere.png){:.cover} -->
+
+<!-- ---- -->
+
+<!-- ## Keywords everywhere -->
+
+<!-- Chance of collission -->
+
+<!-- Answer: namespaced keywords -->
+
+<!-- ``` clojure -->
+<!-- {:my.audio.lib/encoding :ogg-vorbis -->
+<!--  :transfer/encoding     :base64} -->
+<!-- ``` -->
+
 
 ----
 
-{:style="margin-top: 25%; text-align: center; font-size: 500%;"}
-## clojure.spec
+## Clojure 1.9
+
+Currently in alpha
+
+- Leiningen
+
+``` clojure
+(defproject robochef "0.1.0-SNAPSHOT"
+  :dependencies [[org.clojure/clojure "1.9.0-alpha12"]])
+```
+
+- Boot
+
+``` clojure
+(set-env!
+  :dependencies '[[org.clojure/clojure "1.9.0-alpha12"]])
+```
 
 ---
 
@@ -178,12 +178,145 @@ We have a Robot Chef which works with recipes
 
 ---
 
+## An aside: Namespaced keywords
+
+``` clojure
+user> :greetings/kiitos
+:greetings/kiitos
+```
+
+A keyword containing a slash
+
+Namespace doesn't have to be loaded or even exist
+
+---
+
+## Why namespaced keywords?
+
+Avoid collissions
+
+``` clojure
+{:http/method :get
+ :robochef/method :stir}
+```
+
+Stable semantics
+
+``` clojure
+{:robochef/recipe {,,,}}
+```
+
+---
+
+
+## Syntactical Sugar
+
+``` clojure
+robochef.core> :robochef.core/ingredients
+:robochef.core/ingredients
+```
+
+---
+
+## Syntactical Sugar
+
+``` clojure
+robochef.core> :robochef.core/ingredients
+:robochef.core/ingredients
+```
+
+``` clojure
+robochef.core> ::ingredients
+:robochef.core/ingredients
+```
+
+---
+
+## Syntactical Sugar
+
+``` clojure
+robochef.core> :robochef.core/ingredients
+:robochef.core/ingredients
+```
+
+``` clojure
+robochef.core> ::ingredients
+:robochef.core/ingredients
+```
+
+``` clojure
+user> (require '[robochef.core :as rc])
+nil
+user> ::rc/ingredients
+:robochef.core/ingredients
+```
+
+---
+
+## Namespaced maps
+
+Very common to have the same prefix for all keys
+
+``` clojure
+{:robochef/recipe-name "..."
+ :robochef/ingredients [,,,]
+ :robochef/steps [,,,]
+ :robochef/cooking-time 30}
+```
+
+---
+
+## Namespaced maps
+
+Very common to have the same prefix for all keys
+
+``` clojure
+{:robochef/recipe-name "..."
+ :robochef/ingredients [,,,]
+ :robochef/steps [,,,]
+ :robochef/cooking-time 30}
+```
+
+New syntax for this in 1.9 \o/
+
+``` clojure
+#:robochef{:recipe-name "..."
+           :ingredients [,,,]
+           :steps [,,,]
+           :cooking-time 30}
+```
+
+---
+
+## Namespaced maps
+
+Destructuring support in 1.9 \o/
+
+``` clojure
+(def recipe #:robochef{:recipe-name "..."
+                       :ingredients [,,,]
+                       :steps [,,,]
+                       :cooking-time 30})
+
+(let [{:robochef/keys [steps serves]} recipe]
+  (doseq [s steps]
+    ,,,)
+```
+
+----
+
+{:style="margin-top: 25%; text-align: center; font-size: 500%;"}
+## clojure.spec
+
+
+---
+
 ## Let's get started!
 
 Load spec in your namespace, aliased to `s`
 
 ``` clojure
-(ns robochef
+(ns robochef.core
   (:require [clojure.spec :as s]))
 ```
 
@@ -192,7 +325,7 @@ Load spec in your namespace, aliased to `s`
 ## An example Spec
 
 ``` clojure
-;; keep in mind ::recipe == :robochef/recipe
+;; keep in mind ::recipe == :robochef.core/recipe
 
 (s/def ::recipe (s/keys :req [::ingredients]
                         :opt [::steps]))
@@ -204,7 +337,7 @@ Load spec in your namespace, aliased to `s`
 (s/def ::steps ,,,)
 ```
 
-This registers specs in a **global registry**, `:robochef/recipe`, `:robochef/ingredients`, and `:robochef/steps`.
+This registers specs in a **global registry**
 
 ----
 
@@ -214,29 +347,32 @@ This registers specs in a **global registry**, `:robochef/recipe`, `:robochef/in
 (s/valid? :robochef/ingredients [5 :g "tea"])
 ;;=> true
 
-(s/conform ::ingredients [5 :g "tea"])
+(s/conform :robochef/ingredients [5 :g "tea"])
 ;; [{:amount 5, :unit :g, :name "tea"}]
 ```
 
 ----
 
-## More interesting features
+## Invalid & explain
 
 ``` clojure
 (s/valid? :robochef/ingredients ["10" :g "tea"])
 ;;=> false
 
-(s/explain-str ::ingredients ["10" :g "tea"])
+(s/conform :robochef/ingredients ["10" :g "tea"])
+;;=> :clojure.spec/invalid
+
+(s/explain :robochef/ingredients ["10" :g "tea"])
 ;; In: [0] val: "10" fails spec:
 ;;   :robochef/ingredients at: [:amount] predicate: number?
 ```
 
 ----
 
-## More interesting features
+## Generators!
 
 ``` clojure
-(s/exercise ::ingredients 2)
+(s/exercise :robochef/ingredients 2)
 ;; ([() []]
 ;;  [(0 :Hi "0") [{:amount 0, :unit :Hi, :name "0"}]])
 ```
@@ -257,15 +393,34 @@ Spec object
 {:.indent}
 ``` clojure
 (s/or :s string?, :n number?)
-(s/coll-of number? [])
+(s/coll-of number? :kind vector?)
 ```
 
 Name of a registered spec
 
 {:.indent}
 ``` clojure
-::ingredients
+:robochef/ingredients
 ```
+
+---
+
+## New predicates \o/
+
+``` clojure
+bigdec?             any?
+double?             seqable?
+int?                indexed?
+nat-int?            ident?
+neg-int?            qualified-ident?
+pos-int?            qualified-keyword?
+boolean?            qualified-symbol?
+bytes?              simple-ident?
+uri?                simple-keyword?
+uuid?               simple-symbol?
+```
+
+Including generators \o/
 
 <!-- ---- -->
 
@@ -297,16 +452,19 @@ Two "advanced" types of specs:
 
 Done with `s/keys`
 
-"same key in different context should have same semantics"
-
 ``` clojure
-(s/def ::recipe (s/keys :req [::ingredients]))
-(s/def ::ingredients ,,,)
-
-(s/valid? ::recipe
-          {::ingredients [250 :g "peeled tomatoes"
+(def tomato-sauce-recipe
+  {:robochef/ingredients [250 :g "peeled tomatoes"
                           3 :clove "garlic"
-                          5 :g "pepper"]})
+                          5 :g "pepper"]
+   :robochef/steps ["stir"]})
+
+(s/def :robochef/recipe (s/keys :req [:robochef/ingredients]
+                                :opt [:robochef/steps]))
+
+(s/def :robochef/ingredients ,,,)
+
+(s/def :robochef/steps ,,,)
 ```
 
 ----
@@ -325,16 +483,13 @@ Done with `s/keys`
 ## `s/keys` "naturally extensible"
 
 ``` clojure
-(s/def ::recipe (s/keys))
+(s/def :robochef/recipe (s/keys))
 
-(def recipe {::ingredients [,,,]
-             ::steps [,,,]
-             ::cooking-time "30 minutes"})
+(def recipe {:robochef/ingredients [,,,]
+             :robochef/steps [,,,]
+             :dinnerparty/serves 6})
 
-(s/valid? ::recipe recipe) ;;=> true
-
-(s/def ::cooking-time number?)
-(s/valid? ::recipe recipe) ;;=> false
+(s/def :dinnerparty/serves pos-int?)
 ```
 
 ----
@@ -345,7 +500,7 @@ Clojure data structures all share an underlying **"sequence"** abstraction.
 
 clojure.spec contains full **regular expression engine** for dealing with these.
 
-Based on a paper *"Parsing with Derivatives"*. Powerful enough to parse **context-free grammars**!
+<!-- Based on a paper *"Parsing with Derivatives"*. Powerful enough to parse **context-free grammars**! -->
 
 ----
 
@@ -399,8 +554,25 @@ The conformed result is a **map** that can easily be consumed with Clojure's **d
 {:style="padding-top: 1em"}
 Each alternative gets a **name**
 
-The conformed result is a two-element **vector** which can be used with `core.match` **pattern matching**
+The conformed result is a `MapEntry` which can be used with `core.match` **pattern matching**
 
+---
+
+## Regexp spec
+
+``` clojure
+(s/def :robochef/ingredients (s/* (s/cat :amount number?
+                                         :unit   keyword?
+                                         :name   string?)))
+
+{:robochef/ingredients [250 :g "peeled tomatoes"
+                        3 :clove "garlic"
+                        5 :g "pepper"]}
+
+[{:amount 250, :unit :g, :name "peeled tomatoes"}
+ {:amount 3, :unit :clove, :name "garlic"}
+ {:amount 5, :unit :g, :name "pepper"}]
+```
 
 <!-- ---- -->
 
@@ -582,6 +754,8 @@ We can **instrument it** just like function
 
 **Macro-expension** happens at compile time, so we get **compile-time checks**!
 
+Since `alpha11` macros `let`, `if-let`, `when-let`, `defn`, `fn`, `ns` are checked.
+
 <!-- ---- -->
 
 <!-- ## Some more specs -->
@@ -600,6 +774,8 @@ We can **instrument it** just like function
 <!-- (s/conform ::contrived-and [:a 1 2 3]) ;;=> :clojure.spec/invalid -->
 <!-- ``` -->
 
+<!-- Possible to add "custom conformers" to apply transformations -->
+
 ----
 
 ## Test.check
@@ -617,6 +793,8 @@ We can **instrument it** just like function
 ;; {:fail [{:robochef/ingredients (-2.0 :+.j/l*4 "")}],
 ;;  :smallest [{:robochef/ingredients (-1.0 :A "")}}}
 ```
+
+
 
 ---
 

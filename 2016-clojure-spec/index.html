@@ -1,90 +1,73 @@
 <!DOCTYPE html>
-<html><head><link href='assets/38b7430b5ca5b0ee5308d3cca6a8b055.css' rel='stylesheet'><title>Introducing clojure.spec</title><link rel='stylesheet' href='assets/5133d11fbaf87d3978cf403eba33c764.css'><script src='assets/ce599fd2ea4bde549efc6f79353a9ed0.js'></script><script>hljs.initHighlightingOnLoad();</script><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><link rel='stylesheet' type='text/css' href='assets/5a0ca255fce9de83dde16a0f27d788fe.css'><link rel='stylesheet' type='text/css' href='assets/94fa0cdaf3b72708d0b40ad6d4b6a30d.css'></head><body class='shower list'><section class='slide'></section><section class='slide' id='cover' name='1'>
+<html><head><link href='assets/38b7430b5ca5b0ee5308d3cca6a8b055.css' rel='stylesheet'><title>Introducing clojure.spec</title><link rel='stylesheet' href='assets/5133d11fbaf87d3978cf403eba33c764.css'><script src='assets/ce599fd2ea4bde549efc6f79353a9ed0.js'></script><script>hljs.initHighlightingOnLoad();</script><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><link rel='stylesheet' type='text/css' href='assets/5a0ca255fce9de83dde16a0f27d788fe.css'><link rel='stylesheet' type='text/css' href='assets/94fa0cdaf3b72708d0b40ad6d4b6a30d.css'></head><body class='shower list'><section class='slide' id='cover' name='1'>
 <h2>Introducing clojure.spec</h2>
 <p>A presentation by <a href='https://devblog.arnebrasseur.net'>Arne Brasseur</a></p>
-<p>for <a href='http://polyconf.com/'>PolyConf 2016</a>.</p>
-<p>30 June 2016</p>
+<p>for <a href='http://clojutre.org/'>ClojuTRE 2016</a>.</p>
+<p>10 September 2016</p>
 </section><section class='slide' name='2'>
 <p><img src='assets/387ae2245d7b9781e9c337dc4df09041.png' alt='' class='cover'></p>
 </section><section class='slide' name='3'>
+
+<blockquote class='twitter-tweet' data-lang='en'><p lang='en' dir='ltr'>Especially for <a href='https://twitter.com/hashtag/ClojuTRE?src=hash'>#ClojuTRE</a>, sign up this weekend and get your first month free with this coupon link <a href='https://t.co/HkHoSxnkjP'>https://t.co/HkHoSxnkjP</a></p>&amp;mdash; Lambda Island (@lambdaisland) <a href='https://twitter.com/lambdaisland/status/774203033286742016'>September 9, 2016</a></blockquote><script async='' src='assets/93088fa7932752e9fb6b11a18a9c3467.js' charset='utf-8'></script>
+
+<p> </p>
+
+<p style='font-size: 2rem'><a href='https://lambdaisland.com/coupon/CLOJUTRE2016'>https://lambdaisland.com/coupon/CLOJUTRE2016</a></p>
+</section><section class='slide' name='4'>
 <h2>clojure.spec</h2>
 <p>New library in Clojure 1.9 (now in alpha)</p>
 <ul><li>Describe shape of data</li><li>Validate data</li><li>“Parse” datastructures</li><li>Instrument functions and macros</li><li>Drive generative testing</li></ul>
-</section><section class='slide' name='4'>
-<h2>Somebody please think of the types!</h2>
-<p>I know your type system can do this</p>
-<p>Clojure is a dynamic language, for better or worse</p>
-<p>Yes, specs are (mostly) checked at runtime, still immensely useful</p>
-<p>Interesting to see how a dynlang handles these concerns</p>
 </section><section class='slide' name='5'>
-<h2>Agenda</h2>
-<p><code>10</code> What does Clojure data look like?<br>
-<code>20</code> How do I create and register a spec?<br>
-<code>30</code> What can I do with specs?<br>
-<code>40</code> <code>GOTO 20</code></p>
+<h2>Somebody please think of the types!</h2>
+<p>Clojure is a <strong>dynamic language</strong>, for better or worse</p>
+<p>Specs give you some of the benefits of a type system (+ more)</p>
+<p>Interesting precedent for how a dynlang handles these concerns</p>
 </section><section class='slide' name='6'>
-<h2>Agenda</h2>
-<p><code>10</code> What does Clojure data look like?<br>
-<code>20</code> How do I create and register a spec?<br>
-<code>21</code>    Maps<br>
-<code>22</code>    Sequences<br>
-<code>30</code> What can I do with specs?<br>
-<code>40</code> <code>GOTO 20</code></p>
+<h2>Somebody please think of the types!</h2>
+<p>Main difference: <strong>runtime</strong> vs <strong>compile time</strong> checks</p>
+<p>Specs are checked at runtime = overhead = only in dev env</p>
+<p>But: macro expension checked at compile time</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </section><section class='slide' name='7'>
-<h2>Agenda</h2>
-<p><code>10</code> What does Clojure data look like?<br>
-<code>20</code> How do I create and register a spec?<br>
-<code>30</code> What can I do with specs?<br>
-<code>30</code>    Instrumenting Functions &amp; Macros<br>
-<code>31</code>    Generative Testing<br>
-<code>40</code> <code>GOTO 20</code></p>
+<h2>Clojure 1.9</h2>
+<p>Currently in alpha</p>
+<ul><li>Leiningen</li></ul>
+<pre class='language-clojure'><code>(defproject robochef &quot;0.1.0-SNAPSHOT&quot;
+  :dependencies [[org.clojure/clojure &quot;1.9.0-alpha12&quot;]])
+</code></pre>
+<ul><li>Boot</li></ul>
+<pre class='language-clojure'><code>(set-env!
+  :dependencies &#x27;[[org.clojure/clojure &quot;1.9.0-alpha12&quot;]])
+</code></pre>
 </section><section class='slide' name='8'>
-<h2>Data in Clojure</h2>
-<p>Vectors <code>[]</code> and Maps <code>{}</code> are main data structures</p>
-<p>Clojurists like “unadorned” data: structs/records mainly used for interop</p>
-<p>Result: maps and keywords everywhere</p>
-<pre class='language-clojure'><code>{:uri &quot;/&quot;
- :method :post
- :headers {&quot;Accept&quot; &quot;*/*&quot;}}
-</code></pre>
-</section><section class='slide' name='9'>
-<h2>Keywords</h2>
-<p>Like Ruby’s <code>Symbol</code>, lightweight immutable string</p>
-<p style='margin-bottom: 0'>Used for:</p>
-<ul><li>key lookup in maps/records</li><li>“enum”</li></ul>
-<pre class='language-clojure'><code>:created-on
-:put
-:cemerick.friend/identity
-</code></pre>
-</section><section class='slide' name='10'>
-<p><img src='assets/b63630a8b9664aa4db04df3272a0e25c.png' alt='' class='cover'></p>
-</section><section class='slide' name='11'>
-<h2>Keywords everywhere</h2>
-<p>Chance of collission</p>
-<p>Answer: namespaced keywords</p>
-<pre class='language-clojure'><code>{:my.audio.lib/encoding :ogg-vorbis
- :transfer/encoding     :base64}
-</code></pre>
-</section><section class='slide' name='12'>
-<h2>Namespaced keywords</h2>
-<pre class='language-clojure'><code>(ns my.audio.lib
-  (:require [transfer :as t]))
-</code></pre>
-<p>Shorthand for a keyword in the current namespace</p>
-<pre class='language-clojure'><code>::encoding        ;;     :my.audio.lib/encoding
-</code></pre>
-<p>Shorthand for a keyword in an aliased namespace</p>
-<pre class='language-clojure'><code>::t/encoding      ;;     :transfer/encoding
-</code></pre>
-<p>More shorthands coming!</p>
-
-
-
-
-
-</section><section class='slide' name='13'>
-<h2 style='margin-top: 25%; text-align: center; font-size: 500%;'>clojure.spec</h2>
-</section><section class='slide' name='14'>
 <h2>An example (bear with me)</h2>
 <p>We have a Robot Chef which works with recipes</p>
 <pre class='language-clojure'><code>(def tomato-sauce-recipe
@@ -95,15 +78,95 @@
                     &quot;throw everything in&quot;
                     &quot;stir&quot;]})
 </code></pre>
+</section><section class='slide' name='9'>
+<h2>An aside: Namespaced keywords</h2>
+<pre class='language-clojure'><code>user&gt; :greetings/kiitos
+:greetings/kiitos
+</code></pre>
+<p>A keyword containing a slash</p>
+<p>Namespace doesn’t have to be loaded or even exist</p>
+</section><section class='slide' name='10'>
+<h2>Why namespaced keywords?</h2>
+<p>Avoid collissions</p>
+<pre class='language-clojure'><code>{:http/method :get
+ :robochef/method :stir}
+</code></pre>
+<p>Stable semantics</p>
+<pre class='language-clojure'><code>{:robochef/recipe {,,,}}
+</code></pre>
+</section><section class='slide' name='11'>
+
+<h2>Syntactical Sugar</h2>
+<pre class='language-clojure'><code>robochef.core&gt; :robochef.core/ingredients
+:robochef.core/ingredients
+</code></pre>
+</section><section class='slide' name='12'>
+<h2>Syntactical Sugar</h2>
+<pre class='language-clojure'><code>robochef.core&gt; :robochef.core/ingredients
+:robochef.core/ingredients
+</code></pre>
+<pre class='language-clojure'><code>robochef.core&gt; ::ingredients
+:robochef.core/ingredients
+</code></pre>
+</section><section class='slide' name='13'>
+<h2>Syntactical Sugar</h2>
+<pre class='language-clojure'><code>robochef.core&gt; :robochef.core/ingredients
+:robochef.core/ingredients
+</code></pre>
+<pre class='language-clojure'><code>robochef.core&gt; ::ingredients
+:robochef.core/ingredients
+</code></pre>
+<pre class='language-clojure'><code>user&gt; (require &#x27;[robochef.core :as rc])
+nil
+user&gt; ::rc/ingredients
+:robochef.core/ingredients
+</code></pre>
+</section><section class='slide' name='14'>
+<h2>Namespaced maps</h2>
+<p>Very common to have the same prefix for all keys</p>
+<pre class='language-clojure'><code>{:robochef/recipe-name &quot;...&quot;
+ :robochef/ingredients [,,,]
+ :robochef/steps [,,,]
+ :robochef/cooking-time 30}
+</code></pre>
 </section><section class='slide' name='15'>
-<h2>Let’s get started!</h2>
-<p>Load spec in your namespace, aliased to <code>s</code></p>
-<pre class='language-clojure'><code>(ns robochef
-  (:require [clojure.spec :as s]))
+<h2>Namespaced maps</h2>
+<p>Very common to have the same prefix for all keys</p>
+<pre class='language-clojure'><code>{:robochef/recipe-name &quot;...&quot;
+ :robochef/ingredients [,,,]
+ :robochef/steps [,,,]
+ :robochef/cooking-time 30}
+</code></pre>
+<p>New syntax for this in 1.9 \o/</p>
+<pre class='language-clojure'><code>#:robochef{:recipe-name &quot;...&quot;
+           :ingredients [,,,]
+           :steps [,,,]
+           :cooking-time 30}
 </code></pre>
 </section><section class='slide' name='16'>
+<h2>Namespaced maps</h2>
+<p>Destructuring support in 1.9 \o/</p>
+<pre class='language-clojure'><code>(def recipe #:robochef{:recipe-name &quot;...&quot;
+                       :ingredients [,,,]
+                       :steps [,,,]
+                       :cooking-time 30})
+
+(let [{:robochef/keys [steps serves]} recipe]
+  (doseq [s steps]
+    ,,,)
+</code></pre>
+</section><section class='slide' name='17'>
+<h2 style='margin-top: 25%; text-align: center; font-size: 500%;'>clojure.spec</h2>
+
+</section><section class='slide' name='18'>
+<h2>Let’s get started!</h2>
+<p>Load spec in your namespace, aliased to <code>s</code></p>
+<pre class='language-clojure'><code>(ns robochef.core
+  (:require [clojure.spec :as s]))
+</code></pre>
+</section><section class='slide' name='19'>
 <h2>An example Spec</h2>
-<pre class='language-clojure'><code>;; keep in mind ::recipe == :robochef/recipe
+<pre class='language-clojure'><code>;; keep in mind ::recipe == :robochef.core/recipe
 
 (s/def ::recipe (s/keys :req [::ingredients]
                         :opt [::steps]))
@@ -114,88 +177,106 @@
 
 (s/def ::steps ,,,)
 </code></pre>
-<p>This registers specs in a <strong>global registry</strong>, <code>:robochef/recipe</code>, <code>:robochef/ingredients</code>, and <code>:robochef/steps</code>.</p>
-</section><section class='slide' name='17'>
+<p>This registers specs in a <strong>global registry</strong></p>
+</section><section class='slide' name='20'>
 <h2>Basic usage</h2>
 <pre class='language-clojure'><code>(s/valid? :robochef/ingredients [5 :g &quot;tea&quot;])
 ;;=&gt; true
 
-(s/conform ::ingredients [5 :g &quot;tea&quot;])
+(s/conform :robochef/ingredients [5 :g &quot;tea&quot;])
 ;; [{:amount 5, :unit :g, :name &quot;tea&quot;}]
 </code></pre>
-</section><section class='slide' name='18'>
-<h2>More interesting features</h2>
+</section><section class='slide' name='21'>
+<h2>Invalid &amp; explain</h2>
 <pre class='language-clojure'><code>(s/valid? :robochef/ingredients [&quot;10&quot; :g &quot;tea&quot;])
 ;;=&gt; false
 
-(s/explain-str ::ingredients [&quot;10&quot; :g &quot;tea&quot;])
+(s/conform :robochef/ingredients [&quot;10&quot; :g &quot;tea&quot;])
+;;=&gt; :clojure.spec/invalid
+
+(s/explain :robochef/ingredients [&quot;10&quot; :g &quot;tea&quot;])
 ;; In: [0] val: &quot;10&quot; fails spec:
 ;;   :robochef/ingredients at: [:amount] predicate: number?
 </code></pre>
-</section><section class='slide' name='19'>
-<h2>More interesting features</h2>
-<pre class='language-clojure'><code>(s/exercise ::ingredients 2)
+</section><section class='slide' name='22'>
+<h2>Generators!</h2>
+<pre class='language-clojure'><code>(s/exercise :robochef/ingredients 2)
 ;; ([() []]
 ;;  [(0 :Hi &quot;0&quot;) [{:amount 0, :unit :Hi, :name &quot;0&quot;}]])
 </code></pre>
-</section><section class='slide' name='20'>
+</section><section class='slide' name='23'>
 <h2>Spec types</h2>
 <p>Predicate</p>
 <pre class='language-clojure indent'><code>map?
 </code></pre>
 <p>Spec object</p>
 <pre class='language-clojure indent'><code>(s/or :s string?, :n number?)
-(s/coll-of number? [])
+(s/coll-of number? :kind vector?)
 </code></pre>
 <p>Name of a registered spec</p>
-<pre class='language-clojure indent'><code>::ingredients
+<pre class='language-clojure indent'><code>:robochef/ingredients
 </code></pre>
+</section><section class='slide' name='24'>
+<h2>New predicates \o/</h2>
+<pre class='language-clojure'><code>bigdec?             any?
+double?             seqable?
+int?                indexed?
+nat-int?            ident?
+neg-int?            qualified-ident?
+pos-int?            qualified-keyword?
+boolean?            qualified-symbol?
+bytes?              simple-ident?
+uri?                simple-keyword?
+uuid?               simple-symbol?
+</code></pre>
+<p>Including generators \o/</p>
 
 
 
-</section><section class='slide' name='21'>
+</section><section class='slide' name='25'>
 <h2>Creating specs</h2>
 
 
 <p>Two “advanced” types of specs:</p>
 <ul><li><code>keys</code> for dealing with maps</li><li>“regexp” for dealing with sequences</li></ul>
-</section><section class='slide' name='22'>
+</section><section class='slide' name='26'>
 <h2>Spec’ing maps</h2>
 <p>Done with <code>s/keys</code></p>
-<p>“same key in different context should have same semantics”</p>
-<pre class='language-clojure'><code>(s/def ::recipe (s/keys :req [::ingredients]))
-(s/def ::ingredients ,,,)
-
-(s/valid? ::recipe
-          {::ingredients [250 :g &quot;peeled tomatoes&quot;
+<pre class='language-clojure'><code>(def tomato-sauce-recipe
+  {:robochef/ingredients [250 :g &quot;peeled tomatoes&quot;
                           3 :clove &quot;garlic&quot;
-                          5 :g &quot;pepper&quot;]})
+                          5 :g &quot;pepper&quot;]
+   :robochef/steps [&quot;stir&quot;]})
+
+(s/def :robochef/recipe (s/keys :req [:robochef/ingredients]
+                                :opt [:robochef/steps]))
+
+(s/def :robochef/ingredients ,,,)
+
+(s/def :robochef/steps ,,,)
 </code></pre>
-</section><section class='slide' name='23'>
+</section><section class='slide' name='27'>
 <h2>Spec’ing maps</h2>
 <blockquote><p>Most systems for specifying structures conflate the specification of the key set with the specification of the values designated by those keys. This is a major source of rigidity and redundancy.<br>
 — Rich Hickey</p></blockquote>
 <p> </p>
 <p><code>s/keys</code> will look at every key in a map, try to find a spec with that name, use it to validate the corresponding value</p>
-</section><section class='slide' name='24'>
+</section><section class='slide' name='28'>
 <h2><code>s/keys</code> “naturally extensible”</h2>
-<pre class='language-clojure'><code>(s/def ::recipe (s/keys))
+<pre class='language-clojure'><code>(s/def :robochef/recipe (s/keys))
 
-(def recipe {::ingredients [,,,]
-             ::steps [,,,]
-             ::cooking-time &quot;30 minutes&quot;})
+(def recipe {:robochef/ingredients [,,,]
+             :robochef/steps [,,,]
+             :dinnerparty/serves 6})
 
-(s/valid? ::recipe recipe) ;;=&gt; true
-
-(s/def ::cooking-time number?)
-(s/valid? ::recipe recipe) ;;=&gt; false
+(s/def :dinnerparty/serves pos-int?)
 </code></pre>
-</section><section class='slide' name='25'>
+</section><section class='slide' name='29'>
 <h2>Spec’ing sequences</h2>
 <p>Clojure data structures all share an underlying <strong>“sequence”</strong> abstraction.</p>
 <p>clojure.spec contains full <strong>regular expression engine</strong> for dealing with these.</p>
-<p>Based on a paper <em>“Parsing with Derivatives”</em>. Powerful enough to parse <strong>context-free grammars</strong>!</p>
-</section><section class='slide' name='26'>
+
+</section><section class='slide' name='30'>
 <h2>Regexp specs</h2>
 <p>Five “Regex” operators: <code>*</code>, <code>+</code>, <code>?</code>, <code>cat</code>, <code>alt</code></p>
 <pre class='language-clojure'><code>(s/conform (s/* keyword?) [])      ;;=&gt; []
@@ -210,7 +291,7 @@
 (s/conform (s/? keyword?) [:a])    ;;=&gt; :a
 (s/conform (s/? keyword?) [:a :b]) ;;=&gt; :clojure.spec/invalid
 </code></pre>
-</section><section class='slide' name='27'>
+</section><section class='slide' name='31'>
 <h2>Regexp operators: cat</h2>
 <p><code>cat</code> “concatentate” sequence items (first this, then that)</p>
 <pre class='language-clojure'><code>(s/conform (s/cat :num number?, :key keyword?) [5 :b])
@@ -218,7 +299,7 @@
 </code></pre>
 <p style='padding-top: 1em'>Each item gets a <strong>name</strong></p>
 <p>The conformed result is a <strong>map</strong> that can easily be consumed with Clojure’s <strong>destructuring</strong></p>
-</section><section class='slide' name='28'>
+</section><section class='slide' name='32'>
 <h2>Regexp operators: alt</h2>
 <p><code>alt</code> distinguishes “alternatives” (either this, or that, like <code>|</code>)</p>
 <pre class='language-clojure'><code>(s/conform (s/alt :num number?,:key keyword?) [5])
@@ -227,7 +308,21 @@
 ;;=&gt; [:key :b]
 </code></pre>
 <p style='padding-top: 1em'>Each alternative gets a <strong>name</strong></p>
-<p>The conformed result is a two-element <strong>vector</strong> which can be used with <code>core.match</code> <strong>pattern matching</strong></p>
+<p>The conformed result is a <code>MapEntry</code> which can be used with <code>core.match</code> <strong>pattern matching</strong></p>
+</section><section class='slide' name='33'>
+<h2>Regexp spec</h2>
+<pre class='language-clojure'><code>(s/def :robochef/ingredients (s/* (s/cat :amount number?
+                                         :unit   keyword?
+                                         :name   string?)))
+
+{:robochef/ingredients [250 :g &quot;peeled tomatoes&quot;
+                        3 :clove &quot;garlic&quot;
+                        5 :g &quot;pepper&quot;]}
+
+[{:amount 250, :unit :g, :name &quot;peeled tomatoes&quot;}
+ {:amount 3, :unit :clove, :name &quot;garlic&quot;}
+ {:amount 5, :unit :g, :name &quot;pepper&quot;}]
+</code></pre>
 
 
 
@@ -268,8 +363,7 @@
 
 
 
-
-</section><section class='slide' name='29'>
+</section><section class='slide' name='34'>
 <h2>Instrumenting functions</h2>
 <p><code>fdef</code> lets you set specs on the arguments, return value, and the relationship between them.</p>
 
@@ -283,17 +377,19 @@
 (s/instrument-all)
 ;; (s/unstrument-all)
 </code></pre>
-</section><section class='slide' name='30'>
+</section><section class='slide' name='35'>
 <h2>Instrumenting functions</h2>
 <p>A macro is <strong>just a function</strong> that takes <strong>“code as data”</strong> and returns “code as data”</p>
 <p>We can <strong>instrument it</strong> just like function</p>
 <p><strong>Macro-expension</strong> happens at compile time, so we get <strong>compile-time checks</strong>!</p>
+<p>Since <code>alpha11</code> macros <code>let</code>, <code>if-let</code>, <code>when-let</code>, <code>defn</code>, <code>fn</code>, <code>ns</code> are checked.</p>
 
 
 
 
 
-</section><section class='slide' name='31'>
+
+</section><section class='slide' name='36'>
 <h2>Test.check</h2>
 <pre class='language-clojure'><code>(require &#x27;[clojure.test.check :as tc])
 (require &#x27;[clojure.test.check.generators :as gen])
@@ -307,8 +403,10 @@
 ;; {:fail [{:robochef/ingredients (-2.0 :+.j/l*4 &quot;&quot;)}],
 ;;  :smallest [{:robochef/ingredients (-1.0 :A &quot;&quot;)}}}
 </code></pre>
-</section><section class='slide' name='32'>
+
+
+</section><section class='slide' name='37'>
 <h2>Recap</h2>
 <ul><li>shared vocabulary for “schemas”</li><li>combine and compose</li><li>key-specs for maps, regex-specs for seqs</li><li>validating, conforming, runtime and compile-time checks</li><li>generative testing</li></ul>
-</section><section class='slide' name='33'>
-<h2 class='cover' style='font-size: 15rem'>FIN</h2></section><script src='assets/a3b20c8ec6c5c4b05bcb38d98d132244.js' type='text/javascript'></script><div id='overlay'>@plexus<img src='assets/585bbab4ea70e62d8261d84648d7ef8d.png'></div></body></html>
+</section><section class='slide' name='38'>
+<h2 class='cover' style='font-size: 15rem'>FIN</h2></section><script src='assets/a3b20c8ec6c5c4b05bcb38d98d132244.js' type='text/javascript'></script></body></html>

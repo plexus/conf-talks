@@ -36,6 +36,7 @@ Slippery::RakeTasks.new do
   transform('body') do |body|
     body
       .add_child(H[:div, {id: "overlay"}, "@plexus", H[:img, {src: "img/twitter.png"}]])
+      .set_children(body.children.drop(1))
   end
 
   transform 'section[fullscreen-img]' do |section|
