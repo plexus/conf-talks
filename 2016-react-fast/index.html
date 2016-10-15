@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html><head><link href='assets/38b7430b5ca5b0ee5308d3cca6a8b055.css' rel='stylesheet'><title>Why React and re-frame are fast in 7 hacks</title><link rel='stylesheet' href='assets/5133d11fbaf87d3978cf403eba33c764.css'><script src='assets/ce599fd2ea4bde549efc6f79353a9ed0.js'></script><script>hljs.initHighlightingOnLoad();</script><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><link rel='stylesheet' type='text/css' href='assets/5a0ca255fce9de83dde16a0f27d788fe.css'><link rel='stylesheet' type='text/css' href='assets/21fc1eee0780fba93a347f0bbbeafd03.css'></head><body class='shower list'><section class='slide' name='1'>
+<h2 style='font-size: 6rem; margin-left: 20%;'>Why <span style='text-decoration: underline;'>React</span> &amp; <span style='text-decoration: underline;'>re-frame</span><br>are fast <br> in 7 <br> Performance Hacks</h2>
+</section><section class='slide' name='2'>
+<h2 style='font-size: 6rem; margin-left: 20%;'>Why <span style='text-decoration: underline;'>React</span> &amp; <span style='text-decoration: underline;'>re-frame</span><br>are fast <br> in <del>7</del> 8 Performance Hacks</h2>
+
+</section><section class='slide' name='3'>
+<p><img src='assets/387ae2245d7b9781e9c337dc4df09041.png' alt='' class='cover'></p>
+</section><section class='slide' name='4'>
+<h2 style='font-size: 12rem; margin-left: 30%; margin-top: 15%;'>React</h2>
+<h2 style='font-size: 3rem; margin-left: 32%'>Reagent style</h2>
+</section><section class='slide' name='5'>
+<h2>React Big Ideas</h2>
+<ul><li>Self-contained Components</li><li>UI as a pure function (vs. mutable DOM) <br>   <code>app-state -&gt; DOM</code></li><li>one way data flow (vs. two way data binding)</li></ul>
+</section><section class='slide' name='6'>
+<h2>Components</h2>
+<pre class='language-clojure' style='float:left; margin-right: 40px;'><code>(defn comment [c]
+  [:div
+   &quot;Comment by &quot; (:author c)
+   [:div.body (:body c)]])
+
+(defn comment-list [cs]
+  [:div
+   [:h3 &quot;Comments&quot;]
+   (for [c cs]
+     [comment c])])
+</code></pre>
+<p>A component is a <strong>function</strong><br>
+It receives <strong>properties</strong><br>
+It returns an <strong>element</strong></p>
+</section><section class='slide' name='7'>
+<h2>Elements</h2>
+<pre class='language-clojure'><code>[:div {:class &quot;comment-list&quot;}
+  [:h3 &quot;Comments&quot;]
+  [comment {:author ,,, :body ,,,}]
+  [comment {:author ,,, :body ,,,}]
+</code></pre>
+<p>An element has a <strong>type</strong>, which is either a HTML tag, or a component<br>
+It takes <strong>properties</strong> and <strong>children</strong></p>
+</section><section class='slide' name='8'>
+<h2>Elements</h2>
+<p>Properties and children either correspond with DOM properties and children</p>
+<pre class='language-clojure'><code>[:div {:class &quot;foo&quot;} &quot;Hello&quot;]
+</code></pre>
+<p>Or serve as arguments to the component</p>
+<pre class='language-clojure'><code>[comment {:author &quot;Arne&quot; :body &quot;Reactive!&quot;}]
+</code></pre>
+
+
+
+
+
+
+</section><section class='slide' name='9'>
+<h2>Events</h2>
+<pre class='language-clojure'><code>[:a {:on-click #(do-something %)}
+ &quot;do something&quot;]
+</code></pre>
+</section><section class='slide' name='10'>
+<h2>UI as a Pure Function</h2>
+<p>Each <strong>state change</strong> results in <strong>new DOM</strong></p>
+<p>Naive approach: on each change <strong>recreate</strong> the DOM</p>
+<p>But… lots of things are attached to the DOM</p>
+<p>Changing the <strong>DOM makes browsers do work</strong></p>
+</section><section class='slide' name='11'>
+<h2>Virtual DOM</h2>
+<p>Solution: use a “fake” DOM</p>
+<p>Made of plain JS objects</p>
+<p>Lightweight, easy to create and discard</p>
+<p>No <del>strings</del> browser attached</p>
+</section><section class='slide' name='12'>
+<h2>Reconciliation</h2>
+<p>Changes still need to make it to the “real” DOM</p>
+<p>This is known as “reconciliation”</p>
+<p><code>diff -u browser.dom virtual.dom</code></p>
+<p>Results in a set of “updates” which are “flushed” to the DOM</p>
+</section><section class='slide' name='13'>
+<h2 style='font-size: 12rem; margin-left: 30%; margin-top: 15%;'>Hacks</h2>
+</section><section class='slide' name='14'>
+<h2>Performance Hack 1.</h2>
+<p><strong>Full tree diff is expensive</strong>, <code>O(n^3)</code>, not an option</p>
+<p>Can we get a <strong>“good enough”</strong> diff?</p>
+<p>Assume <strong>nodes never move</strong> to a different parent</p>
+<p>Do a <strong>single pass</strong>, top-to-bottom, left-to-right: <code>O(n)</code></p>
+<p>Trades off speed of diffing vs. minimal change set</p>
+</section><section class='slide' name='15'>
+<h2>Performance Hack 2.</h2>
+<p>Skip components of different types</p>
+<pre class='language-clojure'><code>[:div [:h3 &quot;foo&quot;]
+      [comment-list]]
+
+[:div [:h3 &quot;bar&quot;]
+      [menu-bar]]
+;;=&gt;
+[(change &quot;foo&quot; &quot;bar&quot;)
+ (remove comment-list)
+ (add menu-bar)]
+</code></pre>
+
+</section><section class='slide' name='16'>
+<h2>Performance Hack 3.</h2>
+<p>Force the programmer to add a unique <code>key</code> to siblings</p>
+<p>Detect sibling moves based on <code>key</code></p>
+</section><section class='slide' name='17'>
+<h2>Keys</h2>
+<pre class='language-clojure'><code>(defn comment-list [cs]
+  [:div.comment-list
+   [:h3 &quot;Comments&quot;]
+   (for [c cs]
+     [comment c])])
+</code></pre>
+</section><section class='slide' name='18'>
+<h2>Keys</h2>
+<pre class='language-clojure'><code>(defn comment-list [cs]
+  [:div.comment-list
+   [:h3 &quot;Comments&quot;]
+   (for [c cs]
+     ^{:key (:id c)} [comment c])])
+
+</code></pre>
+
+</section><section class='slide' name='19'>
+<p><img src='assets/8b8e2b8fcf40a8bab31dfa6ce5c07c54.png' alt='' style='width: 110%'></p>
+</section><section class='slide' name='20'>
+<p><img src='assets/a7f562fd7be58f9eb4d042a3307f755e.png' alt='' style='width: 110%'></p>
+</section><section class='slide' name='21'>
+<p><img src='assets/cbd77785290fb99172d7ace4ec4c966a.png' alt='' style='width: 110%'></p>
+</section><section class='slide' name='22'>
+<p><img src='assets/a4b9837c2347b7cafb20fe78d879ee05.png' alt='' style='width: 110%'></p>
+</section><section class='slide' name='23'>
+<p><img src='assets/67f20847d8fae64814afbccc495b3e1d.png' alt='' style='width: 110%'></p>
+</section><section class='slide' name='24'>
+<p><img src='assets/ff0ce7e147fb37dc3bfcad9b1b47906b.png' alt='' style='width: 110%'></p>
+</section><section class='slide' name='25'>
+<p><img src='assets/62a805edab66acc14d4b27cd9dcddd1d.png' alt='' style='width: 110%'></p>
+</section><section class='slide' name='26'>
+<p><img src='assets/d3a4e99c53e1a75274ba56593a435692.png' alt='' style='width: 110%'></p>
+</section><section class='slide' name='27'>
+<p><img src='assets/98c6229389e08a2acf9bdab4a7e03a6d.png' alt='' style='width: 110%'></p>
+</section><section class='slide' name='28'>
+<p><img src='assets/8a3a997deb5725db1f3f5b0a49d0a968.png' alt='' style='width: 110%'></p>
+</section><section class='slide' name='29'>
+<p><img src='assets/0b3286452af0eb93628b4084b89f6e67.png' alt='' style='width: 110%'></p>
+</section><section class='slide' name='30'>
+<p><img src='assets/a5ee58e887b6d6844a2b9cb9c28027e9.png' alt='' style='width: 110%'></p>
+</section><section class='slide' name='31'>
+<p><img src='assets/5608a99b871577e5b8560d2073a9e7f8.png' alt='' style='width: 110%'></p>
+</section><section class='slide' name='32'>
+<p><img src='assets/d889fbd759e6a72b14aad6285acdfd5d.png' alt='' style='width: 110%'></p>
+</section><section class='slide' name='33'>
+<h2>Performance Hack 4.</h2>
+<p>Replacing DOM nodes means removing and re-creating event handlers</p>
+<p>Instead register <strong>global handlers</strong></p>
+<p>Implement own <strong>“synthetic” event system</strong></p>
+<p>Look up parent by simple string manipulation</p>
+</section><section class='slide' name='34'>
+<pre class='language-html' style='font-size: 1.2rem;'><code>&lt;div class=&quot;comments&quot; data-reactid=&quot;.0&quot;&gt;
+  &lt;div class=&quot;comment&quot; data-reactid=&quot;.0.0:0&quot;&gt;
+    &lt;div class=&quot;header&quot; data-reactid=&quot;.0.0:0.0&quot;&gt;
+      ...
+    &lt;/div&gt;
+    &lt;div class=&quot;body&quot; data-reactid=&quot;.0.0:0.1&quot;&gt;
+      &lt;div data-reactid=&quot;.0.0:0.1.0&quot;&gt;
+        &lt;p data-reactid=&quot;.0.0:0.1.0.0&quot;&gt;
+          ...
+        &lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+</section><section class='slide' name='35'>
+<h2 style='font-size: 12rem; margin-left: 30%; margin-top: 15%;'>Reagent (et al)</h2>
+</section><section class='slide' name='36'>
+<h2>Performance Hack 5.</h2>
+<p>Components should <strong>only update when properties change</strong></p>
+<p>If props are <strong>JS objects: expensive</strong> to compare</p>
+<p>Comparing <strong>Functional Data Structures: instantaneous</strong></p>
+<p>Reagent, Om, implement <code>shouldComponentUpdate</code> to achieve this</p>
+</section><section class='slide' name='37'>
+<pre class='language-clojure'><code>(fn shouldComponentUpdate [nextprops nextstate]
+  (this-as c
+    (let [old-argv (.. c -props -argv)
+          new-argv (.. nextprops -argv)]
+      (not= old-argv new-argv))))
+</code></pre>
+
+</section><section class='slide' name='38'>
+<h2 style='font-size: 12rem; margin-left: 30%; margin-top: 15%;'>reagent atom</h2>
+
+</section><section class='slide' name='39'>
+
+<h2>Performance Hack 6.</h2>
+<p>Reagent tracks which components make use of which <code>reagent/atom</code></p>
+<p>Result: when state changes it knows immediately which are “dirty”</p>
+<p>Instead of rendering the whole tree, render only the “dirty” components with <code>forceUpdate</code></p>
+</section><section class='slide' name='40'>
+<pre class='language-clojure'><code>(def a (reagent/atom &quot;I&#x27;m x&quot;))
+(def b (reagent/atom &quot;I&#x27;m y&quot;))
+
+(def x []
+  [:div @a])
+
+(def y []
+  [:div @b])
+
+(swap! a (constantly &quot;Even more x&quot;))
+</code></pre>
+</section><section class='slide' name='41'>
+<h2>Performance Hack 7.</h2>
+<p>App state may change several times in a short time</p>
+<p>No need to update the UI quicker than the browser can handle</p>
+<p>Reagent batches dirty components and flushes them all in a <code>requestAnimationFrame</code></p>
+</section><section class='slide' name='42'>
+<h2 style='font-size: 12rem; margin-left: 30%; margin-top: 15%;'>re-frame</h2>
+</section><section class='slide' name='43'>
+<h2>Performance Hack 8.</h2>
+<p>Apps typically use <strong>one atom</strong> containing app state</p>
+<p>Many components will reference this atom</p>
+<p>If state changes, <strong>all components are re-rendered</strong></p>
+<p>Solution: Reactive <strong>signal graph</strong>.</p>
+</section><section class='slide' name='44'>
+<pre class='language-clojure'><code>(reg-sub :todos (fn [db _]
+                  (:todos db)))
+
+(reg-sub :todos-count :&lt;- [:todos]
+         (fn [todos _]
+           (count todos)))
+
+(reg-sub :completed-count :&lt;- [:todos]
+         ,,,)
+
+(reg-sub :footer-counts :&lt;- [:todos-count]
+                        :&lt;- [:completed-count]
+         (fn [[count completed] _]
+           [(- count completed) completed]))
+
+</code></pre>
+
+</section><section class='slide' name='45'>
+<h2>Performance Hack ∞.</h2>
+<p>React is working on a new Reconciliation algorithm called “Fiber”.</p>
+<p>MOAR HACKS are on the way!</p>
+</section><section class='slide' name='46'>
+<h2 class='cover' style='font-size: 15rem'>FIN</h2></section><script src='assets/a3b20c8ec6c5c4b05bcb38d98d132244.js' type='text/javascript'></script></body></html>
