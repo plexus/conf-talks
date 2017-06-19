@@ -1,0 +1,24 @@
+- Demoing CLJS
+
+  If you had five minutes to demonstrate ClojureScript to JavaScript devs, what
+  would you show? What would blow their minds?
+
+  https://twitter.com/plexus/status/837683001903415296
+
+  - Figwheel
+    - Figwheel + compiler errors reporting pointing to error location is very cool
+  - Flappy bird
+  - smooth over JS wtfs
+    - one example to be truthiness in Clojure
+  - data manipulation (cljs.core/*)
+  - being able to use REPL to inspect and alter application state is impressive
+
+
+https://medium.com/@jiyinyiyong/you-should-check-clojurescript-before-choosing-redux-heres-why-dc644d4746cd#.qgqnag65p
+
+- immutable data
+- powerful data transformation
+- everything is an expression
+- no "this"
+- stable language
+- google closure compiler

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html><head><link href='assets/38b7430b5ca5b0ee5308d3cca6a8b055.css' rel='stylesheet'><title>Emacs and Clojure - A Lispy Love Affair</title><link rel='stylesheet' href='assets/5133d11fbaf87d3978cf403eba33c764.css'><script src='assets/ce599fd2ea4bde549efc6f79353a9ed0.js'></script><script>hljs.initHighlightingOnLoad();</script><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><link rel='stylesheet' type='text/css' href='assets/5a0ca255fce9de83dde16a0f27d788fe.css'><link rel='stylesheet' type='text/css' href='assets/21fc1eee0780fba93a347f0bbbeafd03.css'></head><body class='shower list'><section class='slide' name='1'>
+<h2 style='font-size: 6rem; text-align: center; margin-top: 1em;'>Welcome to Emacs Berlin</h2>
+<p style='text-align: center; margin-top: 1em;'>February 2017 @ Contentful</p>
+<p style='text-align: center; margin-top: 1em;'>SSID: Contentful Guest<br>
+PWD: casacontenta</p>
+</section><section class='slide' name='2'>
+<h2 style='font-size: 6rem; text-align: center; margin-top: 1em;'>Emacs And Clojure — <br>A Lispy &lt;3 Affair</h2>
+<p style='text-align: center'><br><br>
+by Arne Brasseur (@plexus)<br>
+Clojure Berlin — February 2017</p>
+
+</section><section class='slide' name='3'>
+<p><img src='assets/387ae2245d7b9781e9c337dc4df09041.png' alt='' class='cover'></p>
+</section><section class='slide' name='4'>
+<h2>A Lispy Love Affair</h2>
+<p>Clojure ∈ ℒ   ∧   Emacs &lt;3 ℒ   ⇒   Emacs &lt;3 Clojure</p>
+<p>ℒ: The set of all Lisps</p>
+</section><section class='slide' name='5'>
+<h2>Free Stuff!</h2>
+<ul><li>paredit</li><li>smartparens</li><li>parinfer</li><li>rainbow-delimiters</li><li>inferior-lisp<br>
+<br></li><li>aggressive-indent-mode</li><li>subword-mode</li></ul>
+</section><section class='slide' name='6'>
+<h2>Clojure Specific Stuff</h2>
+<ul><li>clojure-mode</li><li>inf-clojure</li><li>CIDER</li><li>clj-refactor</li></ul>
+</section><section class='slide' name='7'>
+<h2>Clojure Specific Stuff</h2>
+<ul><li>clojure-mode</li></ul>
+<p>Programming language major mode</p>
+</section><section class='slide' name='8'>
+<h2>Clojure Specific Stuff</h2>
+<ul><li>inf-clojure</li></ul>
+<p>Interact with a Clojure REPL process. An alternative to <code>inf-lisp</code>.</p>
+</section><section class='slide' name='9'>
+<h2>Clojure Specific Stuff</h2>
+<ul><li>CIDER</li></ul>
+<p>Use a running Clojure process as a backend for lots of functionality (REPL, font-locking, navigation, …)</p>
+</section><section class='slide' name='10'>
+<h2>Clojure Specific Stuff</h2>
+<ul><li>clj-refactor</li></ul>
+<p>Clojure specific refactorings</p>
+</section><section class='slide' name='11'>
+<h2>clojure-mode</h2>
+<p>All you would expect from a programming language major mode (and more!)</p>
+<ul><li>font-lock</li><li>indentation</li><li>navigation</li><li>refactoring</li></ul>
+<p>Four variants: <code>.clj</code>, <code>.cljs</code>, <code>.cljc</code>, <code>.cljx</code></p>
+</section><section class='slide' name='12'>
+<h2>clojure-mode font locking</h2>
+<p>Is pretty basic.</p>
+<p><code>clojure-mode-extra-font-locking.el</code><br>
+provides font-locking for built-ins,<br>
+but imprecise.</p>
+<p>With CIDER you get smart font-locking</p>
+</section><section class='slide' name='13'>
+<h2>clojure-mode indentation</h2>
+<p>Follows the community style guide. Can be configured in great detail.</p>
+<pre class='language-clojure'><code>(setq clojure-indent-style :always-align)
+;; :always-indent | :align-arguments
+
+(put-clojure-indent &#x27;symbol 2)
+
+(define-clojure-indent
+  (-&gt; 1)
+  (letfn     &#x27;(1 ((:defn)) nil))
+  (defrecord &#x27;(2 :form :form (1))))
+</code></pre>
+</section><section class='slide' name='14'>
+<h2>clojure-mode indentation</h2>
+<pre class='language-clojure'><code>;; before
+(def profile-route
+  (GET &quot;/user/:id&quot; [id]
+       {:body (profile-page (fetch-user id))}))
+
+;; init.el
+(put-clojure-indent &#x27;GET 2)
+
+;; after
+(def profile-route
+  (GET &quot;/user/:id&quot; [id]
+    {:body (profile-page (fetch-user id))}))
+</code></pre>
+</section><section class='slide' name='15'>
+<h2>Vertical Alignment</h2>
+<p><code>C-c SPC   ::   clojure-align</code><br>
+<code>(setq clojure-align-forms-automatically t)</code></p>
+<pre class='language-clojure'><code>(defn guide-data [slug title html]
+  (let [slug (str &quot;/guides/&quot; slug)]
+    {:title   title
+     :slug    slug
+     :link    [:a {:href slug} title]
+     :content html}))
+</code></pre>
+</section><section class='slide' name='16'>
+<h2>inferior-lisp / inf-clojure</h2>
+<p>For use with “normal” REPLS (i.e. STDIN/STDOUT)</p>
+<pre class='language-clojure'><code>;; inf-clojure
+(setq inf-clojure-program &quot;lein figwheel&quot;)
+(add-hook &#x27;clojure-mode-hook &#x27;inf-clojure-mode)
+</code></pre>
+</section><section class='slide' name='17'>
+<h2>inf-clojure</h2>
+<p>Enable <code>inf-clojure-minor-mode</code> in source buffer.</p>
+<p><code>C-c C-z</code> or <code>inf-clojure</code> to start the REPL</p>
+<p><code>C-x C-e</code> / <code>C-M-x</code> / <code>C-c C-c</code> evaluate form</p>
+</section><section class='slide' name='18'>
+<h2>inf-clojure</h2>
+<pre><code>C-c C-z inf-clojure-switch-to-repl
+C-c C-i inf-clojure-show-ns-vars
+C-c C-A inf-clojure-apropos
+C-c C-m inf-clojure-macroexpand
+C-c C-l inf-clojure-load-file
+C-c C-a inf-clojure-show-arglist
+C-c C-v inf-clojure-show-var-documentation
+C-c C-s inf-clojure-show-var-source
+C-c M-n inf-clojure-set-ns
+</code></pre>
+</section><section class='slide' name='19'>
+<h2>CIDER</h2>
+<p>Based on nREPL</p>
+<ul><li>Code Completion</li><li>Navigating Stacktraces</li><li>Running Tests</li><li>Debugger</li><li>So much more …</li></ul>
+</section><section class='slide' name='20'>
+<h2>CIDER DEMO</h2>
+<ul><li>cider-jack-in</li><li>jump to definition</li><li>code completion</li><li>tests</li><li>debugger</li></ul>
+</section><section class='slide' name='21'>
+<h2>CIDER and CLJS</h2>
+<p>Depends on <code>cider-cljs-lein-repl</code> / <code>cider-cljs-boot-repl</code></p>
+<pre class='language-clojure'><code>(setq cider-cljs-lein-repl
+  &quot;(do (figwheel-sidecar.repl-api/start-figwheel!)
+     (figwheel-sidecar.repl-api/cljs-repl))&quot;)
+</code></pre>
+<p>Cool trick: set in <code>.dir-locals.el</code> (Currently broken)</p>
+</section><section class='slide' name='22'>
+<h2>clj-refactor</h2>
+<p>Originally in Emacs Lisp by Magnar Sveen.</p>
+<p>Now largely done with an nREPL backend.</p>
+<p>Elisp-only stuff has been moved to clojure-mode.</p>
+<p><strong>DEMO</strong></p>
+</section><section class='slide' name='23'>
+<h2 class='cover' style='font-size: 15rem'>FIN</h2></section><script src='assets/a3b20c8ec6c5c4b05bcb38d98d132244.js' type='text/javascript'></script></body></html>

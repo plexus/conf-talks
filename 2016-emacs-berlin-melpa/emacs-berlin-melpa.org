@@ -1,0 +1,90 @@
+* I wanted to submit a package to MELPA
+* This is actually pretty straightforward
+* But there are lots of little things to get right
+
+#+BEGIN_SRC emacs-lisp
+  (info "(elisp) Packaging")
+#+END_SRC
+
+* The MELPA volunteers have a lot of work
+* Make their lives easier, not harder
+* Basics to watch out for
+* Add the right magic comments
+
+#+BEGIN_SRC emacs-lisp
+  (info "(elisp) Library Headers")
+#+END_SRC
+
+* Example structure
+
+#+BEGIN_SRC emacs-lisp
+  ;;; html-to-hiccup.el --- Convert HTML to Hiccup syntax
+
+  ;; Copyright (C) 2016 ...
+
+  ;; Author: Arne Brasseur <arne@arnebrasseur.net>
+  ;; URL: https://github.com/plexus/html-to-hiccup
+  ;; Version: 1.0
+  ;; Package-Requires: ((emacs "25.1") (dash "2.13.0") (s "1.10.0"))
+
+  ;; This file is NOT part of GNU Emacs.
+
+  ;;; License:
+
+  ;; ...
+
+  ;;; Commentary:
+
+  ;; ...
+
+  ;;; Code:
+
+  (code goes here)
+
+  ;;; html-to-hiccup.el ends here
+#+END_SRC
+
+* List dependencies
+
+  Including the right Emacs version if you're using newer features.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Package-Requires: ((emacs "25.1") (dash "2.13.0") (s "1.10.0"))
+#+END_SRC
+
+* Coding conventions
+
+   - start all function names with the package name
+   - you can use ~--~ to mark "private" functions
+
+* Autoload tokens
+
+#+BEGIN_SRC emacs-lisp
+;;;###autoload
+(defun html-to-hiccup-convert-region (start end)
+  "Convert the region between START and END from HTML to Hiccup."
+  (interactive "r")
+  (save-excursion
+    (save-restriction
+      (narrow-to-region start end)
+      (let ((html-sexp (libxml-parse-html-region (point-min) (point-max))))
+	(delete-region (point-min) (point-max))
+	(insert (html-to-hiccup--sexp-to-hiccup html-sexp))))))
+#+END_SRC
+
+* Testing
+
+  - package-lint
+  - checkdoc
+
+* Ready for MELPA!
+
+  - Clone github:melpa/melpa
+  - Add a recipe
+  - Test it
+  - Submit a pull request
+
+#+BEGIN_SRC emacs-lisp
+  (html-to-hiccup :repo "plexus/html-to-hiccup"
+                  :fetcher github)
+#+END_SRC
