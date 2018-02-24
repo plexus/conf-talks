@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="466"
+   height="466"
+   viewBox="-40 -40 80 80"
+   id="svg4155"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="Yin_yang.svg">
+  <metadata
+     id="metadata4169">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs4167" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1080"
+     id="namedview4165"
+     showgrid="false"
+     inkscape:zoom="1.9527897"
+     inkscape:cx="233"
+     inkscape:cy="233"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg4155" />
+  <circle
+     r="39"
+     id="circle4157" />
+  <path
+     d="M0,38a38,38 0 0 1 0,-76a19,19 0 0 1 0,38a19,19 0 0 0 0,38"
+     id="path4159"
+     fill="#fff" />
+  <flowRoot
+     xml:space="preserve"
+     id="flowRoot4171"
+     style="font-style:normal;font-weight:normal;font-size:7.72532225px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     transform="translate(0.7001741,9.1466097)"><flowRegion
+       id="flowRegion4173"><rect
+         id="rect4175"
+         width="23.032969"
+         height="10.461539"
+         x="-9.4065924"
+         y="-32.96703" /></flowRegion><flowPara
+       id="flowPara4177">read</flowPara></flowRoot>  <flowRoot
+     transform="translate(0.06645627,46.397842)"
+     style="font-style:normal;font-weight:normal;font-size:7.72532225px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     id="flowRoot4179"
+     xml:space="preserve"><flowRegion
+       id="flowRegion4181"><rect
+         y="-32.96703"
+         x="-9.4065924"
+         height="10.461539"
+         width="23.032969"
+         id="rect4183"
+         style="fill:#ffffff" /></flowRegion><flowPara
+       id="flowPara4185">print</flowPara></flowRoot></svg>

@@ -1,5 +1,804 @@
 <!DOCTYPE html>
-<html><head><link href='assets/38b7430b5ca5b0ee5308d3cca6a8b055.css' rel='stylesheet'><meta http-equiv='x-ua-compatible' content='ie=edge'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Clojure REPLs - Closing the Loop - Arne Brasseur</title><link rel='stylesheet' href='assets/c1cd938f43002a217f591a8a4303a896.css'><script src='assets/8f16b5edb7f88bfec561d7749e3c2241.js'></script><script>hljs.initHighlightingOnLoad();</script></head><body class='shower full'><section class='slide'><h1 id='clojure-repls'>Clojure REPLs</h1>
-<h2 id='closing-the-loop'>Closing the Loop</h2>
+<html><head><link href='assets/dcea9201456545e77087837bdd46795e.css' rel='stylesheet'><meta charset='utf-8'><meta http-equiv='x-ua-compatible' content='ie=edge'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Clojure REPLs - Closing the Loop - Arne Brasseur</title><link rel='stylesheet' href='assets/a3024b15fa6368dd87492c24ddabff3e.css'><script src='assets/8f16b5edb7f88bfec561d7749e3c2241.js'></script><script>hljs.initHighlightingOnLoad();</script><link rel='stylesheet' type='text/css' href='assets/e5614196ef959644a5774cf809a1b7ae.css'><link rel='stylesheet' type='text/css' href='assets/8c8ad12747d4e7cbd17ce68dac17a33b.css'><link rel='stylesheet' type='text/css' href='assets/63cf0cec930cd09d3e1526ff879871d5.css'><script type='text/javascript' src='assets/a09e13ee94d51c524b7e2a728c7d4039.js'></script></head><body class='shower full'><section class='slide'>
+<div class='tc white mt4 pv4 bg-black-40'><h2 style='color:white; font-size:70px'>Clojure REPLs</h2><h3 style='font-size: 50px'>Closing the Loop</h3>
+<p class='mt3' style='margin-bottom: 10px'>by <em>Arne Brasseur</em> </p></div>
+
+<p><img src='assets/2d4503c6d53cf02aa0fa488afba6ac87.jpg' alt='workbench with tools' width='120%' style='max-width: 120%;' class='cover'></p>
+
 </section><section class='slide' name='1'>
-<h2 id='stuff'>Stuff</h2></section><script src='assets/a3b20c8ec6c5c4b05bcb38d98d132244.js' type='text/javascript'></script></body></html>
+<h2 id='workbench-工作台'>Workbench 工作台</h2>
+<p>Wikipedia:</p>
+<blockquote><p>A WORKBENCH is a sturdy table at which manual <strong>work is done</strong>. They range from <strong>simple to complex</strong> designs that may be considered <strong>tools in themselves</strong>. Their size and design varies depending on the type of work that is being done.</p></blockquote>
+<p><img src='assets/787f01679d8aa5499813460f1aa10231.jpg' alt='workbench (from Wikimedia)' width='100%' style='max-width: 100%; opacity: 0.3' class='cover'></p>
+</section><section class='slide' name='2'>
+<h2 id='workbench-工作台-1'>Workbench 工作台</h2>
+<ul><li>A place where you put the thing you’re working on</li><li>Provides access to tools</li><li>Let’s you work comfortably</li></ul>
+<p><img src='assets/787f01679d8aa5499813460f1aa10231.jpg' alt='workbench (from Wikimedia)' width='100%' style='max-width: 100%; opacity: 0.3' class='cover'></p>
+</section><section class='slide' name='3'>
+<h2 id='programmers-workbench'>Programmer’s Workbench?</h2>
+<ul><li>A place where you put the thing you’re working on</li><li>Provides access to tools</li><li>Let’s you work comfortably</li></ul>
+</section><section class='slide' name='4'>
+<h2 id='programmers-workbench-1'>Programmer’s Workbench?</h2>
+<ul><li>A place where you put the thing you’re working on</li><li>Provides access to tools</li><li>Let’s you work comfortably</li></ul>
+<p class='f1 highlight'>Editor!</p>
+
+</section><section class='slide' name='5'>
+<h2 id='workbench--editor--should-provide-access-to-tools'>Workbench / Editor <br> should provide access to tools</h2>
+<p>As a Clojure programmer, what’s the most important tool in your toolbox?</p>
+</section><section class='slide' name='6'>
+<h2 id='workbench--editor--should-provide-access-to-tools-1'>Workbench / Editor <br> should provide access to tools</h2>
+<p>As a Clojure programmer, what’s the most important tool in your toolbox?</p>
+<p class='f1 highlight' style='margin-bottom:0'>REPL</p>
+<p class='highlight'>Because it’s a meta-tool.<br>
+It’s a tool that provides access to tools.<br>
+It’s a tool that lets you build your own tools.</p>
+</section><section class='slide' name='7'>
+<h2 id='repl'>REPL</h2>
+<pre class='language-clojure'><code>(loop []
+  (-&gt; (read *in*)
+      (eval)
+      (println))
+  (recur))
+</code></pre>
+</section><section class='slide' name='8'>
+<h2 id='read'>Read</h2>
+<p>String -&gt; Data</p>
+<pre class='language-clojure'><code>(read *in*)
+;;=&gt; [1 2 3]
+
+(read-str &quot;[1 2 3]&quot;)
+;;=&gt; [1 2 3]
+</code></pre>
+</section><section class='slide' name='9'>
+<h2 id='eval'>Eval</h2>
+<p>Data -&gt; Data</p>
+<pre class='language-clojure'><code>(eval &#x27;(+ 1 2))
+;;=&gt; 3
+</code></pre>
+</section><section class='slide' name='10'>
+<h2 id='print'>Print</h2>
+<p>Data -&gt; String</p>
+<pre class='language-clojure'><code>(prn [1 2 3])
+;; *out*| [1 2 3]
+
+(prn-str [1 2 3])
+;;=&gt; &quot;[1 2 3]&quot;
+</code></pre>
+</section><section class='slide' name='11'>
+<h2 id='read--print'>Read &amp; Print</h2>
+<pre class='language-clojure'><code>(-&gt; &quot;[1 2 3]&quot;
+    read-string
+    prn-str
+    read-string
+    prn-str
+    (= &quot;[1 2 3]&quot;))
+;;=&gt; true
+</code></pre>
+</section><div><section class='slide repl' name='12'>
+<h2 id='read--print-1'>Read &amp; Print</h2>
+<pre class='language-clojure'><code class='highlight'>user=&gt; (def identity (comp read-string prn-str))
+</code></pre>
+</section><section class='slide repl' name='12'>
+<h2 id='read--print-1'>Read &amp; Print</h2>
+<pre class='language-clojure'><code>user=&gt; (def identity (comp read-string prn-str))
+</code></pre><pre class='language-clojure'><code class='highlight'>#&#x27;user/identity
+</code></pre>
+</section><section class='slide repl' name='12'>
+<h2 id='read--print-1'>Read &amp; Print</h2>
+<pre class='language-clojure'><code>user=&gt; (def identity (comp read-string prn-str))
+</code></pre><pre class='language-clojure'><code>#&#x27;user/identity
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (identity 1)
+</code></pre>
+</section><section class='slide repl' name='12'>
+<h2 id='read--print-1'>Read &amp; Print</h2>
+<pre class='language-clojure'><code>user=&gt; (def identity (comp read-string prn-str))
+</code></pre><pre class='language-clojure'><code>#&#x27;user/identity
+</code></pre><pre class='language-clojure'><code>user=&gt; (identity 1)
+</code></pre><pre class='language-clojure'><code class='highlight'>1
+</code></pre>
+</section><section class='slide repl' name='12'>
+<h2 id='read--print-1'>Read &amp; Print</h2>
+<pre class='language-clojure'><code>user=&gt; (def identity (comp read-string prn-str))
+</code></pre><pre class='language-clojure'><code>#&#x27;user/identity
+</code></pre><pre class='language-clojure'><code>user=&gt; (identity 1)
+</code></pre><pre class='language-clojure'><code>1
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (identity [1 2 3])
+</code></pre>
+</section><section class='slide repl' name='12'>
+<h2 id='read--print-1'>Read &amp; Print</h2>
+<pre class='language-clojure'><code>user=&gt; (def identity (comp read-string prn-str))
+</code></pre><pre class='language-clojure'><code>#&#x27;user/identity
+</code></pre><pre class='language-clojure'><code>user=&gt; (identity 1)
+</code></pre><pre class='language-clojure'><code>1
+</code></pre><pre class='language-clojure'><code>user=&gt; (identity [1 2 3])
+</code></pre><pre class='language-clojure'><code class='highlight'>[1 2 3]
+</code></pre>
+</section><section class='slide repl' name='12'>
+<h2 id='read--print-1'>Read &amp; Print</h2>
+<pre class='language-clojure'><code>#&#x27;user/identity
+</code></pre><pre class='language-clojure'><code>user=&gt; (identity 1)
+</code></pre><pre class='language-clojure'><code>1
+</code></pre><pre class='language-clojure'><code>user=&gt; (identity [1 2 3])
+</code></pre><pre class='language-clojure'><code>[1 2 3]
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (identity {:meetup :Taipei})
+</code></pre>
+</section><section class='slide repl' name='12'>
+<h2 id='read--print-1'>Read &amp; Print</h2>
+<pre class='language-clojure'><code>user=&gt; (identity 1)
+</code></pre><pre class='language-clojure'><code>1
+</code></pre><pre class='language-clojure'><code>user=&gt; (identity [1 2 3])
+</code></pre><pre class='language-clojure'><code>[1 2 3]
+</code></pre><pre class='language-clojure'><code>user=&gt; (identity {:meetup :Taipei})
+</code></pre><pre class='language-clojure'><code class='highlight'>{:meetup :Taipei}
+</code></pre>
+</section></div><section class='slide' name='13'>
+<p><img src='assets/177c8ea45957760ab4250527fc43ffca.png' alt='' class='center db' width='450px'></p>
+
+
+
+
+
+
+
+
+</section><section class='slide f1' name='14'>
+<h2 id='repl-uses'>REPL Uses</h2>
+<div class='flex'><div><p>Explore 探索
+Observe 觀察</p></div><div><p>Control 控制
+Change 改變</p></div></div>
+</section><div><section class='slide repl' name='15'>
+<h2 id='explore-探索'>Explore 探索</h2>
+<pre class='language-clojure'><code class='highlight'>user=&gt; (require &#x27;clj-slack.users)
+</code></pre>
+
+
+
+</section><section class='slide repl' name='15'>
+<h2 id='explore-探索'>Explore 探索</h2>
+<pre class='language-clojure'><code>user=&gt; (require &#x27;clj-slack.users)
+</code></pre><pre class='language-clojure'><code class='highlight'>nil
+</code></pre>
+
+
+
+</section><section class='slide repl' name='15'>
+<h2 id='explore-探索'>Explore 探索</h2>
+<pre class='language-clojure'><code>user=&gt; (require &#x27;clj-slack.users)
+</code></pre><pre class='language-clojure'><code>nil
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (def conn {:api-url &quot;https://slack.com/api&quot;})
+</code></pre>
+
+
+
+</section><section class='slide repl' name='15'>
+<h2 id='explore-探索'>Explore 探索</h2>
+<pre class='language-clojure'><code>user=&gt; (require &#x27;clj-slack.users)
+</code></pre><pre class='language-clojure'><code>nil
+</code></pre><pre class='language-clojure'><code>user=&gt; (def conn {:api-url &quot;https://slack.com/api&quot;})
+</code></pre><pre class='language-clojure'><code class='highlight'>#&#x27;user/conn
+</code></pre>
+
+
+
+</section><section class='slide repl' name='15'>
+<h2 id='explore-探索'>Explore 探索</h2>
+<pre class='language-clojure'><code>user=&gt; (require &#x27;clj-slack.users)
+</code></pre><pre class='language-clojure'><code>nil
+</code></pre><pre class='language-clojure'><code>user=&gt; (def conn {:api-url &quot;https://slack.com/api&quot;})
+</code></pre><pre class='language-clojure'><code>#&#x27;user/conn
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (def res (clj-slack.users/list conn))
+</code></pre>
+
+
+
+</section><section class='slide repl' name='15'>
+<h2 id='explore-探索'>Explore 探索</h2>
+<pre class='language-clojure'><code>user=&gt; (require &#x27;clj-slack.users)
+</code></pre><pre class='language-clojure'><code>nil
+</code></pre><pre class='language-clojure'><code>user=&gt; (def conn {:api-url &quot;https://slack.com/api&quot;})
+</code></pre><pre class='language-clojure'><code>#&#x27;user/conn
+</code></pre><pre class='language-clojure'><code>user=&gt; (def res (clj-slack.users/list conn))
+</code></pre><pre class='language-clojure'><code class='highlight'>#&#x27;user/res
+</code></pre>
+
+
+
+</section><section class='slide repl' name='15'>
+<h2 id='explore-探索'>Explore 探索</h2>
+<pre class='language-clojure'><code>nil
+</code></pre><pre class='language-clojure'><code>user=&gt; (def conn {:api-url &quot;https://slack.com/api&quot;})
+</code></pre><pre class='language-clojure'><code>#&#x27;user/conn
+</code></pre><pre class='language-clojure'><code>user=&gt; (def res (clj-slack.users/list conn))
+</code></pre><pre class='language-clojure'><code>#&#x27;user/res
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (type res)
+</code></pre>
+
+
+
+</section><section class='slide repl' name='15'>
+<h2 id='explore-探索'>Explore 探索</h2>
+<pre class='language-clojure'><code>user=&gt; (def conn {:api-url &quot;https://slack.com/api&quot;})
+</code></pre><pre class='language-clojure'><code>#&#x27;user/conn
+</code></pre><pre class='language-clojure'><code>user=&gt; (def res (clj-slack.users/list conn))
+</code></pre><pre class='language-clojure'><code>#&#x27;user/res
+</code></pre><pre class='language-clojure'><code>user=&gt; (type res)
+</code></pre><pre class='language-clojure'><code class='highlight'>clojure.lang.PersistentList
+</code></pre>
+
+
+
+</section><section class='slide repl' name='15'>
+<h2 id='explore-探索'>Explore 探索</h2>
+<pre class='language-clojure'><code>#&#x27;user/conn
+</code></pre><pre class='language-clojure'><code>user=&gt; (def res (clj-slack.users/list conn))
+</code></pre><pre class='language-clojure'><code>#&#x27;user/res
+</code></pre><pre class='language-clojure'><code>user=&gt; (type res)
+</code></pre><pre class='language-clojure'><code>clojure.lang.PersistentList
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (length res)
+</code></pre>
+
+
+
+</section><section class='slide repl' name='15'>
+<h2 id='explore-探索'>Explore 探索</h2>
+<pre class='language-clojure'><code>user=&gt; (def res (clj-slack.users/list conn))
+</code></pre><pre class='language-clojure'><code>#&#x27;user/res
+</code></pre><pre class='language-clojure'><code>user=&gt; (type res)
+</code></pre><pre class='language-clojure'><code>clojure.lang.PersistentList
+</code></pre><pre class='language-clojure'><code>user=&gt; (length res)
+</code></pre><pre class='language-clojure'><code class='highlight'>12532
+</code></pre>
+
+
+
+</section><section class='slide repl' name='15'>
+<h2 id='explore-探索'>Explore 探索</h2>
+<pre class='language-clojure'><code>#&#x27;user/res
+</code></pre><pre class='language-clojure'><code>user=&gt; (type res)
+</code></pre><pre class='language-clojure'><code>clojure.lang.PersistentList
+</code></pre><pre class='language-clojure'><code>user=&gt; (length res)
+</code></pre><pre class='language-clojure'><code>12532
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (type (first res))
+</code></pre>
+
+
+
+</section><section class='slide repl' name='15'>
+<h2 id='explore-探索'>Explore 探索</h2>
+<pre class='language-clojure'><code>user=&gt; (type res)
+</code></pre><pre class='language-clojure'><code>clojure.lang.PersistentList
+</code></pre><pre class='language-clojure'><code>user=&gt; (length res)
+</code></pre><pre class='language-clojure'><code>12532
+</code></pre><pre class='language-clojure'><code>user=&gt; (type (first res))
+</code></pre><pre class='language-clojure'><code class='highlight'>clojure.lang.PersistentArrayMap
+</code></pre>
+
+
+
+</section><section class='slide repl' name='15'>
+<h2 id='explore-探索'>Explore 探索</h2>
+<pre class='language-clojure'><code>clojure.lang.PersistentList
+</code></pre><pre class='language-clojure'><code>user=&gt; (length res)
+</code></pre><pre class='language-clojure'><code>12532
+</code></pre><pre class='language-clojure'><code>user=&gt; (type (first res))
+</code></pre><pre class='language-clojure'><code>clojure.lang.PersistentArrayMap
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (keys (first res))
+</code></pre>
+
+
+
+</section><section class='slide repl' name='15'>
+<h2 id='explore-探索'>Explore 探索</h2>
+<pre class='language-clojure'><code>user=&gt; (length res)
+</code></pre><pre class='language-clojure'><code>12532
+</code></pre><pre class='language-clojure'><code>user=&gt; (type (first res))
+</code></pre><pre class='language-clojure'><code>clojure.lang.PersistentArrayMap
+</code></pre><pre class='language-clojure'><code>user=&gt; (keys (first res))
+</code></pre><pre class='language-clojure'><code class='highlight'>(:id :name :real_name :is_admin :is_owner :profile)
+</code></pre>
+
+
+
+</section></div><div><section class='slide repl' name='16'>
+<h2 id='observe-觀察'>Observe 觀察</h2>
+<pre class='language-clojure'><code class='highlight'>user=&gt; (keys reloaded.repl/system)
+</code></pre>
+</section><section class='slide repl' name='16'>
+<h2 id='observe-觀察'>Observe 觀察</h2>
+<pre class='language-clojure'><code>user=&gt; (keys reloaded.repl/system)
+</code></pre><pre class='language-clojure'><code class='highlight'>(:http :datomic :handler :mail-queue)
+</code></pre>
+</section><section class='slide repl' name='16'>
+<h2 id='observe-觀察'>Observe 觀察</h2>
+<pre class='language-clojure'><code>user=&gt; (keys reloaded.repl/system)
+</code></pre><pre class='language-clojure'><code>(:http :datomic :handler :mail-queue)
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (.totalMemory (java.lang.Runtime/getRuntime))
+</code></pre>
+</section><section class='slide repl' name='16'>
+<h2 id='observe-觀察'>Observe 觀察</h2>
+<pre class='language-clojure'><code>user=&gt; (keys reloaded.repl/system)
+</code></pre><pre class='language-clojure'><code>(:http :datomic :handler :mail-queue)
+</code></pre><pre class='language-clojure'><code>user=&gt; (.totalMemory (java.lang.Runtime/getRuntime))
+</code></pre><pre class='language-clojure'><code class='highlight'>315621376
+</code></pre>
+</section><section class='slide repl' name='16'>
+<h2 id='observe-觀察'>Observe 觀察</h2>
+<pre class='language-clojure'><code>user=&gt; (keys reloaded.repl/system)
+</code></pre><pre class='language-clojure'><code>(:http :datomic :handler :mail-queue)
+</code></pre><pre class='language-clojure'><code>user=&gt; (.totalMemory (java.lang.Runtime/getRuntime))
+</code></pre><pre class='language-clojure'><code>315621376
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (:roles (user-by-login (db) &quot;plexus&quot;))
+</code></pre>
+</section><section class='slide repl' name='16'>
+<h2 id='observe-觀察'>Observe 觀察</h2>
+<pre class='language-clojure'><code>user=&gt; (keys reloaded.repl/system)
+</code></pre><pre class='language-clojure'><code>(:http :datomic :handler :mail-queue)
+</code></pre><pre class='language-clojure'><code>user=&gt; (.totalMemory (java.lang.Runtime/getRuntime))
+</code></pre><pre class='language-clojure'><code>315621376
+</code></pre><pre class='language-clojure'><code>user=&gt; (:roles (user-by-login (db) &quot;plexus&quot;))
+</code></pre><pre class='language-clojure'><code class='highlight'>(:admin :member)
+</code></pre>
+</section></div><div><section class='slide repl' name='17'>
+<h2 id='control-控制'>Control 控制</h2>
+<pre class='language-clojure'><code class='highlight'>user=&gt; (go)
+</code></pre>
+</section><section class='slide repl' name='17'>
+<h2 id='control-控制'>Control 控制</h2>
+<pre class='language-clojure'><code>user=&gt; (go)
+</code></pre><pre class='language-clojure'><code class='highlight'>Starting system...
+</code></pre>
+</section><section class='slide repl' name='17'>
+<h2 id='control-控制'>Control 控制</h2>
+<pre class='language-clojure'><code>user=&gt; (go)
+</code></pre><pre class='language-clojure'><code>Starting system...
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (reset)
+</code></pre>
+</section><section class='slide repl' name='17'>
+<h2 id='control-控制'>Control 控制</h2>
+<pre class='language-clojure'><code>user=&gt; (go)
+</code></pre><pre class='language-clojure'><code>Starting system...
+</code></pre><pre class='language-clojure'><code>user=&gt; (reset)
+</code></pre><pre class='language-clojure'><code class='highlight'>Suspending...
+</code></pre>
+</section><section class='slide repl' name='17'>
+<h2 id='control-控制'>Control 控制</h2>
+<pre class='language-clojure'><code>user=&gt; (go)
+</code></pre><pre class='language-clojure'><code>Starting system...
+</code></pre><pre class='language-clojure'><code>user=&gt; (reset)
+</code></pre><pre class='language-clojure'><code>Suspending...
+</code></pre><pre class='language-clojure'><code class='highlight'>Reloading files...
+</code></pre>
+</section><section class='slide repl' name='17'>
+<h2 id='control-控制'>Control 控制</h2>
+<pre class='language-clojure'><code>user=&gt; (go)
+</code></pre><pre class='language-clojure'><code>Starting system...
+</code></pre><pre class='language-clojure'><code>user=&gt; (reset)
+</code></pre><pre class='language-clojure'><code>Suspending...
+</code></pre><pre class='language-clojure'><code>Reloading files...
+</code></pre><pre class='language-clojure'><code class='highlight'>Restarting...
+</code></pre>
+</section><section class='slide repl' name='17'>
+<h2 id='control-控制'>Control 控制</h2>
+<pre class='language-clojure'><code>Starting system...
+</code></pre><pre class='language-clojure'><code>user=&gt; (reset)
+</code></pre><pre class='language-clojure'><code>Suspending...
+</code></pre><pre class='language-clojure'><code>Reloading files...
+</code></pre><pre class='language-clojure'><code>Restarting...
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (add-workers! 5)
+</code></pre>
+</section><section class='slide repl' name='17'>
+<h2 id='control-控制'>Control 控制</h2>
+<pre class='language-clojure'><code>user=&gt; (reset)
+</code></pre><pre class='language-clojure'><code>Suspending...
+</code></pre><pre class='language-clojure'><code>Reloading files...
+</code></pre><pre class='language-clojure'><code>Restarting...
+</code></pre><pre class='language-clojure'><code>user=&gt; (add-workers! 5)
+</code></pre><pre class='language-clojure'><code class='highlight'>nil
+</code></pre>
+</section><section class='slide repl' name='17'>
+<h2 id='control-控制'>Control 控制</h2>
+<pre class='language-clojure'><code>Suspending...
+</code></pre><pre class='language-clojure'><code>Reloading files...
+</code></pre><pre class='language-clojure'><code>Restarting...
+</code></pre><pre class='language-clojure'><code>user=&gt; (add-workers! 5)
+</code></pre><pre class='language-clojure'><code>nil
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (enable-maintenance-mode!)
+</code></pre>
+</section><section class='slide repl' name='17'>
+<h2 id='control-控制'>Control 控制</h2>
+<pre class='language-clojure'><code>Reloading files...
+</code></pre><pre class='language-clojure'><code>Restarting...
+</code></pre><pre class='language-clojure'><code>user=&gt; (add-workers! 5)
+</code></pre><pre class='language-clojure'><code>nil
+</code></pre><pre class='language-clojure'><code>user=&gt; (enable-maintenance-mode!)
+</code></pre><pre class='language-clojure'><code class='highlight'>:enabled
+</code></pre>
+</section></div><div><section class='slide repl' name='18'>
+<h2 id='change-改變'>Change 改變</h2>
+<pre class='language-clojure'><code class='highlight'>user=&gt; (alter-var-root! application
+</code></pre>
+
+
+
+
+</section><section class='slide repl' name='18'>
+<h2 id='change-改變'>Change 改變</h2>
+<pre class='language-clojure'><code>user=&gt; (alter-var-root! application
+</code></pre><pre class='language-clojure'><code class='highlight'>                        assoc-in [:api :token] &quot;new-token&quot;)
+</code></pre>
+
+
+
+
+</section><section class='slide repl' name='18'>
+<h2 id='change-改變'>Change 改變</h2>
+<pre class='language-clojure'><code>user=&gt; (alter-var-root! application
+</code></pre><pre class='language-clojure'><code>                        assoc-in [:api :token] &quot;new-token&quot;)
+</code></pre><pre class='language-clojure'><code class='highlight'>#&#x27;application
+</code></pre>
+
+
+
+
+</section><section class='slide repl' name='18'>
+<h2 id='change-改變'>Change 改變</h2>
+<pre class='language-clojure'><code>user=&gt; (alter-var-root! application
+</code></pre><pre class='language-clojure'><code>                        assoc-in [:api :token] &quot;new-token&quot;)
+</code></pre><pre class='language-clojure'><code>#&#x27;application
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (defn previously-buggy-function [&amp; args]
+</code></pre>
+
+
+
+
+</section><section class='slide repl' name='18'>
+<h2 id='change-改變'>Change 改變</h2>
+<pre class='language-clojure'><code>user=&gt; (alter-var-root! application
+</code></pre><pre class='language-clojure'><code>                        assoc-in [:api :token] &quot;new-token&quot;)
+</code></pre><pre class='language-clojure'><code>#&#x27;application
+</code></pre><pre class='language-clojure'><code>user=&gt; (defn previously-buggy-function [&amp; args]
+</code></pre><pre class='language-clojure'><code class='highlight'>          new-definition-that-fixes-the-bug)
+</code></pre>
+
+
+
+
+</section><section class='slide repl' name='18'>
+<h2 id='change-改變'>Change 改變</h2>
+<pre class='language-clojure'><code>user=&gt; (alter-var-root! application
+</code></pre><pre class='language-clojure'><code>                        assoc-in [:api :token] &quot;new-token&quot;)
+</code></pre><pre class='language-clojure'><code>#&#x27;application
+</code></pre><pre class='language-clojure'><code>user=&gt; (defn previously-buggy-function [&amp; args]
+</code></pre><pre class='language-clojure'><code>          new-definition-that-fixes-the-bug)
+</code></pre><pre class='language-clojure'><code class='highlight'>#&#x27;previously-buggy-function
+</code></pre>
+
+
+
+
+</section></div><section class='slide' name='19'>
+<h2 id='repl-1'>REPL</h2>
+<div class='flex f1'><div><p>Explore 探索
+Observe 觀察</p></div><div><p>Control 控制
+Change 改變</p></div></div>
+<p class='highlight'>All of these combined are used to <strong>create</strong> (production code, tests, data)</p>
+</section><section class='slide' name='20'>
+<h2 id='repl--editor'>REPL &amp; Editor</h2>
+<p>Your “workbench” should provide handy access to your “tools”.</p>
+<p>Don’t walk to the other side of the room each time you need a screwdriver.</p>
+<p>Get yourself a <strong>Connected REPL</strong>.</p>
+</section><section class='slide' name='21'>
+<p><img src='assets/4870ae6f62e7cdcc94fc2384b82449c1.png' alt=''></p>
+</section><section class='slide' name='22'>
+<h2 id='connected-repl'>Connected REPL</h2>
+<ul><li>Emacs + CIDER</li><li>Atom + ProtoREPL</li><li>Cursive (IntelliJ)</li><li>Vim + Fireplace</li><li>NightCode</li></ul>
+</section><section class='slide' name='23'>
+<h2 id='connected-repl-1'>Connected REPL</h2>
+<p>Basic operation: eval form in source file</p>
+<ul><li><code>*in*</code> how do you select a form?</li><li><code>*out*</code> where does the result go?</li></ul>
+</section><section class='slide' name='24'>
+<h2 id='in-how-do-you-select-a-form'><code>*in*</code> how do you select a form?</h2>
+<ul><li>before point</li><li>outermost, e.g. <code>(defn ,,,)</code></li><li>“surrounding”, i.e the form that you’re currently “in”</li><li>whole buffer</li></ul>
+</section><section class='slide' name='25'>
+<h2 id='out-where-does-the-output-go'><code>*out*</code> where does the output go?</h2>
+<ul><li>REPL buffer / terminal</li><li>overlay</li><li>back into current file / buffer</li><li>comment</li><li>saved to file</li></ul>
+</section><section class='slide' name='26'>
+<h2 id='closing-the-loop'>Closing the Loop!</h2>
+<p>By inserting the REPL result back into the buffer, it can be used again as data or code.</p>
+<p>We have come full circle, the printed form can be read again.</p>
+</section><section class='slide' name='27'>
+<p><img src='assets/42d8eac5a05f11dbdb386f36152dc09d.png' alt=''></p>
+</section><section class='slide' name='28'>
+<div class='tc mt6 pv4'><h2 style='font-size:70px'>Practical Tips</h2></div>
+<div class='w-100 tc'><p style='font-size: 300px; opacity: 0.1; font-family: serif; margin-top:-400px; text-align: center;'>§</p></div>
+</section><section class='slide' name='29'>
+<h2 id='create-a-userclj'>Create a <code>user.clj</code></h2>
+<p>REPL helpers that should always be available.</p>
+<p><code>lein repl</code> automatically loads this file.</p>
+<p>Remember: a workbench needs to be convenient, comfortable, easy to use.</p>
+</section><section class='slide' name='30'>
+<h2 id='userclj-ideas'><code>user.clj</code> ideas</h2>
+<ul><li>reloaded workflow (start/stop/reset)</li><li><code>(add-dependency [some-jar &quot;0.1.0&quot;])</code></li><li><code>(db)</code>, <code>(conn)</code></li><li><code>(last-request)</code>, <code>(last-response)</code></li></ul>
+</section><section class='slide' name='31'>
+<h2 id='reloaded-workflow'>Reloaded Workflow</h2>
+<p>Combination of code reloading (clojure.tools.namespace), and some lifecycle manager (Component, Integrant, Mount)</p>
+<p>Provides a way to get to a clean slate</p>
+<p>Why: because you don’t want to have to restart your REPL process!</p>
+</section><section class='slide' name='32'>
+<h2 id='pomegranate-and-alembic'>Pomegranate and Alembic</h2>
+<p>Hot load dependencies</p>
+<p>Good for quickly trying out dependencies</p>
+<p>Again: prevent having to restart the process</p>
+</section><section class='slide' name='33'>
+<h2 id='data-helpers-global-state'>Data helpers (global state)</h2>
+<p>Create helpers for common types of arguments</p>
+<ul><li>Ring request map</li><li>Pedestal context map</li><li>Ring session</li><li>Datomic DB</li><li>Datomic connection</li></ul>
+</section><div><section class='slide repl' name='34'>
+<h2 id='data-helpers'>Data helpers</h2>
+<p>cider-Store request/response history in memory, so you can have</p>
+<pre class='language-clojure'><code class='highlight'>user=&gt; (request)
+</code></pre>
+</section><section class='slide repl' name='34'>
+<h2 id='data-helpers'>Data helpers</h2>
+<p>cider-Store request/response history in memory, so you can have</p>
+<pre class='language-clojure'><code>user=&gt; (request)
+</code></pre><pre class='language-clojure'><code class='highlight'>{:uri &quot;/&quot; :request-method :get ,,,}
+</code></pre>
+</section><section class='slide repl' name='34'>
+<h2 id='data-helpers'>Data helpers</h2>
+<p>cider-Store request/response history in memory, so you can have</p>
+<pre class='language-clojure'><code>user=&gt; (request)
+</code></pre><pre class='language-clojure'><code>{:uri &quot;/&quot; :request-method :get ,,,}
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (response)
+</code></pre>
+</section><section class='slide repl' name='34'>
+<h2 id='data-helpers'>Data helpers</h2>
+<p>cider-Store request/response history in memory, so you can have</p>
+<pre class='language-clojure'><code>user=&gt; (request)
+</code></pre><pre class='language-clojure'><code>{:uri &quot;/&quot; :request-method :get ,,,}
+</code></pre><pre class='language-clojure'><code>user=&gt; (response)
+</code></pre><pre class='language-clojure'><code class='highlight'>{:status 200 :body ,,,}
+</code></pre>
+</section><section class='slide repl' name='34'>
+<h2 id='data-helpers'>Data helpers</h2>
+<p>cider-Store request/response history in memory, so you can have</p>
+<pre class='language-clojure'><code>user=&gt; (request)
+</code></pre><pre class='language-clojure'><code>{:uri &quot;/&quot; :request-method :get ,,,}
+</code></pre><pre class='language-clojure'><code>user=&gt; (response)
+</code></pre><pre class='language-clojure'><code>{:status 200 :body ,,,}
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (session-id)
+</code></pre>
+</section><section class='slide repl' name='34'>
+<h2 id='data-helpers'>Data helpers</h2>
+<p>cider-Store request/response history in memory, so you can have</p>
+<pre class='language-clojure'><code>user=&gt; (request)
+</code></pre><pre class='language-clojure'><code>{:uri &quot;/&quot; :request-method :get ,,,}
+</code></pre><pre class='language-clojure'><code>user=&gt; (response)
+</code></pre><pre class='language-clojure'><code>{:status 200 :body ,,,}
+</code></pre><pre class='language-clojure'><code>user=&gt; (session-id)
+</code></pre><pre class='language-clojure'><code class='highlight'>&quot;abcxyz&quot;
+</code></pre>
+</section><section class='slide repl' name='34'>
+<h2 id='data-helpers'>Data helpers</h2>
+<p>cider-Store request/response history in memory, so you can have</p>
+<pre class='language-clojure'><code>{:uri &quot;/&quot; :request-method :get ,,,}
+</code></pre><pre class='language-clojure'><code>user=&gt; (response)
+</code></pre><pre class='language-clojure'><code>{:status 200 :body ,,,}
+</code></pre><pre class='language-clojure'><code>user=&gt; (session-id)
+</code></pre><pre class='language-clojure'><code>&quot;abcxyz&quot;
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (session)
+</code></pre>
+</section><section class='slide repl' name='34'>
+<h2 id='data-helpers'>Data helpers</h2>
+<p>cider-Store request/response history in memory, so you can have</p>
+<pre class='language-clojure'><code>user=&gt; (response)
+</code></pre><pre class='language-clojure'><code>{:status 200 :body ,,,}
+</code></pre><pre class='language-clojure'><code>user=&gt; (session-id)
+</code></pre><pre class='language-clojure'><code>&quot;abcxyz&quot;
+</code></pre><pre class='language-clojure'><code>user=&gt; (session)
+</code></pre><pre class='language-clojure'><code class='highlight'>{,,,}
+</code></pre>
+</section></div><section class='slide' name='35'>
+<h2 id='local-state'>Local state</h2>
+<p>When debugging you might want to evaluate forms inside a function, but local variables will be a problem.</p>
+<ul><li>create a <code>let</code></li><li>just <code>def</code> the values</li><li>use <code>vvvvalvalval/scope-capture</code></li></ul>
+</section><div><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code class='highlight'>user=&gt; (require &#x27;sc.api)
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>user=&gt; (require &#x27;sc.api)
+</code></pre><pre class='language-clojure'><code class='highlight'>nil
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>user=&gt; (require &#x27;sc.api)
+</code></pre><pre class='language-clojure'><code>nil
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (defn sum [a b] (sc.api/spy (+ a b)))
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>user=&gt; (require &#x27;sc.api)
+</code></pre><pre class='language-clojure'><code>nil
+</code></pre><pre class='language-clojure'><code>user=&gt; (defn sum [a b] (sc.api/spy (+ a b)))
+</code></pre><pre class='language-clojure'><code class='highlight'>SPY &lt;-1&gt; :1
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>user=&gt; (require &#x27;sc.api)
+</code></pre><pre class='language-clojure'><code>nil
+</code></pre><pre class='language-clojure'><code>user=&gt; (defn sum [a b] (sc.api/spy (+ a b)))
+</code></pre><pre class='language-clojure'><code>SPY &lt;-1&gt; :1
+</code></pre><pre class='language-clojure'><code class='highlight'> At Code Site -1, will save scope with locals [a b]
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>user=&gt; (require &#x27;sc.api)
+</code></pre><pre class='language-clojure'><code>nil
+</code></pre><pre class='language-clojure'><code>user=&gt; (defn sum [a b] (sc.api/spy (+ a b)))
+</code></pre><pre class='language-clojure'><code>SPY &lt;-1&gt; :1
+</code></pre><pre class='language-clojure'><code> At Code Site -1, will save scope with locals [a b]
+</code></pre><pre class='language-clojure'><code class='highlight'>#&#x27;user/sum
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>nil
+</code></pre><pre class='language-clojure'><code>user=&gt; (defn sum [a b] (sc.api/spy (+ a b)))
+</code></pre><pre class='language-clojure'><code>SPY &lt;-1&gt; :1
+</code></pre><pre class='language-clojure'><code> At Code Site -1, will save scope with locals [a b]
+</code></pre><pre class='language-clojure'><code>#&#x27;user/sum
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (sum 10 20)
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>user=&gt; (defn sum [a b] (sc.api/spy (+ a b)))
+</code></pre><pre class='language-clojure'><code>SPY &lt;-1&gt; :1
+</code></pre><pre class='language-clojure'><code> At Code Site -1, will save scope with locals [a b]
+</code></pre><pre class='language-clojure'><code>#&#x27;user/sum
+</code></pre><pre class='language-clojure'><code>user=&gt; (sum 10 20)
+</code></pre><pre class='language-clojure'><code class='highlight'>SPY [1 -1] :1
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>SPY &lt;-1&gt; :1
+</code></pre><pre class='language-clojure'><code> At Code Site -1, will save scope with locals [a b]
+</code></pre><pre class='language-clojure'><code>#&#x27;user/sum
+</code></pre><pre class='language-clojure'><code>user=&gt; (sum 10 20)
+</code></pre><pre class='language-clojure'><code>SPY [1 -1] :1
+</code></pre><pre class='language-clojure'><code class='highlight'>  At Execution Point 1, Code Site -1, saved locals [a b]
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code> At Code Site -1, will save scope with locals [a b]
+</code></pre><pre class='language-clojure'><code>#&#x27;user/sum
+</code></pre><pre class='language-clojure'><code>user=&gt; (sum 10 20)
+</code></pre><pre class='language-clojure'><code>SPY [1 -1] :1
+</code></pre><pre class='language-clojure'><code>  At Execution Point 1, Code Site -1, saved locals [a b]
+</code></pre><pre class='language-clojure'><code class='highlight'>SPY [1 -1] :1
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>#&#x27;user/sum
+</code></pre><pre class='language-clojure'><code>user=&gt; (sum 10 20)
+</code></pre><pre class='language-clojure'><code>SPY [1 -1] :1
+</code></pre><pre class='language-clojure'><code>  At Execution Point 1, Code Site -1, saved locals [a b]
+</code></pre><pre class='language-clojure'><code>SPY [1 -1] :1
+</code></pre><pre class='language-clojure'><code class='highlight'>(+ a b) =&gt; 30
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>user=&gt; (sum 10 20)
+</code></pre><pre class='language-clojure'><code>SPY [1 -1] :1
+</code></pre><pre class='language-clojure'><code>  At Execution Point 1, Code Site -1, saved locals [a b]
+</code></pre><pre class='language-clojure'><code>SPY [1 -1] :1
+</code></pre><pre class='language-clojure'><code>(+ a b) =&gt; 30
+</code></pre><pre class='language-clojure'><code class='highlight'>30
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>SPY [1 -1] :1
+</code></pre><pre class='language-clojure'><code>  At Execution Point 1, Code Site -1, saved locals [a b]
+</code></pre><pre class='language-clojure'><code>SPY [1 -1] :1
+</code></pre><pre class='language-clojure'><code>(+ a b) =&gt; 30
+</code></pre><pre class='language-clojure'><code>30
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (sc.api/letsc 1 (+ a b))
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>  At Execution Point 1, Code Site -1, saved locals [a b]
+</code></pre><pre class='language-clojure'><code>SPY [1 -1] :1
+</code></pre><pre class='language-clojure'><code>(+ a b) =&gt; 30
+</code></pre><pre class='language-clojure'><code>30
+</code></pre><pre class='language-clojure'><code>user=&gt; (sc.api/letsc 1 (+ a b))
+</code></pre><pre class='language-clojure'><code class='highlight'>30
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>SPY [1 -1] :1
+</code></pre><pre class='language-clojure'><code>(+ a b) =&gt; 30
+</code></pre><pre class='language-clojure'><code>30
+</code></pre><pre class='language-clojure'><code>user=&gt; (sc.api/letsc 1 (+ a b))
+</code></pre><pre class='language-clojure'><code>30
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (sum 99 42)
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>(+ a b) =&gt; 30
+</code></pre><pre class='language-clojure'><code>30
+</code></pre><pre class='language-clojure'><code>user=&gt; (sc.api/letsc 1 (+ a b))
+</code></pre><pre class='language-clojure'><code>30
+</code></pre><pre class='language-clojure'><code>user=&gt; (sum 99 42)
+</code></pre><pre class='language-clojure'><code class='highlight'>SPY [2 -1] :1
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>30
+</code></pre><pre class='language-clojure'><code>user=&gt; (sc.api/letsc 1 (+ a b))
+</code></pre><pre class='language-clojure'><code>30
+</code></pre><pre class='language-clojure'><code>user=&gt; (sum 99 42)
+</code></pre><pre class='language-clojure'><code>SPY [2 -1] :1
+</code></pre><pre class='language-clojure'><code class='highlight'>  At Execution Point 2, Code Site -1, saved locals [a b]
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>user=&gt; (sc.api/letsc 1 (+ a b))
+</code></pre><pre class='language-clojure'><code>30
+</code></pre><pre class='language-clojure'><code>user=&gt; (sum 99 42)
+</code></pre><pre class='language-clojure'><code>SPY [2 -1] :1
+</code></pre><pre class='language-clojure'><code>  At Execution Point 2, Code Site -1, saved locals [a b]
+</code></pre><pre class='language-clojure'><code class='highlight'>SPY [2 -1] :1
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>30
+</code></pre><pre class='language-clojure'><code>user=&gt; (sum 99 42)
+</code></pre><pre class='language-clojure'><code>SPY [2 -1] :1
+</code></pre><pre class='language-clojure'><code>  At Execution Point 2, Code Site -1, saved locals [a b]
+</code></pre><pre class='language-clojure'><code>SPY [2 -1] :1
+</code></pre><pre class='language-clojure'><code class='highlight'>(+ a b) =&gt; 141
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>user=&gt; (sum 99 42)
+</code></pre><pre class='language-clojure'><code>SPY [2 -1] :1
+</code></pre><pre class='language-clojure'><code>  At Execution Point 2, Code Site -1, saved locals [a b]
+</code></pre><pre class='language-clojure'><code>SPY [2 -1] :1
+</code></pre><pre class='language-clojure'><code>(+ a b) =&gt; 141
+</code></pre><pre class='language-clojure'><code class='highlight'>141
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>SPY [2 -1] :1
+</code></pre><pre class='language-clojure'><code>  At Execution Point 2, Code Site -1, saved locals [a b]
+</code></pre><pre class='language-clojure'><code>SPY [2 -1] :1
+</code></pre><pre class='language-clojure'><code>(+ a b) =&gt; 141
+</code></pre><pre class='language-clojure'><code>141
+</code></pre><pre class='language-clojure'><code class='highlight'>user=&gt; (sc.api/letsc 2 a)
+</code></pre>
+</section><section class='slide repl' name='36'>
+<h2 id='scope-capture'>scope-capture</h2>
+<pre class='language-clojure'><code>  At Execution Point 2, Code Site -1, saved locals [a b]
+</code></pre><pre class='language-clojure'><code>SPY [2 -1] :1
+</code></pre><pre class='language-clojure'><code>(+ a b) =&gt; 141
+</code></pre><pre class='language-clojure'><code>141
+</code></pre><pre class='language-clojure'><code>user=&gt; (sc.api/letsc 2 a)
+</code></pre><pre class='language-clojure'><code class='highlight'>99
+</code></pre>
+</section></div><section class='slide' name='37'>
+<h2 id='repl-files'>REPL files</h2>
+<p>Create a <code>repl/</code> or <code>scratch/</code> directory, with per-topic “repl files”</p>
+<ul><li><strong>Don’t</strong> put it on the classpath</li><li><strong>Do</strong> check it into the repo (if possible)</li></ul>
+</section><section class='slide' name='38'>
+<h2 id='replscratch-files'>REPL/scratch files</h2>
+<p>Encourages experimentation (go ahead, make a mess)<br>
+Explicitly keeps history<br>
+Shows thought process<br>
+Demonstrates usage<br>
+Provides a home for useful snippets</p>
+</section><section class='slide' name='39'>
+<h2 id='repl--tests'>REPL &amp; Tests</h2>
+<p>Using a REPL does not absolve you of writing tests</p>
+<p>Using a REPL is in many ways like writing tests, call a function with various inputs</p>
+<p>→ Make a habit of using <code>eval-and-insert</code>, then later copy to test namespace</p>
+<p>REPL/scratch file can also be a good source for test inspiration</p></section><script src='assets/a3b20c8ec6c5c4b05bcb38d98d132244.js' type='text/javascript'></script><script type='text/javascript' src='assets/e11ff48ea255a177de27b449b54de058.js'></script></body></html>

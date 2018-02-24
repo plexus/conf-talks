@@ -3,10 +3,10 @@ require 'slippery'
 Slippery::RakeTasks.new do
   title "Clojure REPLs - Closing the Loop - Arne Brasseur"
   type :shower
-  add_highlighting :default, '8.2'
+  add_highlighting :tomorrow, '8.2'
 
   # shower
-  js_options theme: :ribbon
+  js_options theme: :material, ratio: '16x10'
   #js_options theme: :material
 
 
@@ -22,12 +22,18 @@ Slippery::RakeTasks.new do
 
   transform 'head' do |head|
     H[:head, head.attributes, head.children + [
-        #H[:link, rel: 'stylesheet', type: 'text/css', href: 'hljs.css'],
-        #H[:link, rel: 'stylesheet', type: 'text/css', href: 'style.css'],
+        H[:link, rel: 'stylesheet', type: 'text/css', href: 'https://unpkg.com/tachyons@4.9.1/css/tachyons.min.css'],
+        H[:link, rel: 'stylesheet', type: 'text/css', href: 'tomorrow.css'],
+        H[:link, rel: 'stylesheet', type: 'text/css', href: 'style.css'],
         #H[:link, href: 'https://fonts.googleapis.com/css?family=EB+Garamond', rel: 'stylesheet', type:'text/css'],
+        H[:script, {type: 'text/javascript', src: "https://code.jquery.com/jquery-3.3.1.min.js"}]
         #H[:script, {type: 'text/javascript'}, File.read('ga.js')],
       ]
     ]
+  end
+
+  transform('body') do |body|
+    body.add_child(H[:script, {type: 'text/javascript', src: 'shower-highlight.js'}])
   end
 
   # transform('body') do |body|
@@ -58,10 +64,33 @@ Slippery::RakeTasks.new do
   #   end
   # end
 
-  # transform 'li' do |p|
-  #   H[:li, p.text]
-  # end
+  transform 'li' do |li|
+    H[:li, li.children.first.children]
+  end
 
+  transform '.slide.repl' do |section|
+    code=section.select('code').first.text.lines #.text.split(/^(?=\w+=>)/)
+    code_blocks = []
+    H[:div,
+      code.flat_map do |c|
+        code_blocks += [c]
+        if code_blocks.length > 6
+          code_blocks = code_blocks.drop(1)
+        end
+        section.replace('pre') do |pre|
+          code_blocks.map.with_index do |line, idx|
+            pre.replace('code') do |code|
+              if idx == (code_blocks.length-1)
+                H[:code, {class: "highlight"}, line]
+              else
+                H[:code, line]
+              end
+            end
+          end
+        end
+      end
+     ]
+  end
 
   # transform 'pre.linum' do |pre|
   #   H[:pre, pre.text.lines.map{|l| H[:code, {class: "ruby"}, l]}]
