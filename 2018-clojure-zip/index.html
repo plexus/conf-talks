@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html><head><link href='assets/27bb0842d5c2183f4eb2449f0fbecb8c.css' rel='stylesheet'><style>.shower {--slide-ratio: calc(16 / 9); --color-key: #4caf50;} </style><meta charset='utf-8'><meta http-equiv='x-ua-compatible' content='ie=edge'><meta name='viewport' content='width=device-width, initial-scale=1'><title>The Art of Tree Shaping with Zippers</title><link rel='stylesheet' href='assets/8662c2c36baa70886e0dc5bedecabadd.css'><script src='assets/754c27c4424d283387915abba102fe1f.js'></script><script>hljs.initHighlightingOnLoad();</script><link rel='stylesheet' type='text/css' href='assets/9b6a845daafd0db5f1762dee0165b9b8.css'><link rel='stylesheet' type='text/css' href='assets/8c8ad12747d4e7cbd17ce68dac17a33b.css'><link rel='stylesheet' type='text/css' href='assets/5a0ca255fce9de83dde16a0f27d788fe.css'><link rel='stylesheet' type='text/css' href='assets/e5614196ef959644a5774cf809a1b7ae.css'></head><body class='shower list'><header class='caption'>
+<h1 id='the-art-of-tree-shaping-with-zippers'>The Art of Tree Shaping with Zippers</h1>
+</header><section class='slide' fullscreen-img='img/title_image.png' name='1'>
+<img src='assets/6208fd0ac37c616d48006d5f0f143ef5.png' class='cover'></section><section class='slide' name='2'>
+<h2 id='about-me'>About me</h2>
+<p>My name is Arne Brasseur (@plexus)</p>
+<p class='next'>I’m from Belgium, but based in Berlin.</p>
+<p class='next'>I do Clojure consulting &amp; Training.</p>
+</section><section class='slide' name='3'>
+<h2 id='lambda-island'>Lambda Island</h2>
+<p>Detailed screencasts about all things Clojure &amp; ClojureScript.</p>
+<p class='next'>Been going for ~2.5 years.</p>
+<p class='next'>You should check it out.</p>
+</section><section class='slide' name='4'>
+<h2 id='agenda'>Agenda</h2>
+<ul><li><p>Look at <code>clojure.zip</code> API</p></li><li><p>How does it work? (opening and closing the zipper)</p></li><li><p>Clojure implementation</p></li><li><p>Practical example with rewrite-clj</p></li></ul>
+</section><section class='slide' name='5'>
+<h2 id='what-is-a-zipper'>What is a zipper?</h2>
+<p>A pair of (tree data structure, pointer to a node in the tree)</p>
+
+</section><section class='slide' name='6'>
+<h2 id='getting-started'>Getting started</h2>
+<pre class='language-clojure'><code>(require &#x27;[clojure.zip :as z])
+
+(def loc (z/vector-zip [[1 2] [3 4]]))
+</code></pre>
+</section><section class='slide' name='7'>
+<h2 id='an-example'>An example</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a id='tab_ffac9709badb57517ec48cb746bcd710_result' class='tab ttu dib link pa3 black ' href='#' onClick='selectTab("ffac9709badb57517ec48cb746bcd710", &#x27;result&#x27;)'>Result</a><a id='tab_ffac9709badb57517ec48cb746bcd710_tree' class='tab ttu dib link pa3 black selected' href='#' onClick='selectTab("ffac9709badb57517ec48cb746bcd710", &#x27;tree&#x27;)'>Tree</a><a id='tab_ffac9709badb57517ec48cb746bcd710_zipper' class='tab ttu dib link pa3 black ' href='#' onClick='selectTab("ffac9709badb57517ec48cb746bcd710", &#x27;zipper&#x27;)'>Zipper</a></div><div id='div_ffac9709badb57517ec48cb746bcd710_result' class='dn' style='min-height: 350px; padding-top: 0.5em;'><pre class='language-clojure'><code style='font-size: 80%;'></code></pre></div><div id='div_ffac9709badb57517ec48cb746bcd710_tree' class='' style='min-height: 350px;'><img class='center' src='assets/f5b0fbec0799994227f0554d9f2bb476.svg'></div><div id='div_ffac9709badb57517ec48cb746bcd710_zipper' class='dn' style='min-height: 350px;'><img class='center' src='assets/8fc1298a004691833039babc56e3dc7b.svg'></div></div></div></section><section class='slide' name='8'>
+<h2 id='an-example-1'>An example</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a id='tab_1be1f6e5fb430d5d6ea9a296cd5c6dd3_result' class='tab ttu dib link pa3 black ' href='#' onClick='selectTab("1be1f6e5fb430d5d6ea9a296cd5c6dd3", &#x27;result&#x27;)'>Result</a><a id='tab_1be1f6e5fb430d5d6ea9a296cd5c6dd3_tree' class='tab ttu dib link pa3 black selected' href='#' onClick='selectTab("1be1f6e5fb430d5d6ea9a296cd5c6dd3", &#x27;tree&#x27;)'>Tree</a><a id='tab_1be1f6e5fb430d5d6ea9a296cd5c6dd3_zipper' class='tab ttu dib link pa3 black ' href='#' onClick='selectTab("1be1f6e5fb430d5d6ea9a296cd5c6dd3", &#x27;zipper&#x27;)'>Zipper</a></div><div id='div_1be1f6e5fb430d5d6ea9a296cd5c6dd3_result' class='dn' style='min-height: 350px; padding-top: 0.5em;'><pre class='language-clojure'><code style='font-size: 80%;'> {:l [],
+  :pnodes [[[1 2] [3 [4 5] 6]]],
+  :ppath nil,
+  :r ([3 [4 5] 6])}]
+</code></pre></div><div id='div_1be1f6e5fb430d5d6ea9a296cd5c6dd3_tree' class='' style='min-height: 350px;'><img class='center' src='assets/ec5cd6707d279635946f3acd70a0c14b.svg'></div><div id='div_1be1f6e5fb430d5d6ea9a296cd5c6dd3_zipper' class='dn' style='min-height: 350px;'><img class='center' src='assets/656c2fbf1ff57f137007d8c4b1a30165.svg'></div></div></div></section><section class='slide' name='9'>
+<h2 id='an-example-2'>An example</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down
+    z/right)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a id='tab_6c54423913d705b608176fc30f4ef95b_result' class='tab ttu dib link pa3 black ' href='#' onClick='selectTab("6c54423913d705b608176fc30f4ef95b", &#x27;result&#x27;)'>Result</a><a id='tab_6c54423913d705b608176fc30f4ef95b_tree' class='tab ttu dib link pa3 black selected' href='#' onClick='selectTab("6c54423913d705b608176fc30f4ef95b", &#x27;tree&#x27;)'>Tree</a><a id='tab_6c54423913d705b608176fc30f4ef95b_zipper' class='tab ttu dib link pa3 black ' href='#' onClick='selectTab("6c54423913d705b608176fc30f4ef95b", &#x27;zipper&#x27;)'>Zipper</a></div><div id='div_6c54423913d705b608176fc30f4ef95b_result' class='dn' style='min-height: 350px; padding-top: 0.5em;'><pre class='language-clojure'><code style='font-size: 80%;'> {:l [[1 2]],
+  :pnodes [[[1 2] [3 [4 5] 6]]],
+  :ppath nil,
+  :r nil}]
+</code></pre></div><div id='div_6c54423913d705b608176fc30f4ef95b_tree' class='' style='min-height: 350px;'><img class='center' src='assets/5b69dd902adb84f8916b679ec787b396.svg'></div><div id='div_6c54423913d705b608176fc30f4ef95b_zipper' class='dn' style='min-height: 350px;'><img class='center' src='assets/c5576a3a9958fc231dd7fc8147116391.svg'></div></div></div></section><section class='slide' name='10'>
+<h2 id='viz-baby'>VIZ BABY</h2>
+
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down        ;; [1 2]
+    z/right       ;; [3 [4 5] 6]
+    z/down        ;; 3
+    z/rightmost   ;; 6
+    z/left        ;; [4 5]
+    )
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a id='tab_4523797b84273c29fdf644971b9339e1_result' class='tab ttu dib link pa3 black ' href='#' onClick='selectTab("4523797b84273c29fdf644971b9339e1", &#x27;result&#x27;)'>Result</a><a id='tab_4523797b84273c29fdf644971b9339e1_tree' class='tab ttu dib link pa3 black selected' href='#' onClick='selectTab("4523797b84273c29fdf644971b9339e1", &#x27;tree&#x27;)'>Tree</a><a id='tab_4523797b84273c29fdf644971b9339e1_zipper' class='tab ttu dib link pa3 black ' href='#' onClick='selectTab("4523797b84273c29fdf644971b9339e1", &#x27;zipper&#x27;)'>Zipper</a></div><div id='div_4523797b84273c29fdf644971b9339e1_result' class='dn' style='min-height: 350px; padding-top: 0.5em;'><pre class='language-clojure'><code style='font-size: 80%;'> {:l [3],
+  :pnodes
+  [[[1 2] [3 [4 5] 6]]
+   [3 [4 5] 6]],
+  :ppath
+  {:l [[1 2]],
+   :pnodes [[[1 2] [3 [4 5] 6]]],
+   :ppath nil,
+   :r nil},
+  :r (6)}]
+</code></pre></div><div id='div_4523797b84273c29fdf644971b9339e1_tree' class='' style='min-height: 350px;'><img class='center' src='assets/11d3460d9fc9c5a2e2a5fba0f2e665bd.svg'></div><div id='div_4523797b84273c29fdf644971b9339e1_zipper' class='dn' style='min-height: 350px;'><img class='center' src='assets/5ef395d1548841ac94c7c78253f5272b.svg'></div></div></div></section><section class='slide' name='11'>
+<h2 id='can-work-on-any-kind-of-tree'>Can work on any kind of tree</h2>
+<pre class='language-clojure'><code>(zipper branch? children make-node root)
+</code></pre>
+<pre class='language-clojure'><code>;; Can this node have children?
+(branch? node) ;;=&gt; bool
+</code></pre>
+<pre class='language-clojure'><code>;; Return the children of a branch node.
+(children node) ;;=&gt; sequence
+</code></pre>
+<pre class='language-clojure'><code>;; Given an existing node and a new set of child nodes,
+;; return a new node with those children.
+(make-node node seq) ;;=&gt; node
+</code></pre>
+
+
+</section><section class='slide' name='12'>
+<p>Creating zippers</p>
+<pre><code>zipper
+seq-zip
+vector-zip
+xml-zip
+</code></pre>
+<p>Navigating</p>
+<pre><code>up
+down
+left
+leftmost
+right
+rightmost
+</code></pre>
+<p>Iterating</p>
+<pre><code>prev
+next
+end?
+</code></pre>
+<p>Inspecting</p>
+<pre><code>node
+root
+children
+lefts
+rights
+path
+branch?
+</code></pre>
+<p>Editing</p>
+<pre><code>append-child
+insert-child
+insert-left
+insert-right
+edit
+remove
+replace
+make-node
+</code></pre></section><script src='assets/39131bc767b214c1cfdb60c8073e09d8.js' type='text/javascript'></script><div class='progress'></div><script type='text/javascript' src='assets/64ce162190ad9e8d33ce2a33aa64c0c6.js'></script></body></html>
