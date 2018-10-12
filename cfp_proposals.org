@@ -1,0 +1,52 @@
+* One runner to rule them all
+
+* core.async gotchas
+
+* REPL Driven Development - Closing the Loop 
+
+** Abstract
+*** v1
+
+We all <3 the Clojure REPL, but are you getting everything out it that it has to
+offer?
+
+How do you deal with state, both local and global, how do stay in the flow, how
+do you incorporate testing? Rethink and upgrade your workflow with these
+practical tips.
+
+*** v2
+Are you using only 10% of your REPLs capacity? The Clojure REPL is a universal
+tool of immense power, but how to use it effectively is often only learned
+through direct mentoring, or not at all.
+
+This talk will show you how to increase the capabilities of your REPL and
+achieve a state of flow.
+
+** Descriptions
+
+Most Clojure programmers will agree that the REPL is a key part of a good
+development workflow, but we rarely talk about what that workflow looks like in
+detail.
+
+Together with your editor, your REPL forms the workbench on which you create
+software, it should let you work comfortably, and provide handy access to tools.
+
+Learn about libraries and tools and receive practical tips to upgrade your REPL
+based workflow.
+
+** Notes
+
+This talk stems from many hours of coaching and pairing with people. While they all had their editor and REPL set up as you would expect, they still struggled to use it towards performing specific tasks.
+
+I did a first version of this talk at the Clojure Meetup Taipei, it was well received, and I got valuable feedback to make it better.
+
+Some of the things I talk about (exact details may change as I further flesh this out)
+
+- essentials: make your editor and REPL talk to each other
+- prevent restarting: reloaded workflow / hotloading (pomegranate/alembic)
+- keep a history of “scratch” files (Rich and Stu have talked about this pattern before, I provide some more advice on how to do this in practice)
+- the value of a user.clj –> dev-time helper functions, because tools need to be easily accessible, plus a bunch of examples of what you would put in there
+- accessing state so you have data to pass into functions, and so that you can capture stuff for mock data: ring request/pedestal context/datomic db/re-frame state, etc
+- what to do with locals when debugging/evaluating expressions deep inside functions (includes the excellent scope-capture, sayid)
+- using what you do on the REPL to feed into your tests, instead of treating them as separate
+

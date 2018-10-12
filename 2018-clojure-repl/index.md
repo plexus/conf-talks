@@ -29,7 +29,7 @@ Wikipedia:
 
 * A place where you put the thing you're working on
 * Provides access to tools
-* Let's you work comfortably
+* Lets you work comfortably
 
 ![workbench (from Wikimedia)](img/workbench_tools.jpg){:width="100%" style="max-width: 100%; opacity: 0.3" .cover}
 
@@ -324,17 +324,9 @@ Get yourself a **Connected REPL**.
 
 ---
 
+{:.mt3}
 ![](img/editor_repl_1.png)
 
----
-
-## Connected REPL
-
-- Emacs + CIDER
-- Atom + ProtoREPL
-- Cursive (IntelliJ)
-- Vim + Fireplace
-- NightCode
 
 ---
 
@@ -374,7 +366,22 @@ We have come full circle, the printed form can be read again.
 
 ---
 
+{:.mt5}
 ![](img/editor_repl_2.png)
+
+---
+
+![](img/yin_yang.png){:.center.db width="450px"}
+
+---
+
+## Connected REPL
+
+- Emacs + CIDER
+- Atom + ProtoREPL
+- Cursive (IntelliJ)
+- Vim + Fireplace
+- NightCode
 
 ---
 
@@ -390,13 +397,16 @@ We have come full circle, the printed form can be read again.
 
 ---
 
-## Create a `user.clj`
+## Create a `user.clj` *
 
 REPL helpers that should always be available.
 
 `lein repl` automatically loads this file.
 
 Remember: a workbench needs to be convenient, comfortable, easy to use.
+
+{:.f5}
+\* may also be called something else
 
 ---
 
@@ -409,7 +419,8 @@ Remember: a workbench needs to be convenient, comfortable, easy to use.
 
 ---
 
-## Reloaded Workflow
+## `user.clj` Reloaded Workflow
+
 
 Combination of code reloading (clojure.tools.namespace), and some lifecycle manager (Component, Integrant, Mount)
 
@@ -417,34 +428,47 @@ Provides a way to get to a clean slate
 
 Why: because you don't want to have to restart your REPL process!
 
+```clojure
+(start) (stop) (reset)
+```
+
 ---
 
-## Pomegranate and Alembic
+## `user.clj` Pomegranate / Alembic
 
 Hot load dependencies
 
-Good for quickly trying out dependencies
+Good for quickly trying out dependencies, or for adding new libraries to the project.
 
 Again: prevent having to restart the process
 
+```clojure
+(add-dependency '[some-jar "0.1.0"])
+(load-project)
+```
 ---
 
-## Data helpers (global state)
+## `user.clj` Data helpers
 
-Create helpers for common types of arguments
+Create helpers for things that play a prominent role in your app
 
-- Ring request map
-- Pedestal context map
+- Ring request map / Pedestal context map
 - Ring session
-- Datomic DB
-- Datomic connection
+- Datomic DB / connection
+
+```
+(last-request)
+(conn)
+(db)
+```
 
 ------
 {:.repl}
 
 ## Data helpers
 
-cider-Store request/response history in memory, so you can have
+Store request/response history in memory, so you can have
+
 
 ``` clojure
 user=> (request)
@@ -527,3 +551,19 @@ Using a REPL is in many ways like writing tests, call a function with various in
 → Make a habit of using `eval-and-insert`, then later copy to test namespace
 
 REPL/scratch file can also be a good source for test inspiration
+
+
+---
+{:.tc.mt5 style="font-size: 70px"}
+
+The End
+有問題嗎?
+討論一下!
+
+---
+{:.tc.mt6 style="font-size: 40px"}
+
+{:.mt5}
+lambdaisland.com/coupon/CLJTPE2018
+
+33% off - forever
