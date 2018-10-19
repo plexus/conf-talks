@@ -1,69 +1,108 @@
 <!DOCTYPE html>
-<html><head><link href='assets/27bb0842d5c2183f4eb2449f0fbecb8c.css' rel='stylesheet'><style>.shower {--slide-ratio: calc(16 / 9); --color-key: #4caf50;} </style><meta charset='utf-8'><meta http-equiv='x-ua-compatible' content='ie=edge'><meta name='viewport' content='width=device-width, initial-scale=1'><title>The Art of Tree Shaping with Zippers</title><link rel='stylesheet' href='assets/8662c2c36baa70886e0dc5bedecabadd.css'><script src='assets/754c27c4424d283387915abba102fe1f.js'></script><script>hljs.initHighlightingOnLoad();</script><link rel='stylesheet' type='text/css' href='assets/9b6a845daafd0db5f1762dee0165b9b8.css'><link rel='stylesheet' type='text/css' href='assets/8c8ad12747d4e7cbd17ce68dac17a33b.css'><link rel='stylesheet' type='text/css' href='assets/5a0ca255fce9de83dde16a0f27d788fe.css'><link rel='stylesheet' type='text/css' href='assets/e5614196ef959644a5774cf809a1b7ae.css'></head><body class='shower list'><header class='caption'>
+<html><head><link href='assets/27bb0842d5c2183f4eb2449f0fbecb8c.css' rel='stylesheet'><style>.shower {--slide-ratio: calc(16 / 9); --color-key: #4caf50;} </style><meta charset='utf-8'><meta http-equiv='x-ua-compatible' content='ie=edge'><meta name='viewport' content='width=device-width, initial-scale=1'><title>The Art of Tree Shaping with Zippers</title><link rel='stylesheet' href='assets/8662c2c36baa70886e0dc5bedecabadd.css'><script src='assets/754c27c4424d283387915abba102fe1f.js'></script><script>hljs.initHighlightingOnLoad();</script><link rel='stylesheet' type='text/css' href='assets/77b87c4246f0a97fd8d405dd1fe0757c.css'><link rel='stylesheet' type='text/css' href='assets/8c8ad12747d4e7cbd17ce68dac17a33b.css'><link rel='stylesheet' type='text/css' href='assets/5a0ca255fce9de83dde16a0f27d788fe.css'><link rel='stylesheet' type='text/css' href='assets/e5614196ef959644a5774cf809a1b7ae.css'></head><body class='shower list'><header class='caption'>
 <h1 id='the-art-of-tree-shaping-with-zippers'>The Art of Tree Shaping with Zippers</h1>
 </header><section class='slide' fullscreen-img='img/title_image.png' name='1'>
-<img src='assets/6208fd0ac37c616d48006d5f0f143ef5.png' class='cover'></section><section class='slide' name='2'>
-<h2 id='about-me'>About me</h2>
+<img src='assets/6208fd0ac37c616d48006d5f0f143ef5.png' class='cover'></section><section class='slide' name='2'><h2 id='about-me'>About me</h2>
 <p>My name is Arne Brasseur (@plexus)</p>
 <p class='next'>I’m from Belgium, but based in Berlin.</p>
-<p class='next'>I do Clojure consulting &amp; Training.</p>
-</section><section class='slide' name='3'>
-<h2 id='lambda-island'>Lambda Island</h2>
+<p class='next'>I do Clojure consulting &amp; training.</p>
+</section><section class='slide' name='3'><h2 id='lambda-island'>Lambda Island</h2>
 <p>Detailed screencasts about all things Clojure &amp; ClojureScript.</p>
 <p class='next'>Been going for ~2.5 years.</p>
 <p class='next'>You should check it out.</p>
-</section><section class='slide' name='4'>
-<h2 id='agenda'>Agenda</h2>
-<ul><li><p>Look at <code>clojure.zip</code> API</p></li><li><p>How does it work? (opening and closing the zipper)</p></li><li><p>Clojure implementation</p></li><li><p>Practical example with rewrite-clj</p></li></ul>
-</section><section class='slide' name='5'>
-<h2 id='what-is-a-zipper'>What is a zipper?</h2>
-<p>A pair of (tree data structure, pointer to a node in the tree)</p>
-
-</section><section class='slide' name='6'>
-<h2 id='getting-started'>Getting started</h2>
+</section><section class='slide' name='4'><h2 id='agenda'>Agenda</h2>
+<ul><li><p><code>clojure.zip</code> API</p></li><li><p>Functional Zipper concept</p></li><li><p>Clojure implementation</p></li><li><p>fast-zip &amp; rewrite-clj</p></li></ul>
+</section><section class='slide header' name='5'>
+<h1 id='clojurezip-api'>clojure.zip API</h1>
+</section><section class='slide' name='6'><h2 id='what-is-a-zipper'>What is a zipper?</h2>
+<p>A zipper (or loc) combines two pieces of information</p>
+<ul><li><p>some kind of tree-shaped data structure</p></li><li><p>a pointer to a node within the tree</p></li></ul>
+<p>zipper = tree + path</p>
+</section><section class='slide' name='7'><h2 id='what-does-it-do'>What does it do?</h2>
+<p>The zipper API allows you to</p>
+<ul><li><p>Move around in the tree</p></li><li><p>Modify the tree at your current location</p></li></ul>
+</section><section class='slide' name='8'><h2 id='getting-started'>Getting started</h2>
 <pre class='language-clojure'><code>(require &#x27;[clojure.zip :as z])
 
 (def loc (z/vector-zip [[1 2] [3 4]]))
 </code></pre>
-</section><section class='slide' name='7'>
-<h2 id='an-example'>An example</h2>
+<p>Note: I’m using loc, location, and zipper interchangeably.</p>
+</section><section class='slide' name='9'><h2 id='what-qualifies-as-a-tree'>What qualifies as a tree?</h2>
+<ul><li><p>Nested vectors <code>(z/vector-zip v)</code></p></li><li><p>Nested sequences <code>(z/seq-zip s)</code></p></li><li><p>XML documents <code>(z/xml-zip doc)</code></p></li><li><p>Anything that has nodes and child nodes <code>(z/zipper ... root)</code></p></li></ul>
+</section><section class='slide' name='10'><h2 id='an-example'>An example</h2>
 
 <div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2] [3 [4 5] 6]]
     z/vector-zip)
-</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a id='tab_ffac9709badb57517ec48cb746bcd710_result' class='tab ttu dib link pa3 black ' href='#' onClick='selectTab("ffac9709badb57517ec48cb746bcd710", &#x27;result&#x27;)'>Result</a><a id='tab_ffac9709badb57517ec48cb746bcd710_tree' class='tab ttu dib link pa3 black selected' href='#' onClick='selectTab("ffac9709badb57517ec48cb746bcd710", &#x27;tree&#x27;)'>Tree</a><a id='tab_ffac9709badb57517ec48cb746bcd710_zipper' class='tab ttu dib link pa3 black ' href='#' onClick='selectTab("ffac9709badb57517ec48cb746bcd710", &#x27;zipper&#x27;)'>Zipper</a></div><div id='div_ffac9709badb57517ec48cb746bcd710_result' class='dn' style='min-height: 350px; padding-top: 0.5em;'><pre class='language-clojure'><code style='font-size: 80%;'></code></pre></div><div id='div_ffac9709badb57517ec48cb746bcd710_tree' class='' style='min-height: 350px;'><img class='center' src='assets/f5b0fbec0799994227f0554d9f2bb476.svg'></div><div id='div_ffac9709badb57517ec48cb746bcd710_zipper' class='dn' style='min-height: 350px;'><img class='center' src='assets/8fc1298a004691833039babc56e3dc7b.svg'></div></div></div></section><section class='slide' name='8'>
-<h2 id='an-example-1'>An example</h2>
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[[[1 2] [3 [4 5] 6]] nil]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/4c4907fea4282154c13d6c4b828b4d03.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/f8c7ccfd73d8336626e83d7e4c4690fc.svg'></div></div></div></section><section class='slide' name='11'><h2 id='an-example-1'>An example</h2>
 
 <div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2] [3 [4 5] 6]]
     z/vector-zip
     z/down)
-</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a id='tab_1be1f6e5fb430d5d6ea9a296cd5c6dd3_result' class='tab ttu dib link pa3 black ' href='#' onClick='selectTab("1be1f6e5fb430d5d6ea9a296cd5c6dd3", &#x27;result&#x27;)'>Result</a><a id='tab_1be1f6e5fb430d5d6ea9a296cd5c6dd3_tree' class='tab ttu dib link pa3 black selected' href='#' onClick='selectTab("1be1f6e5fb430d5d6ea9a296cd5c6dd3", &#x27;tree&#x27;)'>Tree</a><a id='tab_1be1f6e5fb430d5d6ea9a296cd5c6dd3_zipper' class='tab ttu dib link pa3 black ' href='#' onClick='selectTab("1be1f6e5fb430d5d6ea9a296cd5c6dd3", &#x27;zipper&#x27;)'>Zipper</a></div><div id='div_1be1f6e5fb430d5d6ea9a296cd5c6dd3_result' class='dn' style='min-height: 350px; padding-top: 0.5em;'><pre class='language-clojure'><code style='font-size: 80%;'> {:l [],
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[[1 2]
+ {:l [],
   :pnodes [[[1 2] [3 [4 5] 6]]],
   :ppath nil,
   :r ([3 [4 5] 6])}]
-</code></pre></div><div id='div_1be1f6e5fb430d5d6ea9a296cd5c6dd3_tree' class='' style='min-height: 350px;'><img class='center' src='assets/ec5cd6707d279635946f3acd70a0c14b.svg'></div><div id='div_1be1f6e5fb430d5d6ea9a296cd5c6dd3_zipper' class='dn' style='min-height: 350px;'><img class='center' src='assets/656c2fbf1ff57f137007d8c4b1a30165.svg'></div></div></div></section><section class='slide' name='9'>
-<h2 id='an-example-2'>An example</h2>
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/28b5d86f574f697753c32763b655118e.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/bc8517394093fe4bb139259feb0777b2.svg'></div></div></div></section><section class='slide' name='12'><h2 id='an-example-2'>An example</h2>
 
 <div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2] [3 [4 5] 6]]
     z/vector-zip
     z/down
     z/right)
-</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a id='tab_6c54423913d705b608176fc30f4ef95b_result' class='tab ttu dib link pa3 black ' href='#' onClick='selectTab("6c54423913d705b608176fc30f4ef95b", &#x27;result&#x27;)'>Result</a><a id='tab_6c54423913d705b608176fc30f4ef95b_tree' class='tab ttu dib link pa3 black selected' href='#' onClick='selectTab("6c54423913d705b608176fc30f4ef95b", &#x27;tree&#x27;)'>Tree</a><a id='tab_6c54423913d705b608176fc30f4ef95b_zipper' class='tab ttu dib link pa3 black ' href='#' onClick='selectTab("6c54423913d705b608176fc30f4ef95b", &#x27;zipper&#x27;)'>Zipper</a></div><div id='div_6c54423913d705b608176fc30f4ef95b_result' class='dn' style='min-height: 350px; padding-top: 0.5em;'><pre class='language-clojure'><code style='font-size: 80%;'> {:l [[1 2]],
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[[3 [4 5] 6]
+ {:l [[1 2]],
   :pnodes [[[1 2] [3 [4 5] 6]]],
   :ppath nil,
   :r nil}]
-</code></pre></div><div id='div_6c54423913d705b608176fc30f4ef95b_tree' class='' style='min-height: 350px;'><img class='center' src='assets/5b69dd902adb84f8916b679ec787b396.svg'></div><div id='div_6c54423913d705b608176fc30f4ef95b_zipper' class='dn' style='min-height: 350px;'><img class='center' src='assets/c5576a3a9958fc231dd7fc8147116391.svg'></div></div></div></section><section class='slide' name='10'>
-<h2 id='viz-baby'>VIZ BABY</h2>
-
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/d842bb8e40dfb72f0f8f178d958d7fa2.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/c184b748efa5615cc14fdbc14a3c49cd.svg'></div></div></div></section><section class='slide' name='13'><h2 id='an-example-3'>An example</h2>
 
 <div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2] [3 [4 5] 6]]
     z/vector-zip
-    z/down        ;; [1 2]
-    z/right       ;; [3 [4 5] 6]
-    z/down        ;; 3
-    z/rightmost   ;; 6
-    z/left        ;; [4 5]
-    )
-</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a id='tab_4523797b84273c29fdf644971b9339e1_result' class='tab ttu dib link pa3 black ' href='#' onClick='selectTab("4523797b84273c29fdf644971b9339e1", &#x27;result&#x27;)'>Result</a><a id='tab_4523797b84273c29fdf644971b9339e1_tree' class='tab ttu dib link pa3 black selected' href='#' onClick='selectTab("4523797b84273c29fdf644971b9339e1", &#x27;tree&#x27;)'>Tree</a><a id='tab_4523797b84273c29fdf644971b9339e1_zipper' class='tab ttu dib link pa3 black ' href='#' onClick='selectTab("4523797b84273c29fdf644971b9339e1", &#x27;zipper&#x27;)'>Zipper</a></div><div id='div_4523797b84273c29fdf644971b9339e1_result' class='dn' style='min-height: 350px; padding-top: 0.5em;'><pre class='language-clojure'><code style='font-size: 80%;'> {:l [3],
+    z/down
+    z/right
+    z/down)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[3
+ {:l [],
+  :pnodes
+  [[[1 2] [3 [4 5] 6]]
+   [3 [4 5] 6]],
+  :ppath
+  {:l [[1 2]],
+   :pnodes [[[1 2] [3 [4 5] 6]]],
+   :ppath nil,
+   :r nil},
+  :r ([4 5] 6)}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/76726ef944d3f0d044cfdccde3a4ce55.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/e7fb3eb07acb0f282017fd930d1628e3.svg'></div></div></div></section><section class='slide' name='14'><h2 id='an-example-4'>An example</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down
+    z/right
+    z/down
+    z/rightmost)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[6
+ {:l [3 [4 5]],
+  :pnodes
+  [[[1 2] [3 [4 5] 6]]
+   [3 [4 5] 6]],
+  :ppath
+  {:l [[1 2]],
+   :pnodes [[[1 2] [3 [4 5] 6]]],
+   :ppath nil,
+   :r nil},
+  :r nil}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/ec25a287cfcb0efd5faa0fed31c671f9.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/736a28ae1fc967399951f1f9bda9cceb.svg'></div></div></div></section><section class='slide' name='15'><h2 id='an-example-5'>An example</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down
+    z/right
+    z/down
+    z/rightmost
+    z/left)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[[4 5]
+ {:l [3],
   :pnodes
   [[[1 2] [3 [4 5] 6]]
    [3 [4 5] 6]],
@@ -73,8 +112,4060 @@
    :ppath nil,
    :r nil},
   :r (6)}]
-</code></pre></div><div id='div_4523797b84273c29fdf644971b9339e1_tree' class='' style='min-height: 350px;'><img class='center' src='assets/11d3460d9fc9c5a2e2a5fba0f2e665bd.svg'></div><div id='div_4523797b84273c29fdf644971b9339e1_zipper' class='dn' style='min-height: 350px;'><img class='center' src='assets/5ef395d1548841ac94c7c78253f5272b.svg'></div></div></div></section><section class='slide' name='11'>
-<h2 id='can-work-on-any-kind-of-tree'>Can work on any kind of tree</h2>
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/0d5b66688f716fecf6b38d025568ad9d.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/7e53bb16064d68446011ff6990be306f.svg'></div></div></div></section><section class='slide' name='16'><h2 id='an-example-6'>An example</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down
+    z/right
+    z/down
+    z/rightmost
+    z/left
+    (z/append-child :x))
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[[4 5 :x]
+ {:l [3],
+  :pnodes
+  [[[1 2] [3 [4 5] 6]]
+   [3 [4 5] 6]],
+  :ppath
+  {:l [[1 2]],
+   :pnodes [[[1 2] [3 [4 5] 6]]],
+   :ppath nil,
+   :r nil},
+  :r (6),
+  :changed? true}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/3798726b54c4844b281beb3c1e9eae21.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/e1fa1bf683eb6eda446d75578cc88650.svg'></div></div></div></section><section class='slide' name='17'><h2 id='an-example-7'>An example</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down
+    z/right
+    z/down
+    z/rightmost
+    z/left
+    (z/append-child :x)
+    z/up)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[[3 [4 5 :x] 6]
+ {:l [[1 2]],
+  :pnodes [[[1 2] [3 [4 5] 6]]],
+  :ppath nil,
+  :r nil,
+  :changed? true}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/e4e67b40572ff717670a6e9051f873ad.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/b00de1a47f8aae80c52072fd2b025e0f.svg'></div></div></div></section><section class='slide' name='18'><h2 id='an-example-8'>An example</h2>
+<pre class='language-clojure'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down
+    z/right
+    z/down
+    z/rightmost
+    z/left
+    (z/append-child :x)
+    z/up
+    z/node)
+;;=&gt; [3 [4 5 :x] 6]
+</code></pre>
+</section><section class='slide' name='19'><h2 id='an-example-9'>An example</h2>
+<pre class='language-clojure'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down
+    z/right
+    z/down
+    z/rightmost
+    z/left
+    (z/append-child :x)
+    z/root)
+;;=&gt; [[1 2] [3 [4 5 :x] 6]]
+</code></pre>
+</section><section class='slide' name='20'><h2 id='xml-zip'>xml-zip</h2>
+<pre class='language-xml'><code>&lt;cart&gt;
+    &lt;line-items&gt;
+        &lt;product sku=&quot;CH56&quot; qty=&quot;1&quot; price=&quot;2.5&quot;&gt;Chocolate&lt;/product&gt;
+        &lt;product sku=&quot;CA94&quot; qty=&quot;1&quot; price=&quot;1.7&quot;&gt;Candy&lt;/product&gt;
+        &lt;discount amount=&quot;10%&quot; /&gt;
+    &lt;/line-items&gt;
+    &lt;customer&gt;
+        &lt;name&gt;Arne&lt;/name&gt;
+        &lt;address&gt;Berlin&lt;/address&gt;
+    &lt;/customer&gt;
+&lt;/cart&gt;
+</code></pre>
+</section><section class='slide' name='21'><h2 id='xml-zip-1'>xml-zip</h2>
+<pre class='language-clojure' viz='eval'><code>(require &#x27;[clojure.java.io :as io]
+         &#x27;[clojure.xml :as xml])
+
+(def cart-xml
+  (-&gt; &quot;zipper_demo/cart.xml&quot;
+      io/resource
+      io/file
+      xml/parse))
+</code></pre>
+</section><section class='slide' name='22'><h2 id='xml-zip-2'>xml-zip</h2>
+<pre class='language-clojure'><code>cart-xml
+;;=&gt;
+{:tag &quot;cart&quot;, :attrs {}
+ :content
+ [{:tag &quot;line-items&quot;, :attrs {}
+   :content
+   [{:tag &quot;product&quot;
+     :attrs {:sku &quot;CH56&quot;
+             :qty &quot;1&quot;
+             :price &quot;2.5&quot;}
+     :content [&quot;Chocolate&quot;]}
+    ,,,]}
+  {:tag &quot;customer&quot; ,,,}]}
+
+</code></pre>
+</section><section class='slide' name='23'><h2 id='xml-zip-3'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(def cart-zipper
+  (z/xml-zip cart-xml))
+
+cart-zipper
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :cart,
+  :attrs nil,
+  :content
+  [{:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}
+   {:tag :customer,
+    :attrs nil,
+    :content
+    [{:tag :name,
+      :attrs nil,
+      :content [&quot;Arne&quot;]}
+     {:tag :address,
+      :attrs nil,
+      :content [&quot;Berlin&quot;]}]}]}
+ nil]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/ddc1031d7fbbbae825a26bf6990b1b84.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/906a3b2f681112688fb17021c2a61b31.svg'></div></div></div></section><section class='slide' name='24'><h2 id='xml-zip-4'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; cart-zipper
+    z/down)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :line-items,
+  :attrs nil,
+  :content
+  [{:tag :product,
+    :attrs
+    {:price &quot;2.5&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CH56&quot;},
+    :content [&quot;Chocolate&quot;]}
+   {:tag :product,
+    :attrs
+    {:price &quot;1.7&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CA94&quot;},
+    :content [&quot;Candy&quot;]}
+   {:tag :discount,
+    :attrs {:amount &quot;10%&quot;},
+    :content nil}]}
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}],
+  :ppath nil,
+  :r
+  ({:tag :customer,
+    :attrs nil,
+    :content
+    [{:tag :name,
+      :attrs nil,
+      :content [&quot;Arne&quot;]}
+     {:tag :address,
+      :attrs nil,
+      :content [&quot;Berlin&quot;]}]})}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/6a4d31db9ebe81da67f28e44dc15dbea.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/8bccef6ef5b8d4e7f52d0d7e705b2aa0.svg'></div></div></div></section><section class='slide' name='25'><h2 id='xml-zip-5'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; cart-zipper
+    z/down
+    z/down)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :product,
+  :attrs
+  {:price &quot;2.5&quot;,
+   :qty &quot;1&quot;,
+   :sku &quot;CH56&quot;},
+  :content [&quot;Chocolate&quot;]}
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content
+         [&quot;Berlin&quot;]}]}]}],
+   :ppath nil,
+   :r
+   ({:tag :customer,
+     :attrs nil,
+     :content
+     [{:tag :name,
+       :attrs nil,
+       :content [&quot;Arne&quot;]}
+      {:tag :address,
+       :attrs nil,
+       :content [&quot;Berlin&quot;]}]})},
+  :r
+  ({:tag :product,
+    :attrs
+    {:price &quot;1.7&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CA94&quot;},
+    :content [&quot;Candy&quot;]}
+   {:tag :discount,
+    :attrs {:amount &quot;10%&quot;},
+    :content nil})}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/5f3ee88728fe5ea17027cca012dc253b.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/4d9f745ac20407acaf6bcfecf98a0977.svg'></div></div></div></section><section class='slide' name='26'><h2 id='xml-zip-6'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; cart-zipper
+    z/down
+    z/down
+    z/right)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :product,
+  :attrs
+  {:price &quot;1.7&quot;,
+   :qty &quot;1&quot;,
+   :sku &quot;CA94&quot;},
+  :content [&quot;Candy&quot;]}
+ {:l
+  [{:tag :product,
+    :attrs
+    {:price &quot;2.5&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CH56&quot;},
+    :content [&quot;Chocolate&quot;]}],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content
+         [&quot;Berlin&quot;]}]}]}],
+   :ppath nil,
+   :r
+   ({:tag :customer,
+     :attrs nil,
+     :content
+     [{:tag :name,
+       :attrs nil,
+       :content [&quot;Arne&quot;]}
+      {:tag :address,
+       :attrs nil,
+       :content [&quot;Berlin&quot;]}]})},
+  :r
+  ({:tag :discount,
+    :attrs {:amount &quot;10%&quot;},
+    :content nil})}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/1aa54eb2fcf3b4a9ad32caa331041ae9.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/8864c5e1500a7b452e6842d6feae8512.svg'></div></div></div></section><section class='slide' name='27'><h2 id='xml-zip-7'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; cart-zipper
+    z/down
+    z/down
+    z/right
+    z/right)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :discount,
+  :attrs {:amount &quot;10%&quot;},
+  :content nil}
+ {:l
+  [{:tag :product,
+    :attrs
+    {:price &quot;2.5&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CH56&quot;},
+    :content [&quot;Chocolate&quot;]}
+   {:tag :product,
+    :attrs
+    {:price &quot;1.7&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CA94&quot;},
+    :content [&quot;Candy&quot;]}],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content
+         [&quot;Berlin&quot;]}]}]}],
+   :ppath nil,
+   :r
+   ({:tag :customer,
+     :attrs nil,
+     :content
+     [{:tag :name,
+       :attrs nil,
+       :content [&quot;Arne&quot;]}
+      {:tag :address,
+       :attrs nil,
+       :content [&quot;Berlin&quot;]}]})},
+  :r nil}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/0471be7657d26fac31919f1e51a52e48.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/ece192a8bd53d5a44278f9949745cec3.svg'></div></div></div></section><section class='slide' name='28'><h2 id='xml-zip-8'>xml-zip</h2>
+
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; cart-zipper
+    z/down
+    z/down
+    z/right
+    z/right
+    z/leftmost)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :product,
+  :attrs
+  {:price &quot;2.5&quot;,
+   :qty &quot;1&quot;,
+   :sku &quot;CH56&quot;},
+  :content [&quot;Chocolate&quot;]}
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content
+         [&quot;Berlin&quot;]}]}]}],
+   :ppath nil,
+   :r
+   ({:tag :customer,
+     :attrs nil,
+     :content
+     [{:tag :name,
+       :attrs nil,
+       :content [&quot;Arne&quot;]}
+      {:tag :address,
+       :attrs nil,
+       :content [&quot;Berlin&quot;]}]})},
+  :r
+  ({:tag :product,
+    :attrs
+    {:price &quot;1.7&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CA94&quot;},
+    :content [&quot;Candy&quot;]}
+   {:tag :discount,
+    :attrs {:amount &quot;10%&quot;},
+    :content nil})}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/9fec87bf4608354020b42500837423b3.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/551078fbd3c3e012ff0ad0c3f1e8b3d8.svg'></div></div></div></section><section class='slide' name='29'><h2 id='xml-zip-9'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; cart-zipper
+    z/down
+    z/down
+    z/right
+    z/right
+    z/leftmost
+    z/down)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[&quot;Chocolate&quot;
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}
+   {:tag :product,
+    :attrs
+    {:price &quot;2.5&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CH56&quot;},
+    :content [&quot;Chocolate&quot;]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content [&quot;Berlin&quot;]}]}]}
+    {:tag :line-items,
+     :attrs nil,
+     :content
+     [{:tag :product,
+       :attrs
+       {:price &quot;2.5&quot;,
+        :qty &quot;1&quot;,
+        :sku &quot;CH56&quot;},
+       :content [&quot;Chocolate&quot;]}
+      {:tag :product,
+       :attrs
+       {:price &quot;1.7&quot;,
+        :qty &quot;1&quot;,
+        :sku &quot;CA94&quot;},
+       :content [&quot;Candy&quot;]}
+      {:tag :discount,
+       :attrs {:amount &quot;10%&quot;},
+       :content nil}]}],
+   :ppath
+   {:l [],
+    :pnodes
+    [{:tag :cart,
+      :attrs nil,
+      :content
+      [{:tag :line-items,
+        :attrs nil,
+        :content
+        [{:tag :product,
+          :attrs
+          {:price &quot;2.5&quot;,
+           :qty &quot;1&quot;,
+           :sku &quot;CH56&quot;},
+          :content [&quot;Chocolate&quot;]}
+         {:tag :product,
+          :attrs
+          {:price &quot;1.7&quot;,
+           :qty &quot;1&quot;,
+           :sku &quot;CA94&quot;},
+          :content [&quot;Candy&quot;]}
+         {:tag :discount,
+          :attrs {:amount &quot;10%&quot;},
+          :content nil}]}
+       {:tag :customer,
+        :attrs nil,
+        :content
+        [{:tag :name,
+          :attrs nil,
+          :content [&quot;Arne&quot;]}
+         {:tag :address,
+          :attrs nil,
+          :content
+          [&quot;Berlin&quot;]}]}]}],
+    :ppath nil,
+    :r
+    ({:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]})},
+   :r
+   ({:tag :product,
+     :attrs
+     {:price &quot;1.7&quot;,
+      :qty &quot;1&quot;,
+      :sku &quot;CA94&quot;},
+     :content [&quot;Candy&quot;]}
+    {:tag :discount,
+     :attrs {:amount &quot;10%&quot;},
+     :content nil})},
+  :r nil}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/b8599c18e28babd37e0663f8511c18fe.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/9e834b0c222329d63e4f95edcf18a66b.svg'></div></div></div></section><section class='slide' name='30'><h2 id='xml-zip-10'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; cart-zipper
+    z/down
+    z/down
+    z/down
+    (z/replace
+      &quot;luxury chocolate&quot;))
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[&quot;luxury chocolate&quot;
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}
+   {:tag :product,
+    :attrs
+    {:price &quot;2.5&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CH56&quot;},
+    :content [&quot;Chocolate&quot;]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content [&quot;Berlin&quot;]}]}]}
+    {:tag :line-items,
+     :attrs nil,
+     :content
+     [{:tag :product,
+       :attrs
+       {:price &quot;2.5&quot;,
+        :qty &quot;1&quot;,
+        :sku &quot;CH56&quot;},
+       :content [&quot;Chocolate&quot;]}
+      {:tag :product,
+       :attrs
+       {:price &quot;1.7&quot;,
+        :qty &quot;1&quot;,
+        :sku &quot;CA94&quot;},
+       :content [&quot;Candy&quot;]}
+      {:tag :discount,
+       :attrs {:amount &quot;10%&quot;},
+       :content nil}]}],
+   :ppath
+   {:l [],
+    :pnodes
+    [{:tag :cart,
+      :attrs nil,
+      :content
+      [{:tag :line-items,
+        :attrs nil,
+        :content
+        [{:tag :product,
+          :attrs
+          {:price &quot;2.5&quot;,
+           :qty &quot;1&quot;,
+           :sku &quot;CH56&quot;},
+          :content [&quot;Chocolate&quot;]}
+         {:tag :product,
+          :attrs
+          {:price &quot;1.7&quot;,
+           :qty &quot;1&quot;,
+           :sku &quot;CA94&quot;},
+          :content [&quot;Candy&quot;]}
+         {:tag :discount,
+          :attrs {:amount &quot;10%&quot;},
+          :content nil}]}
+       {:tag :customer,
+        :attrs nil,
+        :content
+        [{:tag :name,
+          :attrs nil,
+          :content [&quot;Arne&quot;]}
+         {:tag :address,
+          :attrs nil,
+          :content
+          [&quot;Berlin&quot;]}]}]}],
+    :ppath nil,
+    :r
+    ({:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]})},
+   :r
+   ({:tag :product,
+     :attrs
+     {:price &quot;1.7&quot;,
+      :qty &quot;1&quot;,
+      :sku &quot;CA94&quot;},
+     :content [&quot;Candy&quot;]}
+    {:tag :discount,
+     :attrs {:amount &quot;10%&quot;},
+     :content nil})},
+  :r nil,
+  :changed? true}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/00ff2cea32161ab03842ca9869e42bed.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/ed4624550dd5f03e6b601f531bc9d008.svg'></div></div></div></section><section class='slide' name='31'><h2 id='xml-zip-11'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; cart-zipper
+    z/down
+    z/down
+    z/down
+    (z/replace
+      &quot;luxury chocolate&quot;)
+    z/up)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :product,
+  :attrs
+  {:price &quot;2.5&quot;,
+   :qty &quot;1&quot;,
+   :sku &quot;CH56&quot;},
+  :content [&quot;luxury chocolate&quot;]}
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content
+         [&quot;Berlin&quot;]}]}]}],
+   :ppath nil,
+   :r
+   ({:tag :customer,
+     :attrs nil,
+     :content
+     [{:tag :name,
+       :attrs nil,
+       :content [&quot;Arne&quot;]}
+      {:tag :address,
+       :attrs nil,
+       :content [&quot;Berlin&quot;]}]})},
+  :r
+  ({:tag :product,
+    :attrs
+    {:price &quot;1.7&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CA94&quot;},
+    :content [&quot;Candy&quot;]}
+   {:tag :discount,
+    :attrs {:amount &quot;10%&quot;},
+    :content nil}),
+  :changed? true}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/8b1227c67ec20717afb8964dcc71ca3e.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/c6811cad625b4e6f6ed901a060c6ff5e.svg'></div></div></div></section><section class='slide' name='32'><h2 id='xml-zip-12'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; cart-zipper
+    z/down
+    z/down
+    z/down
+    (z/replace
+      &quot;luxury chocolate&quot;)
+    z/up
+    (z/edit
+      assoc-in [:attrs :price] 2.9))
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :product,
+  :attrs
+  {:price 2.9,
+   :qty &quot;1&quot;,
+   :sku &quot;CH56&quot;},
+  :content [&quot;luxury chocolate&quot;]}
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content
+         [&quot;Berlin&quot;]}]}]}],
+   :ppath nil,
+   :r
+   ({:tag :customer,
+     :attrs nil,
+     :content
+     [{:tag :name,
+       :attrs nil,
+       :content [&quot;Arne&quot;]}
+      {:tag :address,
+       :attrs nil,
+       :content [&quot;Berlin&quot;]}]})},
+  :r
+  ({:tag :product,
+    :attrs
+    {:price &quot;1.7&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CA94&quot;},
+    :content [&quot;Candy&quot;]}
+   {:tag :discount,
+    :attrs {:amount &quot;10%&quot;},
+    :content nil}),
+  :changed? true}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/a8defc96ad356909426e9603ecc3f34d.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/8430fe1cc1fd156621c3ce5c7f97a942.svg'></div></div></div></section><section class='slide' name='33'><h2 id='xml-zip-13'>xml-zip</h2>
+<pre class='language-clojure'><code>(-&gt; cart-zipper
+    z/down
+    z/down
+    z/down
+    (z/replace
+      &quot;luxury chocolate&quot;)
+    z/up
+    (z/edit
+      assoc-in [:attrs :price] 2.9)
+    z/root)
+;;=&gt; {:tag &quot;cart&quot;, ...}
+</code></pre>
+</section><section class='slide' name='34'><h2 id='api--creating-zippers'>API : Creating Zippers</h2>
+<pre class='language-clojure'><code>vector-zip
+xml-zip
+seq-zip
+zipper
+</code></pre>
+</section><section class='slide' name='35'><h2 id='api-navigating'>API: Navigating</h2>
+<pre class='language-clojure'><code>up
+down
+left
+right
+leftmost
+rightmost
+root
+</code></pre>
+</section><section class='slide' name='36'><h2 id='api-updating'>API: Updating</h2>
+<pre class='language-clojure'><code>insert-left
+insert-right
+append-child ;; rightmost
+insert-child ;; leftmost
+edit
+remove
+replace
+make-node
+</code></pre>
+</section><section class='slide' name='37'><h2 id='api-inspecting'>API: Inspecting</h2>
+<pre class='language-clojure'><code>lefts
+rights
+children
+node
+path
+branch?
+</code></pre>
+</section><section class='slide' name='38'><h2 id='api-walking'>API: Walking</h2>
+<pre class='language-clojure'><code>next
+prev
+end?
+</code></pre>
+</section><section class='slide' name='39'><h2 id='walking'>Walking</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre viz='tree'><code>(nth
+  (iterate z/next cart-zipper)
+  0)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :cart,
+  :attrs nil,
+  :content
+  [{:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}
+   {:tag :customer,
+    :attrs nil,
+    :content
+    [{:tag :name,
+      :attrs nil,
+      :content [&quot;Arne&quot;]}
+     {:tag :address,
+      :attrs nil,
+      :content [&quot;Berlin&quot;]}]}]}
+ nil]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/d3d1bbe63d43a005a0f079caec825898.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/8519ec61a4172d3ad1b9dcf23507773e.svg'></div></div></div></section><section class='slide' name='40'><h2 id='walking-1'>Walking</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre viz='tree'><code>(nth
+  (iterate z/next cart-zipper)
+  1)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :line-items,
+  :attrs nil,
+  :content
+  [{:tag :product,
+    :attrs
+    {:price &quot;2.5&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CH56&quot;},
+    :content [&quot;Chocolate&quot;]}
+   {:tag :product,
+    :attrs
+    {:price &quot;1.7&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CA94&quot;},
+    :content [&quot;Candy&quot;]}
+   {:tag :discount,
+    :attrs {:amount &quot;10%&quot;},
+    :content nil}]}
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}],
+  :ppath nil,
+  :r
+  ({:tag :customer,
+    :attrs nil,
+    :content
+    [{:tag :name,
+      :attrs nil,
+      :content [&quot;Arne&quot;]}
+     {:tag :address,
+      :attrs nil,
+      :content [&quot;Berlin&quot;]}]})}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/1dfab7244e22933fbaeb83fe3d2d4f5e.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/8a34deafdb2f79dcfbc3540525f628ee.svg'></div></div></div></section><section class='slide' name='41'><h2 id='walking-2'>Walking</h2>
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre viz='tree'><code>(nth
+  (iterate z/next cart-zipper)
+  2)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :product,
+  :attrs
+  {:price &quot;2.5&quot;,
+   :qty &quot;1&quot;,
+   :sku &quot;CH56&quot;},
+  :content [&quot;Chocolate&quot;]}
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content
+         [&quot;Berlin&quot;]}]}]}],
+   :ppath nil,
+   :r
+   ({:tag :customer,
+     :attrs nil,
+     :content
+     [{:tag :name,
+       :attrs nil,
+       :content [&quot;Arne&quot;]}
+      {:tag :address,
+       :attrs nil,
+       :content [&quot;Berlin&quot;]}]})},
+  :r
+  ({:tag :product,
+    :attrs
+    {:price &quot;1.7&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CA94&quot;},
+    :content [&quot;Candy&quot;]}
+   {:tag :discount,
+    :attrs {:amount &quot;10%&quot;},
+    :content nil})}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/415035aa208d78d9b6b480e2a30d5521.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/27f2bd63a8af0cc6785f8281e5a47caa.svg'></div></div></div></section><section class='slide' name='42'><h2 id='walking-3'>Walking</h2>
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre viz='tree'><code>(nth
+  (iterate z/next cart-zipper)
+  3)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[&quot;Chocolate&quot;
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}
+   {:tag :product,
+    :attrs
+    {:price &quot;2.5&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CH56&quot;},
+    :content [&quot;Chocolate&quot;]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content [&quot;Berlin&quot;]}]}]}
+    {:tag :line-items,
+     :attrs nil,
+     :content
+     [{:tag :product,
+       :attrs
+       {:price &quot;2.5&quot;,
+        :qty &quot;1&quot;,
+        :sku &quot;CH56&quot;},
+       :content [&quot;Chocolate&quot;]}
+      {:tag :product,
+       :attrs
+       {:price &quot;1.7&quot;,
+        :qty &quot;1&quot;,
+        :sku &quot;CA94&quot;},
+       :content [&quot;Candy&quot;]}
+      {:tag :discount,
+       :attrs {:amount &quot;10%&quot;},
+       :content nil}]}],
+   :ppath
+   {:l [],
+    :pnodes
+    [{:tag :cart,
+      :attrs nil,
+      :content
+      [{:tag :line-items,
+        :attrs nil,
+        :content
+        [{:tag :product,
+          :attrs
+          {:price &quot;2.5&quot;,
+           :qty &quot;1&quot;,
+           :sku &quot;CH56&quot;},
+          :content [&quot;Chocolate&quot;]}
+         {:tag :product,
+          :attrs
+          {:price &quot;1.7&quot;,
+           :qty &quot;1&quot;,
+           :sku &quot;CA94&quot;},
+          :content [&quot;Candy&quot;]}
+         {:tag :discount,
+          :attrs {:amount &quot;10%&quot;},
+          :content nil}]}
+       {:tag :customer,
+        :attrs nil,
+        :content
+        [{:tag :name,
+          :attrs nil,
+          :content [&quot;Arne&quot;]}
+         {:tag :address,
+          :attrs nil,
+          :content
+          [&quot;Berlin&quot;]}]}]}],
+    :ppath nil,
+    :r
+    ({:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]})},
+   :r
+   ({:tag :product,
+     :attrs
+     {:price &quot;1.7&quot;,
+      :qty &quot;1&quot;,
+      :sku &quot;CA94&quot;},
+     :content [&quot;Candy&quot;]}
+    {:tag :discount,
+     :attrs {:amount &quot;10%&quot;},
+     :content nil})},
+  :r nil}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/1f612e0958c07246480b0c0400a6f8cc.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/30bbcea9beb9bccffd154e0d5b14498c.svg'></div></div></div></section><section class='slide' name='43'><h2 id='walking-4'>Walking</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre viz='tree'><code>(nth
+  (iterate z/next cart-zipper)
+  4)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :product,
+  :attrs
+  {:price &quot;1.7&quot;,
+   :qty &quot;1&quot;,
+   :sku &quot;CA94&quot;},
+  :content [&quot;Candy&quot;]}
+ {:l
+  [{:tag :product,
+    :attrs
+    {:price &quot;2.5&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CH56&quot;},
+    :content [&quot;Chocolate&quot;]}],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content
+         [&quot;Berlin&quot;]}]}]}],
+   :ppath nil,
+   :r
+   ({:tag :customer,
+     :attrs nil,
+     :content
+     [{:tag :name,
+       :attrs nil,
+       :content [&quot;Arne&quot;]}
+      {:tag :address,
+       :attrs nil,
+       :content [&quot;Berlin&quot;]}]})},
+  :r
+  ({:tag :discount,
+    :attrs {:amount &quot;10%&quot;},
+    :content nil})}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/6891299b6cac022bb54e9b50cb80ac66.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/80a5437566c08d1a5a04c120158e9f40.svg'></div></div></div></section><section class='slide' name='44'><h2 id='walking-5'>Walking</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre viz='tree'><code>(nth
+  (iterate z/next cart-zipper)
+  5)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[&quot;Candy&quot;
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}
+   {:tag :product,
+    :attrs
+    {:price &quot;1.7&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CA94&quot;},
+    :content [&quot;Candy&quot;]}],
+  :ppath
+  {:l
+   [{:tag :product,
+     :attrs
+     {:price &quot;2.5&quot;,
+      :qty &quot;1&quot;,
+      :sku &quot;CH56&quot;},
+     :content [&quot;Chocolate&quot;]}],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content [&quot;Berlin&quot;]}]}]}
+    {:tag :line-items,
+     :attrs nil,
+     :content
+     [{:tag :product,
+       :attrs
+       {:price &quot;2.5&quot;,
+        :qty &quot;1&quot;,
+        :sku &quot;CH56&quot;},
+       :content [&quot;Chocolate&quot;]}
+      {:tag :product,
+       :attrs
+       {:price &quot;1.7&quot;,
+        :qty &quot;1&quot;,
+        :sku &quot;CA94&quot;},
+       :content [&quot;Candy&quot;]}
+      {:tag :discount,
+       :attrs {:amount &quot;10%&quot;},
+       :content nil}]}],
+   :ppath
+   {:l [],
+    :pnodes
+    [{:tag :cart,
+      :attrs nil,
+      :content
+      [{:tag :line-items,
+        :attrs nil,
+        :content
+        [{:tag :product,
+          :attrs
+          {:price &quot;2.5&quot;,
+           :qty &quot;1&quot;,
+           :sku &quot;CH56&quot;},
+          :content [&quot;Chocolate&quot;]}
+         {:tag :product,
+          :attrs
+          {:price &quot;1.7&quot;,
+           :qty &quot;1&quot;,
+           :sku &quot;CA94&quot;},
+          :content [&quot;Candy&quot;]}
+         {:tag :discount,
+          :attrs {:amount &quot;10%&quot;},
+          :content nil}]}
+       {:tag :customer,
+        :attrs nil,
+        :content
+        [{:tag :name,
+          :attrs nil,
+          :content [&quot;Arne&quot;]}
+         {:tag :address,
+          :attrs nil,
+          :content
+          [&quot;Berlin&quot;]}]}]}],
+    :ppath nil,
+    :r
+    ({:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]})},
+   :r
+   ({:tag :discount,
+     :attrs {:amount &quot;10%&quot;},
+     :content nil})},
+  :r nil}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/ba280be321d23d5dfbfcf04fb3ffbab8.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/8b1c34925fd3e309f11fb4a7a1904924.svg'></div></div></div></section><section class='slide' name='45'><h2 id='walking-6'>Walking</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre viz='tree'><code>(nth
+  (iterate z/next cart-zipper)
+  6)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :discount,
+  :attrs {:amount &quot;10%&quot;},
+  :content nil}
+ {:l
+  [{:tag :product,
+    :attrs
+    {:price &quot;2.5&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CH56&quot;},
+    :content [&quot;Chocolate&quot;]}
+   {:tag :product,
+    :attrs
+    {:price &quot;1.7&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CA94&quot;},
+    :content [&quot;Candy&quot;]}],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content
+         [&quot;Berlin&quot;]}]}]}],
+   :ppath nil,
+   :r
+   ({:tag :customer,
+     :attrs nil,
+     :content
+     [{:tag :name,
+       :attrs nil,
+       :content [&quot;Arne&quot;]}
+      {:tag :address,
+       :attrs nil,
+       :content [&quot;Berlin&quot;]}]})},
+  :r nil}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/3e2c84030de77d21f9a11f4559aaf82a.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/f638b7e89e134b90a7fb189fb31e124a.svg'></div></div></div></section><section class='slide' name='46'><h2 id='walking-7'>Walking</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre viz='tree'><code>(nth
+  (iterate z/next cart-zipper)
+  7)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :customer,
+  :attrs nil,
+  :content
+  [{:tag :name,
+    :attrs nil,
+    :content [&quot;Arne&quot;]}
+   {:tag :address,
+    :attrs nil,
+    :content [&quot;Berlin&quot;]}]}
+ {:l
+  [{:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}],
+  :ppath nil,
+  :r nil}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/9e9a691139c5deba999b8018ee2fb4eb.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/5ebeb59e07f51920683fe10384ac0d69.svg'></div></div></div></section><section class='slide' name='47'><h2 id='walking-8'>Walking</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre viz='tree'><code>(nth
+  (iterate z/next cart-zipper)
+  8)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :name,
+  :attrs nil,
+  :content [&quot;Arne&quot;]}
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :customer,
+    :attrs nil,
+    :content
+    [{:tag :name,
+      :attrs nil,
+      :content [&quot;Arne&quot;]}
+     {:tag :address,
+      :attrs nil,
+      :content [&quot;Berlin&quot;]}]}],
+  :ppath
+  {:l
+   [{:tag :line-items,
+     :attrs nil,
+     :content
+     [{:tag :product,
+       :attrs
+       {:price &quot;2.5&quot;,
+        :qty &quot;1&quot;,
+        :sku &quot;CH56&quot;},
+       :content [&quot;Chocolate&quot;]}
+      {:tag :product,
+       :attrs
+       {:price &quot;1.7&quot;,
+        :qty &quot;1&quot;,
+        :sku &quot;CA94&quot;},
+       :content [&quot;Candy&quot;]}
+      {:tag :discount,
+       :attrs {:amount &quot;10%&quot;},
+       :content nil}]}],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content
+         [&quot;Berlin&quot;]}]}]}],
+   :ppath nil,
+   :r nil},
+  :r
+  ({:tag :address,
+    :attrs nil,
+    :content [&quot;Berlin&quot;]})}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/1c07a1c578d3d5fb0cd03f0d961b579a.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/4c3213532a4ac7abff9625dcf3b6bf33.svg'></div></div></div></section><section class='slide' name='48'><h2 id='walking-9'>Walking</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre viz='tree'><code>(nth
+  (iterate z/next cart-zipper)
+  9)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[&quot;Arne&quot;
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :customer,
+    :attrs nil,
+    :content
+    [{:tag :name,
+      :attrs nil,
+      :content [&quot;Arne&quot;]}
+     {:tag :address,
+      :attrs nil,
+      :content [&quot;Berlin&quot;]}]}
+   {:tag :name,
+    :attrs nil,
+    :content [&quot;Arne&quot;]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content [&quot;Berlin&quot;]}]}]}
+    {:tag :customer,
+     :attrs nil,
+     :content
+     [{:tag :name,
+       :attrs nil,
+       :content [&quot;Arne&quot;]}
+      {:tag :address,
+       :attrs nil,
+       :content [&quot;Berlin&quot;]}]}],
+   :ppath
+   {:l
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}],
+    :pnodes
+    [{:tag :cart,
+      :attrs nil,
+      :content
+      [{:tag :line-items,
+        :attrs nil,
+        :content
+        [{:tag :product,
+          :attrs
+          {:price &quot;2.5&quot;,
+           :qty &quot;1&quot;,
+           :sku &quot;CH56&quot;},
+          :content [&quot;Chocolate&quot;]}
+         {:tag :product,
+          :attrs
+          {:price &quot;1.7&quot;,
+           :qty &quot;1&quot;,
+           :sku &quot;CA94&quot;},
+          :content [&quot;Candy&quot;]}
+         {:tag :discount,
+          :attrs {:amount &quot;10%&quot;},
+          :content nil}]}
+       {:tag :customer,
+        :attrs nil,
+        :content
+        [{:tag :name,
+          :attrs nil,
+          :content [&quot;Arne&quot;]}
+         {:tag :address,
+          :attrs nil,
+          :content
+          [&quot;Berlin&quot;]}]}]}],
+    :ppath nil,
+    :r nil},
+   :r
+   ({:tag :address,
+     :attrs nil,
+     :content [&quot;Berlin&quot;]})},
+  :r nil}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/a1645a9daf7eeef7a206a89d2746218e.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/b5222184ed2b858776b80b21a4972080.svg'></div></div></div></section><section class='slide' name='49'><h2 id='walking-10'>Walking</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre viz='tree'><code>(nth
+  (iterate z/next cart-zipper)
+  10)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :address,
+  :attrs nil,
+  :content [&quot;Berlin&quot;]}
+ {:l
+  [{:tag :name,
+    :attrs nil,
+    :content [&quot;Arne&quot;]}],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :customer,
+    :attrs nil,
+    :content
+    [{:tag :name,
+      :attrs nil,
+      :content [&quot;Arne&quot;]}
+     {:tag :address,
+      :attrs nil,
+      :content [&quot;Berlin&quot;]}]}],
+  :ppath
+  {:l
+   [{:tag :line-items,
+     :attrs nil,
+     :content
+     [{:tag :product,
+       :attrs
+       {:price &quot;2.5&quot;,
+        :qty &quot;1&quot;,
+        :sku &quot;CH56&quot;},
+       :content [&quot;Chocolate&quot;]}
+      {:tag :product,
+       :attrs
+       {:price &quot;1.7&quot;,
+        :qty &quot;1&quot;,
+        :sku &quot;CA94&quot;},
+       :content [&quot;Candy&quot;]}
+      {:tag :discount,
+       :attrs {:amount &quot;10%&quot;},
+       :content nil}]}],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content
+         [&quot;Berlin&quot;]}]}]}],
+   :ppath nil,
+   :r nil},
+  :r nil}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/403255c738b726be520857795806b8b5.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/6bfcd37e2e12e73eef22977913b31a2d.svg'></div></div></div></section><section class='slide' name='50'><h2 id='walking-11'>Walking</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre viz='tree'><code>(nth
+  (iterate z/next cart-zipper)
+  11)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[&quot;Berlin&quot;
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :customer,
+    :attrs nil,
+    :content
+    [{:tag :name,
+      :attrs nil,
+      :content [&quot;Arne&quot;]}
+     {:tag :address,
+      :attrs nil,
+      :content [&quot;Berlin&quot;]}]}
+   {:tag :address,
+    :attrs nil,
+    :content [&quot;Berlin&quot;]}],
+  :ppath
+  {:l
+   [{:tag :name,
+     :attrs nil,
+     :content [&quot;Arne&quot;]}],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content [&quot;Berlin&quot;]}]}]}
+    {:tag :customer,
+     :attrs nil,
+     :content
+     [{:tag :name,
+       :attrs nil,
+       :content [&quot;Arne&quot;]}
+      {:tag :address,
+       :attrs nil,
+       :content [&quot;Berlin&quot;]}]}],
+   :ppath
+   {:l
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}],
+    :pnodes
+    [{:tag :cart,
+      :attrs nil,
+      :content
+      [{:tag :line-items,
+        :attrs nil,
+        :content
+        [{:tag :product,
+          :attrs
+          {:price &quot;2.5&quot;,
+           :qty &quot;1&quot;,
+           :sku &quot;CH56&quot;},
+          :content [&quot;Chocolate&quot;]}
+         {:tag :product,
+          :attrs
+          {:price &quot;1.7&quot;,
+           :qty &quot;1&quot;,
+           :sku &quot;CA94&quot;},
+          :content [&quot;Candy&quot;]}
+         {:tag :discount,
+          :attrs {:amount &quot;10%&quot;},
+          :content nil}]}
+       {:tag :customer,
+        :attrs nil,
+        :content
+        [{:tag :name,
+          :attrs nil,
+          :content [&quot;Arne&quot;]}
+         {:tag :address,
+          :attrs nil,
+          :content
+          [&quot;Berlin&quot;]}]}]}],
+    :ppath nil,
+    :r nil},
+   :r nil},
+  :r nil}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/12ad72f7715e5f1f28c16735d8e27979.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/421e4933cc07b6da2f42bbd9b1637a92.svg'></div></div></div></section><section class='slide' name='51'><h2 id='walking-12'>Walking</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre viz='tree'><code>(nth
+  (iterate z/next cart-zipper)
+  12)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :cart,
+  :attrs nil,
+  :content
+  [{:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}
+   {:tag :customer,
+    :attrs nil,
+    :content
+    [{:tag :name,
+      :attrs nil,
+      :content [&quot;Arne&quot;]}
+     {:tag :address,
+      :attrs nil,
+      :content [&quot;Berlin&quot;]}]}]}
+ :end]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/0654d56202cfcde26740b5d8cb448248.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/306c90246b3967f2f77b28d15e441d9b.svg'></div></div></div></section><section class='slide' name='52'>
+<h2 id='caveats'>Caveats</h2>
+<ul><li><p>No boundary checks. Don’t fall off!</p></li><li><p>No way back from <code>:end</code></p></li><li><p>It’s not a cursor: beware of empty containers</p></li></ul>
+</section><section class='slide' name='53'><h2 id='caveats-no-boundary-checks'>Caveats: no boundary checks</h2>
+<pre class='language-clojure'><code>(-&gt; [[1 2]]
+    z/vector-zip
+    z/down ;; [1 2]
+    z/down ;; 1
+    z/down
+    )
+;;=&gt; nil
+;; ... oops ...
+</code></pre>
+</section><section class='slide' name='54'><h2 id='caveats-no-boundary-checks-1'>Caveats: no boundary checks</h2>
+<pre class='language-clojure'><code>(if-let [l (z/left loc)]
+  (do-something-with l)
+  (do-something-else loc))
+</code></pre>
+</section><section class='slide' name='55'><h2 id='caveats-no-way-back-from-end'>Caveats: no way back from <code>:end</code></h2>
+<pre class='language-clojure'><code>(-&gt; [[1 2]]
+    z/vector-zip
+    z/next ;; [1 2]
+    z/next ;; 1
+    z/next ;; 2
+    z/next ;; :end
+    z/prev)
+;; =&gt; nil
+;; ... oops ...
+</code></pre>
+</section><section class='slide' name='56'>
+<h2 id='caveats-not-a-cursor'>Caveats: not a cursor</h2>
+<p>A zipper points <em>at</em> a node, not <em>in between</em> nodes.</p>
+<p>Corrolary: a zipper can not enter an empty container.</p>
+</section><section class='slide' name='57'>
+<h2 id='caveats-not-a-cursor-1'>Caveats: not a cursor</h2>
+<pre class='language-clojure'><code>(-&gt; [[1 2]]
+    z/vector-zip
+    z/down
+    z/down
+    z/remove
+    z/remove
+    (z/insert-left 3))
+;;=&gt; ???
+</code></pre>
+</section><section class='slide' name='58'>
+<h2 id='caveats-not-a-cursor-2'>Caveats: not a cursor</h2>
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2]]
+    z/vector-zip)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[[[1 2]] nil]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/769ab40994310ebc48e0319db4aab581.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/7416e8c1c5b0f8f5e70fb141ba232b0a.svg'></div></div></div></section><section class='slide' name='59'>
+<h2 id='caveats-not-a-cursor-3'>Caveats: not a cursor</h2>
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2]]
+    z/vector-zip
+    z/down)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[[1 2]
+ {:l [],
+  :pnodes [[[1 2]]],
+  :ppath nil,
+  :r nil}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/ffca4fb266e60e4cda09b2bd80eaa1f5.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/687219a59cfd8b11d48cab7d1c352bea.svg'></div></div></div></section><section class='slide' name='60'>
+<h2 id='caveats-not-a-cursor-4'>Caveats: not a cursor</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2]]
+    z/vector-zip
+    z/down
+    z/down)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[1
+ {:l [],
+  :pnodes [[[1 2]] [1 2]],
+  :ppath
+  {:l [],
+   :pnodes [[[1 2]]],
+   :ppath nil,
+   :r nil},
+  :r (2)}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/e96dbe90ce09b8c643ebe1af167dd612.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/e3091518de80c664657e24284f631019.svg'></div></div></div></section><section class='slide' name='61'><h2 id='caveats-not-a-cursor-5'>Caveats: not a cursor</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2]]
+    z/vector-zip
+    z/down
+    z/down
+    z/remove)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[[2]
+ {:l [],
+  :pnodes [[[1 2]]],
+  :ppath nil,
+  :r nil,
+  :changed? true}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/148354dd51d3f59c6969a230c7b3f687.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/055c01d946dd8c3362fa899fa641b397.svg'></div></div></div></section><section class='slide' name='62'><h2 id='huh'>Huh?</h2>
+<pre class='language-clojure'><code>(defn remove
+  &quot;Removes the node at loc, returning the loc that
+  would have preceded it in a depth-first walk.&quot;
+  {:added &quot;1.0&quot;}
+  [loc]
+  ,,,)
+</code></pre>
+
+</section><section class='slide' name='63'><h2 id='caveats-not-a-cursor-6'>Caveats: not a cursor</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2]]
+    z/vector-zip
+    z/down
+    z/down
+    z/remove)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[[2]
+ {:l [],
+  :pnodes [[[1 2]]],
+  :ppath nil,
+  :r nil,
+  :changed? true}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/148354dd51d3f59c6969a230c7b3f687.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/055c01d946dd8c3362fa899fa641b397.svg'></div></div></div></section><section class='slide' name='64'><h2 id='caveats-not-a-cursor-7'>Caveats: not a cursor</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[1 2]]
+    z/vector-zip
+    z/down
+    z/down
+    z/remove
+    z/remove)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[[] nil]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/4008ab8948cffbb9cbb5f4f14aee44aa.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/b2a9e0fbdfd2134eadf59519da1d5c44.svg'></div></div></div></section><section class='slide' name='65'><h2 id='caveats-not-a-cursor-8'>Caveats: not a cursor</h2>
+<pre class='language-clojure'><code>(-&gt; [[1 2]]
+    z/vector-zip
+    z/down
+    z/down
+    z/remove
+    z/remove
+    (z/insert-left 3))
+
+;; Exception: Insert at top
+</code></pre>
+</section><section class='slide' name='66'><h2 id='caveats-not-a-cursor-9'>Caveats: not a cursor</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[:x :y] [1 2]]
+    z/vector-zip
+    z/down
+    z/right)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[[1 2]
+ {:l [[:x :y]],
+  :pnodes [[[:x :y] [1 2]]],
+  :ppath nil,
+  :r nil}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/a7f709af894ce8d5b785648a13206686.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/ddc2ed1ba7b8ef0e8a841276b1dd1411.svg'></div></div></div></section><section class='slide' name='67'><h2 id='caveats-not-a-cursor-10'>Caveats: not a cursor</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='tree'><code>(-&gt; [[:x :y] [1 2]]
+    z/vector-zip
+    z/down
+    z/right
+    z/remove)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree selected' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[:y
+ {:l [:x],
+  :pnodes
+  [[[:x :y] [1 2]] [:x :y]],
+  :ppath
+  {:l [],
+   :pnodes [[[:x :y] [1 2]]],
+   :ppath nil,
+   :r nil,
+   :changed? true},
+  :r nil}]
+</code></pre></div><div class='tab-content tree ' style='min-height: 350px;'><img class='db center' src='assets/9b2b736ff33b76da8b328258b88a4771.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/389b82171eb067acc61f6cbddacf28a4.svg'></div></div></div></section><section class='slide header' name='68'>
+<h1 id='functional-zippers'>Functional Zippers</h1>
+</section><section class='slide' name='69'><h2 id='what-is-a-zipper-1'>What <strong>is</strong> a zipper?</h2>
+<pre class='language-clojure'><code>(ns ^{:doc &quot;Functional hierarchical zipper,
+            with navigation, editing,
+            and enumeration.  See Huet&quot;
+      :author &quot;Rich Hickey&quot;}
+    clojure.zip)
+</code></pre>
+</section><section class='slide' fullscreen-img='img/zipper_paper.png' name='70'>
+<img src='assets/c0b88b260bc78807262369c10e920b66.png' class='cover'></section><section class='slide' name='71'><h2 id='gérard-huet'>Gérard Huet</h2>
+<blockquote><p>A path is like a zipper, allowing one to rip the tree structure down to a<br>
+certain location. It contains its list <code>l</code> of left siblings , its father path <code>p</code>,<br>
+and its list <code>r</code> of right siblings.</p></blockquote>
+<pre><code>path = Top | (left siblings, parent path, right siblings)
+</code></pre>
+<blockquote><p>A location in the tree adresses a subtree, together with its path</p></blockquote>
+<pre><code>location = (current node, path)
+</code></pre>
+</section><section class='slide' name='72'><h2 id='xml-zip-14'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='zipper'><code>(-&gt; cart-zipper)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper selected' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :cart,
+  :attrs nil,
+  :content
+  [{:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}
+   {:tag :customer,
+    :attrs nil,
+    :content
+    [{:tag :name,
+      :attrs nil,
+      :content [&quot;Arne&quot;]}
+     {:tag :address,
+      :attrs nil,
+      :content [&quot;Berlin&quot;]}]}]}
+ nil]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/ab4508d1c894faaad21a1d8751fa50aa.svg'></div><div class='tab-content zipper ' style='min-height: 350px;'><img class='db center' src='assets/ffb1a1bb52b5f37653a3cebacadc4cb2.svg'></div></div></div></section><section class='slide' name='73'><h2 id='xml-zip-15'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='zipper'><code>(-&gt; cart-zipper
+    z/down)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper selected' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :line-items,
+  :attrs nil,
+  :content
+  [{:tag :product,
+    :attrs
+    {:price &quot;2.5&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CH56&quot;},
+    :content [&quot;Chocolate&quot;]}
+   {:tag :product,
+    :attrs
+    {:price &quot;1.7&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CA94&quot;},
+    :content [&quot;Candy&quot;]}
+   {:tag :discount,
+    :attrs {:amount &quot;10%&quot;},
+    :content nil}]}
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}],
+  :ppath nil,
+  :r
+  ({:tag :customer,
+    :attrs nil,
+    :content
+    [{:tag :name,
+      :attrs nil,
+      :content [&quot;Arne&quot;]}
+     {:tag :address,
+      :attrs nil,
+      :content [&quot;Berlin&quot;]}]})}]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/6a4d31db9ebe81da67f28e44dc15dbea.svg'></div><div class='tab-content zipper ' style='min-height: 350px;'><img class='db center' src='assets/8bccef6ef5b8d4e7f52d0d7e705b2aa0.svg'></div></div></div></section><section class='slide' name='74'><h2 id='xml-zip-16'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='zipper'><code>(-&gt; cart-zipper
+    z/down
+    z/down)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper selected' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :product,
+  :attrs
+  {:price &quot;2.5&quot;,
+   :qty &quot;1&quot;,
+   :sku &quot;CH56&quot;},
+  :content [&quot;Chocolate&quot;]}
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content
+         [&quot;Berlin&quot;]}]}]}],
+   :ppath nil,
+   :r
+   ({:tag :customer,
+     :attrs nil,
+     :content
+     [{:tag :name,
+       :attrs nil,
+       :content [&quot;Arne&quot;]}
+      {:tag :address,
+       :attrs nil,
+       :content [&quot;Berlin&quot;]}]})},
+  :r
+  ({:tag :product,
+    :attrs
+    {:price &quot;1.7&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CA94&quot;},
+    :content [&quot;Candy&quot;]}
+   {:tag :discount,
+    :attrs {:amount &quot;10%&quot;},
+    :content nil})}]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/5f3ee88728fe5ea17027cca012dc253b.svg'></div><div class='tab-content zipper ' style='min-height: 350px;'><img class='db center' src='assets/4d9f745ac20407acaf6bcfecf98a0977.svg'></div></div></div></section><section class='slide' name='75'>
+<h2 id='xml-zip-17'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='zipper'><code>(-&gt; cart-zipper
+    z/down
+    z/down
+    z/right)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper selected' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :product,
+  :attrs
+  {:price &quot;1.7&quot;,
+   :qty &quot;1&quot;,
+   :sku &quot;CA94&quot;},
+  :content [&quot;Candy&quot;]}
+ {:l
+  [{:tag :product,
+    :attrs
+    {:price &quot;2.5&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CH56&quot;},
+    :content [&quot;Chocolate&quot;]}],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content
+         [&quot;Berlin&quot;]}]}]}],
+   :ppath nil,
+   :r
+   ({:tag :customer,
+     :attrs nil,
+     :content
+     [{:tag :name,
+       :attrs nil,
+       :content [&quot;Arne&quot;]}
+      {:tag :address,
+       :attrs nil,
+       :content [&quot;Berlin&quot;]}]})},
+  :r
+  ({:tag :discount,
+    :attrs {:amount &quot;10%&quot;},
+    :content nil})}]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/1aa54eb2fcf3b4a9ad32caa331041ae9.svg'></div><div class='tab-content zipper ' style='min-height: 350px;'><img class='db center' src='assets/8864c5e1500a7b452e6842d6feae8512.svg'></div></div></div></section><section class='slide' name='76'><h2 id='xml-zip-18'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='zipper'><code>(-&gt; cart-zipper
+    z/down
+    z/down
+    z/right
+    z/right)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper selected' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :discount,
+  :attrs {:amount &quot;10%&quot;},
+  :content nil}
+ {:l
+  [{:tag :product,
+    :attrs
+    {:price &quot;2.5&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CH56&quot;},
+    :content [&quot;Chocolate&quot;]}
+   {:tag :product,
+    :attrs
+    {:price &quot;1.7&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CA94&quot;},
+    :content [&quot;Candy&quot;]}],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content
+         [&quot;Berlin&quot;]}]}]}],
+   :ppath nil,
+   :r
+   ({:tag :customer,
+     :attrs nil,
+     :content
+     [{:tag :name,
+       :attrs nil,
+       :content [&quot;Arne&quot;]}
+      {:tag :address,
+       :attrs nil,
+       :content [&quot;Berlin&quot;]}]})},
+  :r nil}]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/0471be7657d26fac31919f1e51a52e48.svg'></div><div class='tab-content zipper ' style='min-height: 350px;'><img class='db center' src='assets/ece192a8bd53d5a44278f9949745cec3.svg'></div></div></div></section><section class='slide' name='77'><h2 id='xml-zip-19'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='zipper'><code>(-&gt; cart-zipper
+    z/down
+    z/down
+    z/right
+    z/right
+    z/leftmost)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper selected' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :product,
+  :attrs
+  {:price &quot;2.5&quot;,
+   :qty &quot;1&quot;,
+   :sku &quot;CH56&quot;},
+  :content [&quot;Chocolate&quot;]}
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content
+         [&quot;Berlin&quot;]}]}]}],
+   :ppath nil,
+   :r
+   ({:tag :customer,
+     :attrs nil,
+     :content
+     [{:tag :name,
+       :attrs nil,
+       :content [&quot;Arne&quot;]}
+      {:tag :address,
+       :attrs nil,
+       :content [&quot;Berlin&quot;]}]})},
+  :r
+  ({:tag :product,
+    :attrs
+    {:price &quot;1.7&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CA94&quot;},
+    :content [&quot;Candy&quot;]}
+   {:tag :discount,
+    :attrs {:amount &quot;10%&quot;},
+    :content nil})}]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/9fec87bf4608354020b42500837423b3.svg'></div><div class='tab-content zipper ' style='min-height: 350px;'><img class='db center' src='assets/551078fbd3c3e012ff0ad0c3f1e8b3d8.svg'></div></div></div></section><section class='slide' name='78'><h2 id='xml-zip-20'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='zipper'><code>(-&gt; cart-zipper
+    z/down
+    z/down
+    z/right
+    z/right
+    z/leftmost
+    z/down)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper selected' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[&quot;Chocolate&quot;
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}
+   {:tag :product,
+    :attrs
+    {:price &quot;2.5&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CH56&quot;},
+    :content [&quot;Chocolate&quot;]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content [&quot;Berlin&quot;]}]}]}
+    {:tag :line-items,
+     :attrs nil,
+     :content
+     [{:tag :product,
+       :attrs
+       {:price &quot;2.5&quot;,
+        :qty &quot;1&quot;,
+        :sku &quot;CH56&quot;},
+       :content [&quot;Chocolate&quot;]}
+      {:tag :product,
+       :attrs
+       {:price &quot;1.7&quot;,
+        :qty &quot;1&quot;,
+        :sku &quot;CA94&quot;},
+       :content [&quot;Candy&quot;]}
+      {:tag :discount,
+       :attrs {:amount &quot;10%&quot;},
+       :content nil}]}],
+   :ppath
+   {:l [],
+    :pnodes
+    [{:tag :cart,
+      :attrs nil,
+      :content
+      [{:tag :line-items,
+        :attrs nil,
+        :content
+        [{:tag :product,
+          :attrs
+          {:price &quot;2.5&quot;,
+           :qty &quot;1&quot;,
+           :sku &quot;CH56&quot;},
+          :content [&quot;Chocolate&quot;]}
+         {:tag :product,
+          :attrs
+          {:price &quot;1.7&quot;,
+           :qty &quot;1&quot;,
+           :sku &quot;CA94&quot;},
+          :content [&quot;Candy&quot;]}
+         {:tag :discount,
+          :attrs {:amount &quot;10%&quot;},
+          :content nil}]}
+       {:tag :customer,
+        :attrs nil,
+        :content
+        [{:tag :name,
+          :attrs nil,
+          :content [&quot;Arne&quot;]}
+         {:tag :address,
+          :attrs nil,
+          :content
+          [&quot;Berlin&quot;]}]}]}],
+    :ppath nil,
+    :r
+    ({:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]})},
+   :r
+   ({:tag :product,
+     :attrs
+     {:price &quot;1.7&quot;,
+      :qty &quot;1&quot;,
+      :sku &quot;CA94&quot;},
+     :content [&quot;Candy&quot;]}
+    {:tag :discount,
+     :attrs {:amount &quot;10%&quot;},
+     :content nil})},
+  :r nil}]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/b8599c18e28babd37e0663f8511c18fe.svg'></div><div class='tab-content zipper ' style='min-height: 350px;'><img class='db center' src='assets/9e834b0c222329d63e4f95edcf18a66b.svg'></div></div></div></section><section class='slide' name='79'><h2 id='xml-zip-21'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='zipper'><code>(-&gt; cart-zipper
+    z/down
+    z/down
+    z/down
+    (z/replace
+      &quot;luxury chocolate&quot;))
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper selected' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[&quot;luxury chocolate&quot;
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}
+   {:tag :product,
+    :attrs
+    {:price &quot;2.5&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CH56&quot;},
+    :content [&quot;Chocolate&quot;]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content [&quot;Berlin&quot;]}]}]}
+    {:tag :line-items,
+     :attrs nil,
+     :content
+     [{:tag :product,
+       :attrs
+       {:price &quot;2.5&quot;,
+        :qty &quot;1&quot;,
+        :sku &quot;CH56&quot;},
+       :content [&quot;Chocolate&quot;]}
+      {:tag :product,
+       :attrs
+       {:price &quot;1.7&quot;,
+        :qty &quot;1&quot;,
+        :sku &quot;CA94&quot;},
+       :content [&quot;Candy&quot;]}
+      {:tag :discount,
+       :attrs {:amount &quot;10%&quot;},
+       :content nil}]}],
+   :ppath
+   {:l [],
+    :pnodes
+    [{:tag :cart,
+      :attrs nil,
+      :content
+      [{:tag :line-items,
+        :attrs nil,
+        :content
+        [{:tag :product,
+          :attrs
+          {:price &quot;2.5&quot;,
+           :qty &quot;1&quot;,
+           :sku &quot;CH56&quot;},
+          :content [&quot;Chocolate&quot;]}
+         {:tag :product,
+          :attrs
+          {:price &quot;1.7&quot;,
+           :qty &quot;1&quot;,
+           :sku &quot;CA94&quot;},
+          :content [&quot;Candy&quot;]}
+         {:tag :discount,
+          :attrs {:amount &quot;10%&quot;},
+          :content nil}]}
+       {:tag :customer,
+        :attrs nil,
+        :content
+        [{:tag :name,
+          :attrs nil,
+          :content [&quot;Arne&quot;]}
+         {:tag :address,
+          :attrs nil,
+          :content
+          [&quot;Berlin&quot;]}]}]}],
+    :ppath nil,
+    :r
+    ({:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]})},
+   :r
+   ({:tag :product,
+     :attrs
+     {:price &quot;1.7&quot;,
+      :qty &quot;1&quot;,
+      :sku &quot;CA94&quot;},
+     :content [&quot;Candy&quot;]}
+    {:tag :discount,
+     :attrs {:amount &quot;10%&quot;},
+     :content nil})},
+  :r nil,
+  :changed? true}]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/00ff2cea32161ab03842ca9869e42bed.svg'></div><div class='tab-content zipper ' style='min-height: 350px;'><img class='db center' src='assets/ed4624550dd5f03e6b601f531bc9d008.svg'></div></div></div></section><section class='slide' name='80'><h2 id='xml-zip-22'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='zipper'><code>(-&gt; cart-zipper
+    z/down
+    z/down
+    z/down
+    (z/replace
+      &quot;luxury chocolate&quot;)
+    z/up)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper selected' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :product,
+  :attrs
+  {:price &quot;2.5&quot;,
+   :qty &quot;1&quot;,
+   :sku &quot;CH56&quot;},
+  :content [&quot;luxury chocolate&quot;]}
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}
+   {:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content [&quot;Chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}],
+  :ppath
+  {:l [],
+   :pnodes
+   [{:tag :cart,
+     :attrs nil,
+     :content
+     [{:tag :line-items,
+       :attrs nil,
+       :content
+       [{:tag :product,
+         :attrs
+         {:price &quot;2.5&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CH56&quot;},
+         :content [&quot;Chocolate&quot;]}
+        {:tag :product,
+         :attrs
+         {:price &quot;1.7&quot;,
+          :qty &quot;1&quot;,
+          :sku &quot;CA94&quot;},
+         :content [&quot;Candy&quot;]}
+        {:tag :discount,
+         :attrs {:amount &quot;10%&quot;},
+         :content nil}]}
+      {:tag :customer,
+       :attrs nil,
+       :content
+       [{:tag :name,
+         :attrs nil,
+         :content [&quot;Arne&quot;]}
+        {:tag :address,
+         :attrs nil,
+         :content
+         [&quot;Berlin&quot;]}]}]}],
+   :ppath nil,
+   :r
+   ({:tag :customer,
+     :attrs nil,
+     :content
+     [{:tag :name,
+       :attrs nil,
+       :content [&quot;Arne&quot;]}
+      {:tag :address,
+       :attrs nil,
+       :content [&quot;Berlin&quot;]}]})},
+  :r
+  ({:tag :product,
+    :attrs
+    {:price &quot;1.7&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CA94&quot;},
+    :content [&quot;Candy&quot;]}
+   {:tag :discount,
+    :attrs {:amount &quot;10%&quot;},
+    :content nil}),
+  :changed? true}]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/8b1227c67ec20717afb8964dcc71ca3e.svg'></div><div class='tab-content zipper ' style='min-height: 350px;'><img class='db center' src='assets/c6811cad625b4e6f6ed901a060c6ff5e.svg'></div></div></div></section><section class='slide' name='81'><h2 id='xml-zip-23'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='zipper'><code>(-&gt; cart-zipper
+    z/down
+    z/down
+    z/down
+    (z/replace
+      &quot;luxury chocolate&quot;)
+    z/up
+    z/up)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper selected' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :line-items,
+  :attrs nil,
+  :content
+  [{:tag :product,
+    :attrs
+    {:price &quot;2.5&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CH56&quot;},
+    :content [&quot;luxury chocolate&quot;]}
+   {:tag :product,
+    :attrs
+    {:price &quot;1.7&quot;,
+     :qty &quot;1&quot;,
+     :sku &quot;CA94&quot;},
+    :content [&quot;Candy&quot;]}
+   {:tag :discount,
+    :attrs {:amount &quot;10%&quot;},
+    :content nil}]}
+ {:l [],
+  :pnodes
+  [{:tag :cart,
+    :attrs nil,
+    :content
+    [{:tag :line-items,
+      :attrs nil,
+      :content
+      [{:tag :product,
+        :attrs
+        {:price &quot;2.5&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CH56&quot;},
+        :content [&quot;Chocolate&quot;]}
+       {:tag :product,
+        :attrs
+        {:price &quot;1.7&quot;,
+         :qty &quot;1&quot;,
+         :sku &quot;CA94&quot;},
+        :content [&quot;Candy&quot;]}
+       {:tag :discount,
+        :attrs {:amount &quot;10%&quot;},
+        :content nil}]}
+     {:tag :customer,
+      :attrs nil,
+      :content
+      [{:tag :name,
+        :attrs nil,
+        :content [&quot;Arne&quot;]}
+       {:tag :address,
+        :attrs nil,
+        :content [&quot;Berlin&quot;]}]}]}],
+  :ppath nil,
+  :r
+  ({:tag :customer,
+    :attrs nil,
+    :content
+    [{:tag :name,
+      :attrs nil,
+      :content [&quot;Arne&quot;]}
+     {:tag :address,
+      :attrs nil,
+      :content [&quot;Berlin&quot;]}]}),
+  :changed? true}]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/fc20976b1a9235da8bb69d96e6b7c762.svg'></div><div class='tab-content zipper ' style='min-height: 350px;'><img class='db center' src='assets/ac74c99e8df882c6438de1a9a3c1c362.svg'></div></div></div></section><section class='slide' name='82'><h2 id='xml-zip-24'>xml-zip</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='zipper'><code>(-&gt; cart-zipper
+    z/down
+    z/down
+    z/down
+    (z/replace
+      &quot;luxury chocolate&quot;)
+    z/up
+    z/up
+    z/up)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result ' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper selected' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result dn'><pre class='language-clojure'><code style='font-size: 80%;'>[{:tag :cart,
+  :attrs nil,
+  :content
+  [{:tag :line-items,
+    :attrs nil,
+    :content
+    [{:tag :product,
+      :attrs
+      {:price &quot;2.5&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CH56&quot;},
+      :content
+      [&quot;luxury chocolate&quot;]}
+     {:tag :product,
+      :attrs
+      {:price &quot;1.7&quot;,
+       :qty &quot;1&quot;,
+       :sku &quot;CA94&quot;},
+      :content [&quot;Candy&quot;]}
+     {:tag :discount,
+      :attrs {:amount &quot;10%&quot;},
+      :content nil}]}
+   {:tag :customer,
+    :attrs nil,
+    :content
+    [{:tag :name,
+      :attrs nil,
+      :content [&quot;Arne&quot;]}
+     {:tag :address,
+      :attrs nil,
+      :content [&quot;Berlin&quot;]}]}]}
+ nil]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/fd4d1cd72c2903467e257b890b4df9b7.svg'></div><div class='tab-content zipper ' style='min-height: 350px;'><img class='db center' src='assets/f221ac66c6d0a9e9dd37979f346c92a9.svg'></div></div></div></section><section class='slide header' name='83'>
+<h1 id='clojure-implementation'>Clojure Implementation</h1>
+</section><section class='slide' name='84'><h2 id='clojurezipzipper'>clojure.zip/zipper</h2>
 <pre class='language-clojure'><code>(zipper branch? children make-node root)
 </code></pre>
 <pre class='language-clojure'><code>;; Can this node have children?
@@ -87,44 +4178,242 @@
 ;; return a new node with those children.
 (make-node node seq) ;;=&gt; node
 </code></pre>
+</section><section class='slide' name='85'><h2 id='clojurezipzipper-1'>clojure.zip/zipper</h2>
+<pre class='language-clojure'><code>(defn zipper [branch? children make-node root]
+  ^{:zip/branch? branch?
+    :zip/children children
+    :zip/make-node make-node}
+  [root nil])
+</code></pre>
+</section><section class='slide' name='86'><h2 id='clojurezipzipper-2'>clojure.zip/zipper</h2>
+<pre class='language-clojure'><code>(defn vector-zip
+  &quot;Returns a zipper for nested vectors, given a root vector&quot;
+  [root]
+  (zipper vector?
+          seq
+          (fn [node children]
+            (with-meta (vec children) (meta node)))
+          root))
+</code></pre>
+</section><section class='slide' name='87'><h2 id='meta-polymorphism'>^meta polymorphism</h2>
+<pre class='language-clojure'><code>(defn branch?
+  [loc]
+  ((:zip/branch? (meta loc)) (node loc)))
 
+(defn children
+  [loc]
+  ((:zip/children (meta loc)) (node loc)))
 
-</section><section class='slide' name='12'>
-<p>Creating zippers</p>
-<pre><code>zipper
-seq-zip
-vector-zip
-xml-zip
+(defn make-node
+  [loc node children]
+  ((:zip/make-node (meta loc)) node children))
 </code></pre>
-<p>Navigating</p>
-<pre><code>up
-down
-left
-leftmost
-right
-rightmost
+</section><section class='slide' name='88'><h2 id='clojurezipzipper-3'>clojure.zip/zipper</h2>
+<pre class='language-clojure'><code>(vector-zip [[1 2] [3 [4 5] 6]])
+;;=&gt; [ [[1 2] [3 [4 5] 6]] nil ]
 </code></pre>
-<p>Iterating</p>
-<pre><code>prev
-next
-end?
+<pre class='language-clojure'><code>(meta (vector-zip [[1 2] [3 [4 5] 6]]))
+;;=&gt;
+{:zip/branch? #function[clojure.core/vector?--5314],
+ :zip/children #function[clojure.core/seq--5302],
+ :zip/make-node #function[clojure.zip/vector-zip/fn--9127]}
 </code></pre>
-<p>Inspecting</p>
-<pre><code>node
-root
-children
-lefts
-rights
-path
-branch?
+</section><section class='slide' name='89'><h2 id='an-example-10'>An example</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='result'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result selected' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result '><pre class='language-clojure'><code style='font-size: 80%;'>[[[1 2] [3 [4 5] 6]] nil]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/4c4907fea4282154c13d6c4b828b4d03.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/f8c7ccfd73d8336626e83d7e4c4690fc.svg'></div></div></div></section><section class='slide' name='90'><h2 id='an-example-11'>An example</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='result'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result selected' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result '><pre class='language-clojure'><code style='font-size: 80%;'>[[1 2]
+ {:l [],
+  :pnodes [[[1 2] [3 [4 5] 6]]],
+  :ppath nil,
+  :r ([3 [4 5] 6])}]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/28b5d86f574f697753c32763b655118e.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/bc8517394093fe4bb139259feb0777b2.svg'></div></div></div></section><section class='slide' name='91'><h2 id='an-example-12'>An example</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='result'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down
+    z/right)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result selected' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result '><pre class='language-clojure'><code style='font-size: 80%;'>[[3 [4 5] 6]
+ {:l [[1 2]],
+  :pnodes [[[1 2] [3 [4 5] 6]]],
+  :ppath nil,
+  :r nil}]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/d842bb8e40dfb72f0f8f178d958d7fa2.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/c184b748efa5615cc14fdbc14a3c49cd.svg'></div></div></div></section><section class='slide' name='92'><h2 id='an-example-13'>An example</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='result'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down
+    z/right
+    z/down)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result selected' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result '><pre class='language-clojure'><code style='font-size: 80%;'>[3
+ {:l [],
+  :pnodes
+  [[[1 2] [3 [4 5] 6]]
+   [3 [4 5] 6]],
+  :ppath
+  {:l [[1 2]],
+   :pnodes [[[1 2] [3 [4 5] 6]]],
+   :ppath nil,
+   :r nil},
+  :r ([4 5] 6)}]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/76726ef944d3f0d044cfdccde3a4ce55.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/e7fb3eb07acb0f282017fd930d1628e3.svg'></div></div></div></section><section class='slide' name='93'><h2 id='an-example-14'>An example</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='result'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down
+    z/right
+    z/down
+    z/rightmost)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result selected' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result '><pre class='language-clojure'><code style='font-size: 80%;'>[6
+ {:l [3 [4 5]],
+  :pnodes
+  [[[1 2] [3 [4 5] 6]]
+   [3 [4 5] 6]],
+  :ppath
+  {:l [[1 2]],
+   :pnodes [[[1 2] [3 [4 5] 6]]],
+   :ppath nil,
+   :r nil},
+  :r nil}]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/ec25a287cfcb0efd5faa0fed31c671f9.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/736a28ae1fc967399951f1f9bda9cceb.svg'></div></div></div></section><section class='slide' name='94'>
+<h2 id='an-example-15'>An example</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='result'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down
+    z/right
+    z/down
+    z/rightmost
+    z/left)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result selected' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result '><pre class='language-clojure'><code style='font-size: 80%;'>[[4 5]
+ {:l [3],
+  :pnodes
+  [[[1 2] [3 [4 5] 6]]
+   [3 [4 5] 6]],
+  :ppath
+  {:l [[1 2]],
+   :pnodes [[[1 2] [3 [4 5] 6]]],
+   :ppath nil,
+   :r nil},
+  :r (6)}]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/0d5b66688f716fecf6b38d025568ad9d.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/7e53bb16064d68446011ff6990be306f.svg'></div></div></div></section><section class='slide' name='95'>
+<h2 id='an-example-16'>An example</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='result'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down
+    z/right
+    z/down
+    z/rightmost
+    z/left
+    (z/append-child :x))
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result selected' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result '><pre class='language-clojure'><code style='font-size: 80%;'>[[4 5 :x]
+ {:l [3],
+  :pnodes
+  [[[1 2] [3 [4 5] 6]]
+   [3 [4 5] 6]],
+  :ppath
+  {:l [[1 2]],
+   :pnodes [[[1 2] [3 [4 5] 6]]],
+   :ppath nil,
+   :r nil},
+  :r (6),
+  :changed? true}]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/3798726b54c4844b281beb3c1e9eae21.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/e1fa1bf683eb6eda446d75578cc88650.svg'></div></div></div></section><section class='slide' name='96'><h2 id='an-example-17'>An example</h2>
+
+<div class='columns' style='grid-template-columns: 50% 50%; grid-column-gap: 30px;'><pre class='language-clojure' viz='result'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down
+    z/right
+    z/down
+    z/rightmost
+    z/left
+    (z/append-child :x)
+    z/up)
+</code></pre><div class='viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden'><div class='f5 bb bw1 b--black-10 flex'><a class='ttu dib link pa3 black tab result selected' href='javascript:selectTab(&#x27;result&#x27;)'>Result</a><a class='ttu dib link pa3 black tab tree ' href='javascript:selectTab(&#x27;tree&#x27;)'>Tree</a><a class='ttu dib link pa3 black tab zipper ' href='javascript:selectTab(&#x27;zipper&#x27;)'>Zipper</a></div><div class='tab-content result '><pre class='language-clojure'><code style='font-size: 80%;'>[[3 [4 5 :x] 6]
+ {:l [[1 2]],
+  :pnodes [[[1 2] [3 [4 5] 6]]],
+  :ppath nil,
+  :r nil,
+  :changed? true}]
+</code></pre></div><div class='tab-content tree dn' style='min-height: 350px;'><img class='db center' src='assets/e4e67b40572ff717670a6e9051f873ad.svg'></div><div class='tab-content zipper dn' style='min-height: 350px;'><img class='db center' src='assets/b00de1a47f8aae80c52072fd2b025e0f.svg'></div></div></div></section><section class='slide' name='97'><h2 id='an-example-18'>An example</h2>
+<pre class='language-clojure'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down
+    z/right
+    z/down
+    z/rightmost
+    z/left
+    (z/append-child :x)
+    z/up
+    z/node)
+;;=&gt; [3 [4 5 :x] 6]
 </code></pre>
-<p>Editing</p>
-<pre><code>append-child
-insert-child
-insert-left
-insert-right
-edit
-remove
-replace
-make-node
-</code></pre></section><script src='assets/39131bc767b214c1cfdb60c8073e09d8.js' type='text/javascript'></script><div class='progress'></div><script type='text/javascript' src='assets/64ce162190ad9e8d33ce2a33aa64c0c6.js'></script></body></html>
+</section><section class='slide' name='98'>
+<h2 id='an-example-19'>An example</h2>
+<pre class='language-clojure'><code>(-&gt; [[1 2] [3 [4 5] 6]]
+    z/vector-zip
+    z/down
+    z/right
+    z/down
+    z/rightmost
+    z/left
+    (z/append-child :x)
+    z/root)
+;;=&gt; [[1 2] [3 [4 5 :x] 6]]
+</code></pre>
+</section><section class='slide header' name='99'>
+<h1 id='fast-zip--rewrite-clj'>Fast-zip &amp; rewrite-clj</h1>
+</section><section class='slide' name='100'><h2 id='whats-next'>What’s next?</h2>
+<pre class='language-clojure'><code>{fast-zip {:mvn/version &quot;0.7.0&quot;}}
+</code></pre>
+<pre class='language-diff'><code>- (:require [clojure.zip :as z])
++ (:require [fast-zip.core :as z])
+</code></pre>
+<p>Identical API, but faster!</p>
+<p>Careful not to rely on implementation details.</p>
+</section><section class='slide' name='101'><h2 id='whats-next-1'>What’s next?</h2>
+<pre class='language-clojure'><code>{rewrite-clj {:mvn/version &quot;0.6.1&quot;}}
+</code></pre>
+<pre class='language-clojure'><code>(require &#x27;[rewrite-clj.zip :as z])
+
+(def loc (z/of-string (slurp &quot;burrito.clj&quot;)))
+</code></pre>
+<ul><li><p>Zipper over source code, Retains whitespace</p></li><li><p>Extra goodies: <code>z/find</code>, <code>z/sexpr</code>, …</p></li></ul>
+</section><section class='slide' name='102'><h2 id='rewrite-clj-base-for-tooling'>rewrite-clj: base for tooling</h2>
+<ul><li><p>cljfmt</p></li><li><p>zprint</p></li><li><p>lein-ancient</p></li><li><p>refactor-nrepl</p></li><li><p>mutant</p></li><li><p>…</p></li></ul>
+</section><section class='slide' name='103'><h2 id='real-world-example'>Real world example</h2>
+<pre class='language-clojure'><code>(defn update-requires [loc renames]
+  (loop [loc loc]
+    (cond
+      (z/end? loc) loc
+
+      (and (z/list? loc) (-&gt; loc z/down z/sexpr (= :require)))
+      (recur (-&gt; loc z/down (update-requires* renames) z/next))
+
+      :else
+      (recur (z/next loc)))))
+</code></pre>
+</section><section class='slide header' name='104'>
+<h1 id='the-end'>THE END</h1>
+</section><section class='slide' name='105'>
+<pre class='language-clojure'><code>(-&gt; [[[1 2] [3 4]] [[5 6] 7]]
+    z/vector-zip
+    z/down
+    z/down
+    z/down
+    (z/replace :X)
+    z/root)
+
+(assoc-in [[[1 2] [3 4]] [[5 6] 7]]
+          [0 0 0]
+          :X)
+</code></pre>
+</section><section class='slide' name='106'>
+<p><img src='assets/670c2083781c214ab8e2c6652cd6eeca.svg' width='100%'></p></section><script src='assets/39131bc767b214c1cfdb60c8073e09d8.js' type='text/javascript'></script><div class='progress'></div><script type='text/javascript' src='assets/caee99a07acc0855b85d7ad51bc419bd.js'></script></body></html>

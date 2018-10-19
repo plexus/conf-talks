@@ -46,10 +46,14 @@ Slippery::RakeTasks.new do
   def clojure_exec(src)
     socket = TCPSocket.new('localhost', 5555)
     puts src
-    socket.puts %[(require '[zipper-demo.viz :as viz]
+    socket.puts %[(require 'zipper-demo.core)
+                  (in-ns 'zipper-demo.core)
+                  (require '[zipper-demo.viz :as viz]
+                           '[clojure.java.io :as io]
+                           '[clojure.xml :as xml]
                            '[clojure.zip :as z]
                            '[clojure.pprint] :reload)]
-    socket.gets # read "nil"
+    socket.gets ; socket.gets
     socket.puts(src)
     socket.puts(":repl/quit")
     result = ''
@@ -67,43 +71,49 @@ Slippery::RakeTasks.new do
       digest = Digest::MD5.hexdigest(source)
       type = "svg"
       viz = code.attr('viz')
-      tree_filename = `pwd`.strip + "/img/viz_tree_#{digest}.#{type}"
-      zip_filename = `pwd`.strip + "/img/viz_zip_#{digest}.#{type}"
-      clojure_exec("(-> #{source} viz/tree->dot (viz/spit \"#{tree_filename}\" :#{type}))")
-      clojure_exec("(-> #{source} viz/zipper->dot (viz/spit \"#{zip_filename}\" :#{type}))")
-      pprint = clojure_exec("(binding [clojure.pprint/*print-miser-width* 35 clojure.pprint/*print-right-margin* 35] (clojure.pprint/pprint #{source}))")
-      slide
-        .set_children(slide.children.reject { |c| c.respond_to?(:tag?) && c.tag?(:pre)})
-        .add_child(H[:div,
-                     {class: "columns", style: "grid-template-columns: 50% 50%; grid-column-gap: 30px;"},
-                     code,
-                     H[:div, {class: "viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden"},
-                       H[:div, {class: "f5 bb bw1 b--black-10 flex"},
-                         H[:a, {id: "tab_#{digest}_result",
-                                class: "tab ttu dib link pa3 black #{'selected' if viz == 'result'}",
-                                href: "#",
-                                onClick: "selectTab(#{digest.inspect}, 'result')"},
-                           "Result"],
-                         H[:a, {id: "tab_#{digest}_tree",
-                                class: "tab ttu dib link pa3 black #{'selected' if viz == 'tree'}",
-                                href: "#",
-                                onClick: "selectTab(#{digest.inspect}, 'tree')"},
-                           "Tree"],
-                         H[:a, {id: "tab_#{digest}_zipper",
-                                class: "tab ttu dib link pa3 black #{'selected' if viz == 'zipper'}",
-                                href: "#",
-                                onClick: "selectTab(#{digest.inspect}, 'zipper')"},
-                           "Zipper"]],
+      tree_filename = `pwd`.strip + "/assets/viz_tree_#{digest}.#{type}"
+      zip_filename = `pwd`.strip + "/assets/viz_zip_#{digest}.#{type}"
 
-                       H[:div, {id: "div_#{digest}_result", class: (viz == 'result' ? "" : "dn"), style: "min-height: 350px; padding-top: 0.5em;"},
-                         H[:pre, {class: "language-clojure"},
-                           H[:code, {style: "font-size: 80%;"}, pprint.lines[1..-2].join]]],
+      unless viz=='eval' || File.exist?(tree_filename)
+        clojure_exec("(do (def +res+ (do #{source})) :repl/ignore)\n (-> +res+ viz/tree->dot (viz/spit \"#{tree_filename}\" :#{type}))")
+      end
 
-                       H[:div, {id: "div_#{digest}_tree", class: (viz == 'tree' ? "" : "dn"), style: "min-height: 350px;"},
-                         H[:img, {class: "db center", src: tree_filename}]],
+      unless viz == 'eval' || File.exist?(zip_filename)
+        clojure_exec("(do (def +res+ (do #{source})) :repl/ignore)\n (-> +res+ viz/zipper->dot (viz/spit \"#{zip_filename}\" :#{type}))")
+      end
 
-                       H[:div, {id: "div_#{digest}_zipper", class: (viz == 'zipper' ? "" : "dn"), style: "min-height: 350px;"},
-                         H[:img, {class: "db center", src: zip_filename}]]]])
+      pprint = clojure_exec("(do (def +res+ (do #{source})) :repl/ignore)\n (binding [clojure.pprint/*print-miser-width* 35 clojure.pprint/*print-right-margin* 35] (clojure.pprint/pprint +res+))")
+
+      if viz == 'eval'
+        slide
+      else
+        slide
+          .set_children(slide.children.reject { |c| c.respond_to?(:tag?) && c.tag?(:pre)})
+          .add_child(H[:div,
+                       {class: "columns", style: "grid-template-columns: 50% 50%; grid-column-gap: 30px;"},
+                       code,
+                       H[:div, {class: "viz-tabs bg-white ba bw1 b--black-10 br2 overflow-hidden"},
+                         H[:div, {class: "f5 bb bw1 b--black-10 flex"},
+                           H[:a, {class: "ttu dib link pa3 black tab result #{'selected' if viz == 'result'}",
+                                  href: "javascript:selectTab('result')"},
+                             "Result"],
+                           H[:a, {class: "ttu dib link pa3 black tab tree #{'selected' if viz == 'tree'}",
+                                  href: "javascript:selectTab('tree')"},
+                             "Tree"],
+                           H[:a, {class: "ttu dib link pa3 black tab zipper #{'selected' if viz == 'zipper'}",
+                                  href: "javascript:selectTab('zipper')"},
+                             "Zipper"]],
+
+                         H[:div, {class: "tab-content result #{'dn' unless viz == 'result'}"},
+                           H[:pre, {class: "language-clojure"},
+                             H[:code, {style: "font-size: 80%;"}, pprint.lines[1..-2].join]]],
+
+                         H[:div, {class: "tab-content tree #{'dn' unless viz == 'tree'}", style: "min-height: 350px;"},
+                           H[:img, {class: "db center", src: tree_filename}]],
+
+                         H[:div, {class: "tab-content zipper #{'dn' unless viz == 'zipper'}", style: "min-height: 350px;"},
+                           H[:img, {class: "db center", src: zip_filename}]]]])
+      end
     else
       slide
     end
