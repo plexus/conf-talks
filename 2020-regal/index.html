@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html><head><link href='assets/27bb0842d5c2183f4eb2449f0fbecb8c.css' rel='stylesheet'><style>.shower {--slide-ratio: calc(16 / 9); --color-key: #4caf50;} </style><meta charset='utf-8'><meta http-equiv='x-ua-compatible' content='ie=edge'><meta name='viewport' content='width=device-width, initial-scale=1'><title>lambdaisland/regal</title><link rel='stylesheet' href='assets/8662c2c36baa70886e0dc5bedecabadd.css'><script src='assets/754c27c4424d283387915abba102fe1f.js'></script><script>hljs.initHighlightingOnLoad();</script><link rel='stylesheet' type='text/css' href='assets/77b87c4246f0a97fd8d405dd1fe0757c.css'><link rel='stylesheet' type='text/css' href='assets/8c8ad12747d4e7cbd17ce68dac17a33b.css'><link rel='stylesheet' type='text/css' href='assets/5a0ca255fce9de83dde16a0f27d788fe.css'><link rel='stylesheet' type='text/css' href='assets/e5614196ef959644a5774cf809a1b7ae.css'></head><body class='shower list'><header class='caption'>
+<h1 id='lambdaislandregal'>lambdaisland/regal</h1>
+</header><section class='slide' name='1'>
+<h1 style='font-size: 4rem; text-align: center; margin-top: 5rem' id='lambdaislandregal-1'>lambdaisland/regal</h1>
+</section><section class='slide' name='2'>
+<h1 style='font-size: 3rem; text-align: center; margin: 0; padding: 0' id='3'>&lt;3</h1>
+<h1 style='font-size: 4rem; text-align: center' id='everybody-loves-regex'>everybody loves regex</h1>
+<h1 style='font-size: 3rem; text-align: center; margin: 0; padding: 0' id='3-1'>&lt;3</h1>
+</section><section class='slide' name='3'>
+<pre class='language-clojure' style='margin-top: 2.5rem'><code>(def uri-regex
+  #?(:clj
+     #&quot;\A(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)?(\?([^#]*))?(#(.*))?\z&quot;
+     :cljs
+     #&quot;^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)?(\?([^#]*))?(#(.*))?$&quot;))
+
+(def authority-regex
+  #?(:clj
+     #&quot;\A(([^:]*)(:(.*))?@)?([^:]*)(:(\d*))?\z&quot;
+     :cljs
+     #&quot;^(([^:]*)(:(.*))?@)?([^:]*)(:(\d*))?$&quot;))
+</code></pre>
+</section><section class='slide' name='4'>
+<h1 id='introducing-regal'>Introducing Regal</h1>
+<pre class='language-clojure'><code>{:deps
+ {lambdaisland/regal
+  {:git/url &quot;https://github.com/lambdaisland/regal&quot;
+   :sha &quot;9a40397ba5f985bfc0a7cb03b5e5a8af835da0b1&quot;}}}
+</code></pre>
+</section><section class='slide' name='5'>
+<pre class='language-clojure' style='margin-top: 4rem'><code>(require &#x27;[lambdaisland.regal :as regal])
+
+(regal/regex [:cat
+              :start
+              [:+ :word]
+              &quot;=&quot;
+              [:+ :digit]
+              :end])
+;;=&gt;
+#&quot;\A\w+=\d+\z&quot;
+</code></pre>
+</section><section class='slide' name='6'>
+<pre class='language-clojure' style='margin-top: 2rem'><code>(require &#x27;[lambdaisland.regal.generator :as regal-gen]
+         &#x27;[clojure.test.check.generators :as gen])
+
+(gen/sample
+ (regal-gen/gen [:cat
+                 :start
+                 [:+ :word]
+                 &quot;=&quot;
+                 [:+ :digit]
+                 :end]))
+;;=&gt;
+(&quot;Q=0&quot; &quot;zB=7&quot; &quot;_=496&quot; &quot;FA=28&quot; &quot;b=03019&quot; &quot;_=2&quot;
+ &quot;N_h_=37367&quot; &quot;NYUL=609&quot; &quot;t=6795454&quot; &quot;U_dBsav2_E=6&quot;)
+</code></pre>
+</section><section class='slide' name='7'>
+<pre class='language-clojure'><code>(require &#x27;[lambdaisland.regal.spec-alpha
+           :refer [spec] :rename {spec regal-spec}])
+
+
+(s/def ::x-then-y      (regal-spec [:cat [:+ &quot;x&quot;] &quot;-&quot; [:+ &quot;y&quot;]]))
+(s/def ::xy-with-stars (regal-spec [:cat &quot;*&quot; ::x-then-y &quot;*&quot;]))
+
+(s/valid? ::xy-with-stars &quot;*xxx-yy*&quot;)
+;; =&gt; true
+
+(gen/sample (s/gen ::xy-with-stars))
+;;=&gt;
+(&quot;*x-y*&quot; &quot;*xx-y*&quot; &quot;*x-y*&quot; &quot;*xxxx-y*&quot; &quot;*xxx-yyyy*&quot; &quot;*xxxx-yyy*&quot;
+ &quot;*xxxxxxx-yyyyy*&quot; &quot;*xx-yyy*&quot; &quot;*xxxxx-y*&quot; &quot;*xxx-yyyy*&quot;)
+</code></pre>
+</section><section class='slide' name='8'>
+<p>Malli!</p>
+<pre class='language-clojure'><code>(require &#x27;[malli.core :as m]
+         &#x27;[lambdaisland.regal.malli :as regal-malli])
+
+(m/validate [:regal [:+ &quot;x&quot;]] &quot;xxx&quot; {:registry regal-malli/registry})
+;;=&gt; &quot;xxx&quot;
+</code></pre>
+</section><section class='slide' name='9'>
+<p>clojure.spec.alpha</p>
+<pre class='language-clojure' style='margin-top: 4rem'><code>(require &#x27;[lambdaisland.regal.spec-alpha :as regal-spec]
+         &#x27;[clojure.spec.alpha :as s])
+
+(s/valid :lambdaisland.regal/form [:cat [:+ &quot;x&quot;] &quot;-&quot; [:+ &quot;y&quot;]])
+;; =&gt; true
+
+(gen/sample :lambdaisland.regal/form)
+</code></pre>
+</section><section class='slide' name='10'>
+<p>clojure.spec.alpha</p>
+<pre class='language-clojure' style='margin-top: 4rem'><code>(require &#x27;[lambdaisland.regal.spec-alpha :as regal-spec]
+         &#x27;[clojure.spec.alpha :as s])
+
+(s/valid :lambdaisland.regal/form [:cat [:+ &quot;x&quot;] &quot;-&quot; [:+ &quot;y&quot;]])
+;; =&gt; true
+
+(gen/sample :lambdaisland.regal/form)
+;; StackOverflow
+</code></pre>
+</section><section class='slide' name='11'>
+<p>Parsing!</p>
+<pre><code>(require &#x27;[lambdaisland.regal.parse :refer [parse]])
+
+(parse #&quot;(http|https)://(\w+)&quot;)
+;; =&gt;
+[:cat
+ [:capture
+  [:alt &quot;http&quot; &quot;https&quot;]
+  &quot;://&quot;
+  [:capture [:+ :word]]]]
+</code></pre>
+</section><section class='slide' name='12'>
+<p>Parsing! (not… quite)</p>
+<pre style='text-decoration: line-through'><code>(require &#x27;[lambdaisland.regal.parse :refer [parse]])
+
+(parse #&quot;(http|https)://(\w+)&quot;)
+;; =&gt;
+[:cat
+ [:capture
+  [:alt &quot;http&quot; &quot;https&quot;]
+  &quot;://&quot;
+  [:capture [:+ :word]]]]
+</code></pre>
+
+</section><section class='slide' name='13'>
+<p>lambdaisland/uri (Before)</p>
+<pre class='language-clojure'><code>(def uri-regex
+  #?(:clj #&quot;\A(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)?(\?([^#]*))?(#(.*))?\z&quot;
+     :cljs #&quot;^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)?(\?([^#]*))?(#(.*))?$&quot;))
+</code></pre>
+</section><section class='slide' name='14'>
+<p>lambdaisland/uri (After)</p>
+<pre class='language-clojure'><code>(def uri-regal [:cat
+                :start
+                ;; scheme/protocol
+                [:? [:capture [:capture [:+ [:not &quot;:/?#&quot;]]] &quot;:&quot;]]
+                ;; authority
+                [:? [:capture &quot;//&quot; [:capture [:* [:not &quot;/?#&quot;]]]]]
+                ;; path
+                [:? [:capture [:* [:not &quot;?#&quot;]]]]
+                ;; query
+                [:? [:capture &quot;?&quot; [:capture [:* [:not &quot;#&quot;]]]]]
+                ;; fragment
+                [:? [:capture &quot;#&quot; [:capture [:* :any]]]]
+                :end])
+</code></pre>
+</section><section class='slide' name='15'>
+<p>ANSI escape codes</p>
+<blockquote><p>The ESC [ is followed by any number (including none) of “parameter bytes” in<br>
+the range 0x30–0x3F (ASCII 0–9:;&lt;=&gt;?), then by any number of “intermediate<br>
+bytes” in the range 0x20–0x2F (ASCII space and !”#$%&amp;’()*+,-./), then finally<br>
+by a single “final byte” in the range 0x40–0x7E (ASCII @A–Z[]^_`a–z{|}~).</p></blockquote>
+</section><section class='slide' name='16'>
+<pre class='language-clojure'><code>(s/def ::param-byte  (regal-spec [:class [\0 \?]]))
+(s/def ::interm-byte (regal-spec [:class [\space \/]]))
+(s/def ::final-byte  (regal-spec [:class [\@ \~]]))
+
+(s/def ::ansi-command
+  (regal-spec
+   [:cat
+    ESC &quot;[&quot;
+    [:* ::param-byte]
+    [:* ::interm-byte]
+    ::final-byte]))
+
+(sgen/sample (s/gen ::ansi-command))
+;; =&gt;
+(&quot;\e[C&quot; &quot;\e[,w&quot; &quot;\e[9!v&quot; &quot;\e[+$d&quot; &quot;\e[9?96 &#x27;l&quot; &quot;\e[971&lt;3w&quot;)
+</code></pre>
+</section><section class='slide' name='17'>
+<h1 id='lambdaislandregal-2'>lambdaisland/regal</h1>
+<ul><li><p>Pre-alpha, developed in the open</p></li><li><p>Cross platform Clojure/ClojureScript</p></li><li><p>Papers over differences between Java/JavaScript RegEx</p></li><li><p>Contributions welcome! (Thanks Moritz!)</p></li></ul>
+</section><section class='slide' name='18'>
+<h1 id='lambda-island-open-source'>Lambda Island Open Source</h1>
+<article class='cf'>
+<div class='fl w-50'>
+<ul><li><p><strong>Kaocha</strong> - test runner from the future</p></li><li><p><strong>deep-diff</strong>  - compare data structures</p></li><li><p><strong>uri</strong> - uri util lib, chain links</p></li><li><p><strong>edn-lines</strong> - read/write edn-lines files</p></li><li><p><strong>fetch</strong> - ClojureScript HTTP client</p></li></ul>
+</div>
+<div class='fl w-50'>
+<ul><li><p><strong>glogi</strong>  - ClojureScript logging library</p></li><li><p><strong>ansi</strong>  - parse ansi escape code</p></li><li><p><strong>trikl</strong>  - terminal UI library (WIP)</p></li><li><p><strong>zipper-viz</strong> - visualize zippers</p></li></ul>
+</div>
+</article>
+</section><section class='slide' fullscreen-img='img/opencollective.png' name='19'>
+<img src='assets/0f4f491d76855e97adf91055a451ab62.png' class='cover'></section><section class='slide' fullscreen-img='img/backers.png' name='20'>
+<img src='assets/2f37818ce348e42251027950bbbdc835.png' class='cover'></section><section class='slide header' name='21'>
+<h1 id='the-end'>THE END</h1></section><script src='assets/39131bc767b214c1cfdb60c8073e09d8.js' type='text/javascript'></script><div class='progress'></div><script type='text/javascript' src='assets/caee99a07acc0855b85d7ad51bc419bd.js'></script></body></html>

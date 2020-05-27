@@ -1,0 +1,51 @@
+#+TITLE: Kaocha and Trikl
+
+* Kaocha
+
+  "The last test runner you'll ever need" - someone (@plexus probably)
+
+** The problem
+
+   n-dimensional matrix
+
+   #+BEGIN_SRC clojure
+     (def classpath-management '[lein, boot, clojure-cli])
+     (def test-types '[clojure.test, cljs.test, cucumber, expectations, midje, fudje])
+     (def use-cases '[CLI, REPL, CI])
+     (def features '[profiling fail-fast junit-xml code-coverage filtering pretty-diffs ...])
+
+     (apply * (map count [classpath-management test-types use-cases features]))
+     ;;=> 378
+   #+END_SRC
+
+   - Each existing tool covers some small area of this matrix.
+   - New tool/test-type => n maintainers need to add support
+
+   The alternative: shared abstractions.
+
+** The Kaocha model
+
+   - ~configuration~ -(load)-> ~test-plan~ -(run)-> ~result~
+   - "load" and "run" are delegated to the ~test type~ (= multimethods)
+   - features are provided by ~plugins~
+   - Tooling: ~kaocha.api~, CLI: ~kaocha.runner~, REPL: ~kaocha.repl~
+
+** Clojurists Together
+
+   Funding from November to January.
+
+   The plan:
+
+   - [X] ClojureScript support
+   - [-] Expectations support
+   - [ ] Improved Midje support
+   - [X] Cloverage support
+   - [ ] Boot support
+   - [X] Prettier diffing of (is (= ...))
+   - [ ] TAP reporter
+   - [X] Junit.xml reporter
+   - [ ] Run tests in parallel
+
+** DEMO
+
+* Trikl

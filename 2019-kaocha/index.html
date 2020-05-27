@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html><head><link href='assets/27bb0842d5c2183f4eb2449f0fbecb8c.css' rel='stylesheet'><style>.shower {--slide-ratio: calc(16 / 9); --color-key: #4caf50;} </style><meta charset='utf-8'><meta http-equiv='x-ua-compatible' content='ie=edge'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Kaocha</title><link rel='stylesheet' href='assets/8662c2c36baa70886e0dc5bedecabadd.css'><script src='assets/754c27c4424d283387915abba102fe1f.js'></script><script>hljs.initHighlightingOnLoad();</script><link rel='stylesheet' type='text/css' href='assets/77b87c4246f0a97fd8d405dd1fe0757c.css'><link rel='stylesheet' type='text/css' href='assets/8c8ad12747d4e7cbd17ce68dac17a33b.css'><link rel='stylesheet' type='text/css' href='assets/5a0ca255fce9de83dde16a0f27d788fe.css'><link rel='stylesheet' type='text/css' href='assets/e5614196ef959644a5774cf809a1b7ae.css'></head><body class='shower list'><header class='caption'>
+<h1 id='kaocha-a-functional-test-runner'>Kaocha: a Functional Test Runner</h1>
+
+</header><section class='slide' name='1'>
+<p><img src='assets/a0c8d28fb04c05006d41f5d7590db514.png' alt='' style='margin: 4.5em 0 0 1.3em ; width: 90%'></p>
+
+
+
+</section><section class='slide' name='2'><h2 id='about-me'>About me</h2>
+<p>My name is Arne Brasseur (@plexus)</p>
+<p class='next'>I’m from Belgium, but based in Berlin.</p>
+<p class='next'>I do Clojure consulting &amp; training. I’m in Singapore to visit my client,<br>
+<a href='https://runeleven.com'>runeleven.com</a>.</p>
+</section><section class='slide' name='3'><h2 id='lambda-island'>Lambda Island</h2>
+<p>Detailed screencasts about all things Clojure &amp; ClojureScript.</p>
+<p class='next'>Been going for ~3.5 years.</p>
+<p class='next'>49 high-quality videos</p>
+<p class='next'>Attractive Team Packages</p>
+</section><section class='slide' name='4'><h2 id='gaiwanco'><a href='http://gaiwan.co'>Gaiwan.co</a></h2>
+<p>Boutique Clojure Consultancy and Agency, founded beginning of this year.</p>
+<p class='next'>Slowly bootstrapping, currently 3 of us.</p>
+<p class='next'>Available for project work and training.</p>
+</section><section class='slide header' name='5'>
+<h1 id='kaocha'>Kaocha</h1>
+</section><section class='slide' fullscreen-img='img/company_logos.png' name='6'>
+<img src='assets/87328a30a0f785aacb97c0937b65564c.png' class='cover'></section><section class='slide header' name='7'>
+<h1 id='kaocha-basics'>Kaocha Basics</h1>
+</section><section class='slide' name='8'><h2 id='kaocha-basics-1'>Kaocha Basics</h2>
+<p>Clojure CLI (deps.edn)</p>
+<pre class='language-clojure'><code>{:aliases
+ {:kaocha
+  {:extra-deps {lambdaisland/kaocha {:mvn/version &quot;0.0-554&quot;}}
+   :main-opts [&quot;-m&quot; &quot;kaocha.runner&quot;]}}}
+</code></pre>
+</section><section class='slide' name='9'><h2 id='kaocha-basics-2'>Kaocha Basics</h2>
+<p>Leiningen (project.clj)</p>
+<pre class='language-clojure'><code>(defproject my-proj &quot;0.1.0&quot;
+  :profiles
+  {:kaocha
+   {:dependencies [[lambdaisland/kaocha &quot;0.0-554&quot;]]}}
+
+  :aliases
+  {&quot;kaocha&quot; [&quot;with-profile&quot; &quot;+kaocha&quot; &quot;run&quot; &quot;-m&quot; &quot;kaocha.runner&quot;]})
+</code></pre>
+</section><section class='slide' name='10'><h2 id='kaocha-basics-3'>Kaocha Basics</h2>
+<p>Boot (build.boot)</p>
+<pre class='language-clojure'><code>(set-env! :source-paths #{&quot;src&quot;}
+          :dependencies &#x27;[[lambdaisland/kaocha-boot &quot;0.0-14&quot;]])
+
+(require &#x27;[kaocha.boot-task :refer [kaocha]])
+</code></pre>
+</section><section class='slide' name='11'><h2 id='kaocha-basics-4'>Kaocha Basics</h2>
+<pre><code>$ clj -A:kaocha
+[(...)(..F.)]
+7 tests, 12 assertions, 1 failures
+</code></pre>
+<p class='next'>Kaocha finds, loads, and runs tests.</p>
+<p class='next'>Works with zero config out of the box  ⃰</p>
+</section><section class='slide header' name='12'>
+<h1 id='why-kaocha'>Why Kaocha?</h1>
+</section><section class='slide' name='13'><h2 id='guiding-principles'>Guiding Principles</h2>
+<ul class='next'><li><p>One tool for all testing needs</p></li></ul>
+<ul class='next'><li><p>Easy to use, pleasant to work with</p></li></ul>
+<ul class='next'><li><p>Data driven, good foundation for tooling</p></li></ul>
+<ul class='next'><li><p>Highly extensible</p></li></ul>
+<ul class='next'><li><p>“The Holy Grail of Test Tools”</p></li></ul>
+</section><section class='slide' name='14'><h2 id='one-tool-for-all-testing-needs'>One tool for all testing needs</h2>
+<p class='next'>Independent of project tool<br> <span style='color: #888;'>e.g. Leiningen / Clojure CLI / boot</span></p>
+<p class='next'>Independent of testing library<br> <span style='color: #888;'>e.g. clojure.test, cljs.test, Expectation, Midje, Cucumber</span></p>
+<p class='next'>Suitable for any context or workflow<br> <span style='color: #888;'>e.g. local, REPL, CI, watch mode</span></p>
+</section><section class='slide' name='15'><h2 id='easy-to-use-pleasant-to-work-with'>Easy to use, pleasant to work with</h2>
+<p class='next'>Can be adopted with minimal setup</p>
+<p class='next'>Friendly warning and error messages</p>
+<p class='next'>Output optimized for human consumption (e.g. deep-diff)</p>
+</section><section class='slide' fullscreen-img='https://raw.githubusercontent.com/lambdaisland/deep-diff/master/screenshot.png' name='16'>
+<img src='assets/dc40fe8e6960b72437e1bbee66ad025e.png' class='cover'></section><section class='slide' name='17'><h2 id='full-featured'>Full featured</h2>
+<p>Has everything you would expect from a test runner in 2019.</p>
+<pre class='language-shell'><code>$ clj -A:kaocha --watch
+</code></pre>
+<pre class='language-shell'><code>$ clj -A:kaocha --fail-fast
+</code></pre>
+<pre class='language-shell'><code>$ clj -A:kaocha --focus my.foo-test
+</code></pre>
+<p>Much more provided by plugins</p>
+</section><section class='slide' name='18'><h2 id='also-great-from-a-repl'>Also Great from a REPL</h2>
+<pre><code>(kaocha.repl/run)     ;; current ns
+(kaocha.repl/run-all) ;; everything
+;;=&gt; #:kaocha.result{:count 7, :pass 5, :error 1, :fail 1}
+
+(kaocha.repl/run &#x27;my.foo-test &#x27;my.bar-test/baz) ;; specific ns, var
+(kaocha.repl/run {:fail-fast? true}) ;; extra config
+</code></pre>
+<p><code>magnars/kaocha-runner.el</code><br>
+<code>liquidz/kaocha-nrepl</code><br>
+<code>liquidz/vim-iced-kaocha</code></p>
+</section><section class='slide' name='19'><h2 id='data-driven-good-foundation-for-tooling'>Data driven, good foundation for tooling</h2>
+<pre class='language-clojure'><code>$ clj -A:kaocha --print-config
+{:kaocha/tests [{:kaocha.testable/id   :unit
+                 :kaocha.testable/type :kaocha.type/clojure.test
+                 :kaocha/source-paths  [&quot;src&quot;]
+                 :kaocha/test-paths    [&quot;test&quot;]
+                 :kaocha/ns-patterns   [&quot;-test$&quot;]}]
+ :kaocha/fail-fast? false
+ :kaocha/color?     true
+ :kaocha/reporter   [kaocha.report/dots]
+ :kaocha/plugins [:kaocha.plugin/randomize
+                  :kaocha.plugin/filter
+                  :kaocha.plugin/capture-output]}
+</code></pre>
+</section><section class='slide' name='20'><h2 id='data-driven-good-foundation-for-tooling-1'>Data driven, good foundation for tooling</h2>
+<pre class='language-clojure'><code>;; tests.edn
+#kaocha/v1
+{:tests    [{:test-paths [&quot;test/clj&quot;]}]
+ :reporter [kaocha.report/documentation]
+ :plugins  [:kaocha.plugin/notifier]}
+</code></pre>
+<p><code>#kaocha/v1</code> provides shorthand, defaults, and normalization.</p>
+</section><section class='slide' name='21'><h2 id='data-driven-good-foundation-for-tooling-2'>Data driven, good foundation for tooling</h2>
+<pre class='language-clojure'><code>(-&gt; &quot;tests.edn&quot;
+    kaocha.config/load-config
+    kaocha.api/test-plan
+    kaocha.api/run)
+</code></pre>
+<p>It’s just a data pipeline!</p>
+<p><code>config</code> —load—&gt; <code>test-plan</code> —run—&gt; <code>test-result</code></p>
+<p>Two data transformations, three data structures, each one augmenting the<br>
+previous one.</p>
+</section><section class='slide' name='22'>
+<pre class='language-clojure'><code>$ clj -A:kaocha --print-config
+{:kaocha/tests
+ [{:kaocha.testable/id   :unit
+   :kaocha.testable/type :kaocha.type/clojure.test
+   :kaocha/source-paths  [&quot;src&quot;]
+   :kaocha/test-paths    [&quot;test&quot;]
+   :kaocha/ns-patterns   [&quot;-test$&quot;]}]
+ :kaocha/fail-fast? false
+ :kaocha/color?     true
+ :kaocha/reporter   [kaocha.report/dots]
+ :kaocha/plugins [:kaocha.plugin/randomize
+                  :kaocha.plugin/filter
+                  :kaocha.plugin/capture-output]}
+</code></pre>
+
+</section><section class='slide' name='23'><pre class='language-clojure'><code>$ clj -A:kaocha --print-test-plan
+{:kaocha/tests
+ [{:kaocha.testable/id   :unit
+   :kaocha.testable/type :kaocha.type/clojure.test
+   :kaocha/tests ;; &lt;-- new
+   [{:kaocha.testable/id   :my.foo-test
+     :kaocha.testable/type :kaocha.type/ns
+     :kaocha/tests
+     [{:kaocha.testable/id   :my.foo-test/bar-test
+       :kaocha.testable/type :kaocha.type/var
+       :kaocha.var/test      &lt;test-fn&gt;
+       ,,,}]}]}]
+ ,,,}
+</code></pre>
+</section><section class='slide' name='24'><pre class='language-clojure'><code>$ clj -A:kaocha --print-result
+{:kaocha/tests
+ [{:kaocha/tests
+   [{:kaocha/tests
+     [{:kaocha.testable/id    :my.foo-test/bar-test
+       ;; v---- new
+       :kaocha.result/error   0
+       :kaocha.result/pending 0
+       :kaocha.result/pass    0
+       :kaocha.result/count   1
+       :kaocha.result/fail    1
+       :kaocha.result/events [{:file &quot;foo_test.clj&quot;,
+                               :type :fail,
+                               :line 5,
+                               :expected (= [2 8 5] (sort [4 8 2])),
+                               }]
+       ,,,}}]}]}]}
+</code></pre>
+
+
+
+</section><section class='slide' name='25'><h2 id='highly-extensible'>Highly extensible</h2>
+<p>Everybody’s needs are different, people have strong opinions about testing and tools.</p>
+<p>Solution: lean core, extensible architecture</p>
+<ul><li><p>Test types</p></li><li><p>Plugins</p></li><li><p>Reporters</p></li></ul>
+
+</section><section class='slide' name='26'><h2 id='test-types'>Test Types</h2>
+<pre class='language-clojure'><code>(ns kaocha.type.cljs)
+
+(defmethod kaocha.testable/-load :kaocha.type/cljs [testable]
+  (merge testable child-tests-and-metadata))
+
+(defmethod kaocha.testable/-run :kaocha.type/cljs [testable test-plan]
+  (merge testable results))
+
+(hierarchy/derive! :kaocha.type/cljs :kaocha.testable.type/suite)
+</code></pre>
+</section><section class='slide' name='27'><h2 id='plugins'>Plugins</h2>
+<pre class='language-clojure'><code>(ns kaocha.plugin.version-filter)
+
+(defn skip? [testable]
+  (let [{:keys [min-clojure-version max-clojure-version]}
+        (:kaocha.testable/meta testable)]
+    ,,,))
+
+(kaocha.plugin/defplugin kaocha.plugin/version-filter
+  (pre-test [testable test-plan]
+    (if (skip? testable)
+      (assoc testable :kaocha.testable/skip true)
+      testable)))
+</code></pre>
+</section><section class='slide' name='28'><h2 id='plugins-1'>Plugins</h2>
+<pre class='language-clojure'><code>#kaocha/v1 {:plugins [:kaocha.plugin/version-filter]}
+</code></pre>
+<p>- or -</p>
+<pre class='language-clojure'><code>$ clj -A:kaocha --plugin version-filter
+</code></pre>
+<p>code</p>
+<pre class='language-clojure'><code>(deftest ^{:min-clojure-version &quot;1.10&quot;} my-spec-test
+  ,,,)
+</code></pre>
+</section><section class='slide' name='29'><h2 id='plugin-hooks'>Plugin Hooks</h2>
+<p><code>cli-options</code> <code>config</code><br>
+<code>pre-load</code> <code>post-load</code><br>
+<code>pre-run</code> <code>post-run</code><br>
+<code>wrap-run</code><br>
+<code>pre-test</code> <code>post-test</code><br>
+<code>pre-report</code></p>
+</section><section class='slide' name='30'><h2 id='plugins-2'>Plugins</h2>
+<ul><li><p>version-filter</p></li><li><p>notifier</p></li><li><p>profiling</p></li><li><p>randomize</p></li><li><p>junit.xml output</p></li><li><p>spect-test-check</p></li><li><p>…</p></li></ul>
+</section><section class='slide' name='31'><h2 id='reporters'>Reporters</h2>
+<p>Generates the actual output, basically an event handler.</p>
+<p>This piggiebacks on clojure.test reporters, but made more general.</p>
+</section><section class='slide' name='32'>
+<pre class='language-clojure'><code>(defmulti my-reporter :type)
+
+(defmethod my-reporter :kaocha/begin-suite [e]
+  (print &quot;[&quot;))
+
+(defmethod my-reporter :kaocha/end-suite [e]
+  (print &quot;]&quot;))
+
+(defmethod my-reporter :kaocha/begin-group [e]
+  (print &quot;(&quot;))
+
+(defmethod my-reporter :kaocha/end-group [e]
+  (print &quot;)&quot;))
+</code></pre>
+<p><code>:fail</code>, <code>:error</code>, <code>:pass</code>, <code>:summary</code>, …</p>
+</section><section class='slide' name='33'><h2 id='kaocha-cljs'>Kaocha-cljs</h2>
+<p>Easiest way to start doing ClojureScript testing.</p>
+<p>Uses ClojureScript’s repl-env abstraction under the hood.</p>
+<pre class='language-clojure'><code>#kaocha/v1
+{:tests [{:id :frontend :type :kaocha.type/cljs}
+         {:id :backend  :type :kaocha.type/clojure.test}]}
+</code></pre>
+<pre class='language-clojure'><code>$ clj -A:kaocha frontend
+</code></pre>
+</section><section class='slide' name='34'><pre class='language-shell' style='font-size: 0.6em'><code>$ clj -A:kaocha --help
+USAGE: bin/kaocha [OPTIONS]... [TEST-SUITE]...
+
+  -c, --config-file FILE     tests.edn  Config file to read.
+      --print-config                    Print out the fully merged and normalized config, then exit.
+      --print-test-plan                 Load tests, build up a test plan, then print out the test plan and exit.
+      --print-result                    Print the test result map as returned by the Kaocha API.
+      --fail-fast                       Stop testing after the first failure.
+      --[no-]color                      Enable/disable ANSI color codes in output. Defaults to true.
+      --[no-]watch                      Watch filesystem for changes and re-run tests.
+      --reporter SYMBOL                 Change the test reporter, can be specified multiple times.
+      --plugin KEYWORD                  Load the given plugin.
+      --profile KEYWORD                 Configuration profile. Defaults to :default or :ci.
+      --version                         Print version information and quit.
+      --help                            Display this help message.
+  -H, --test-help                       Display this help message.
+      --[no-]randomize                  Run test namespaces and vars in random order.
+      --seed SEED                       Provide a seed to determine the random order of tests.
+      --skip SYM                        Skip tests with this ID and their children.
+      --focus SYM                       Only run this test, skip others.
+      --skip-meta SYM                   Skip tests where this metadata key is truthy.
+      --focus-meta SYM                  Only run tests where this metadata key is truthy.
+      --[no-]capture-output             Capture output during tests.
+</code></pre>
+</section><section class='slide header' name='35'>
+<h1 id='the-end'>THE END</h1></section><script src='assets/39131bc767b214c1cfdb60c8073e09d8.js' type='text/javascript'></script><div class='progress'></div><script type='text/javascript' src='assets/caee99a07acc0855b85d7ad51bc419bd.js'></script></body></html>
