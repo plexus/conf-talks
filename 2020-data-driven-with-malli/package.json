@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "simple-hot-reload-server": "^1.2.0"
+  }
+}

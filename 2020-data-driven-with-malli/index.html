@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html><head><link href='assets/27bb0842d5c2183f4eb2449f0fbecb8c.css' rel='stylesheet'><style>.shower {--slide-ratio: calc(16 / 9); --color-key: #4caf50;} </style><meta charset='utf-8'><meta http-equiv='x-ua-compatible' content='ie=edge'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Data Driven Development with Malli</title><link rel='stylesheet' href='assets/8662c2c36baa70886e0dc5bedecabadd.css'><script src='assets/754c27c4424d283387915abba102fe1f.js'></script><script>hljs.initHighlightingOnLoad();</script><script type='text/javascript' src='assets/3314f284ec17071b64fcaa57e097b412.js'></script><script type='text/javascript'>lambdaisland.funnel_client.examples.reload.start()</script><link rel='stylesheet' type='text/css' href='assets/77b87c4246f0a97fd8d405dd1fe0757c.css'><link rel='stylesheet' type='text/css' href='assets/8c8ad12747d4e7cbd17ce68dac17a33b.css'><link rel='stylesheet' type='text/css' href='assets/5a0ca255fce9de83dde16a0f27d788fe.css'><link rel='stylesheet' type='text/css' href='assets/e5614196ef959644a5774cf809a1b7ae.css'></head><body class='shower list'><header class='caption'>
+<h1 id='data-driven-rapid-application-development-with-malli'>Data-Driven Rapid Application Development with Malli</h1>
+</header><section class='slide' name='1'>
+
+<h1 style='font-size: 4rem; text-align: center;' id='data-driven-rapid-application-development-with-malli-1'>Data-Driven Rapid Application Development with Malli</h1>
+</section><section class='slide' name='2'>
+<h1 style='font-size: 3rem; text-align: center; margin-top: 3em;' id='1-malli-basics'>1. Malli Basics</h1>
+</section><section class='slide' name='3'>
+<h1 style='font-size: 3rem; text-align: center; margin-top: 3em;' id='2-single-source-of-truth'>2. Single Source of Truth</h1>
+</section><section class='slide' name='4'>
+<h1 id='domain-entities'>Domain Entities</h1>
+<p>Lots of duplicated information</p>
+<ul><li><p>Database schema</p></li><li><p>API definitions</p></li><li><p>Form definitions</p></li><li><p>Validation</p></li><li><p>Generation</p></li></ul>
+</section><section class='slide' name='5'>
+<h1 id='schemas-everywhere'>Schemas everywhere</h1>
+<ul><li><p>Datomic</p></li><li><p>Datascript</p></li><li><p>Lacinia</p></li><li><p>Specmonstah</p></li><li><p>Malli</p></li><li><p>Spec</p></li></ul>
+</section><section class='slide' name='6'>
+<h1 id='single-source-of-truth'>Single Source of Truth?</h1>
+<ul><li><p>Great in theory</p></li><li><p>Move fast in the beginning</p></li><li><p>But mapping is not always 1:1</p></li><li><p>Need ways to override based on context</p></li><li><p>Let’s try it anyway, with Malli!</p></li></ul>
+</section><section class='slide' name='7'>
+<pre><code>➜ tree data/schema
+data/schema
+├── entities.edn
+├── attributes.edn
+└── enums.edn
+</code></pre>
+</section><section class='slide' name='8'>
+<pre class='language-clojure'><code>;; entities.edn
+
+{:acme/address
+ [:map {:datomic? true}
+  [:address/company {:ui/label {:de &quot;Firma&quot;} :optional true} string?]
+  [:address/street {:ui/label {:de &quot;Strasse&quot;}} string?]
+  [:address/country {:ui/label {:de &quot;Land&quot;}} string?]
+  [:address/zip {:ui/label {:de &quot;PLZ&quot;}} string?]
+  [:address/place {:ui/label {:de &quot;Ort&quot;}} string?]]
+
+  ,,,}
+</code></pre>
+<p>Single source of truth for all domain entities.</p>
+</section><section class='slide' name='9'>
+<pre class='language-clojure'><code>;; entities.edn
+{,,,
+
+ :acme/customer
+ [:map {:datomic? true}
+  [:customer/address {:ui/label {:de &quot;Name&quot;}} [:acme/ref :acme/address]]
+  [:customer/email {:ui/label {:de &quot;Email&quot;}}
+   [:re {:error/message {:en &quot;Invalid email address&quot;
+                         :de &quot;Email-Adresse ungültig&quot;}}
+    #&quot;^[a-zA-Z0-9_!#$%&amp;’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$&quot;]]]
+
+ ,,}
+</code></pre>
+</section><section class='slide' name='10'>
+<pre class='language-clojure'><code>;; entities.edn
+{,,,
+
+ :acme/customer
+ [:map {:datomic? true}
+  [:customer/address {:ui/label {:de &quot;Name&quot;}} :acme/address]
+  [:customer/email {:ui/label {:de &quot;Email&quot;}}
+   [:re {:error/message {:en &quot;Invalid email address&quot;
+                         :de &quot;Email-Adresse ungültig&quot;}}
+    #&quot;^[a-zA-Z0-9_!#$%&amp;’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$&quot;]]]
+
+ ,,}
+</code></pre>
+</section><section class='slide' name='11'>
+<pre class='language-clojure'><code>;; enums.edn
+
+{:acme/role
+ {:role/customer   {:ui/label {:en &quot;Customer&quot; :de &quot;Kunde&quot;}}
+  :role/sales      {:ui/label {:en &quot;Sales&quot; :de &quot;Vertrieb&quot;}}
+  :role/costing    {:ui/label {:en &quot;Costing&quot; :de &quot;Kalkulation&quot;}}}
+
+  ,,,}
+</code></pre>
+<p>Enum values, turn into <code>:db/ident</code> in Datomic, keywords in DataScript</p>
+<pre class='language-clojure'><code>  [:customer/role {:ui/label &quot;Role&quot;} [:acme/enum :acme/role]]
+</code></pre>
+</section><section class='slide' name='12'>
+<pre><code>;; attributes.edn
+
+[{:db/ident       :acme/uuid
+  :db/valueType   :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/unique      :db.unique/identity}
+
+ {:db/ident       :acme/updated-at
+  :db/valueType   :db.type/instant
+  :db/cardinality :db.cardinality/one}
+
+  ,,,]
+</code></pre>
+<p>Meta attributes that are added to every entity.</p>
+</section><section class='slide' name='13'>
+<pre class='language-clojure'><code>(defn datomic-schema []
+  ,,,)
+
+(defn datascript-schema []
+  ,,,)
+</code></pre>
+<p>Fairly trivial to generate these, but already quite useful.</p>
+</section><section class='slide' name='14'>
+<pre class='language-clojure'><code>(for [[schema]        (schema/entity-schemas opts)
+         :when           (:datomic? (m/properties schema opts))
+         [ident props t] (mu/map-entries schema opts)]
+     (into {:db/ident           ident
+            :db/valueType   (value-type (m/form t opts))
+            :db/cardinality :db.cardinality/one}
+           (filter (comp #{&quot;db&quot;} namespace key))
+           props))
+</code></pre>
+<p>Malli schemas are a great input format, plenty of ways to walk, query,<br>
+transform.</p>
+</section><section class='slide' name='15'>
+<pre class='language-clojure'><code>(defn specmonstah-schema []
+  ,,,)
+
+(datomic/transact
+  (specmonstah/generate {:acme/customer [[2]
+                                         [1 {:refs {:customer/address :address-1}}]]
+                         :acme/address [[5]]}))
+</code></pre>
+<p>Specmonstah needs a “schema” to know about relationships, with this we basically get test factories for free.</p>
+</section><section class='slide' name='16'>
+<pre class='language-clojure'><code>(ns acme.schema
+  (:require [malli.core :as m]))
+
+(def registry
+  &quot;Map of schemas, all the Malli defaults,
+  plus the ones for our own enums and
+  entities.&quot;
+  (merge m/default-registry
+         (enum-schemas)
+         (entity-schemas)
+         {:ars/ref ref-schema
+          :ars/enum enum-schema}))
+</code></pre>
+<p>Now we just want to pass this registry in every time we call Malli (and some other defaults like <code>:locale</code> and <code>:errors</code>).</p>
+</section><section class='slide' name='17'>
+<pre class='language-clojure'><code>;; transaction data
+[{:db/id 123
+  :customer/address 456}
+
+ {:db/id 456
+  ,,,}]
+
+;; d/entity API
+[{:db/id 123
+  :customer/address {:db/id 456 ,,,}}]
+
+;; temp-ids, lookup refs
+[{:db/id [:user/name &quot;plexus&quot;]
+  :customer/address &quot;addr-1&quot;}
+ {:db/id &quot;addr-1&quot; ,,,}]
+</code></pre>
+<p>We can change the meaning of <code>:ars/ref</code> on the fly</p>
+</section><section class='slide' name='18'>
+<pre class='language-clojure'><code>(if (= :ars/ref (m/name schema))
+  (let [ref (first (m/children schema))]
+    ,,,))
+
+
+</code></pre>
+<p>We retain information about the relationship, but we can also just treat it as a<br>
+<code>MapSchema</code>.</p>
+</section><section class='slide' name='19'>
+<pre class='language-clojure'><code>(def validate (wrap2 m/validate))
+(def explain (wrap2 m/explain))
+(def humanize (wrap1 me/humanize))
+(def into-schema (wrap3 m/into-schema))
+(def schema (wrap1 m/schema))
+(def name (wrap1 m/name))
+(def form (wrap1 m/form))
+(def children (wrap1 m/children))
+(def properties (wrap1 m/properties))
+(def generate (wrap1 mg/generate))
+(def map-entries (wrap1 m/map-entries))
+(def accept (wrap2 m/accept))
+,,, ;; about a dozen more
+</code></pre>
+<p>Ended up writing lots of wrappers to inject these defaults…</p>
+</section><section class='slide' name='20'>
+<p>With this wrapper we can now do things like</p>
+<pre class='language-clojure'><code>(schema/validate :acme/customer {...})
+</code></pre>
+</section><section class='slide' name='21'>
+<h1 style='font-size: 3rem; text-align: center; margin-top: 3em;' id='3-forms'>3. Forms</h1>
+</section><section class='slide' name='22'>
+<pre class='language-clojure'><code>[f/form {:schema :acme/customer
+         :init {:customer/address {:address/city &quot;Berlin&quot;}}
+         :on-submit (fn [customer] ,,,)}
+ [f/scaffold]
+ [f/submit]]
+</code></pre>
+<p>Formik style form helpers, knows which fields there are because, their labels,<br>
+if they are required, can validate the result and show validation errors.</p>
+</section><section class='slide' name='23'>
+<pre class='language-clojure'><code>[f/form {:schema :acme/customer
+         :init {:customer/address {:address/city &quot;Berlin&quot;}}
+         :on-submit (fn [customer] ,,,)}
+
+ [:section
+  [f/input-for :customer/email]
+  [:h2 &quot;Address&quot;]
+  [f/input-for [:customer/address :address/street]]
+  [f/input-for [:customer/address :address/city]
+   {:label &quot;Municipality&quot;
+    :component f/text-area}]]
+
+ [f/submit {:label &quot;Send!&quot;}]]
+</code></pre>
+<p>Still possible to do arbitrary styling and markup, provide custom components, change labels, etc.</p>
+</section><section class='slide' name='24'>
+<pre class='language-clojure'><code>[f/form {:schema (schema/deep-optional-keys :acme/customer)}
+  ,,,]
+
+[f/form {:schema (schema/select-keys :acme/customer [:customer/email ...])}
+  ,,,]
+
+
+[f/form {:schema [:map [:foo string?]]}
+  ,,,]
+</code></pre>
+<p>Here flexibility of Malli really payed off.</p>
+</section><section class='slide' name='25'>
+<h2 id='conclusion'>Conclusion</h2>
+<ul><li><p>Considered a success</p></li><li><p>Add an entity/attribute and everything “just works”, from frontend to database</p></li><li><p>Everyone on the team could confidently edit the schema</p></li><li><p>Flexibility is essential, Malli made it easy to adjust to context</p></li></ul>
+</section><section class='slide header' name='26'>
+<h1 id='the-end'>THE END</h1></section><script src='assets/39131bc767b214c1cfdb60c8073e09d8.js' type='text/javascript'></script><div class='progress'></div><script type='text/javascript' src='assets/caee99a07acc0855b85d7ad51bc419bd.js'></script></body></html>

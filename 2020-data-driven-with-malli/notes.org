@@ -1,0 +1,12 @@
+- Malli basics
+  - hiccup syntax
+  - IntoSchema / Schema
+  - registry
+- Single source of truth
+  - Domain Entities
+  - Metadata
+  - Enums
+- Wrapping Malli
+  - Custom registry
+  - Schema for references
+  - Own manipulations / API
