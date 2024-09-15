@@ -1,294 +1,152 @@
 
-# Heart of Clojure
+# Heart of Clojure Intro
 
-- Go to more parties
+---
 
-- Durkheim's idea of "collective effervescence," the heightened energy and sense of connection that emerges during social gatherings.
-- social gatherings can be transformative because they bring together people who are socially relevant to each other.
- These gatherings often involve shared goals or activities, making the stakes feel higher. People are more concerned with presenting themselves well, which can lead to unexpected outcomes.
-- social gatherings are more likely to be turning points than other daily activities.
- Unlike routine tasks, social gatherings can be unpredictable and consequential. They can be "fateful" situations where chance encounters or experiences can significantly alter someone's life trajectory.
-- Social occasions can be sites of offense and violation. This can happen when people feel they can take liberties with their behavior due to the relaxed atmosphere of the occasion.
-- a special world that is separate from ordinary life
+# WELCOME
+{: style="font-size: 8rem; text-align: center; margin-top: 5rem; padding: 0"}
 
-1. A special world set off from ordinary life: Social occasions that feel distinct and extraordinary, such as those marking a status change or demanding significant resources, are more likely to be impactful.
-2. Collective effervescence and emotional energy: The heightened energy and sense of connection created during social gatherings can make them more memorable and transformative.
-3. Bringing usually disparate people together: When people from different social circles or backgrounds come together, it can lead to unexpected encounters and opportunities for change.
+---
+
+# TO
+{: style="font-size: 8rem; text-align: center; margin-top: 5rem; padding: 0"}
+
+---
+
+# HEART
+{: style="font-size: 8rem; text-align: center; margin-top: 5rem; padding: 0"}
+
+---
+
+# OF
+{: style="font-size: 8rem; text-align: center; margin-top: 5rem; padding: 0"}
+
+---
+
+# CLOJURE
+{: style="font-size: 8rem; text-align: center; margin-top: 5rem; padding: 0"}
+
+----
+{: fullscreen-img="img/group_foto.png"}
+
+---
+
+## Why go to conferences?
+
+---
+
+### Why go to conferences?
+
+1. Staying up to date
+2. Networking
+3. Presenting research
+4. Finding business opportunities
+
+---
+
+# NO
+
+---
+
+
+# BECAUSE IT CAN
+{: style="font-size: 6rem"}
+
+---
+
+# CHANGE
+
+---
+
+# YOUR
+
+---
+
+# LIFE
+
+----
+{: fullscreen-img="img/more_parties.png"}
+
+---
+
+## A special world
+
+> distinct and extraordinary
+{:.speaker-notes}
+
+---
+
+## Collective Effervescence
+
+> heightened energy and sense of connection
+> more memorable and transformative
+{:.speaker-notes}
+
+---
+
+## Bringing usually disparate people together
+
+> unexpected encounters and opportunities for change.
+{:.speaker-notes}
+
+---
+
+# FATEFULNESS
 
 ----
 
-# lambdaisland/regal
-{: style="font-size: 4rem; text-align: center; margin-top: 5rem"}
+## Indeterminate and Consequential
 
 ----
 
-# <3
-{: style="font-size: 3rem; text-align: center; margin: 0; padding: 0"}
-
-# everybody loves regex
-{: style="font-size: 4rem; text-align: center"}
-
-# <3
-{: style="font-size: 3rem; text-align: center; margin: 0; padding: 0"}
+## Unexpected Opportunities
 
 ----
 
-``` clojure
-(def uri-regex
-  #?(:clj
-     #"\A(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)?(\?([^#]*))?(#(.*))?\z"
-     :cljs
-     #"^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)?(\?([^#]*))?(#(.*))?$"))
+## Higher Chance of Transgressions
 
-(def authority-regex
-  #?(:clj
-     #"\A(([^:]*)(:(.*))?@)?([^:]*)(:(\d*))?\z"
-     :cljs
-     #"^(([^:]*)(:(.*))?@)?([^:]*)(:(\d*))?$"))
-```
-{: style="margin-top: 2.5rem"}
-
-----
-
-# Introducing Regal
-
-```clojure
-{:deps
- {lambdaisland/regal
-  {:git/url "https://github.com/lambdaisland/regal"
-   :sha "9a40397ba5f985bfc0a7cb03b5e5a8af835da0b1"}}}
-```
-
-----
-
-``` clojure
-(require '[lambdaisland.regal :as regal])
-
-(regal/regex [:cat
-              :start
-              [:+ :word]
-              "="
-              [:+ :digit]
-              :end])
-;;=>
-#"\A\w+=\d+\z"
-```
-{: style="margin-top: 4rem"}
-
-----
-
-``` clojure
-(require '[lambdaisland.regal.generator :as regal-gen]
-         '[clojure.test.check.generators :as gen])
-
-(gen/sample
- (regal-gen/gen [:cat
-                 :start
-                 [:+ :word]
-                 "="
-                 [:+ :digit]
-                 :end]))
-;;=>
-("Q=0" "zB=7" "_=496" "FA=28" "b=03019" "_=2"
- "N_h_=37367" "NYUL=609" "t=6795454" "U_dBsav2_E=6")
-```
-{: style="margin-top: 2rem"}
-
----
-
-``` clojure
-(require '[lambdaisland.regal.spec-alpha
-           :refer [spec] :rename {spec regal-spec}])
-
-
-(s/def ::x-then-y      (regal-spec [:cat [:+ "x"] "-" [:+ "y"]]))
-(s/def ::xy-with-stars (regal-spec [:cat "*" ::x-then-y "*"]))
-
-(s/valid? ::xy-with-stars "*xxx-yy*")
-;; => true
-
-(gen/sample (s/gen ::xy-with-stars))
-;;=>
-("*x-y*" "*xx-y*" "*x-y*" "*xxxx-y*" "*xxx-yyyy*" "*xxxx-yyy*"
- "*xxxxxxx-yyyyy*" "*xx-yyy*" "*xxxxx-y*" "*xxx-yyyy*")
-```
-
----
-
-Malli!
-
-```clojure
-(require '[malli.core :as m]
-         '[lambdaisland.regal.malli :as regal-malli])
-
-(m/validate [:regal [:+ "x"]] "xxx" {:registry regal-malli/registry})
-;;=> "xxx"
-```
-
----
-
-clojure.spec.alpha
-
-```clojure
-(require '[lambdaisland.regal.spec-alpha :as regal-spec]
-         '[clojure.spec.alpha :as s])
-
-(s/valid :lambdaisland.regal/form [:cat [:+ "x"] "-" [:+ "y"]])
-;; => true
-
-(gen/sample :lambdaisland.regal/form)
-```
-{: style="margin-top: 4rem"}
-
----
-
-clojure.spec.alpha
-
-```clojure
-(require '[lambdaisland.regal.spec-alpha :as regal-spec]
-         '[clojure.spec.alpha :as s])
-
-(s/valid :lambdaisland.regal/form [:cat [:+ "x"] "-" [:+ "y"]])
-;; => true
-
-(gen/sample :lambdaisland.regal/form)
-;; StackOverflow
-```
-{: style="margin-top: 4rem"}
-
----
-
-Parsing!
-
-```
-(require '[lambdaisland.regal.parse :refer [parse]])
-
-(parse #"(http|https)://(\w+)")
-;; =>
-[:cat
- [:capture
-  [:alt "http" "https"]
-  "://"
-  [:capture [:+ :word]]]]
-```
-
----
-
-Parsing! (not... quite)
-
-```
-(require '[lambdaisland.regal.parse :refer [parse]])
-
-(parse #"(http|https)://(\w+)")
-;; =>
-[:cat
- [:capture
-  [:alt "http" "https"]
-  "://"
-  [:capture [:+ :word]]]]
-```
-{: style="text-decoration: line-through"}
+--- 
+{: fullscreen-img="img/coc.png"}
 
 
 ---
 
-lambdaisland/uri (Before)
-
-``` clojure
-(def uri-regex
-  #?(:clj #"\A(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)?(\?([^#]*))?(#(.*))?\z"
-     :cljs #"^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)?(\?([^#]*))?(#(.*))?$"))
-```
+## Why go to conferences?
 
 ---
 
-lambdaisland/uri (After)
+## Because it makes us collectively smarter
 
-``` clojure
-(def uri-regal [:cat
-                :start
-                ;; scheme/protocol
-                [:? [:capture [:capture [:+ [:not ":/?#"]]] ":"]]
-                ;; authority
-                [:? [:capture "//" [:capture [:* [:not "/?#"]]]]]
-                ;; path
-                [:? [:capture [:* [:not "?#"]]]]
-                ;; query
-                [:? [:capture "?" [:capture [:* [:not "#"]]]]]
-                ;; fragment
-                [:? [:capture "#" [:capture [:* :any]]]]
-                :end])
-```
+--- 
+{: fullscreen-img="img/extended_mind.jpg"}
 
 ---
 
-ANSI escape codes
-
-> The ESC [ is followed by any number (including none) of "parameter bytes" in
-> the range 0x30–0x3F (ASCII 0–9:;<=>?), then by any number of "intermediate
-> bytes" in the range 0x20–0x2F (ASCII space and !"#$%&'()*+,-./), then finally
-> by a single "final byte" in the range 0x40–0x7E (ASCII @A–Z[\]^_`a–z{|}~).
+> Thinking outside the brain means skillfully **engaging entities external to our heads** ​— ​the feelings and movements of **our bodies**, the **physical spaces** in which we learn and work, and the minds of the **other people around us** ​— ​drawing them into our own mental processes. By reaching beyond the brain to recruit these **“extra-neural” resources**, we are able to **focus more intently**, **comprehend more deeply**, and **create more imaginatively** ​— ​to entertain ideas that would be literally unthinkable by the brain alone.
 
 ---
 
-``` clojure
-(s/def ::param-byte  (regal-spec [:class [\0 \?]]))
-(s/def ::interm-byte (regal-spec [:class [\space \/]]))
-(s/def ::final-byte  (regal-spec [:class [\@ \~]]))
-
-(s/def ::ansi-command
-  (regal-spec
-   [:cat
-    ESC "["
-    [:* ::param-byte]
-    [:* ::interm-byte]
-    ::final-byte]))
-
-(sgen/sample (s/gen ::ansi-command))
-;; =>
-("\e[C" "\e[,w" "\e[9!v" "\e[+$d" "\e[9?96 'l" "\e[971<3w")
-```
+> It’s true that we’re more accustomed to thinking **about** our bodies, our spaces, and our relationships. But we can also **think with and through them** ​— ​by using the movements of our hands to understand and express abstract concepts, or by arranging our workspace in ways that promote idea generation, or by engaging in social practices like teaching and storytelling that lead to deeper understanding and more accurate memory. Rather than exhorting ourselves and others to use our heads, we should be **applying extra-neural resources to the project of thinking outside the skull’s narrow circumference**.
 
 ---
 
-# lambdaisland/regal
-
-- Pre-alpha, developed in the open
-- Cross platform Clojure/ClojureScript
-- Papers over differences between Java/JavaScript RegEx
-- Contributions welcome! (Thanks Moritz!)
+# Get out of your head
+{: style="font-size: 5rem; margin-top: 6rem" }
 
 ---
 
-# Lambda Island Open Source
-
-<article class="cf">
-<div class="fl w-50" markdown="1">
-
-- **Kaocha** - test runner from the future
-- **deep-diff**  - compare data structures
-- **uri** - uri util lib, chain links
-- **edn-lines** - read/write edn-lines files
-- **fetch** - ClojureScript HTTP client
-
-</div>
-<div class="fl w-50" markdown="1">
-
-- **glogi**  - ClojureScript logging library
-- **ansi**  - parse ansi escape code
-- **trikl**  - terminal UI library (WIP)
-- **zipper-viz** - visualize zippers
-
-</div>
-</article>
+# Move around
 
 ---
-{: fullscreen-img="img/opencollective.png"}
+
+# Interact
 
 ---
-{: fullscreen-img="img/backers.png"}
 
----
-{:.header}
+# Practicalities
 
-# THE END
+--- 
+{: fullscreen-img="img/attendee_guide.png"}
+
+--- 
+{: fullscreen-img="img/compass.png"}

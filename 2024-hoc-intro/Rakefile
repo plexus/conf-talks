@@ -23,14 +23,14 @@ Slippery::RakeTasks.new do
   transform 'head' do |head|
     head
       .add_child(H[:link, rel: 'stylesheet', type: 'text/css', href: 'style.css'],)
-      .add_child(H[:link, rel: 'stylesheet', type: 'text/css', href: 'tomorrow.css'],)
-      .add_child(H[:link, rel: 'stylesheet', type: 'text/css', href: 'hljs.css'],)
-      .add_child(H[:link, rel: 'stylesheet', type: 'text/css', href: 'https://unpkg.com/tachyons@4.9.1/css/tachyons.min.css'])
+      # .add_child(H[:link, rel: 'stylesheet', type: 'text/css', href: 'tomorrow.css'],)
+      # .add_child(H[:link, rel: 'stylesheet', type: 'text/css', href: 'hljs.css'],)
+      # .add_child(H[:link, rel: 'stylesheet', type: 'text/css', href: 'https://unpkg.com/tachyons@4.9.1/css/tachyons.min.css'])
   end
 
-  transform('body') do |body|
-    body.add_child(H[:script, {type: 'text/javascript', src: 'select_tab.js'}])
-  end
+  # transform('body') do |body|
+  #   body.add_child(H[:script, {type: 'text/javascript', src: 'select_tab.js'}])
+  # end
 
   # transform('body') do |body|
   #   body
