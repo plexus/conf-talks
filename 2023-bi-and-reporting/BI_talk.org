@@ -1,0 +1,138 @@
+#+TITLE: BI and Data Warehousing for Datomic
+
+* Context
+
+Eleven is building a accounting system using Clojure and Datomic.
+
+Gaiwan is a Clojure consultancy.
+
+Eleven wanted to use Metabase to provide users with specific dashboards, e.g.
+Profit-and-loss, Accounts Payable/Accounts Receivable.
+
+Metabase has many database connector, but not for datomic.
+
+* Datomic
+
+#+begin_src clojure
+[entity attribute value]
+
+[1827 :user/name "plexus"]
+[1827 :user/website "https://gaiwan.co"]
+
+{:db/id 1827
+ :user/name "plexus"
+ :user/website "https://gaiwan.co"}
+
+[:find [?name ?website]
+ :where
+ [?e :user/name ?name]
+ [?e :user/website ?website]]
+#+end_src
+
+* Getting at the data, first attempt: Metabase-datomic
+
+- http://github.com/plexus/metabase-datomic
+- Metabase "driver" for datomic
+- Convert internal query format (sql-ish) to Datalog
+- Nice that we have full control, we could provide extras like "virtual" table
+- Worked reasonably well, but Metabase turns out to be an unreliable partner
+  - Query format is considered "internal"
+  - Can change at any time
+  - And it did in the next version
+
+#+begin_src clojure
+{:fields [[:field-id 1291] [:fk-> [:field-id 1291] [:field-id 1272]]],
+ :filter [:=
+          [:field-id 1291]
+          [:value
+           17592186046126
+           {:base_type :type/FK,
+            :special_type :type/FK,
+            :database_type "db.type/ref"}]],
+ :source-table 184,
+ :limit 1048576,
+ :join-tables
+ [{:join-alias "journal-entry__via__journal-en",
+   :table-id 191,
+   :fk-field-id 1291,
+   :pk-field-id 1275}]}
+#+end_src
+
+* Creating the dashboards: embedkit
+
+- For every company we need a set of dashboards
+- Dashboards consist of cards
+- Mutliple operations to create cards, dashboards
+- Embedkit provides declarative EDN syntax, which is idempotent
+- "Metabase as dashboard engine"
+
+* Self-service metabase
+
+- Users want to be able to create ad-hoc queries, custom dashboards
+- We can use the API to give everyone a login
+- But denormalized view needed to make data legible
+
+* Getting at the data, Second attempt: Datomic Analytics
+
+What is it?
+- Driver for Presto (standalone SQL engine)
+- Comes bundled with Datomic (Presto + driver)
+- Powerful tool, we can create views in Presto
+
+Problems
+- Slow (many joins)
+- Outdated Presto (Trino?)
+- high operational overhead
+- Only datomic driver is bundled, so can't use full power of Presto
+
+* Getting at the data, Third attempt: Plenish
+
+- Iterate over the tx-log
+- Convert to JDBC (postgres) schema + data
+- Transaction = transaction -> strong guarantee
+- Similar metaschema as Datomic Analytics
+
+"OMG queries are so fast now"
+
+
+* notes from Q&A
+- what about cloud and presto?
+- indexes?
+- plenish -> schema changes e.g. renames?
+- only stores latest version, no history in postgres (beyond tx table)
+
+
+* DEMO
+
+docker run -e POSTGRES_HOST_AUTH_METHOD=trust -p 5432:5432 postgres
+docker run -p 3000:3000 metabase/metabase
+
+cd ~/Eleven/runeleven/dev
+bin/txor/start 
+
+cd ~/lambdaisland/plenish/musicbrainz 
+/home/arne/Eleven/runeleven/datomic-pro/bin/datomic restore-db file:`realpath datomic-mbrainz-backup-20130611` datomic:dev://localhost:4334/mbrainz
+
+{:event :restore, :db mbrainz, :basis-t 17164532, :inst #inst "2013-06-11T15:46:58.555-00:00"}
+50.42user 7.53system 9:35.38elapsed 10%CPU (0avgtext+0avgdata 877792maxresident)k
+29384inputs+784outputs (126major+222197minor)pagefaults 0swaps
+Mon Apr 24 01:32:56 PM EDT 2023
+Mon Apr 24 01:42:31 PM EDT 2023
+
+* Slide notes
+
+2. agenda -> update
+6. add Gene quote
+10/11 flip slides
+14. BI = Business intelligence
+16. more to one previous
+27. replace melvn with robot -> add embedkit
+31. driver responsibilities -> scan schema, transform queries
+33/34. slide about or-join, filter vs select
+34/35. show metabase-datomic config?
+36. replace Rich slide with public announcement
+-- somewhere before plenish: OLAP vs OLTP
+47. take out stripped down presto thing
+50. move embedkit up to before metabase-datomic
+56. Plenish. Now open source!
+-- bit more info on Plenish
