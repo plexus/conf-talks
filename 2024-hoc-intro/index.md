@@ -4,27 +4,27 @@
 ---
 
 # WELCOME
-{: style="font-size: 8rem; text-align: center; margin-top: 5rem; padding: 0"}
+{:.bg-pink style="font-size: 8rem; text-align: center; margin-top: 5rem; padding: 0"}
 
 ---
 
 # TO
-{: style="font-size: 8rem; text-align: center; margin-top: 5rem; padding: 0"}
+{:.bg-green style="font-size: 8rem; text-align: center; margin-top: 5rem; padding: 0"}
 
 ---
 
 # HEART
-{: style="font-size: 8rem; text-align: center; margin-top: 5rem; padding: 0"}
+{:.bg-pink style="font-size: 8rem; text-align: center; margin-top: 5rem; padding: 0"}
 
 ---
 
 # OF
-{: style="font-size: 8rem; text-align: center; margin-top: 5rem; padding: 0"}
+{:.bg-green style="font-size: 8rem; text-align: center; margin-top: 5rem; padding: 0"}
 
 ---
 
 # CLOJURE
-{: style="font-size: 8rem; text-align: center; margin-top: 5rem; padding: 0"}
+{:.bg-pink style="font-size: 8rem; text-align: center; margin-top: 5rem; padding: 0"}
 
 ----
 {: fullscreen-img="img/group_foto.png"}
@@ -32,10 +32,12 @@
 ---
 
 ## Why go to conferences?
+{:.bg-green}
 
 ---
 
 ### Why go to conferences?
+{:.bg-green}
 
 1. Staying up to date
 2. Networking
@@ -45,24 +47,28 @@
 ---
 
 # NO
+{:.bg-pink}
 
 ---
 
 
 # BECAUSE IT CAN
-{: style="font-size: 6rem"}
+{:.bg-green style="font-size: 6rem"}
 
 ---
 
 # CHANGE
+{:.bg-pink}
 
 ---
 
 # YOUR
+{:.bg-green}
 
 ---
 
 # LIFE
+{:.bg-pink}
 
 ----
 {: fullscreen-img="img/more_parties.png"}
@@ -92,6 +98,7 @@
 ---
 
 # FATEFULNESS
+{:.bg-pink}
 
 ----
 
@@ -107,7 +114,6 @@
 
 --- 
 {: fullscreen-img="img/coc.png"}
-
 
 ---
 
@@ -126,7 +132,16 @@
 
 ---
 
-> It’s true that we’re more accustomed to thinking **about** our bodies, our spaces, and our relationships. But we can also **think with and through them** ​— ​by using the movements of our hands to understand and express abstract concepts, or by arranging our workspace in ways that promote idea generation, or by engaging in social practices like teaching and storytelling that lead to deeper understanding and more accurate memory. Rather than exhorting ourselves and others to use our heads, we should be **applying extra-neural resources to the project of thinking outside the skull’s narrow circumference**.
+## Not thinking **about** but thinking **with** body, space, relationships. 
+{: style="font-size: 5rem"}
+
+---
+
+### Applying _extra-neural resources_ 
+
+- Move hands to understand abstract concepts
+- Organize space to promote idea generation
+- Social interaction leading to deeper understanding and more accurate memory
 
 ---
 
@@ -143,10 +158,54 @@
 
 ---
 
-# Practicalities
+# Come Alive
+
+---
+
+## cōnferō
+
+1. To bring together
+2. To consult, confer, discuss
+
+---
+
+## cōn-fair-ō
+
+
+## DO TOGETHER
+{: style="font-size: 5rem"}
+
+--- 
+{: fullscreen-img="img/compass.png"}
 
 --- 
 {: fullscreen-img="img/attendee_guide.png"}
 
---- 
-{: fullscreen-img="img/compass.png"}
+---
+
+# Belgian Beer
+{:.bg-green}
+
+---
+
+## Belgian Beer
+
+- Belgium has really good beer
+- But it's meant to be enjoyed in moderation
+
+---
+
+## Belgian Beer
+
+- This is still a professional event
+- Make sure you can still enjoy the next day
+
+---
+
+## Drink Smarter
+{: style="font-size: 5rem; margin-top: -0.5rem"}
+
+- Belgian beer ranges from 0% to 10%+, know what you're drinking
+- Some excellent beers in the 3~5% range
+- Pilsner/Lager is 5.2%, stronger than in some places
+- These days: excellent 0% beer!

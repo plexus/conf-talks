@@ -1,7 +1,3 @@
-* {
-    --color-light: #555;
-    --color-medium: #444;
-}
 h1 {
     font-size: 8rem;
     text-align: center;
@@ -27,9 +23,9 @@ body .slide h2 {
     background-color: #99db70;
 }
 
-/* (o/defprop --hoc-pink "") */
-/* (o/defprop --hoc-pink-1 "#e7879d") */
-/* (o/defprop --hoc-pink-2 "#cd4e6a") */
-/* (o/defprop --hoc-pink-3 --hoc-pink) */
-/* (o/defprop --hoc-pink-4 "#c0415b") */
-/* (o/defprop --hoc-green "#99db70") */
+(o/defprop --hoc-pink "")
+(o/defprop --hoc-pink-1 "#e7879d")
+(o/defprop --hoc-pink-2 "#cd4e6a")
+(o/defprop --hoc-pink-3 --hoc-pink)
+(o/defprop --hoc-pink-4 "#c0415b")
+(o/defprop --hoc-green "#99db70")

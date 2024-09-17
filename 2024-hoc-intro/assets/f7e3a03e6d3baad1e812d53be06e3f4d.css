@@ -17,7 +17,7 @@ body .slide h2 {
 }
 
 .speaker-notes {
-    display:none;
+    /* display:none; */
 }
 
 .slide:has(.bg-pink) {
