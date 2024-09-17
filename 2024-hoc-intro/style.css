@@ -12,6 +12,6 @@ body .slide h2 {
     padding: 0;
 }
 
-/* .speaker-notes { */
-/*     display:none; */
-/* } */
+.speaker-notes {
+    display:none;
+}

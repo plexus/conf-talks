@@ -1,7 +1,7 @@
 require 'slippery'
 
 Slippery::RakeTasks.new do
-  title "lambdaisland/regal"
+  title "HoC Intro Slides"
   type :shower
   add_highlighting :tomorrow
 
