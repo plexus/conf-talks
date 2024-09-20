@@ -178,6 +178,10 @@
 --- 
 {: fullscreen-img="img/compass.png"}
 
+---
+
+`compass.heartofclojure.eu`
+{: style="text-align: center; font-size: 3rem; margin-top: 8rem;"}
 --- 
 {: fullscreen-img="img/attendee_guide.png"}
 
