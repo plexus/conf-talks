@@ -36,22 +36,40 @@
 (o/defprop --mirage "#0c182e")
 (o/defprop --arapawa "#01095E")
 (o/defprop --emerald "#38D07B")
-
+(o/defprop --kiwi "#07DF86")
+(o/defprop --overtone-pink "#ff2f92")
+(o/defprop --overtone-gray "#3c3a33")
 (o/defprop --primary --emerald)
 (o/defprop --secondary --arapawa)
 
 (o/defrules styles
   [:html
-   {:font-size "22pt"}]
-  [:body
-   {:background-color --secondary
-    :color --primary
-    :max-width "48em"
-    :margin "0 auto"}]
-  [#{:h1 :h2 :h3 :h4 :h5}
    {:font-family "'Ostrich Sans'"
-    :font-weight "400"}]
-  [:h1 {:font-size "3rem"}])
+    :font-size "22pt"
+    :font-weight 800}]
+  [:.reveal-viewport
+   {:color --arapawa}]
+  [:pre {:text-align "left"
+         :line-height "1.5em"}]
+  [#{:h1 :h2 :h3 :h4 :h5}
+   {:font-family "'Cabin'"
+    :font-weight 400}]
+  [:h1 {:font-size "4rem"}]
+  [:img {:max-width "100%"}]
+  [":has(#title)"
+   {:height "100%"}
+   [:h1 {:margin-top "23%"
+         :font-weight 700}]
+   [:strong {:color --overtone-pink}]
+   [:p {:font-size "15pt"}]
+   [:.location {:position "absolute"
+                :bottom "0"
+                :left "0"}]
+   [:.me {:position "absolute"
+          :bottom "0"
+          :right "0"}]
+   ]
+  )
 
 (defn load-slide-html []
   (let [nodes (slurp-slides "slides.md")
@@ -69,30 +87,34 @@
                  [:title "The Next 10 Years of Overtone"]
                  [:meta {:charset "UTF-8"}]
                  [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
+                 [:link {:rel "stylesheet" :href "/fonts/ostrich-sans/ostrich-sans.css"}]
+                 [:link {:rel "stylesheet" :href "/fonts/cabin/cabin.css"}]
+                 [:link {:rel "stylesheet" :href "/revealjs/reveal.css"}]
                  [:style (o/defined-styles)]
-                 [:link {:rel "stylesheet" :href "assets/fonts/ostrich-sans/ostrich-sans.css"}]
-                 [:link {:rel "stylesheet" :href "/reveal.css"}]]
+                 ]
                 [:body
                  [:div.reveal
                   [:div.slides]]
-                 [:script {:src "/reveal.js"}]
-                 [:script "Reveal.initialize({})"]]])
+                 [:script {:src "/revealjs/reveal.js"}]
+                 [:script "Reveal.initialize({controls: false, transition: 'none'})"]]])
      [(enlive/attr-has "class" "slides")] (enlive/append (load-slide-html) ))
    ))
 
 
 (defn handler []
-  (let [out (bb-server/file-router "out" nil)
-        rev (bb-server/file-router "resources/revealjs" nil)]
+  (let [dirs (map #(bb-server/file-router % nil)
+                  ["./" "./out" "./resources"])]
     (fn [{:keys [uri] :as req}]
+      (prn req)
       (if (#{"/" "/index.html"} uri)
         {:status 200
          :headers {"content-type" "text/html"}
          :body (index)}
-        (let [res (out req)]
-          (if (= 404 (:status res))
-            (rev req)
-            res))))))
+        (some (fn [d]
+                (let [res (d req)]
+                  (when (not= 404 (:status res))
+                    res)))
+              dirs)))))
 
 (defonce server
   (server/run-server (fn [req] ((handler) req)) {:port 7070}))
