@@ -10,7 +10,6 @@ Arne Brasseur, @plexus@toot.cat
 
 ----
 
-
 ```git
 $ git log --reverse | head -4 
 
@@ -20,6 +19,18 @@ Date:    Wed Sep 2 17:26:51 2009 +0200
 
     first commit
 ```
+
+----
+
+# **Overtone**
+
+----
+
+> Overtone is an open source audio environment designed to explore new musical
+> ideas from **synthesis** and sampling to instrument building, **live-coding**
+> and collaborative jamming. We combine the powerful <strong>SuperCollider audio
+> engine</strong>, with Clojure, a state of-the-art lisp, to create an
+> intoxicating interactive sonic experience.
 
 ----
 

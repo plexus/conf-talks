@@ -44,9 +44,8 @@
 
 (o/defrules styles
   [:html
-   {:font-family "'Ostrich Sans'"
-    :font-size "22pt"
-    :font-weight 800}]
+   {:font-family "B612"
+    :font-size "22pt"}]
   [:.reveal-viewport
    {:color --arapawa}]
   [:pre {:text-align "left"
@@ -56,11 +55,21 @@
     :font-weight 400}]
   [:h1 {:font-size "4rem"}]
   [:img {:max-width "100%"}]
-  [":has(#title)"
+  [#{:ol :ul} {:text-align "left"}]
+  [:li {:margin-top "0.25em"
+        :margin-bottom "0.5em"}]
+  [:strong {:color --overtone-pink}]
+  [:blockquote
+   {:text-align "justify"
+    :font-style "italic"
+    :border-left (str "6px solid " --overtone-pink)
+    :padding "0.1em 1em"
+    :line-height "1.5em"
+    :background-color "#F8FEFE"}]
+  [".slide:has(#title)"
    {:height "100%"}
    [:h1 {:margin-top "23%"
          :font-weight 700}]
-   [:strong {:color --overtone-pink}]
    [:p {:font-size "15pt"}]
    [:.location {:position "absolute"
                 :bottom "0"
@@ -89,6 +98,7 @@
                  [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
                  [:link {:rel "stylesheet" :href "/fonts/ostrich-sans/ostrich-sans.css"}]
                  [:link {:rel "stylesheet" :href "/fonts/cabin/cabin.css"}]
+                 [:link {:rel "stylesheet" :href "/fonts/b612/b612.css"}]
                  [:link {:rel "stylesheet" :href "/revealjs/reveal.css"}]
                  [:style (o/defined-styles)]
                  ]
