@@ -1,4 +1,5 @@
-{:deps
+{:paths ["src" "resources"]
+ :deps
  {com.lambdaisland/hiccup   {:mvn/version "0.10.51"}
   com.lambdaisland/ornament
   {;; ornament-next with defprop/defrules/import-tokens

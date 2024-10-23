@@ -8,6 +8,83 @@ Clojure/conj 2024, Washington DC
 Arne Brasseur, @plexus@toot.cat
 {:.me}
 
+
+----
+
+# **Overtone**
+
+----
+
+# 1. What is **Overtone**?
+
+----
+
+## Overtone is a <br>**Sound and Music Programming** <br> Toolkit for **Clojure**,<br> with great affordances for **live-coding**
+
+----
+
+# **Toolkit**
+
+<!-- ---- -->
+
+<!-- <\!-- ![](elephant.webp) -\-> -->
+<!-- ![](elephant_mural.jpg) -->
+
+----
+
+* SuperCollider Client
+* SynthDef Compiler/Decompiler
+* Scheduling Library (at-at)
+* Clock / Metronome
+* Midi & OSC I/O
+* Music Theory Library
+* Instrument / Studio abstractions
+* Sample / Freesound
+* Pre-built Instruments
+* GUI Support Code
+* Pre-Built Effects & Audio Processing 
+* **new** Pattern Library
+
+----
+
+![](overtone_architecture.svg)
+{: data-inline="true"}
+
+----
+
+### SuperCollider Server
+
+![](modular_synth.jpg)
+{:.img-small}
+
+[CC-By-SA &copy; Cory Doctorow](https://commons.wikimedia.org/wiki/File:Modular_Synthesizer_-_Enticingly_technical_synthesizer_1,_Control_Voltage,_Mississippi_Street,_Portland,_Oregon,_USA_%282014-07-12_by_Cory_Doctorow%29.jpg)
+
+----
+
+```supercollider
+SynthDef("subtractive", { arg out, freq = 440;
+    Out.ar(
+        out,
+        LPF.ar(
+            Pulse.ar(freq, 0.5, 0.1),
+            Line.kr(8000, 660, 6)
+        )
+    )
+}).add;
+```
+
+----
+
+```clojure
+(definst subtractive [freq 440]
+  (lpf (pulse :freq freq :width 0.5)
+       (line :start 8000 :end 660 :dur 2)))
+```
+
+----
+
+# 2. Overtone **History**
+
 ----
 
 ```git
@@ -22,18 +99,6 @@ Date:    Wed Sep 2 17:26:51 2009 +0200
 
 ----
 
-# **Overtone**
-
-----
-
-> Overtone is an open source audio environment designed to explore new musical
-> ideas from **synthesis** and sampling to instrument building, **live-coding**
-> and collaborative jamming. We combine the powerful <strong>SuperCollider audio
-> engine</strong>, with Clojure, a state of-the-art lisp, to create an
-> intoxicating interactive sonic experience.
-
-----
-
 ![](commits_chart.png)
 
 ----
@@ -43,6 +108,8 @@ Date:    Wed Sep 2 17:26:51 2009 +0200
 - Started learning Clojure Spring of 2013
 - Overtone is what really got me hooked
 - Revisited it every so often to do some creative coding
+
+<!-- - Snuck Overtone+Clojure into the Rubymonstas -->
 
 ----
 
@@ -54,48 +121,166 @@ Date:    Wed Sep 2 17:26:51 2009 +0200
 
 ----
 
-## Sad Face
+## Sad Face 😢
 
-----
-
-- Managed to get a hold of Sam, got commit bit and permission to do releases
-- Did a new release with accrued improvements (0.10.6)
-- Spent the winter of 2023-2024 cleaning things up
-- Three more releases since
+## Overtone could be **Timeless Software**
 
 ---
 
-- Dropped libscsynth
-- Improved Supercollider boot/connect logic
-- PipeWire (as a Jack server)
-- Java
-- Lots of docstrings
-- More consistent modern style
-- Merged some (very) old PRs
-- Tried to clean up some issues (still _many_ left open)
+# 3. **Timeless** Software
+
+---
+
+## **SuperCollider** was first released in 1996. <br> It still has an active community.
+
+---
+
+![](eli_header.png)
+
+---
+
+![](eli_videos.png)
+
+---
+
+![](eli_book.jpg)
+
+---
+
+<video controls width="800">
+  <source src="pulu.mp4" type="video/mp4" />
+</video>
+
+Pulu performing with SuperCollider at Heart of Clojure 2024
 
 ----
 
-```
-$ git diff --stat 0.10.6..0.11.0
-57 files changed, 1302 insertions(+), 303 deletions(-)
+## Making Overtone **Timeless**
 
-$ git diff --stat 0.11.0..v0.14.3199
-113 files changed, 3741 insertions(+), 2908 deletions(-)
-```
-
-----
-
-## Result: Overtone actually "just works"
+- It has to just work
+- Make sure the core is solid and stable
+- Fix or improve the half baked stuff
+- Add the missing pieces
+- Grow an ecosystem (leipzig, disclojure, erv, piratidal, quil, plasticine, squid.casa/jack, squid.casa/midi, ...)
 
 ----
 
-## Spelunking and Archaelogy
+# 4. The Next **Ten Years** of Overtone
 
 ----
 
-## What Were They Thinking?
+## Making sure we are ready for the future
+
+- Managed to get a hold of Sam, got commit bit and permission to do releases
+- Did a new release with accrued improvements (0.11.0)
+- Spent the winter of 2023-2024 cleaning things up
+- Four more releases since
 
 ----
 
-## Open for Business
+## 0.11.0 Highlights (2023-11-02)
+
+- accumulated fixes and improvements
+
+----
+
+## 0.12.3152 (2023-12-26)
+
+- Remove embedded SuperCollider server
+- Clojure 1.11 / Java 19+ compat
+- Many small fixes
+
+----
+
+## 0.13.3177 (2024-01-05)
+
+- Midi hotplug
+- Fixes around samples/buffers
+- New `loop-buf` ugen
+
+----
+
+## 0.14.3199 (2024-05-19)
+
+- First release of the Pattern Libary **[new]**
+
+----
+
+## 0.15.*
+
+- Pattern library improvements
+- Remove reflection/boxed math warnings (Ambrose)
+- Persist freesound login
+
+----
+
+## Come Join Us
+
+- Clojurians Slack (#overtone)
+- Mailing list (google groups)
+- Fediverse! (@plexus@toot.cat, @squid.casa@makertube.net)
+
+----
+
+# **Office Hours**
+
+## ???
+
+----
+
+# **DEMO**
+
+<!-- --- -->
+
+<!-- ## Dropped embedded SuperCollider -->
+
+<!-- - Nobody wants to maintain JNI stuff and C build pipelines -->
+<!-- - No more JVM Segfaults (!!) -->
+<!-- - Easier to stay up to date -->
+<!-- - Available on every OS and package manager -->
+
+<!-- --- -->
+
+<!-- ## Linux Audio -->
+
+<!-- _**cue audience laughter**_ -->
+
+<!-- --- -->
+
+<!-- ## Linux Audio -->
+
+<!-- - Is actually good now (Go PipeWire!) -->
+<!-- - Try very hard to detect the user's setup and "just work" -->
+<!-- - Overtone Wiki: Linux Audio Primer -->
+
+
+<!-- ---- -->
+
+<!-- # 5. **Maintaining** Overtone -->
+
+<!-- ---- -->
+
+<!-- ## Maintaining Overtone -->
+
+<!-- - Sam and Jeff had a big vision -->
+<!-- - It was not fully realized -->
+<!-- - Lots of loose ends in the codebase -->
+<!-- - I can't go back and read their minds -->
+
+<!-- ---- -->
+
+<!-- <\!-- ## What were they thinking? -\-> -->
+
+<!-- <\!-- - Is this intentional or accidental? -\-> -->
+<!-- <\!-- - Is it broken or do I not understand how it's supposed to work? -\-> -->
+<!-- <\!-- - Does this serve a purpose or is part of something that never got finished? -\-> -->
+<!-- <\!-- - How was this supposed to be used? -\-> -->
+
+<!-- ---- -->
+
+<!-- ## We need to be able to **revisit** some of that code that has been **frozen in time** -->
+
+<!-- ---- -->
+
+<!-- - I'm merging all PRs with minimal scrutiny -->
+<!-- - We can always revert if it causes issues -->

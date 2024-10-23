@@ -1,10 +1,10 @@
 (ns conj-overtone-2024
   (:require
    [babashka.http-server :as bb-server]
+   [clojure.java.io :as io]
    [lambdaisland.hiccup :as hiccup]
-   [lambdaisland.ornament :as o]
    [lambdaisland.kramdown :as kramdown]
-   [lambdaisland.xml-select :as xs]
+   [lambdaisland.ornament :as o]
    [net.cgrand.enlive-html :as enlive]
    [org.httpkit.server :as server])
   (:import
@@ -29,6 +29,19 @@
    [[]]
    nodes))
 
+(defn inline-svgs [nodes]
+  (-> nodes
+      (enlive/at [(enlive/attr= :data-inline "true") :img]
+        (fn [{:keys [attrs]}]
+          (-> attrs
+              :src
+              io/resource
+              slurp
+              StringReader.
+              enlive/html-resource)))
+      (enlive/at [:svg]
+        (fn [tag]
+          (update tag :attrs dissoc :width :height)))))
 
 (o/defprop --red-violet "#b9077e")
 (o/defprop --pink-lace "#fddef4")
@@ -46,13 +59,18 @@
   [:html
    {:font-family "B612"
     :font-size "22pt"}]
+  [:svg {:font-size "12pt"}]
   [:.reveal-viewport
    {:color --arapawa}]
   [:pre {:text-align "left"
-         :line-height "1.5em"}]
+         :line-height "1.5em"
+         :font-size "18pt"
+         :background-color "#D2CEC8"}]
   [#{:h1 :h2 :h3 :h4 :h5}
    {:font-family "'Cabin'"
-    :font-weight 400}]
+    :font-weight 400
+    }]
+  [:h2 {    :line-height "1.5em"}]
   [:h1 {:font-size "4rem"}]
   [:img {:max-width "100%"}]
   [#{:ol :ul} {:text-align "left"}]
@@ -70,19 +88,24 @@
    {:height "100%"}
    [:h1 {:margin-top "23%"
          :font-weight 700}]
-   [:p {:font-size "15pt"}]
+   [:p {:font-size "15pt"
+
+        }]
    [:.location {:position "absolute"
                 :bottom "0"
                 :left "0"}]
    [:.me {:position "absolute"
           :bottom "0"
-          :right "0"}]
-   ]
-  )
+          :right "0"}]]
+  [:.img-small [:img {:max-height "500px"}]]
+  [:.scroll [:code {:overflow "auto"
+                    :height "650px"}]])
 
 (defn load-slide-html []
-  (let [nodes (slurp-slides "slides.md")
-        slides (split-slides nodes)]
+  (let [slides (-> "slides.md"
+                   slurp-slides
+                   inline-svgs
+                   split-slides)]
     (for [nodes slides]
       {:tag :section
        :attrs {:class "slide"}
@@ -100,13 +123,22 @@
                  [:link {:rel "stylesheet" :href "/fonts/cabin/cabin.css"}]
                  [:link {:rel "stylesheet" :href "/fonts/b612/b612.css"}]
                  [:link {:rel "stylesheet" :href "/revealjs/reveal.css"}]
+                 #_[:link {:rel "stylesheet" :href "/revealjs/plugin/highlight/monokai.css"}]
+                 #_[:link {:rel "stylesheet" :href "/revealjs/plugin/highlight/zenburn.css"}]
+                 [:link {:rel "stylesheet" :href "/revealjs/plugin/highlight/solarized-light.css"}]
                  [:style (o/defined-styles)]
                  ]
                 [:body
                  [:div.reveal
                   [:div.slides]]
                  [:script {:src "/revealjs/reveal.js"}]
-                 [:script "Reveal.initialize({controls: false, transition: 'none'})"]]])
+                 [:script {:src "/revealjs/plugin/highlight/highlight.js"}]
+                 [:script {:src "/highlight-supercollider.js"}]
+                 [:script "Reveal.initialize({controls: false, transition: 'none', plugins: [RevealHighlight],
+highlight: {
+    beforeHighlight: hljs => hljsDefineSuperCollider(hljs)
+  }
+})"]]])
      [(enlive/attr-has "class" "slides")] (enlive/append (load-slide-html) ))
    ))
 
