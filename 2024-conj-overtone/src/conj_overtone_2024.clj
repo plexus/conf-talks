@@ -142,21 +142,24 @@ highlight: {
      [(enlive/attr-has "class" "slides")] (enlive/append (load-slide-html) ))
    ))
 
-
 (defn handler []
   (let [dirs (map #(bb-server/file-router % nil)
                   ["./" "./out" "./resources"])]
     (fn [{:keys [uri] :as req}]
-      (prn req)
       (if (#{"/" "/index.html"} uri)
         {:status 200
          :headers {"content-type" "text/html"}
          :body (index)}
-        (some (fn [d]
-                (let [res (d req)]
-                  (when (not= 404 (:status res))
-                    res)))
-              dirs)))))
+        (let [req (update req :headers dissoc "range")]
+          (some (fn [d]
+                  (let [res (d req)]
+                    (when (not= 404 (:status res))
+                      #_(let [uri (if (= "/" uri) "/index.html" uri)
+                              target  (io/file "out" (subs uri 1))]
+                          (.mkdirs (io/file (.getParent target)))
+                          (spit target (slurp (:body res))))
+                      res)))
+                dirs))))))
 
 (defonce server
   (server/run-server (fn [req] ((handler) req)) {:port 7070}))
