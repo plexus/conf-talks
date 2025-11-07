@@ -1,0 +1,11 @@
+{:paths ["src" "resources"]
+ :deps
+ {com.lambdaisland/hiccup   {:mvn/version "0.14.67"}
+  com.lambdaisland/ornament
+  {;; ornament-next with defprop/defrules/import-tokens
+   :git/sha "c33a022d9e67d491d22f403aef739ebf0f59fc99"
+   :git/url "https://github.com/lambdaisland/ornament.git"}
+  com.lambdaisland/kramdown {:local/root "../../../lambdaisland/kramdown"}
+  enlive/enlive             {:mvn/version "1.1.6"}
+  org.babashka/http-server  {:mvn/version "0.1.14"}
+  com.lambdaisland/xml-select {:mvn/version "0.2.5"}}}
