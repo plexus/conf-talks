@@ -8,4 +8,5 @@
   com.lambdaisland/kramdown {:local/root "../../../lambdaisland/kramdown"}
   enlive/enlive             {:mvn/version "1.1.6"}
   org.babashka/http-server  {:mvn/version "0.1.14"}
-  com.lambdaisland/xml-select {:mvn/version "0.2.5"}}}
+  com.lambdaisland/xml-select {:mvn/version "0.2.5"}
+  com.cnuernber/charred {:mvn/version "1.037"}}}

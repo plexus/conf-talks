@@ -62,10 +62,18 @@
   (let [dirs (map #(#'bb-server/file-router % nil)
                   ["./" "./out" "./resources"])]
     (fn [{:keys [uri] :as req}]
-      (if (#{"/" "/index.html"} uri)
+      (cond
+        (#{"/styles.css"} uri)
+        {:status 200
+         :headers {"content-type" "text/css"}
+         :body (o/defined-styles)}
+
+        (#{"/" "/index.html"} uri)
         {:status 200
          :headers {"content-type" "text/html"}
          :body (render-index opts)}
+
+        :else
         (let [req (update req :headers dissoc "range")]
           (some (fn [d]
                   (let [res (d req)]
