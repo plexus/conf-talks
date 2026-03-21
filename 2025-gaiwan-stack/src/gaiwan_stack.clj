@@ -1,10 +1,11 @@
 (ns gaiwan-stack
   (:require
    [charred.api :as charred]
-   [lambdaisland.ornament :as o]
-   [slippery2025]
-   [styles]))
+   [clojure.walk :as walk]
+   [net.cgrand.enlive-html :as enlive]
+   [slippery2025]))
 
+(require 'styles)
 
 (def slides-file "slides.md")
 (def title "The Gaiwan Stack")
@@ -38,11 +39,28 @@
 Reveal.initialize(window.reveal_opts)"]]])
 
 
+(defn transform-slides [slides]
+  (def slides slides)
+  (enlive/at slides
+    [[:.slide (enlive/has [:.explode-slides])]]
+    (fn [slide]
+      (for [content (next (reductions
+                           conj
+                           []
+                           (filter map?
+                                   (:content
+                                    (first
+                                     (enlive/select slide [:.explode-slides]))))))]
+        (enlive/at slide
+          [:.explode-slides]
+          (enlive/content content))))))
+
 (defonce server
   (slippery2025/run-server {:template #'template
-                            :slides-file slides-file}))
+                            :slides-file slides-file
+                            :transform #'transform-slides}))
 (defn stop! []
   (server)
   (ns-unmap *ns* 'server))
 
-(System/currentTimeMillis)
+(comment (stop!))

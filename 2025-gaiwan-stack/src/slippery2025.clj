@@ -53,10 +53,11 @@
        :attrs {:class "slide"}
        :content nodes})))
 
-(defn render-index [{:keys [template slides-file]}]
+(defn render-index [{:keys [template slides-file transform]
+                     :or {transform identity}}]
   (hiccup/render-html
    (enlive/at (hiccup/html (template))
-     [(enlive/attr-has "class" "slides")] (enlive/append (load-slide-html slides-file) ))))
+     [(enlive/attr-has "class" "slides")] (enlive/append (transform (load-slide-html slides-file))))))
 
 (defn handler [opts]
   (let [dirs (map #(#'bb-server/file-router % nil)
