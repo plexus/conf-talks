@@ -1,0 +1,8 @@
+{:paths ["src" "resources"]
+ :deps
+ {org.clojure/clojure            {:mvn/version "1.12.4"}
+  overtone/overtone              {:local/root "../../../Overtone/overtone"}
+  casa.squid/jack                {:local/root "../../../Overtone/jack"}
+  casa.squid/plasticine          {:local/root "../../../Overtone/plasticine"}
+  }
+ }
