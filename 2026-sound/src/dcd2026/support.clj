@@ -1,0 +1,116 @@
+(ns dcd2026.support
+  (:require
+   [overtone.live :refer :all]
+   [casa.squid.jack :as jack]))
+
+(defn init! []
+  (run! jack/disconnect
+        (jack/connections))
+
+  (jack/connect
+   [["Overtone:out_1" "Family 17h/19h/1ah HD Audio Controller Speaker:playback_FL"]
+    ["Overtone:out_2" "Family 17h/19h/1ah HD Audio Controller Speaker:playback_FR"]
+    ["Overtone:out_1" "Friture/ALSA Capture [python3.13]:input_FL"]
+    ["Overtone:out_2" "Friture/ALSA Capture [python3.13]:input_FR"]]
+   ))
+
+(init!)
+
+(definst marimba [note 60 amp 1 gate 1]
+  (let [freq (midicps note)
+        env (env-gen (perc :release 0.7) :gate gate :action FREE)]
+    (* amp
+       0.9
+       env
+       (rlpf
+        (mix [(sin-osc freq)
+              (* 0.9 (sin-osc (* 3.95 freq)))
+              (* 0.3 (sin-osc (* 12.55 freq)) )])
+        (* 1.5 freq)))))
+
+(definst violin [note {:default 60 :max 85}
+                 hpf-freq {:default 4.5 :max 12}
+                 lpf-freq {:default 10.4 :max 12}
+                 attack {:default 0.12 :min 0 :max 3}
+                 decay  {:default 0.3 :min 0 :max 2}
+                 sustain  {:default 1 :min 0 :max 2}
+                 release {:default 0.5 :min 0 :max 2}
+                 vibrato-freq {:default 6 :min 4 :max 12}
+                 vibrato-onset {:default 1 :max 3}
+                 vibrato {:default 0.2 :max 5}
+                 h1-gain {:default 1 :max 24}
+                 h2-gain {:default 1 :max 24}
+                 h3-gain {:default 1 :max 24}
+                 h4-gain {:default 1 :max 24}
+                 h5-gain {:default 1 :max 24}
+                 h6-gain {:default 1 :max 24}
+                 h7-gain {:default 1 :max 24}
+                 h8-gain {:default 1 :max 24}
+                 hrq {:default 1 :max 10}
+                 gate 1]
+  (let [freq (midicps note)]
+    (-> (* (+ (var-saw :freq freq))
+           (env-gen (adsr attack decay sustain release)
+                    :gate gate
+                    :action FREE)
+           (+ 1 (* vibrato
+                   (sin-osc :freq vibrato-freq)
+                   (env-gen (asr vibrato-onset 1 0.3)))))
+        (mid-eq freq hrq h1-gain)
+        (mid-eq (* 2 freq) hrq h2-gain)
+        (mid-eq (* 3 freq) hrq h3-gain)
+        (mid-eq (* 4 freq) hrq h4-gain)
+        (mid-eq (* 5 freq) hrq h5-gain)
+        (mid-eq (* 6 freq) hrq h6-gain)
+        (mid-eq (* 7 freq) hrq h7-gain)
+        (mid-eq (* 8 freq) hrq h8-gain)
+        (hpf :freq (* hpf-freq freq))
+        (lpf :freq (* lpf-freq freq)))))
+
+(definst electric-organ [note 48 gate 1]
+  (let [freq (midicps note)
+        m1 (* (env-gen (adsr 0 0.5 0.8 0.1 :curve :exp) gate :action FREE)
+              (sin-osc freq))
+        c1  (* (env-gen (adsr 0 0.8 0.8 0.1 :curve :exp) gate)
+               (sin-osc freq m1))
+        m2  (* (env-gen (adsr 0 0.3 0.8 0.1 :curve :exp) gate)
+               (sin-osc freq ))
+        c2  (* (env-gen (adsr 0 0.6 0.7 0.1 :curve :exp) gate)
+               (sin-osc (* 14.02 freq) m2))
+        m3  (* (env-gen (adsr 0 0.2 0.8 0.1 :curve :exp) gate)
+               (sin-osc freq ))
+        c3  (* (env-gen (adsr 0 0.4 0.6 0.1 :curve :exp) gate)
+               (sin-osc (* 2.98 freq) m3))]
+    (rlpf
+     (mix [c1 c2 c3])
+     (* 2 freq))))
+
+(defn param [inst name]
+  (some #(when (= name (:name %)) %)
+        (:params inst)))
+
+(defn kbd
+  ([inst]
+   (kbd nil inst))
+  ([ch inst]
+   (if (nil? inst)
+     (do
+       (remove-event-handler [::kbd ch :on])
+       (remove-event-handler [::kbd ch :off]))
+     (do
+       (on-event [:midi :note-on]
+                 (fn [{:keys [note channel velocity] :as e}]
+                   (prn channel note inst)
+                   (when (or (nil? ch) (= ch (dec channel)))
+                     (event :note :instrument inst :midinote note
+                            :overtone.studio.event/key note
+                            :end-time nil
+                            :amp (* 1.5 (/ velocity 128) @(:value (param inst "amp"))))))
+                 [::kbd ch :on])
+       (on-event [:midi :note-off]
+                 (fn [{:keys [note channel]}]
+                   (when (or (nil? ch) (= ch (dec channel)))
+                     (event :note-end :instrument inst :midinote note
+                            :overtone.studio.event/key note
+                            :end-time (now))))
+                 [::kbd ch :off])))))
