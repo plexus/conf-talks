@@ -8,11 +8,16 @@
         (jack/connections))
 
   (jack/connect
-   [["Overtone:out_1" "Family 17h/19h/1ah HD Audio Controller Speaker:playback_FL"]
-    ["Overtone:out_2" "Family 17h/19h/1ah HD Audio Controller Speaker:playback_FR"]
+   [
+    ;; ["Overtone:out_1" "Family 17h/19h/1ah HD Audio Controller Speaker:playback_FL"]
+    ;; ["Overtone:out_2" "Family 17h/19h/1ah HD Audio Controller Speaker:playback_FR"]
+    ["Overtone:out_1" "PCM2704 16-bit stereo audio DAC Analog Stereo:playback_FL"]
+    ["Overtone:out_2" "PCM2704 16-bit stereo audio DAC Analog Stereo:playback_FR"]
     ["Overtone:out_1" "Friture/ALSA Capture [python3.13]:input_FL"]
     ["Overtone:out_2" "Friture/ALSA Capture [python3.13]:input_FR"]]
    ))
+
+(jack/ports)
 
 (init!)
 
@@ -67,23 +72,43 @@
         (hpf :freq (* hpf-freq freq))
         (lpf :freq (* lpf-freq freq)))))
 
-(definst electric-organ [note 48 gate 1]
+(definst electric-organ [note 48 amp 1 gate 1]
   (let [freq (midicps note)
         m1 (* (env-gen (adsr 0 0.5 0.8 0.1 :curve :exp) gate :action FREE)
               (sin-osc freq))
         c1  (* (env-gen (adsr 0 0.8 0.8 0.1 :curve :exp) gate)
                (sin-osc freq m1))
         m2  (* (env-gen (adsr 0 0.3 0.8 0.1 :curve :exp) gate)
-               (sin-osc freq ))
+               (sin-osc (* 14.02 freq)))
         c2  (* (env-gen (adsr 0 0.6 0.7 0.1 :curve :exp) gate)
-               (sin-osc (* 14.02 freq) m2))
+               (sin-osc freq  m2))
         m3  (* (env-gen (adsr 0 0.2 0.8 0.1 :curve :exp) gate)
-               (sin-osc freq ))
+               (sin-osc (* 2.98 freq)))
         c3  (* (env-gen (adsr 0 0.4 0.6 0.1 :curve :exp) gate)
-               (sin-osc (* 2.98 freq) m3))]
-    (rlpf
-     (mix [c1 c2 c3])
-     (* 2 freq))))
+               (sin-osc freq m3))]
+    (* amp
+       (rlpf
+        (mix [c1 c2 c3])
+        (* 2 freq)))))
+
+(definst piano [note 48 amp 1 gate 1]
+  (let [freq (midicps note)
+        m1 (* (env-gen (adsr 0 1.5 0.01 0.1 :curve :exp) gate :action FREE)
+              (sin-osc freq))
+        c1  (* (env-gen (adsr 0 3 0.01 0.1 :curve :exp) gate)
+               (sin-osc freq m1))
+        m2  (* (env-gen (adsr 0 0.02 0.01 0.1 :curve :exp) gate)
+               (sin-osc (* 13.98 freq)))
+        c2  (* (env-gen (adsr 0 3 0.01 0.1 :curve :exp) gate)
+               (sin-osc freq m2))
+        m3  (* (env-gen (adsr 0 0.2 0.01 0.1 :curve :exp) gate)
+               (sin-osc (* 3.02 freq)))
+        c3  (* (env-gen (adsr 0 3 0.01 0.1 :curve :exp) gate)
+               (sin-osc freq m3))]
+    (* amp
+       (rlpf
+        (mix [c1 c2 c3])
+        (* 3 freq)))))
 
 (defn param [inst name]
   (some #(when (= name (:name %)) %)
@@ -100,17 +125,19 @@
      (do
        (on-event [:midi :note-on]
                  (fn [{:keys [note channel velocity] :as e}]
-                   (prn channel note inst)
-                   (when (or (nil? ch) (= ch (dec channel)))
-                     (event :note :instrument inst :midinote note
-                            :overtone.studio.event/key note
-                            :end-time nil
+                   (when (or (nil? ch) (= ch (inc channel)))
+                     (prn channel note inst)
+                     (event :note
+                            :instrument inst
+                            :midinote note
+                            :dur nil
                             :amp (* 1.5 (/ velocity 128) @(:value (param inst "amp"))))))
                  [::kbd ch :on])
        (on-event [:midi :note-off]
                  (fn [{:keys [note channel]}]
-                   (when (or (nil? ch) (= ch (dec channel)))
-                     (event :note-end :instrument inst :midinote note
-                            :overtone.studio.event/key note
-                            :end-time (now))))
+                   (when (or (nil? ch) (= ch (inc channel)))
+                     (prn 'OFF channel note inst)
+                     (event :note-end
+                            :instrument inst
+                            :midinote note)))
                  [::kbd ch :off])))))
