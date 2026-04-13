@@ -3,6 +3,10 @@
    [overtone.live :refer :all]
    [casa.squid.jack :as jack]))
 
+(comment
+  (jack/ports)
+  (stop))
+
 (defn init! []
   (run! jack/disconnect
         (jack/connections))
@@ -14,18 +18,20 @@
     ["Overtone:out_1" "PCM2704 16-bit stereo audio DAC Analog Stereo:playback_FL"]
     ["Overtone:out_2" "PCM2704 16-bit stereo audio DAC Analog Stereo:playback_FR"]
     ["Overtone:out_1" "Friture/ALSA Capture [python3.13]:input_FL"]
-    ["Overtone:out_2" "Friture/ALSA Capture [python3.13]:input_FR"]]
-   ))
-
-(jack/ports)
+    ["Overtone:out_2" "Friture/ALSA Capture [python3.13]:input_FR"]]))
 
 (init!)
+
+(definst sine-wave [note 60 amp 1 gate 1]
+  (* amp
+     (env-gen (adsr 0.1 0.1 0.7 0.1) :gate gate :action FREE)
+     (sin-osc (midicps note))))
 
 (definst marimba [note 60 amp 1 gate 1]
   (let [freq (midicps note)
         env (env-gen (perc :release 0.7) :gate gate :action FREE)]
     (* amp
-       0.9
+       1.8
        env
        (rlpf
         (mix [(sin-osc freq)
@@ -141,3 +147,13 @@
                             :instrument inst
                             :midinote note)))
                  [::kbd ch :off])))))
+
+(definst trumpet [freq 440 amp 1 gate 1]
+  (* amp
+     (rlpf (* (env-gen (adsr 0.01 0.1 0.7 0.15) :gate gate :action FREE)
+              (var-saw freq :width 0))
+           (lin-lin (env-gen (adsr 0.05 0.2 0.4 0.1))
+                    0 1
+                    (* 0.8 freq)
+                    (* 6 freq))
+           0.7)))
