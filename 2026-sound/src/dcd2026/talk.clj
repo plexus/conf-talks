@@ -10,9 +10,6 @@
 (kbd 3 electric-organ)
 (kbd 4 sine-wave)
 
-(hz->midi 200)
-(midi->hz 56)
-
 (demo (sin-osc 150))
 (demo (var-saw 150))
 (demo (var-saw 150 :width 1))

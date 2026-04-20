@@ -8,11 +8,12 @@ see what's inside, and so that we know which building blocks we have at our
 disposal when putting sound together ourselves.
 
 When I strike this glass, what happens? The impact against the glass briefly
-pushes some molecules closer together, while pulling others apart. But the
-molecules are connected by forces which resist this displacement, like balls
-connected by springs or rubber bands. When we push them together, they push
-back. When we pull them apart, they pull back. The result is a wave of push and
-pull which propagates through the glass, causing the glass to vibrate.
+pushes some of the glass molecules closer together, while pulling others away
+from each other. But the molecules are connected by forces which resist this
+displacement, like balls connected by springs or rubber bands. When we push them
+together, they push back. When we pull them apart, they pull back. The result is
+a wave of push and pull which goes up and down through the glass, causing the
+glass to vibrate.
 
 Each molecule ends up moving back and forth around its original position.
 Gradually the kinetic energy is converted into heat, or transferred to the
@@ -32,7 +33,7 @@ convert them into an electric signal, with the use of a microphone. There are
 many different ways to make a microphone. For instance, we can have a diaphragm,
 connected to a coil, which is suspended in a fixed magnatic field created by a
 magnet. The air causes the diaphragm to vibrate, which causes the coil to
-vibrate in turn. Moving the coil back and forth inside the magnetic then induces
+vibrate in turn. Moving the coil back and forth inside the magnet then induces
 an alternating electrical current in the coil. We now have an electrical signal
 that represents the sound being captured.
 
@@ -91,6 +92,10 @@ the shape is complex and jagged. To understand how different timbres comes
 about, and how to recreate them through synthesis techniques, we first need to
 talk about sine waves.
 
+Here's what a sine wave sounds like, and what it looks like in the oscilloscope.
+It's a very plain, basic sound, but it is the building block of more complex
+sounds.
+
 You may remember the sine and cosine functions from high school trigonometry.
 The sine wave shape you see on the oscilloscope is what you get if you move
 around a circle at a constant speed, and plot the position of one of the axes
@@ -100,15 +105,11 @@ When you stretch or compress an ideal spring, the restoring force is directly
 proportional, but opposite, to its displacement from equilibrium. If you set
 such a spring into motion and plot the displacement over time, you also get a
 sine wave.
- 
-These examples hopefully convince you of something that is not easy to intuit,
-but that is essential for what follows, namely that a sine wave is the most
-basic type of wave that occurs in nature. 
 
 The French mathematician and physicist Jean-Baptiste Joseph Fourier figured out
 that complex waves and functions can be decomposed into an infinite sum of
 simple sine and cosine waves, and so we call such a decomposition Fourier
-analysis, and the result a Fourier series.
+analysis.
 
 In the digital domain, the algorithm that achieves this is called the Fast
 Fourier Transform, or FFT. By applying this transformation, we can discover the

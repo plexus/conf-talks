@@ -1,0 +1,24 @@
+#!/usr/bin/env -S clojure -M
+
+(require
+ '[dcd2026.slides :as slides]
+ '[lambdaisland.cli :as cli]
+ '[slippery2026 :as slippery])
+
+(def init {})
+
+(def flags [])
+
+(defn build
+  "Build a static, stand-alone version of the slides"
+  [opts]
+  (slippery/build slides/slippery-opts))
+
+(def commands ["build" #'build])
+
+(cli/dispatch*
+ {:name "slippery"
+  :doc "Slippery Slides"
+  :init init
+  :flags flags
+  :commands commands})

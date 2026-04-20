@@ -1,8 +1,16 @@
 {:paths ["src" "resources"]
  :deps
- {org.clojure/clojure            {:mvn/version "1.12.4"}
-  overtone/overtone              {:local/root "../../../Overtone/overtone"}
-  casa.squid/jack                {:local/root "../../../Overtone/jack"}
-  casa.squid/plasticine          {:local/root "../../../Overtone/plasticine"}
-  }
- }
+ {org.clojure/clojure         {:mvn/version "1.12.4"}
+  overtone/overtone           {:local/root "../../../Overtone/overtone"}
+  casa.squid/jack             {:local/root "../../../Overtone/jack"}
+  casa.squid/plasticine       {:local/root "../../../Overtone/plasticine"}
+  com.lambdaisland/cli        {:mvn/version "1.29.127"}
+  com.lambdaisland/hiccup     {:mvn/version "0.14.67"}
+  com.lambdaisland/kramdown   {:mvn/version "0.1.6"}
+  com.lambdaisland/ornament   {:mvn/version "1.17.150"}
+  com.lambdaisland/xml-select {:mvn/version "0.2.5"}
+  lambdaisland/uri            {:mvn/version "1.19.155"}
+  com.cnuernber/charred       {:mvn/version "1.038"}
+  enlive/enlive               {:mvn/version "1.1.6"}
+  org.babashka/http-server    {:mvn/version "0.1.14"}
+  }}
