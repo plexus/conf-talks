@@ -74,6 +74,9 @@ Reveal.initialize(window.reveal_opts)"]]])
 
   (defn stop! []
     (server)
-    (ns-unmap *ns* 'server)))
+    (ns-unmap *ns* 'server))
+
+  (slippery/build slippery-opts)
+  )
 
 (comment (stop!))
