@@ -148,6 +148,33 @@
                             :midinote note)))
                  [::kbd ch :off])))))
 
+(defn kbd-cc [ch synth mapping]
+  (let [params     (:params (if (var? synth) @synth synth))
+        midi-state (atom {})
+        mapping    (into {} (map (juxt val key)) mapping)
+        mapping    (into {} (keep (fn [param]
+                                    (when-let [c (get mapping (keyword (:name param)))]
+                                      [c param])))
+                         params)]
+    ;;(prn mapping)
+    (on-event [:midi :control-change]
+              (fn [{:keys [data1 channel data2] :as e}]
+                (prn e)
+                (when (= channel (dec ch))
+                  (when-let [{:keys [name default min max step value]
+                              :or {min 0}}
+                             (get mapping data1)]
+                    (let [synth (if (var? synth) @synth synth)
+                          v (/ data2 127)
+                          v (+ min (* (- max min) v)) ;; 0-127 -> min-max
+                          v (if step
+                              (* step (Math/round (double (/ v step))))
+                              v)] ;; round to nearest step
+                      ;;(println name "=" (double v))
+                      (reset! (:value (first (filter (comp #{name} :name) (:params synth)))) v)
+                      (ctl synth (keyword name) v)))))
+              [::ctl ch])))
+
 (definst trumpet [freq 440 amp 1 gate 1]
   (* amp
      (rlpf (* (env-gen (adsr 0.01 0.1 0.7 0.15) :gate gate :action FREE)
@@ -157,3 +184,26 @@
                     (* 0.8 freq)
                     (* 6 freq))
            0.7)))
+
+(definst detuned-sines [freq 440 detune {:min 0 :max 1 :default 0} amp 1 gate 1]
+  (* amp
+     (env-gen (adsr 0.1 0.1 0.7 0.1) :gate gate :action FREE)
+     (+
+      (sin-osc freq)
+      (* (- 1 (* 0.5 detune)))
+      (sin-osc (* (lin-exp detune) freq) ))))
+
+(definst harmonics [freq 440 harmonics {:min 1 :default 9 :max 9} amp 1 gate 1]
+  (* amp
+     (env-gen (adsr 0.1 0.1 0.7 0.1) :gate gate :action FREE)
+     (+ (sin-osc freq)
+        (* 1/2 (<= 2 harmonics) (sin-osc (* 2 freq)))
+        (* 1/3 (<= 3 harmonics) (sin-osc (* 3 freq)))
+        (* 1/4 (<= 4 harmonics) (sin-osc (* 4 freq)))
+        (* 1/5 (<= 5 harmonics) (sin-osc (* 5 freq)))
+        (* 1/6 (<= 6 harmonics) (sin-osc (* 6 freq)))
+        (* 1/7 (<= 7 harmonics) (sin-osc (* 7 freq)))
+        (* 1/8 (<= 8 harmonics) (sin-osc (* 8 freq)))
+        (* 1/9 (<= 9 harmonics) (sin-osc (* 9 freq)))
+
+        )))
