@@ -121,6 +121,18 @@ out peaks across the frequency spectrum. The leftmost peak represents the base
 frequency. The others are all at multiples of this base frequency. They are
 known as harmonics, or overtones.
 
+---
+
+
+This sound I'm playing now takes just over 2ms to complete a single cycle, going up and then down and back to neutral. So it does that 440 times per second. We call that the base frequency of the sound. Base frequency, because there are other, higher frequencies hiding in there as well. I can take them out one by one so you can hear the difference. When I remove all the higher frequencies, what's left is just a sine wave of the base frequency.
+
+Turns out you can take sound apart like this into a sum of individual sine waves, at different frequencies and loudness. The lowest, and generally the loudest of these is the base frequency, and it determines the pitch we perceive. The frequencies above the base are called overtones.
+
+In principle overtones can appear anywhere across the frequency spectrum, but we mostly see them at integer multiples of the base frequency, especially in sound we perceive as tonal or musical. So if the base frequency is at 200Hz, then you're likely to see overtones at or close to 400Hz, 600Hz, 800Hz, etc. 
+
+This has to do with physics. If a string vibrates at a frequency, such that the length of the string is a discrete multiple of the wavelength, then you'll get what is known as a standing wave, where each cycle reinforces the next. The same is true for any pipe based instruments, including the human voice.
+
+
 
 -----------------------
 
