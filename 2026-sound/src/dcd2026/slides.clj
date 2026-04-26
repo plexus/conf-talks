@@ -72,6 +72,8 @@ Reveal.initialize(window.reveal_opts)"]]])
   (defonce server
     (slippery/run-server slippery-opts))
 
+  (clojure.java.browse/browse-url "http://localhost:7070")
+
   (defn stop! []
     (server)
     (ns-unmap *ns* 'server))
