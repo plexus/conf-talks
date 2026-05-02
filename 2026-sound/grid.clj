@@ -66,7 +66,7 @@
           dx (- (aget pos2 0) (aget pos1 0))
           dy (- (aget pos2 1) (aget pos1 1))
           rest-len (or rest-length (Math/sqrt (+ (* dx dx) (* dy dy))))]
-      (let [spring (js/p2.LinearSpring. body1 body2 #js {:stiffness 800
+      (let [spring (js/p2.LinearSpring. body1 body2 #js {:stiffness 600
                                                          :damping 0.01
                                                          :restLength rest-len})]
         (.addSpring world spring)))))

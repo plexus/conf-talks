@@ -23,35 +23,47 @@ pull them apart, they pull back. The result is a wave of push and pull which
 goes up and down through the glass, causing the glass to vibrate, as you can see
 in this physics simulation. What you also notice is that while the individual
 molecules erratically bounce back and forth, the system as a whole exhibits a
-slower and-and-down motion.
+slower up-and-down motion, a wave going through the medium.
 
 Each molecule ends up moving back and forth around its original position.
 Gradually the kinetic energy is converted into heat, or transferred to the
 surrounding air as sound energy, and the movement dies down. This kind of bouncy
 movement back and forth around a point of equilibrium we call oscillation.
 
-The vibration of the glass in turn pushes and pulls against the surrounding air
+(slide - pressure waves)
+
+The vibration of the glass pushes and pulls against the surrounding air
 molecules, creating areas of slightly lower, or slightly higher air pressure.
-These in turn propagate through the space as pressure waves, which eventually
-reach our ear drums, causing these in turn to vibrate. Tiny hairs in our inner
-ears convert this vibration into nervous signals, causing our brain to perceive
-sound.
+These in turn propagate through the space as waves of compression and
+decompression, which eventually reach our ear drums, causing these in turn to
+vibrate. Tiny hairs in our inner ears convert this vibration into nervous
+signals, causing our brain to perceive sound.
 
 (slide -microphone)
 
-So sound consists of vibrations, alternating pressure waves, propagating through
-a medium, like the air in this room. We can measure these pressure changes, and
-convert them into an electric signal, with the use of a microphone. There are
-many different ways to make a microphone, many of them based on the principles
-of electromagnetism. They form a kind of electroacoustic coupling, turning the
-pressure variations in the air into an alternating electrical current. We now
-have a signal that represents the sound being captured.
+So sound consists of vibrations, which are alternating pressure waves,
+propagating through a medium, like the air in this room. We can measure these
+pressure changes, and convert them into an electric signal, with the use of a
+microphone.
+
+
+(slide - coil)
+
+There are many different ways to make a microphone, many of them based on the
+principles of electromagnetism. 
+
+(slide - waveform)
+
+They turn the pressure variations in the air into an alternating electrical
+current. We now have a signal that represents the sound being captured.
 
 (slide - speaker)
 
 Similarly we can go the other way around, and convert this signal back into
-sound. We now have two ways of looking at sound, as vibrations in a medium, or
-as a continuous electrical signal.
+sound. We now have two ways of looking at sound, as pressure variations in a
+medium, or as a electrical signal going up and down.
+
+(slide - ???) - missing
 
 To bring this signal into the digital domain, we use something called a Analog
 to Digital Converter, or ADC. Tens of thousands of times per second, this
@@ -67,12 +79,10 @@ that point.
 
 (switch to emacs)
 
-If we plot this movement on a graph we get something like what you
-see on the top right.
-
-This is called an oscilloscope, it allows us to _see_ the oscillations that are
-happening. The horizontal axis depicts time, the vertical axis shows the
-amplitude of the signal.
+On the top right you can see that visualised by something we call an
+oscilloscope, it allows us to _see_ the oscillations that are happening. The
+horizontal axis depicts time, the vertical axis shows the amplitude of the
+signal.
 
 The time it takes for the signal to go from zero to its highest peak, then down
 to its lowest peak, and then back to the middle, is called the period. For this
@@ -116,7 +126,7 @@ It's a very plain, basic sound, but it is the building block of more complex
 sounds.
 
 Turns out that complex sounds are just a combination of different sine waves
-added together, and that can take any sound apart into a sum of individual sine
+added together, and so we can take any sound apart into a sum of individual sine
 waves, at different frequencies and loudness. This is what you see in these
 peaks in this diagram on the bottom left. The lowest, and generally the loudest
 of these is the base frequency, and it determines the pitch we perceive. The
@@ -143,6 +153,8 @@ is true for any pipe based instruments, including the human voice.
 Sine waves at multiples of the base frequency, we also call harmonics.
 
 - dissonance / harmony
+
+[Dissonance](https://chromatone.center/practice/sound/dissonance/)
 
 
 <!-- You may remember the sine and cosine functions from high school trigonometry. -->
@@ -190,3 +202,5 @@ What is sound?
 
 
 - Midi note numbers, note on/off/ctl events
+
+;; https://wiretext.app/w/J1_3hg1v

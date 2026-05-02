@@ -27,7 +27,8 @@
   ;; [:h2 {:font-size "2.5rem"
   ;;       :line-height "1.2em"}]
   ;; [:h1 {:font-size "4rem"}]
-  ;; [:img {:max-width "100%"}]
+  [:img {:max-width "100%"
+         :max-height "100%"}]
   ;; [#{:ol :ul} {:text-align "left"}]
   ;; [:li {:margin-top "0.25em"
   ;;       :margin-bottom "0.5em"}]

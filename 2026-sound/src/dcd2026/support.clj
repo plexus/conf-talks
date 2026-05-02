@@ -11,14 +11,18 @@
   (run! jack/disconnect
         (jack/connections))
 
-  (jack/connect
-   [
-    ;; ["Overtone:out_1" "Family 17h/19h/1ah HD Audio Controller Speaker:playback_FL"]
-    ;; ["Overtone:out_2" "Family 17h/19h/1ah HD Audio Controller Speaker:playback_FR"]
-    ["Overtone:out_1" "PCM2704 16-bit stereo audio DAC Analog Stereo:playback_FL"]
-    ["Overtone:out_2" "PCM2704 16-bit stereo audio DAC Analog Stereo:playback_FR"]
-    ["Overtone:out_1" "Friture/ALSA Capture [python3.13]:input_FL"]
-    ["Overtone:out_2" "Friture/ALSA Capture [python3.13]:input_FR"]]))
+  (let [ports (into #{} (jack/ports))]
+    (jack/connect
+     [["Overtone:out_1" (some ports
+                              ["PCM2704 16-bit stereo audio DAC Digital Stereo (IEC958):playback_FL"
+                               "Family 17h/19h/1ah HD Audio Controller Speaker:playback_FL"])]
+      ["Overtone:out_2" (some ports
+                              ["PCM2704 16-bit stereo audio DAC Digital Stereo (IEC958):playback_FR"
+                               "Family 17h/19h/1ah HD Audio Controller Speaker:playback_FR"])]])
+    (when (ports "Friture/ALSA Capture [python3.13]:input_FL")
+      (jack/connect
+       [["Overtone:out_1" "Friture/ALSA Capture [python3.13]:input_FL"]
+        ["Overtone:out_2" "Friture/ALSA Capture [python3.13]:input_FR"]]))))
 
 (init!)
 
@@ -134,7 +138,9 @@
                             :instrument inst
                             :midinote note
                             :dur nil
-                            :amp (* 1.5 (/ velocity 128) @(:value (param inst "amp"))))))
+                            :amp (if (param inst "amp")
+                                   (* 1.5 (/ velocity 128) @(:value (param inst "amp")))
+                                   1))))
                  [::kbd ch :on])
        (on-event [:midi :note-off]
                  (fn [{:keys [note channel]}]
