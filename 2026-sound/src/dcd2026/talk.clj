@@ -4,6 +4,7 @@
    [dcd2026.support :refer :all]))
 
 (stop)
+(start-friture!)
 (init!)
 
 (do
@@ -25,10 +26,10 @@
 
 ;; Oscillators:
 
-(demo (sin-osc 300)) ;; Sine-wave oscillator
-(demo (var-saw 300)) ;; Triangle wave (Variable width sawtooth oscillator)
+(demo (sin-osc 400)) ;; Sine-wave oscillator
+(demo (var-saw 500)) ;; Triangle wave (Variable width sawtooth oscillator)
 (demo (var-saw 300 :width 1)) ;; Sawtooth wave
-(demo (square 300)) ;; Square wave oscillator
+(demo (square 500)) ;; Square wave oscillator
 
 ;;---------------------------------------------------
 
@@ -97,9 +98,9 @@
 
 (definst adsr-demo [freq 440 gate 1]
   (*
-   (env-gen (adsr :attack  0.2 ;; seconds
-                  :decay   0.8 ;; seconds
-                  :sustain (db->amp -20) ;; level!
+   (env-gen (adsr :attack  0.1 ;; seconds
+                  :decay   0.1 ;; seconds
+                  :sustain (db->amp -10) ;; level!
                   :release 1.1 ;; seconds
                   )
             :gate gate :action FREE)
@@ -149,8 +150,8 @@
     (* (env-gen (perc))
        (+ (sin-osc freq)
           (* 1/2 (sin-osc (* 2 freq)))
-          (* 1/3 (sin-osc (* 3 freq)))
-          #_(* 1/3 (sin-osc (* 3.1 freq)))))))
+          #_(* 1/3 (sin-osc (* 3 freq)))
+          (* 1/3 (sin-osc (* 3.1 freq)))))))
 
 ;;---------------------------------------------------
 ;; Kalimba / Mbira
@@ -169,14 +170,14 @@
        (+ (sin-osc freq)
           (* 0.3 (sin-osc (* 6.55 freq)))
           (* 0.05 (sin-osc (* 5.5 freq)))
-          #_(* 0.03 (sin-osc (* 8.2 freq)))))))
+          (* 0.03 (sin-osc (* 8.2 freq)))))))
 
 
 (demo
   (let [freq 523]
     (+
-     (* (sin-osc freq)
-        (env-gen (perc 0.01 1.0)))
+     (* (env-gen (perc 0.01 1.0))
+        (sin-osc freq))
      (* 0.3
         (env-gen (perc 0.005 0.5))
         (sin-osc (* 6.55 freq)))
@@ -201,7 +202,7 @@
   (let [freq 440]
     (rlpf (var-saw freq :width 0)
           (* 5 freq (mouse-y))
-          #_0.1)))
+          0.1)))
 
 (demo
   (let [freq 440]
@@ -279,7 +280,7 @@
 ;; Frequency modulation
 (demo
   (let [mod-osc (sin-osc 220)]
-    (sin-osc (* 220 (lin-lin mod-osc -1 1 0.6 1.4)))))
+    (sin-osc (* 220 (lin-lin mod-osc -1 1 0 2)))))
 
 ;; Phase Modulation
 (demo

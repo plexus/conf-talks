@@ -11,7 +11,31 @@ disposal when putting sound together ourselves.
 
 (slide)
 
-When I strike this glass, what happens? 
+This talk will consist of two parts, the first part is mostly theory. I am going
+to try to condense the basics of sound theory, and give you just enough
+background to understand what comes next.
+
+In the second part we'll switch to live coding, and I will demonstrate how we
+can apply that theory to create synths and sounds, using Overtone.
+
+(slide)
+
+But why do this talk? Well, we have this amazing live coding environment in
+Clojure called Overtone. I've taken over some of the maintenance the last few
+years. Overtone has featured in plenty of Clojure conference talks, including a
+lightning talk I did at the Conj in 2024. But I've noticed that there's still a
+big barrier to entry. There's nothing wrong with the APIs, they're pretty well
+designed all things considered, but people miss the background to make sense of
+what they see. And this is a pity, because there's a lot of fun to be had.
+Whether it's with Overtone, or Sonic PI, which is another life coding
+environment, or soft synths like the amSynth you see here, or actual physical
+modular synthesisers. The principles behind all of these are the same, and I
+hope that after this talk at least some of you will feel empowered to start
+playing around with one of these.
+
+(slide)
+
+Ok, let's talk about sound. When I strike this glass, what happens? 
 
 (slide)
 

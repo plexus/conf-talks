@@ -5,7 +5,23 @@
 
 (comment
   (jack/ports)
+  (jack/connections)
   (stop))
+
+(defonce friture (atom nil))
+
+(defn start-friture! []
+  (when-let [p @friture]
+    (.destroyForcibly p))
+  (reset! friture (.start (ProcessBuilder. ["friture"])))
+  (while (not (some #{"Friture/ALSA Capture [python3.13]:input_FL"}
+                    (jack/ports))))
+  (Thread/sleep 1000)
+  (run! jack/disconnect
+        (filter #(re-find #"Friture" (second %))
+                (jack/connections)))
+  (jack/connect "Overtone:out_1" "Friture/ALSA Capture [python3.13]:input_FL")
+  (jack/connect "Overtone:out_1" "Friture/ALSA Capture [python3.13]:input_FR"))
 
 (defn init! []
   (run! jack/disconnect
@@ -16,13 +32,20 @@
      [["Overtone:out_1" (some ports
                               ["PCM2704 16-bit stereo audio DAC Digital Stereo (IEC958):playback_FL"
                                "Family 17h/19h/1ah HD Audio Controller Speaker:playback_FL"])]
-      ["Overtone:out_2" (some ports
+      ["Overtone:out_1" (some ports
                               ["PCM2704 16-bit stereo audio DAC Digital Stereo (IEC958):playback_FR"
                                "Family 17h/19h/1ah HD Audio Controller Speaker:playback_FR"])]])
-    (when (ports "Friture/ALSA Capture [python3.13]:input_FL")
-      (jack/connect
-       [["Overtone:out_1" "Friture/ALSA Capture [python3.13]:input_FL"]
-        ["Overtone:out_2" "Friture/ALSA Capture [python3.13]:input_FR"]]))))
+    (doseq [[from to]
+            [["Overtone:out_1" "Friture/ALSA Capture [python3.13]:input_FL"]
+             ["Overtone:out_1" "Friture/ALSA Capture [python3.13]:input_FR"]
+             ["Overtone:out_1" "OBS:input_FL"]
+             ["Overtone:out_1" "OBS:input_FR"]
+             ["Family 17h/19h/1ah HD Audio Controller Headphones Stereo Microphone:capture_FL" "OBS:input_FL-1162"]
+             ["Family 17h/19h/1ah HD Audio Controller Headphones Stereo Microphone:capture_FR" "OBS:input_FR-1164"]
+             ]]
+      (when (and (ports from)
+                 (ports to))
+        (jack/connect from to)))))
 
 (init!)
 
