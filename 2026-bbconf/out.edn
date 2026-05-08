@@ -1,0 +1,63 @@
+[{:id "QTC",
+  :name "GSV Quite The Catch",
+  :shields
+  [{:id "MAIN", :strength 100, :active? true}
+   {:id "AUX", :strength 50, :active? false}],
+  :cargo
+  [{:id "MAIN", :capacity 500, :loaded 250}
+   {:id "RESERVE", :capacity 100, :loaded 0}],
+  :crew
+  [{:id "CAPT", :role "Captain", :count 1}
+   {:id "CREW", :role "Crew", :count 11}],
+  :engines
+  [{:id "FRONT", :state "Mint", :engaged? true, :power 0.25}
+   {:id "BACK", :state "Mint", :engaged? false, :power 0.25}]}
+ {:id "SD",
+  :name "GCU Staggering Disregard",
+  :shields [{:id "MAIN", :strength 120, :active? true}],
+  :cargo [{:id "MAIN", :capacity 600, :loaded 300}],
+  :crew
+  [{:id "CAPT", :role "Captain", :count 1}
+   {:id "CREW", :role "Crew", :count 14}],
+  :engines
+  [{:id "PRIMARY", :state "Mint", :engaged? false, :power 0.3}
+   {:id "SECONDARY", :state "Mint", :engaged? false, :power 0.3}
+   {:id "EMERGENCY", :state "Damaged", :engaged? false, :power 0.05}]}
+ {:id "YDSTED",
+  :name "LOU You Don't See That Every Day",
+  :shields [{:id "MAIN", :strength 80, :active? true}],
+  :cargo [{:id "MAIN", :capacity 400, :loaded 200}],
+  :crew
+  [{:id "CAPT", :role "Captain", :count 1}
+   {:id "CREW", :role "Crew", :count 9}],
+  :engines
+  [{:id "CORE", :state "Mint", :engaged? false, :power 0.2}
+   {:id "AUXILIARY", :state "Mint", :engaged? false, :power 0.2}]}
+ {:id "WF",
+  :name "ROU Weird Flex",
+  :shields
+  [{:id "MAIN", :strength 200, :active? true}
+   {:id "TACTICAL", :strength 150, :active? true}
+   {:id "RESERVE", :strength 100, :active? false}],
+  :cargo
+  [{:id "MAIN", :capacity 800, :loaded 400}
+   {:id "WEAPONS", :capacity 200, :loaded 200}],
+  :crew
+  [{:id "CAPT", :role "Captain", :count 1}
+   {:id "TACTICAL", :role "Tactical Officer", :count 5}
+   {:id "CREW", :role "Crew", :count 20}],
+  :engines
+  [{:id "MAIN", :state "Mint", :engaged? true, :power 0.8}
+   {:id "TACTICAL", :state "Mint", :engaged? false, :power 0.5}
+   {:id "HYPER", :state "Charging", :engaged? false, :power 0.0}
+   {:id "EMERGENCY", :state "Offline", :engaged? false, :power 0.0}]}
+ {:id "PFSE",
+  :name "GCU Presumably For Side Effects",
+  :shields [{:id "MAIN", :strength 90, :active? true}],
+  :cargo [{:id "MAIN", :capacity 300, :loaded 150}],
+  :crew
+  [{:id "CAPT", :role "Captain", :count 1}
+   {:id "CREW", :role "Crew", :count 8}],
+  :engines
+  [{:id "PRIMARY", :state "Worn", :engaged? false, :power 0.15}
+   {:id "SECONDARY", :state "Mint", :engaged? false, :power 0.25}]}]

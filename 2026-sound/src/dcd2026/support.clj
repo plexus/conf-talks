@@ -10,9 +10,13 @@
 
 (defonce friture (atom nil))
 
-(defn start-friture! []
+(defn stop-friture! []
   (when-let [p @friture]
-    (.destroyForcibly p))
+    (.destroyForcibly p)
+    (reset! friture nil)))
+
+(defn start-friture! []
+  (stop-friture!)
   (reset! friture (.start (ProcessBuilder. ["friture"])))
   (while (not (some #{"Friture/ALSA Capture [python3.13]:input_FL"}
                     (jack/ports))))

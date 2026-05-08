@@ -1,0 +1,35 @@
+#!/usr/bin/env bb
+
+(require
+ '[clojure.pprint :as pprint]
+ '[lambdaisland.cli :as cli])
+
+(defn info
+  "Get info on our starships"
+  [{:keys [data] :as opts}]
+  (pprint/print-table
+   (map #(select-keys % [:id :name])
+        data)))
+
+(def commands
+  ["info" #'info])
+
+(def flags
+  ["--ship <id>" "Choose which ship to operate on"
+   "-f, --file <starship-file>" {:doc "Which starship.edn to operate on"
+                                 :default "starship.edn"
+                                 :handler (fn [opts file]
+                                            (assoc
+                                              opts :data
+                                              (read-string
+                                               (slurp file))))}])
+
+(cli/dispatch
+ {:name "starship"
+  :doc "Control a starship! \n\n Conveniently remote control your ships, whether in orbit or in deep space."
+  :commands commands
+  :flags flags})
+
+;; Local Variables:
+;; mode:clojure
+;; End:

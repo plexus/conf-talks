@@ -1,0 +1,3 @@
+{:deps
+ {com.lambdaisland/cli {:local/root "/home/arne/lambdaisland/cli"}
+  com.lambdaisland/launchpad {:mvn/version "0.48.215-alpha"}}}
