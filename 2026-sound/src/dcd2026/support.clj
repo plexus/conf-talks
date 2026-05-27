@@ -31,14 +31,17 @@
   (run! jack/disconnect
         (jack/connections))
 
+  "Family 17h/19h/1ah HD Audio Controller Headphones:playback_FR"
+
   (let [ports (into #{} (jack/ports))]
     (jack/connect
      [["Overtone:out_1" (some ports
                               ["PCM2704 16-bit stereo audio DAC Digital Stereo (IEC958):playback_FL"
-                               "Family 17h/19h/1ah HD Audio Controller Speaker:playback_FL"])]
+                               "Family 17h/19h/1ah HD Audio Controller Headphones:playback_FL"
+                               ])]
       ["Overtone:out_1" (some ports
                               ["PCM2704 16-bit stereo audio DAC Digital Stereo (IEC958):playback_FR"
-                               "Family 17h/19h/1ah HD Audio Controller Speaker:playback_FR"])]])
+                               "Family 17h/19h/1ah HD Audio Controller Headphones:playback_FR"])]])
     (doseq [[from to]
             [["Overtone:out_1" "Friture/ALSA Capture [python3.13]:input_FL"]
              ["Overtone:out_1" "Friture/ALSA Capture [python3.13]:input_FR"]
@@ -51,7 +54,6 @@
                  (ports to))
         (jack/connect from to)))))
 
-(init!)
 
 (definst sine-wave [freq 440 amp 1 gate 1]
   (* amp

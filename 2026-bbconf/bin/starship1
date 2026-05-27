@@ -1,15 +1,13 @@
 #!/usr/bin/env bb
 
-
-
-
 (require
  '[clojure.pprint :as pprint]
  '[lambdaisland.cli :as cli])
 
 (cli/dispatch
  {:name "starship"
-  :doc "Control a starship! \n\n Conveniently remote control your ships, whether in orbit or in deep space."
+  :doc "Control a starship!
+        Conveniently remote control your ships, whether in orbit or in deep space."
   :commands
   ["info" (fn [opts]
             (println "Starship stuff!")

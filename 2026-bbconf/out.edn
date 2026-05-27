@@ -10,7 +10,7 @@
   [{:id "CAPT", :role "Captain", :count 1}
    {:id "CREW", :role "Crew", :count 11}],
   :engines
-  [{:id "FRONT", :state "Mint", :engaged? true, :power 0.25}
+  [{:id "FRONT", :state "Mint", :engaged? false, :power 0.25}
    {:id "BACK", :state "Mint", :engaged? false, :power 0.25}]}
  {:id "SD",
   :name "GCU Staggering Disregard",

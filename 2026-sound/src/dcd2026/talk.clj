@@ -95,7 +95,6 @@
 
 ;;---------------------------------------------------
 ;; ADSR = Attack Decay Sustain Release
-
 (definst adsr-demo [freq 440 gate 1]
   (*
    (env-gen (adsr :attack  0.1 ;; seconds

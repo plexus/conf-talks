@@ -30,11 +30,12 @@
 (defn engines-engage
   "Engage the engine"
   {:flags ["--engine-id <id>" "Which engine to engage"]}
-  [{:keys [ship engine-id data] :as opts}]
-  (spit "out.edn"
-        (with-out-str
-          (pprint/pprint
-           (update-id data ship update :engines update-id engine-id assoc :engaged? true)))))
+  [{:keys [ship engine-id] :as opts}]
+  (update opts :data
+          update-id ship
+          update :engines
+          update-id engine-id
+          assoc :engaged? true))
 
 (def engines
   {:commands ["info" #'engines-info
@@ -42,24 +43,44 @@
 
 (def commands
   ["info" #'info
-   "engines" #'engines])
+   "engines" #'engines
+   "error" (fn [_] (/ 0 0))])
 
 (def flags
   ["--ship <id>" "Choose which ship to operate on"
    "-f, --file <starship-file>" {:doc "Which starship.edn to operate on"
-                                 :default "starship.edn"
-                                 :handler (fn [opts file]
-                                            (assoc
-                                              opts :data
-                                              (read-string
-                                               (slurp file))))}])
+                                 :default "starship.edn"}
+   "-o, --out <starship-file>" {:doc "Which starship.edn to write"}])
+
+(defn wrap-data [cmd]
+  (fn [{:keys [file out] :as opts}]
+    (let [opts (assoc
+                 opts :data
+                 (read-string
+                  (slurp file)))
+          res (cmd opts)]
+      (when (and (:data res) (not= (:data opts) (:data res)))
+        (spit (or out file) (with-out-str (pprint/pprint (:data res)))))
+      opts)))
+
+(defn wrap-error [cmd]
+  (fn [opts]
+    (try
+      (cmd opts)
+      (catch Throwable t
+        (if (:show-trace opts)
+          (println t)
+          (do
+            (println "ERROR:" (ex-message t))
+            (println "Run with --show-trace to see the full stack trace")))))))
 
 (cli/dispatch
  {:name "starship"
   :doc "Control a starship!
         Conveniently remote control your ships, whether in orbit or in deep space."
   :commands commands
-  :flags flags})
+  :flags flags
+  :middleware [wrap-data wrap-error]})
 
 ;; Local Variables:
 ;; mode:clojure

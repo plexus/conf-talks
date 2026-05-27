@@ -1,0 +1,14 @@
+* Me
+
+Arne Brasseur
+https://arnebrasseur.net
+https://lambdaisland.com
+https://toot.cat/@plexus
+
+
+* com.lambdaisland/cli
+
+- Gradual, low ceremony, approach
+- Great help text with no extra effort
+- Flexible, versatile, powerful
+- Follow existing command line conventions

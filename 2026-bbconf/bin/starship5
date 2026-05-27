@@ -7,10 +7,10 @@
 (defn info
   "Get info on our starships"
   [{:keys [starship-file] :as opts}]
-  (pprint/print-table
-   (map #(select-keys % [:id :name])
-        (read-string
-         (slurp starship-file)))))
+  (let [data (read-string (slurp starship-file))]
+    (pprint/print-table
+     (for [{:keys [id name]} data]
+       {:id id :name name}))))
 
 (def commands
   ["info" #'info])
@@ -23,7 +23,8 @@
 
 (cli/dispatch
  {:name "starship"
-  :doc "Control a starship! \n\n Conveniently remote control your ships, whether in orbit or in deep space."
+  :doc "Control a starship!
+        Conveniently remote control your ships, whether in orbit or in deep space."
   :commands commands
   :flags flags})
 

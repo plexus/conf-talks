@@ -12,7 +12,8 @@
 
 (cli/dispatch
  {:name "starship"
-  :doc "Control a starship! \n\n Conveniently remote control your ships, whether in orbit or in deep space."
+  :doc "Control a starship!
+        Conveniently remote control your ships, whether in orbit or in deep space."
   :commands commands})
 
 ;; Local Variables:

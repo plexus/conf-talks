@@ -11,8 +11,8 @@
   "Get info on our starships"
   [{:keys [data] :as opts}]
   (pprint/print-table
-   (map #(select-keys % [:id :name])
-        data)))
+   (for [{:keys [id name]} data]
+     {:id id :name name})))
 
 (defn engines-info
   "Get info on your engines"
@@ -64,7 +64,8 @@
 
 (cli/dispatch
  {:name "starship"
-  :doc "Control a starship! \n\n Conveniently remote control your ships, whether in orbit or in deep space."
+  :doc "Control a starship!
+        Conveniently remote control your ships, whether in orbit or in deep space."
   :commands commands
   :flags flags
   :middleware [wrap-data]})
