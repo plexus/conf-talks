@@ -1,0 +1,23 @@
+#!/usr/bin/env bb
+
+(require
+ '[clojure.pprint :as pprint]
+ '[lambdaisland.cli :as cli])
+
+(defn info
+  "Get info on our starships"
+  [opts]
+  ;; !! let's actually do something interesting
+  (let [data (read-string (slurp "starship.edn"))]
+    (pprint/print-table
+     (for [{:keys [id name]} data]
+       {:id id :name name}))))
+
+(def commands
+  ["info" #'info])
+
+(cli/dispatch
+ {:name "starship"
+  :doc "Control a starship!
+        Conveniently remote control your ships, whether in orbit or in deep space."
+  :commands commands})

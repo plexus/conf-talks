@@ -1,0 +1,146 @@
+* Me
+
+Arne Brasseur
+https://arnebrasseur.net
+https://lambdaisland.com
+https://toot.cat/@plexus
+
+* com.lambdaisland/cli
+
+- Gradual, low ceremony, approach
+- Great help text with no extra effort
+- Flexible, versatile, powerful
+- Follow existing command line conventions
+
+** Flags
+
+#+begin_src 
+  # Usage
+  -v
+  --verbose
+  --input file.txt
+  --format=json
+
+  # Definition
+  -v, --verbose
+  --input=<file>
+  --format FMT
+  --format <json|edn|csv>
+
+  # Options
+  {:doc "..."
+   :default "xxx"
+   :parse keyword
+   :coll? true
+   :key :env
+   :value :prod
+   :required true
+   :handler (fn [opts flag] ,,,)
+   :middleware (fn [cmd] (fn [opts flag] ,,,))}
+#+end_src
+
+
+** Demo / Walkthrough
+
+Starships!
+
+** Shell completion
+
+#+begin_src shell
+  bin/my_command __licli install-completions
+#+end_src
+
+** Use cases
+
+- main entry point for apps
+- build / compile
+- ops tasks
+
+*** bin/dev script for an application
+
+#+begin_src 
+NAME
+  bin/dev 
+
+SYNOPSIS
+  bin/dev [-v | --verbose] [-n | --dry-run] [secrets | deploy | release | log | otel | docker | prod-tunnel | ssh | slack | alloydb ] [<args>...]
+
+FLAGS
+  -v, --verbose     Increase verbosity                            
+  -e, --env <env>   Specify environment, e.g. prod, staging (default "staging")
+  -n, --dry-run     Show shell commands, but don't execute them   
+
+SUBCOMMANDS
+  secrets <ls|list|set|set-from-file|set-edn|show|dump-edn>   Manage GCP secrets for a given environment.                    
+  deploy <env>                                                Deploy a given container version to a given environment on GCP.
+  release                                                     Cut a new release, and deploy it.                              
+  log                                                         Watch production logs                                          
+  otel <fetch-jar>                                            OpenTelemetry                                                  
+  docker <build|push>                                         Manage docker build                                                               
+  prod-tunnel                                                 Create an SSH tunnel to a production machine                   
+  ssh                                                         SSH into a VM instance                                         
+  slack <init|deploy>                                         Manage the Slack bot                                           
+  alloydb <tunnel>                                            Manage Alloy DB (postgres compatible DB from Google)    
+#+end_src
+
+*** bin/dev script for a library 
+
+#+begin_src 
+NAME
+  bin/dev 
+
+SYNOPSIS
+  bin/dev [-v | --verbose] [-h | --help] [init | pom | release] [<args>...]
+
+FLAGS
+  -v, --verbose   Increase verbosity                   
+  -h, --help      Show help text for a (sub-)command   
+
+SUBCOMMANDS
+  init      Create local files which are not checked in
+  pom       Generate pom files                         
+  release   Release a new version to clojars  
+#+end_src
+
+*** lambdaisland/open-source bin/proj
+
+#+begin_src 
+NAME
+  bin/proj 
+
+SYNOPSIS
+  bin/proj [release | pom | relocation-pom | install | print-versions | gh_actions_changelog_output | inspect | gen-readme | update-readme | bump-version | launchpad | ingest-docs | notify-discord] [<args>...]
+
+SUBCOMMANDS
+  release                       Release a new version to clojars                                              
+  pom                           Generate pom files                                                            
+  relocation-pom                Generate pom files to relocate artifacts to a new groupId                     
+  install                       Build and install jar(s) locally                                              
+  print-versions                Print deps.edn / lein coordinates                                             
+  gh_actions_changelog_output   Print the last stanza of the changelog in a format that GH actions understands
+  inspect                       Show expanded opts and exit                                                   
+  gen-readme                    Generate README based on a template and fill in project variables             
+  update-readme                 Update sections in README.md                                                  
+  bump-version                  Bump minor version                                                            
+  launchpad                     Launch a REPL with Launchpad                                                  
+  ingest-docs                   Run cljdoc in Docker to ingest the current version of this project.           
+  notify-discord                                                                                              
+#+end_src
+
+*** bin/build
+
+#+begin_src 
+NAME
+  bin/build 
+
+SYNOPSIS
+  bin/build [-v | --verbose] [-n | --dry-run] [uberjar | __licli] [<args>...]
+
+FLAGS
+  -v, --verbose   Increase verbosity                            
+  -n, --dry-run   Show shell commands, but don't execute them   
+
+SUBCOMMANDS
+  uberjar   Build an uberjar in target/hai.jar
+#+end_src
+

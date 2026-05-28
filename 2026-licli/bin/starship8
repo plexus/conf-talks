@@ -1,0 +1,73 @@
+#!/usr/bin/env bb
+
+(require
+ '[clojure.pprint :as pprint]
+ '[lambdaisland.cli :as cli])
+
+(defn update-id [data id f & args]
+  (mapv (fn [m] (if (= (:id m) id) (apply f m args) m)) data))
+
+(defn info
+  "Get info on our starships"
+  [{:keys [data] :as opts}]
+  (pprint/print-table
+   (for [{:keys [id name]} data]
+     {:id id :name name})))
+
+(defn engines-info
+  "Get info on your engines"
+  [{:keys [data] :as opts}]
+  (pprint/print-table
+   (for [{:keys [id name engines]} data
+         {engine-id :id :keys [state engaged? power]} engines]
+     {:id id
+      :name name
+      :engine-id engine-id
+      :state state
+      :engaged? engaged?
+      :power power})))
+
+(defn engines-engage
+  "Engage the engine"
+  {:flags ["--engine-id <id>" "Which engine to engage"]}
+  [{:keys [ship engine-id] :as opts}]
+  (update opts :data
+          update-id ship
+          update :engines
+          update-id engine-id
+          assoc :engaged? true))
+
+(def engines
+  {:commands ["info" #'engines-info
+              "engage" #'engines-engage]})
+
+(def commands
+  ["info" #'info
+   "engines" #'engines])
+
+(def flags
+  ["--ship <id>" "Choose which ship to operate on"
+   "-f, --file <starship-file>" {:doc "Which starship.edn to operate on"
+                                 :default "starship.edn"}
+   "-o, --out <starship-file>" {:doc "Which starship.edn to write"}])
+
+;; !! Middleware function
+(defn wrap-data [cmd]
+  (fn [{:keys [file out] :as opts}]
+    (let [opts (assoc
+                 opts :data
+                 (read-string
+                  (slurp file)))
+          res (cmd opts)]
+      (when (and (:data res) (not= (:data opts) (:data res)))
+        (spit (or out file) (with-out-str (pprint/pprint (:data res)))))
+      opts)))
+
+(cli/dispatch
+ {:name "starship"
+  :doc "Control a starship!
+        Conveniently remote control your ships, whether in orbit or in deep space."
+  :commands commands
+  :flags flags
+  ;; !! install middleware
+  :middleware [wrap-data]})

@@ -1,0 +1,33 @@
+[{:id      "QTC"
+  :name    "GSV Breakfast is Served"
+  :shields [{:id "MAIN" :strength 100 :active? true}
+            {:id "AUX" :strength 50 :active? false}]
+  :cargo   [{:id "MAIN" :capacity 500 :loaded 250}
+            {:id "RESERVE" :capacity 100 :loaded 0}]
+  :crew    [{:id "CAPT" :role "Captain" :count 1}
+            {:id "CREW" :role "Crew" :count 11}]
+  :engines
+  [{:id       "FRONT"
+    :state    "Mint"
+    :engaged? false
+    :power    0.25}
+   {:id       "BACK"
+    :state    "Mint"
+    :engaged? false
+    :power    0.25}]}
+
+ {:id      "PFSE"
+  :name    "GCU Monadic Burrito"
+  :shields [{:id "MAIN" :strength 90 :active? true}]
+  :cargo   [{:id "MAIN" :capacity 300 :loaded 150}]
+  :crew    [{:id "CAPT" :role "Captain" :count 1}
+            {:id "CREW" :role "Crew" :count 8}]
+  :engines
+  [{:id       "PRIMARY"
+    :state    "Worn"
+    :engaged? false
+    :power    0.15}
+   {:id       "SECONDARY"
+    :state    "Mint"
+    :engaged? false
+    :power    0.25}]}]

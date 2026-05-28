@@ -1,0 +1,17 @@
+#!/usr/bin/env bb
+
+(require
+ '[clojure.pprint :as pprint]
+ '[lambdaisland.cli :as cli])
+
+(defn cli [opts]
+  (println "Starship stuff!")
+  (pprint/pprint opts))
+
+(cli/dispatch
+ {:name "starship"
+  ;; !! docstring
+  :doc "Control a starship!
+        Conveniently remote control your ships, whether in orbit or in deep space."
+  ;; !! :command -> :commands
+  :commands ["info" #'cli]})

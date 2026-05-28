@@ -1,0 +1,31 @@
+#!/usr/bin/env bb
+
+(require
+ '[clojure.pprint :as pprint]
+ '[lambdaisland.cli :as cli])
+
+(defn info
+  "Get info on our starships"
+  [{:keys [starship-file] :as opts}]
+  (let [data (read-string (slurp starship-file))]
+    (pprint/print-table
+     (for [{:keys [id name]} data]
+       {:id id :name name}))))
+
+(def commands
+  ["info" #'info])
+
+;; !! Introduce flags
+(def flags
+  ["--ship <id>" "Choose which ship to operate on" ;; <--- minimum, just docstring
+   "-f, --file <starship-file>" {:doc "Which starship.edn to operate on" ;; <--- map with options
+                                 :default "starship.edn"
+                                 :key :starship-file}])
+
+(cli/dispatch
+ {:name "starship"
+  :doc "Control a starship!
+        Conveniently remote control your ships, whether in orbit or in deep space."
+  :commands commands
+  ;; !!
+  :flags flags})
