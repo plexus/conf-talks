@@ -1,6 +1,0 @@
-- show starship.edn
-- starship list
-- starship inspect --id=...
-  - --id <space> ... -> error -> show opts
-  - init {:id }
-  - "-b, --boost"
