@@ -3,8 +3,10 @@
 Arne Brasseur
 https://arnebrasseur.net
 https://lambdaisland.com
-https://toot.cat/@plexus
-@plexus.eurosky.social
+https://toot.cat/@plexus <-- fediverse
+@plexus.eurosky.social   <-- ATmosphere
+
+https://github.com/lambdaisland/cli
 
 * com.lambdaisland/cli
 

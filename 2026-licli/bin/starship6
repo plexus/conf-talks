@@ -16,6 +16,9 @@
 
 (def flags
   ["--ship <id>" "Choose which ship to operate on"
+   "--kw <kw>" {:doc "Gets a keyword"
+                :parse keyword
+                :default "foo"}
    "-f, --file <starship-file>"
    {:doc "Which starship.edn to operate on"
     :default "starship.edn"

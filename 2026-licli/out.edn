@@ -48,7 +48,7 @@
    {:id "CREW", :role "Crew", :count 20}],
   :engines
   [{:id "MAIN", :state "Mint", :engaged? true, :power 0.8}
-   {:id "TACTICAL", :state "Mint", :engaged? true, :power 0.5}
+   {:id "TACTICAL", :state "Mint", :engaged? false, :power 0.5}
    {:id "HYPER", :state "Charging", :engaged? false, :power 0.0}
    {:id "EMERGENCY", :state "Offline", :engaged? false, :power 0.0}]}
  {:id "PFSE",
@@ -59,5 +59,5 @@
   [{:id "CAPT", :role "Captain", :count 1}
    {:id "CREW", :role "Crew", :count 8}],
   :engines
-  [{:id "PRIMARY", :state "Worn", :engaged? false, :power 0.15}
+  [{:id "PRIMARY", :state "Worn", :engaged? true, :power 0.15}
    {:id "SECONDARY", :state "Mint", :engaged? false, :power 0.25}]}]
