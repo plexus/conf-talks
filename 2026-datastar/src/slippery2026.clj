@@ -1,5 +1,6 @@
 (ns slippery2026
   (:require
+   clojure.pprint
    [babashka.http-server :as bb-server]
    [clojure.java.io :as io]
    [clojure.string :as str]
@@ -68,7 +69,8 @@
   (let [dirs (map #(#'bb-server/file-router % nil)
                   ["./" "./out" "./resources" "./src"])]
     (fn [{:keys [uri request-method] :as req}]
-      (println " " (str/upper-case (name request-method)) uri)
+      (when (not= "/styles.css" uri)
+        (println " " (str/upper-case (name request-method)) uri))
       (cond
         (#{"/styles.css"} uri)
         {:status 200
@@ -178,7 +180,7 @@
       (str/replace #"url\(\"([^\"]*)\"\)"
                    (fn [[_ url]]
                      (str "url('" (fetch-and-hash opts url) "')")))
-      (str/replace #"url\(([^'\"]*)\)"
+      (str/replace #"url\(([^\)]*)\)"
                    (fn [[_ url]]
                      (str "url('" (fetch-and-hash opts url) "')")))
       (str/replace #"@import \"([^\"])\""

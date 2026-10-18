@@ -1,8 +1,3 @@
-
-<script>
-window.cat_api_key="live_gH8O7Z1zI35tAYO61lZLKQOzc5m0UjtShvzNLZOxTAmNYN15RAwgAAou7zYpiiDb"
-</script>
-
 # Datastar & Clojure
 
 <div class="bottom-right">
@@ -17,9 +12,9 @@ Fediverse: <strong>@plexus@toot.cat</strong>
 </p>
 </div>
 
-----
+<!-- ---- -->
 
-<div data-include-svg-slides="resources/funcprogconf_slides.compressed.svg"></div>
+<!-- <div data-include-svg-slides="resources/funcprogconf_slides.compressed.svg"></div> -->
 
 ----
 
@@ -53,17 +48,17 @@ Fediverse: <strong>@plexus@toot.cat</strong>
 The `data-` prefix is a standard HTML extension mechanism. Turns into `el.dataset` values.
 
 ```html
-<div data-foo="hello">
-  <pre></pre>
+<div id="el0" data-foo="hello" data-on:click="alert('hello')">
+  <pre id="el0-out"></pre>
   <script>
-    let div = document.currentScript.parentNode;
-    let dataset = div.dataset;
-    div.querySelector("pre").innerText = JSON.stringify(dataset);
+    var div = document.getElementById("el0")
+    var pre = document.getElementById("el0-out")
+    pre.innerText = JSON.stringify(div.dataset);
   </script>
 </div>
 ```
 
-<div data-foo="hello">
+<div data-foo="hello" data-on:click="alert('hello')">
 <pre></pre>
 <script>
 (()=>{
@@ -73,71 +68,45 @@ div.querySelector("pre").innerText = JSON.stringify(div.dataset);
 </script>
 </div>
 
----
+<!-- --- -->
 
-## HTML: `data-*` attributes
+<!-- ## HTML: `data-*` attributes -->
 
-Colon `:`, period `.`, and **double** underscore `__` are valid in `data-`
-attribute names.
+<!-- Colon `:`, period `.`, and **double** underscore `__` are valid in `data-` -->
+<!-- attribute names. -->
 
-Syntax has no special meaning (in HTML), but Datastar uses them as modifiers.
+<!-- Syntax has no special meaning (in HTML), but Datastar uses them as modifiers. -->
 
-Dash `-` becomes `camelCase`
+<!-- Dash `-` becomes `camelCase` -->
 
-```html
-<div data-foo="1"
-  data-foo-bal="2"
-  data-foo:bar="3"
-  data-foo.baz="4"
-  data-foo__baq="5">
-  <pre></pre>
-  <script>
-    let div = document.currentScript.parentNode;
-    let dataset = div.dataset;
-    div.querySelector("pre").innerText = JSON.stringify(dataset);
-  </script>
-</div>
-```
+<!-- ```html -->
+<!-- <div data-foo="1" -->
+<!--   data-foo-bal="2" -->
+<!--   data-foo:bar="3" -->
+<!--   data-foo.baz="4" -->
+<!--   data-foo__baq="5"> -->
+<!--   <pre></pre> -->
+<!--   <script> -->
+<!--     let div = document.currentScript.parentNode; -->
+<!--     let dataset = div.dataset; -->
+<!--     div.querySelector("pre").innerText = JSON.stringify(dataset); -->
+<!--   </script> -->
+<!-- </div> -->
+<!-- ``` -->
 
-<div data-foo="1" 
-  data-foo-bal="2"
-data-foo:bar="3" data-foo.baz="4" data-foo__baq="5">
-<pre></pre>
-<script>
-(()=>{
-let div = document.currentScript.parentNode;
-div.querySelector("pre").innerText = JSON.stringify(div.dataset);
-})()
-</script>
-</div>
+<!-- <div data-foo="1"  -->
+<!--   data-foo-bal="2" -->
+<!-- data-foo:bar="3" data-foo.baz="4" data-foo__baq="5"> -->
+<!-- <pre></pre> -->
+<!-- <script> -->
+<!-- (()=>{ -->
+<!-- let div = document.currentScript.parentNode; -->
+<!-- div.querySelector("pre").innerText = JSON.stringify(div.dataset); -->
+<!-- })() -->
+<!-- </script> -->
+<!-- </div> -->
 
 
----
-
-# Aside: Server-Sent Events (SSE)
-
----
-
-## Server-Sent Events (SSE)
-
-```
-200 OK
-Content-Type: text/event-stream
-
-event: my-event
-data: hello
-data: world
-
-event: next-event
-data: hejdå
-
-```
-
-Around since 2004, supported in Firefox since 2011, official recommendation since 2015 (`EventSource` / `onMessage`).
-
-Can be long running (but doesn't have to be).
-
-Sort of like a unidirectional websocket, **but** it's just plain HTTP. No connection upgrades, easy to inspect.
 
 ---
 
@@ -183,11 +152,9 @@ el.innerHTML+=el.querySelector('.language-html').innerText;
 
 Generally take a JavaScript expression, with some extras:
 
-`$foo` to refer to a signal
+`$foo` is a signal, makes it reactive
 
 `@foo` for built-in "actions" (most notably HTTP fetch: `@get`, `@post`)
-
-Can contain arbitrary code, value of final expression is used.
 
 Simplest example: `data-text`, sets the inner text of the element.
 
@@ -219,7 +186,7 @@ You can use JavaScript expressions
 
 <pre data-signals:url="window.location.href" data-text="JSON.stringify({url: $url})"></pre>
 
-Careful with strings! `data-signals:foo="'quoted string'"`
+<!-- Careful with strings! `data-signals:foo="'quoted string'"` -->
 
 ---
 
@@ -239,29 +206,29 @@ Alternative syntax, set multiple signals with a JS/JSON object
 ```
 <pre data-signals="{foo: 1, bar: {baz: 2}}" data-text="JSON.stringify({foo:$foo, bar:$bar})"></pre>
 
+<!-- --- -->
+
+<!-- ## `data-signals` : setting signals -->
+
+<!-- Kebab-case becomes camelCase -->
+
+<!-- ```html -->
+<!-- <div data-signals:foo-bar="3+3"></div> -->
+<!-- ``` -->
+
+<!-- <pre data-signals:foo-bar="3+3" data-text="JSON.stringify({fooBar:$fooBar})"></pre> -->
+
+<!-- Unless specified otherwise (example of a modifier) -->
+
+<!-- ```html -->
+<!-- <\!-- modifier -\-> -->
+<!-- <div data-signals:foo-bar__case.kebab="3+3"></div> -->
+<!-- ``` -->
+<!-- <pre data-signals:foo-bar__case.kebab="3+3" data-text="JSON.stringify({'foo-bar':$['foo-bar']})"></pre> -->
+
 ---
 
-## `data-signals` : setting signals
-
-Kebab-case becomes camelCase
-
-```html
-<div data-signals:foo-bar="3+3"></div>
-```
-
-<pre data-signals:foo-bar="3+3" data-text="JSON.stringify({fooBar:$fooBar})"></pre>
-
-Unless specified otherwise (example of a modifier)
-
-```html
-<!-- modifier -->
-<div data-signals:foo-bar__case.kebab="3+3"></div>
-```
-<pre data-signals:foo-bar__case.kebab="3+3" data-text="JSON.stringify({'foo-bar':$['foo-bar']})"></pre>
-
----
-
-## Other ways to set signals: `data-bind`
+## `data-bind`: Two-way Data Binding
 
 `data-bind` creates a two way binding
 
@@ -277,9 +244,9 @@ el.innerHTML+=el.querySelector('.language-html').innerText;
 
 ---
 
-## Other ways to set signals: `data-computed`
+## `data-computed`: Reactive Signal
 
-`data-computed` creates a reactive signal
+Creates a read-only, computed signal
 
 ```html
 <input type="text" data-bind="txt" data-computed:txt-up="$txt.toUpperCase()">
@@ -293,17 +260,15 @@ el.innerHTML+=el.querySelector('.language-html').innerText;
 
 ---
 
-## Signals to DOM: `data-{text,attr,style,class,show}`
+## `data-init`: One-time side effects 
 
-`data-text` populates the inner text of an element
-
-`data-init` runs one-time initialisation
+Runs initialisation code on first render
 
 ```html
-<div
-  data-signals:num="0"
-  data-init="setInterval(()=>{$num++},1000)"
-  data-text="'<' + $num + '>'"</div>
+<div data-signals:num="0"
+     data-init="setInterval(()=>{$num++},1000)"
+     data-text="'<' + $num + '>'">
+</div>
 ```
 
 <script>
@@ -313,9 +278,9 @@ el.innerHTML+=el.querySelector('.language-html').innerText;
 
 ---
 
-## Signals to DOM: `data-{text,attr,style,class,show}`
+## `data-{attr,style,class,show}`
 
-`data-attr` to populate an attribute
+Make various parts of the DOM dynamic: attributes
 
 ```html
 <input type="text" data-signals:catsay="'meow'" data-bind="catsay"><br>
@@ -329,9 +294,9 @@ el.innerHTML+=el.querySelector('.language-html').innerText;
 
 ---
 
-## Signals to DOM: `data-{text,attr,style,class,show}`
+## `data-{attr,style,class,show}`
 
-`data-style` set style properties
+Make various parts of the DOM dynamic: styles
 
 ```html
 <div
@@ -353,9 +318,11 @@ el.innerHTML+=el.querySelector('.language-html').innerText;
 
 ## Backend requests: `@get` 
 
-* signals added as query param
-* `datastar-request` header
-* `Accept: text/event-stream`
+<!-- * signals added as query param -->
+<!-- * `datastar-request` header -->
+<!-- * `Accept: text/event-stream` -->
+
+_Note: you are watching a static version of this talk, so the `/echo` endpoint is not available._
 
 ```html
 <button data-on:click="@get('/echo')">@get</button>
@@ -371,7 +338,9 @@ el.innerHTML+=el.querySelector('.language-html').innerText;
 
 ## Backend requests: `@post` 
 
-* signals added as body
+<!-- * signals added as body -->
+
+_Note: you are watching a static version of this talk, so the `/echo` endpoint is not available._
 
 ```html
 <button data-on:click="@post('/echo')">@post</button>
@@ -428,6 +397,38 @@ datastar-mode: outer
 
 Can also `append`, `prepend`, `remove`, ...
 
+
+---
+
+# Aside: Server-Sent Events (SSE)
+
+---
+
+## Server-Sent Events (SSE)
+
+```
+200 OK
+Content-Type: text/event-stream
+
+event: my-event
+data: hello
+data: world
+
+event: next-event
+data: hejdå
+
+```
+
+Around since 2004, supported in Firefox since 2011, official recommendation since 2015 (`EventSource` / `onMessage`).
+
+Can be long running (but doesn't have to be).
+
+Sort of like a unidirectional websocket, **but** it's just plain HTTP. No connection upgrades, easy to inspect.
+
+---
+
+# Datastar & SSE
+
 ---
 
 ## Backend response `text/event-stream`
@@ -443,14 +444,8 @@ Content-Type: text/event-stream
 event: datastar-patch-elements
 data: elements <div id="my-div">content</div>
 
-event: datastar-patch-elements
-data: selector #other-id
-data: mode remove
-
 event: datastar-patch-signals
 data: signals {foo: 1, bar: 2}
-
-...
 ```
 
 Use either to one-shot batch update DOM and signals, or use as long running "updates" channel.
@@ -475,7 +470,7 @@ Works really well with compression! (brotli or zstd)
 
 ## Clojure backend for Datastar
 
-It's just a web app! ✋🎤 Thank you, we're done!
+It's just HTTP & HTML! ✋🎤 Thank you, we're done!
 
 ---
 
@@ -491,6 +486,77 @@ Bonus: you can trivially add Brötli compression.
 
 ---
 
+## Simple, not easy
+
+Even with SDK, not a plug-and-play framework
+
+Many architectures possible
+
+You need to understand the principles and wire things together
+
+Different apps different needs
+
+---
+
+## Hyperlith / Game of Life
+
+Anders Murphy's Datastar+Clojure framework
+
+Game of Life demo that went #1 on HN
+
+Updates every client 20 times per second
+
+Highly optimised! Manifold, SQLite, custom Hiccup handling, virtual threads...
+
+Undocumented, "not for production"
+
+---
+
+## Datastar Architecture
+
+* Naive / manual patching
+* Frame-based / continuous
+* Reactive
+
+---
+
+## Naive Datastar Architecture
+
+User action triggers HTTP handler → Response patches relevant part(s) of the DOM
+
+* Tedious to manage
+* UI is not live
+* No multiplayer
+* No CQRS
+
+---
+
+## Frame-based Datastar Architecture
+
+Client opens long running `/updates` connection
+
+Continously (e.g. 20fps) send updated DOM to all connected clients on a timer
+
+Tractable thanks to compression (`br`, `zstd`) + morph
+
+This is what Hyperlith does
+
+---
+
+## Reactive Datastar Architecture
+
+Client opens long running `/updates` connection
+
+State changes (DB) trigger DOM update to all connected clients
+
+Same compression + morph benefits
+
+Optionally diff / debounce
+
+Approach I'm trying (with Datomic `tx-report-queue`)
+
+---
+
 ## Datastar Clojure SDK
 
 Handful of different artifacts
@@ -502,7 +568,6 @@ Separate SSE implementations for http-kit and Ring.
  {dev.data-star.clojure/ring   {:mvn/version "1.0.0-RC11"}
   dev.data-star.clojure/brotli {:mvn/version "1.0.0-RC11"}}}
 ```
-
 
 ---
 
@@ -531,77 +596,21 @@ Connection stays open as long as `on-open` doesn't return.
 
 ---
 
-## Let's talk architecture
-
-Can we have holy grail of full reactivity from database to UI?
-
-UI always up to date
-
-Multiplayer out of the box
-
-No need to track fine-grained patching
-
-**Yes! But...** devil is in the details
-
----
-
 ## Basic frontend pattern
 
-```html
-<body data-init="@get('/updates')">
-  <main id="main">
-  </main>
-</body> 
+```clojure
+[:body {:data-signals:tabid (pr-str (hash/random-unique-identifier))
+        :data-signals:path "window.location.pathname"
+        :data-init "@post('/updates')"}
+  [:main {:id "main"} 
+  ...]]])
 ```
 
-```
-event: datastar-patch-elements
-data: elements <main id="main">
-data: elements   first version
-data: elements </main>
+`tabid` as an identifier for connections
 
-event: datastar-patch-elements
-data: elements <main id="main">
-data: elements   second version
-data: elements </main>
+`path` to know the route the user is on
 
-...
-```
-
-Frontend continuously receives the full `<main>` element, either on a timer, or reactively on each change.
-
----
-
-## Basic frontend pattern
-
-Is it wasteful to send the full page over the wire time and time again?
-
-No! Brotli or zstandard make most of it go away! "Compression is your vdom"
-
-Datastar "morphs" in any changes: only does necessary DOM changes.
-
-Shifts the hard work to the backend, can your backend handle it?
-
----
-
-## Hyperlith / Game of Life
-
-Anders Murphy's demo that went #1 on HN
-
-Updates every client 20 times per second
-
-Highly optimised! Manifold, SQLite, custom Hiccup handling, virtual threads...
-
----
-
-## My approach
-
-Much more modest needs 
-
-Datomic is primary database
-
-Keep navigation as full page loads
-
+Now we can send them an updated `<main>` via SSE
 
 ---
 
@@ -624,9 +633,101 @@ Use virtual threads!
     :host        host
     :port        port
     :join?       false}))
-```   
-
+```
 
 ---
+
+## Track Connections
+
+```clojure
+(defonce connections (atom {}))
+
+(defn POST-updates [{:keys [body-params] :as req}]
+  (let [{:keys! [tabid path]} body-params]
+    (->sse-response
+     req
+     {:d*.sse/write-profile (d*-brotli/->brotli-profile)
+      :d*.sse/on-open
+      (fn [sse]
+        (swap! connections assoc tabid {:request (clean-req req)
+                                        :path    path
+                                        :sse-gen sse})
+        (while true
+          (Thread/sleep 1500)
+          (d*-proto/send-event! "ping" nil nil)))
+      :d*.sse/on-open
+      (fn [_]
+        (swap! connections dissoc tabid))})
+```
+
+---
+
+## Aside: wrap-render
+
+* Return hiccup as `:html/body`
+* Extends content negotiation
+
+```clojure
+(defn GET-hello [_req]
+  {:status 200 :html/body [:p "hello"]})
+
+;; Pseudocode
+(defn wrap-render [handler]
+  (fn [req]
+    (let [res (handler req)]
+      (assoc res :body (hiccup/render (:html/body res))))))
+```
+
+---
+
+## React to changes
+
+```clojure
+;; pseudocode
+(defn re-render [db-after {:keys! [sse-gen path request]}]
+  (let [;; synthetic GET request with updated DB and current URL
+        req  (assoc request
+                    :db db-after
+                    :uri path
+                    :request-method :get)
+        ;; dispatch to ring (including routing, session, etc)
+        res  (ring-app-handler req)
+        ;; render <main>
+        html (hiccup/render [layout/main (:html/body res)] {:doctype? false})]
+    ;; Send to frontend
+    (d*/patch-elements! sse-gen html)))
+```
+---
+
+## React to changes
+
+Now we can hook up Datomic `tx-report-q`
+
+```clojure
+(while true
+ (let [tx-report-q                (d/tx-report-queue conn)
+       {:keys [db-after tx-data]} (BlockingQueue/.take tx-report-q)]
+   (doseq [tab (vals @updates/connections)]
+     (re-render db-after tab))))
+```
+
+---
+
+## Next steps
+
+* `:html/body [my-page-view some-data]` — effectively lazy evaluation of rendering
+* Store previous `:html/body` form, compare, only re-render if changed
+* Requires all view data to be passed in as pure data
+* `datomic.api/entity` is out, different db basis is always unequal
+
+---
+
+# Thank You! Q&A?
+
+---
+
+```html 
+<div data-json-signals></div>
+```
 
 <div data-json-signals></div>

@@ -18,7 +18,8 @@
 
 (o/defrules styles
   [:* {:box-sizing "border-box"}]
-  [:html {:font-size "300%"}]
+  [:html {:font-size "100%"}]
+  [:body {:font-size "2vw"}]
   [#{:button :input} {:font-size "0.75rem" :padding "0.125rem 0.5rem" :margin-bottom "0.5rem"}]
   [:.reveal
    [:.slide-background {:background-color --cheesecake}]
@@ -36,7 +37,7 @@
        :bottom "0.5rem"
        :right "0.5rem"
        :content "\"Datastar & Clojure — Arne Brasseur — 2026-10-13 — [\"counter(index) \" / \" counter(total) \"]\""
-       :font-size "0.5rem"
+       :font-size "2rem"
        :color --aubergine
        :font-family "sans-serif"}]]]]
   [:.bottom-right
@@ -84,7 +85,7 @@
      [:div.slides]]
     [:script {:src "revealjs/reveal.js"}]
     [:script {:src "revealjs/plugin/highlight/highlight.js"}]
-    [:script {:src "reload_styles.js"}]
+    ;; [:script {:src "reload_styles.js"}]
     [:script {:type "module" :src "datastar.js"}]
     [:script "window.reveal_opts = {plugins: [RevealHighlight], ..." (charred/write-json-str (reveal-opts)) "}
 Reveal.initialize(window.reveal_opts)"]]])
@@ -98,7 +99,7 @@ Reveal.initialize(window.reveal_opts)"]]])
                                   %)
                                (enlive/get-resource
                                 (io/file
-                                 (first 
+                                 (first
                                   (enlive/attr-values
                                    (first (enlive/select slide [(enlive/attr? :data-include-svg-slides)]))
                                    :data-include-svg-slides)))

@@ -1,24 +1,729 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Sound, Music, Synthesis</title>
+<title>Datastar and Clojure</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="stylesheet" href="fonts/raleway.css" />
-<link rel="stylesheet" href="fonts/playfair.css" />
-<link rel="stylesheet" href="fd50c9e819d396abfba9b34c5b9b41fcd190329062854aad070ea9dbe8e5181c.css" />
+<link rel="stylesheet" href="544cb4812118564009892299f30f889ffc5c366ea47bbacd11cd1d039ebdb0dd.css" />
 <link rel="stylesheet" href="4cf9bca5ec6db802f39a0e290a153ac1d578052ae4ba49d652f92b9bcb82c482.css" />
-<link id="ornament-styles" rel="stylesheet" href="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css" /></head>
-<body><div class="reveal"><div class="slides"><section class="slide"><h1 id="my-slides">My slides</h1>
+<link rel="stylesheet" href="4cf9bca5ec6db802f39a0e290a153ac1d578052ae4ba49d652f92b9bcb82c482.css" />
+<link id="ornament-styles" rel="stylesheet" href="6ad164c098509604248a3e4c49e5e843921ef2eb46dd9c6725a02b694d503a2a.css" /></head>
+<body><div class="reveal"><div class="slides"><section class="slide"><h1 id="datastar--clojure">Datastar &amp; Clojure</h1>
+
+<div class="bottom-right">
+  <p>
+13th of October 2026, Stockholm
+</p>
+  <p>
+A talk by <strong>Arne Brasseur</strong> for <strong>Clojure Café</strong>
+</p>
+  <p>
+Fediverse: <strong>@plexus@toot.cat</strong>
+</p>
+</div>
+
+<!-- - - - - -->
+
+<!-- <div data-include-svg-slides="resources/funcprogconf_slides.compressed.svg"></div> -->
 
 </section><section class="slide">
 
-<h2 id="more-slides">More slides</h2>
+<!-- ## Compass & HTMX -->
+
+<!-- In 2024 we built the Compass app for Heart of Clojure, using HTMX -->
+
+<!-- ```clojure -->
+<!-- (defn layout [] -->
+<!--   [:html -->
+<!--    [:head -->
+<!--     [:script {:src "/js/htmx-1.9.12.js"}] ,,,]]]) -->
+
+<!-- (defn accept-invite-button [qr-uuid] -->
+<!--   [:button {:hx-post (url-for :contact/add {:qr-uuid qr-uuid})} "Accept invite"] -->
+<!-- ``` -->
+
+<!-- * Include a single, small JS file -->
+<!-- * Drive the rest from HTML attributes -->
+<!-- * The power of Hypertext! -->
+
+<!-- - - - -->
+
+<h1 id="first-some-html">First, some HTML</h1>
 
 </section><section class="slide">
+
+<h2 id="html-data--attributes">HTML: <code>data-*</code> attributes</h2>
+
+<p>The <code>data-</code> prefix is a standard HTML extension mechanism. Turns into <code>el.dataset</code> values.</p>
+
+<pre><code class="language-html">&lt;div id="el0" data-foo="hello" data-on:click="alert('hello')"&gt;
+  &lt;pre id="el0-out"&gt;&lt;/pre&gt;
+  &lt;script&gt;
+    var div = document.getElementById("el0")
+    var pre = document.getElementById("el0-out")
+    pre.innerText = JSON.stringify(div.dataset);
+  &lt;/script&gt;
+&lt;/div&gt;
+</code></pre>
+
+<div data-foo="hello" data-on:click="alert('hello')">
+  <pre></pre>
+  <script>
+(()=>{
+let div = document.currentScript.parentNode;
+div.querySelector("pre").innerText = JSON.stringify(div.dataset);
+})()
+</script>
+
+</div>
+
+<!-- - - - -->
+
+<!-- ## HTML: `data-*` attributes -->
+
+<!-- Colon `:`, period `.`, and **double** underscore `__` are valid in `data-` -->
+<!-- attribute names. -->
+
+<!-- Syntax has no special meaning (in HTML), but Datastar uses them as modifiers. -->
+
+<!-- Dash `-` becomes `camelCase` -->
+
+<!-- ```html -->
+<!-- <div data-foo="1" -->
+<!--   data-foo-bal="2" -->
+<!--   data-foo:bar="3" -->
+<!--   data-foo.baz="4" -->
+<!--   data-foo__baq="5"> -->
+<!--   <pre></pre> -->
+<!--   <script> -->
+<!--     let div = document.currentScript.parentNode; -->
+<!--     let dataset = div.dataset; -->
+<!--     div.querySelector("pre").innerText = JSON.stringify(dataset); -->
+<!--   </script> -->
+<!-- </div> -->
+<!-- ``` -->
+
+<!-- <div data-foo="1"  -->
+<!--   data-foo-bal="2" -->
+<!-- data-foo:bar="3" data-foo.baz="4" data-foo__baq="5"> -->
+<!-- <pre></pre> -->
+<!-- <script> -->
+<!-- (()=>{ -->
+<!-- let div = document.currentScript.parentNode; -->
+<!-- div.querySelector("pre").innerText = JSON.stringify(div.dataset); -->
+<!-- })() -->
+<!-- </script> -->
+<!-- </div> -->
+
+</section><section class="slide">
+
+<h1 id="datastar-whirlwind-tour">Datastar Whirlwind Tour</h1>
+
+</section><section class="slide">
+
+<h2 id="datastar-hello-world">Datastar Hello World</h2>
+
+<pre><code class="language-html">&lt;!-- &lt;script type="module" src="datastar.js"&gt; --&gt;
+&lt;div data-signals:cnt="0"&gt;
+  &lt;button data-on:click="$cnt--"&gt;-1&lt;/button&gt;
+  &lt;button data-on:click="$cnt++"&gt;+1&lt;/button&gt;&lt;br&gt;
+  &lt;div data-text="`cnt is ${$cnt}`"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<script>
+var el = document.currentScript.parentNode;
+el.innerHTML+=el.querySelector('.language-html').innerText;
+</script>
+
+</section><section class="slide">
+
+<h2 id="datastar">Datastar</h2>
+
+<p>33KB package, gives you:</p>
+
+<ul>
+  <li>Handling of specific <code>data-</code> attributes</li>
+  <li>Reactive signals: <code>data-signals:foo</code>, <code>$foo</code></li>
+  <li>JavaScript superset : <code>$signal</code>, <code>@action</code></li>
+  <li>Backend requests: <code>@get</code>, <code>@post</code>, <code>@put</code>, <code>@patch</code>, …</li>
+  <li>Response handling
+    <ul>
+      <li><code>text/html</code> — patch DOM</li>
+      <li><code>application/json</code> — patch signals</li>
+      <li><code>text/event-stream</code> — handle SSE events</li>
+      <li><code>text/javascript</code> — run code</li>
+    </ul>
+  </li>
+</ul>
+
+</section><section class="slide">
+
+<h2 id="data--attributes"><code>data-...</code> attributes</h2>
+
+<p>Generally take a JavaScript expression, with some extras:</p>
+
+<p><code>$foo</code> is a signal, makes it reactive</p>
+
+<p><code>@foo</code> for built-in “actions” (most notably HTTP fetch: <code>@get</code>, <code>@post</code>)</p>
+
+<p>Simplest example: <code>data-text</code>, sets the inner text of the element.</p>
+
+<pre><code class="language-html">&lt;p&gt;Result: &lt;span data-text="1;2;3"&gt;&lt;/span&gt;&lt;/p&gt;
+</code></pre>
+
+<script>
+var el = document.currentScript.parentNode;
+el.innerHTML+=el.querySelector('.language-html').innerText;
+</script>
+
+</section><section class="slide">
+
+<h2 id="data-signals--setting-signals"><code>data-signals</code> : setting signals</h2>
+
+<p>Sets the value of a signal:</p>
+
+<pre><code class="language-html">&lt;div data-signals:foo="123"&gt;&lt;/div&gt;
+</code></pre>
+<pre data-signals:foo="123" data-text="JSON.stringify({foo: 123})"></pre>
+
+<p>You can use JavaScript expressions</p>
+
+<pre><code class="language-html">&lt;div data-signals:url="window.location.href"&gt;&lt;/div&gt;
+</code></pre>
+
+<pre data-signals:url="window.location.href" data-text="JSON.stringify({url: $url})"></pre>
+
+<!-- Careful with strings! `data-signals:foo="'quoted string'"` -->
+
+</section><section class="slide">
+
+<h2 id="data-signals--setting-signals-1"><code>data-signals</code> : setting signals</h2>
+
+<p>Set nested values with <code>.</code></p>
+
+<pre><code class="language-html">&lt;div data-signals:time.now="new Date()"&gt;&lt;/div&gt;
+</code></pre>
+<pre data-signals:time.now="new Date()" data-text="JSON.stringify({time: $time})"></pre>
+
+<p>Alternative syntax, set multiple signals with a JS/JSON object</p>
+
+<pre><code class="language-html">&lt;div data-signals="{foo: 1, bar: {baz: 2}}"&gt;&lt;/div&gt;
+</code></pre>
+<pre data-signals="{foo: 1, bar: {baz: 2}}" data-text="JSON.stringify({foo:$foo, bar:$bar})"></pre>
+
+<!-- - - - -->
+
+<!-- ## `data-signals` : setting signals -->
+
+<!-- Kebab-case becomes camelCase -->
+
+<!-- ```html -->
+<!-- <div data-signals:foo-bar="3+3"></div> -->
+<!-- ``` -->
+
+<!-- <pre data-signals:foo-bar="3+3" data-text="JSON.stringify({fooBar:$fooBar})"></pre> -->
+
+<!-- Unless specified otherwise (example of a modifier) -->
+
+<!-- ```html -->
+<!-- <\!- - modifier -\-> -->
+<!-- <div data-signals:foo-bar__case.kebab="3+3"></div> -->
+<!-- ``` -->
+<!-- <pre data-signals:foo-bar__case.kebab="3+3" data-text="JSON.stringify({'foo-bar':$['foo-bar']})"></pre> -->
+
+</section><section class="slide">
+
+<h2 id="data-bind-two-way-data-binding"><code>data-bind</code>: Two-way Data Binding</h2>
+
+<p><code>data-bind</code> creates a two way binding</p>
+
+<pre><code class="language-html">&lt;input type="text" data-signals:txt="'...'" data-bind="txt"&gt;
+&lt;pre data-text="$txt"&gt;&lt;/pre&gt;
+</code></pre>
+
+<script>
+var el = document.currentScript.parentNode;
+el.innerHTML+=el.querySelector('.language-html').innerText;
+</script>
+
+</section><section class="slide">
+
+<h2 id="data-computed-reactive-signal"><code>data-computed</code>: Reactive Signal</h2>
+
+<p>Creates a read-only, computed signal</p>
+
+<pre><code class="language-html">&lt;input type="text" data-bind="txt" data-computed:txt-up="$txt.toUpperCase()"&gt;
+&lt;pre data-text="$txtUp"&gt;&lt;/pre&gt;
+</code></pre>
+
+<script>
+var el = document.currentScript.parentNode;
+el.innerHTML+=el.querySelector('.language-html').innerText;
+</script>
+
+</section><section class="slide">
+
+<h2 id="data-init-one-time-side-effects"><code>data-init</code>: One-time side effects</h2>
+
+<p>Runs initialisation code on first render</p>
+
+<pre><code class="language-html">&lt;div data-signals:num="0"
+     data-init="setInterval(()=&gt;{$num++},1000)"
+     data-text="'&lt;' + $num + '&gt;'"&gt;
+&lt;/div&gt;
+</code></pre>
+
+<script>
+var el = document.currentScript.parentNode;
+el.innerHTML+=el.querySelector('.language-html').innerText;
+</script>
+
+</section><section class="slide">
+
+<h2 id="data-attrstyleclassshow"><code>data-{attr,style,class,show}</code></h2>
+
+<p>Make various parts of the DOM dynamic: attributes</p>
+
+<pre><code class="language-html">&lt;input type="text" data-signals:catsay="'meow'" data-bind="catsay"&gt;&lt;br&gt;
+&lt;img height="400" data-attr:src="'https://cataas.com/cat/says/' + $catsay"&gt;
+</code></pre>
+
+<script>
+var el = document.currentScript.parentNode;
+el.innerHTML+=el.querySelector('.language-html').innerText;
+</script>
+
+</section><section class="slide">
+
+<h2 id="data-attrstyleclassshow-1"><code>data-{attr,style,class,show}</code></h2>
+
+<p>Make various parts of the DOM dynamic: styles</p>
+
+<pre><code class="language-html">&lt;div
+  data-signals:n="0"
+  data-init="setInterval(()=&gt;{$n+=2},40)"
+  data-computed:r="$n % 255"
+  data-computed:g="255 - $r"
+  data-computed:b="($r + $g) % 255"
+  data-style:background-color="`rgba(${$r}, ${$g}, ${$b}, 1.0)`"
+  style="width:50px;height:50px;" /&gt;
+</code></pre>
+
+<script>
+var el = document.currentScript.parentNode;
+el.innerHTML+=el.querySelector('.language-html').innerText;
+</script>
+
+</section><section class="slide">
+
+<h2 id="backend-requests-get">Backend requests: <code>@get</code></h2>
+
+<!-- * signals added as query param -->
+<!-- * `datastar-request` header -->
+<!-- * `Accept: text/event-stream` -->
+
+<p><em>Note: you are watching a static version of this talk, so the <code>/echo</code> endpoint is not available.</em></p>
+
+<pre><code class="language-html">&lt;button data-on:click="@get('/echo')"&gt;@get&lt;/button&gt;
+&lt;pre data-text="$request"&gt;&lt;/pre&gt;
+</code></pre>
+
+<script>
+var el = document.currentScript.parentNode;
+el.innerHTML+=el.querySelector('.language-html').innerText;
+</script>
+
+</section><section class="slide">
+
+<h2 id="backend-requests-post">Backend requests: <code>@post</code></h2>
+
+<!-- * signals added as body -->
+
+<p><em>Note: you are watching a static version of this talk, so the <code>/echo</code> endpoint is not available.</em></p>
+
+<pre><code class="language-html">&lt;button data-on:click="@post('/echo')"&gt;@post&lt;/button&gt;
+&lt;pre data-text="$request"&gt;&lt;/pre&gt;
+</code></pre>
+
+<script>
+var el = document.currentScript.parentNode;
+el.innerHTML+=el.querySelector('.language-html').innerText;
+</script>
+
+</section><section class="slide">
+
+<h2 id="backend-response-applicationjson">Backend response <code>application/json</code></h2>
+
+<p>Patches signals</p>
+
+<pre><code class="language-html">&lt;div data-init="@get('/signals')"&gt;&lt;/div&gt;
+</code></pre>
+
+<pre><code>200 OK
+Content-Type: application/json
+
+{"foo": 123}
+</code></pre>
+
+<pre><code class="language-html">&lt;div data-text="`foo is ${$foo}`"&lt;/div&gt;
+</code></pre>
+
+<p>foo is 123</p>
+
+</section><section class="slide">
+
+<h2 id="backend-response-texthtml">Backend response <code>text/html</code></h2>
+
+<p>Patches DOM node</p>
+
+<pre><code class="language-html">&lt;div data-init="@get('/view')"&gt;&lt;/div&gt;
+</code></pre>
+
+<pre><code>200 OK
+Content-Type: text/html
+datastar-selector: #my-id
+datastar-mode: outer
+
+&lt;main id="my-id"&gt;new content&lt;/main&gt;
+</code></pre>
+
+<p>Can also <code>append</code>, <code>prepend</code>, <code>remove</code>, …</p>
+
+</section><section class="slide">
+
+<h1 id="aside-server-sent-events-sse">Aside: Server-Sent Events (SSE)</h1>
+
+</section><section class="slide">
+
+<h2 id="server-sent-events-sse">Server-Sent Events (SSE)</h2>
+
+<pre><code>200 OK
+Content-Type: text/event-stream
+
+event: my-event
+data: hello
+data: world
+
+event: next-event
+data: hejdå
+
+</code></pre>
+
+<p>Around since 2004, supported in Firefox since 2011, official recommendation since 2015 (<code>EventSource</code> / <code>onMessage</code>).</p>
+
+<p>Can be long running (but doesn’t have to be).</p>
+
+<p>Sort of like a unidirectional websocket, <strong>but</strong> it’s just plain HTTP. No connection upgrades, easy to inspect.</p>
+
+</section><section class="slide">
+
+<h1 id="datastar--sse">Datastar &amp; SSE</h1>
+
+</section><section class="slide">
+
+<h2 id="backend-response-textevent-stream">Backend response <code>text/event-stream</code></h2>
+
+<pre><code class="language-html">&lt;div data-init="@get('/updates')"&gt;&lt;/div&gt;
+</code></pre>
+
+<pre><code>200 OK
+Content-Type: text/event-stream
+
+event: datastar-patch-elements
+data: elements &lt;div id="my-div"&gt;content&lt;/div&gt;
+
+event: datastar-patch-signals
+data: signals {foo: 1, bar: 2}
+</code></pre>
+
+<p>Use either to one-shot batch update DOM and signals, or use as long running “updates” channel.</p>
+
+<p>Works really well with compression! (brotli or zstd)</p>
+
+</section><section class="slide">
+
+<h1 id="datastar-3-clojure">Datastar &lt;3 Clojure</h1>
+
+</section><section class="slide">
+
+<h2 id="datastar-3-clojure-1">Datastar &lt;3 Clojure</h2>
+
+<ul>
+  <li>Author (Delaney Gillilan) hangs out on Clojurians Slack</li>
+  <li>Also gave a talk at the Conj</li>
+  <li>Official Clojure SDK</li>
+  <li>Anders Murphy’s game of life demo got lots of attention (HN etc)</li>
+  <li>David Nolen was interviewed on their Youtube channel</li>
+</ul>
+
+</section><section class="slide">
+
+<h2 id="clojure-backend-for-datastar">Clojure backend for Datastar</h2>
+
+<p>It’s just HTTP &amp; HTML! ✋🎤 Thank you, we’re done!</p>
+
+</section><section class="slide">
+
+<h2 id="clojure-backend-for-datastar-1">Clojure backend for Datastar</h2>
+
+<p>…</p>
+
+<p>Actually doing a long running SSE stream can be a PITA, depending on which server you’re using.</p>
+
+<p>This is the primary reason to use the Datastar Clojure SDK.</p>
+
+<p>Bonus: you can trivially add Brötli compression.</p>
+
+</section><section class="slide">
+
+<h2 id="simple-not-easy">Simple, not easy</h2>
+
+<p>Even with SDK, not a plug-and-play framework</p>
+
+<p>Many architectures possible</p>
+
+<p>You need to understand the principles and wire things together</p>
+
+<p>Different apps different needs</p>
+
+</section><section class="slide">
+
+<h2 id="hyperlith--game-of-life">Hyperlith / Game of Life</h2>
+
+<p>Anders Murphy’s Datastar+Clojure framework</p>
+
+<p>Game of Life demo that went #1 on HN</p>
+
+<p>Updates every client 20 times per second</p>
+
+<p>Highly optimised! Manifold, SQLite, custom Hiccup handling, virtual threads…</p>
+
+<p>Undocumented, “not for production”</p>
+
+</section><section class="slide">
+
+<h2 id="datastar-architecture">Datastar Architecture</h2>
+
+<ul>
+  <li>Naive / manual patching</li>
+  <li>Frame-based / continuous</li>
+  <li>Reactive</li>
+</ul>
+
+</section><section class="slide">
+
+<h2 id="naive-datastar-architecture">Naive Datastar Architecture</h2>
+
+<p>User action triggers HTTP handler → Response patches relevant part(s) of the DOM</p>
+
+<ul>
+  <li>Tedious to manage</li>
+  <li>UI is not live</li>
+  <li>No multiplayer</li>
+  <li>No CQRS</li>
+</ul>
+
+</section><section class="slide">
+
+<h2 id="frame-based-datastar-architecture">Frame-based Datastar Architecture</h2>
+
+<p>Client opens long running <code>/updates</code> connection</p>
+
+<p>Continously (e.g. 20fps) send updated DOM to all connected clients on a timer</p>
+
+<p>Tractable thanks to compression (<code>br</code>, <code>zstd</code>) + morph</p>
+
+<p>This is what Hyperlith does</p>
+
+</section><section class="slide">
+
+<h2 id="reactive-datastar-architecture">Reactive Datastar Architecture</h2>
+
+<p>Client opens long running <code>/updates</code> connection</p>
+
+<p>State changes (DB) trigger DOM update to all connected clients</p>
+
+<p>Same compression + morph benefits</p>
+
+<p>Optionally diff / debounce</p>
+
+<p>Approach I’m trying (with Datomic <code>tx-report-queue</code>)</p>
+
+</section><section class="slide">
+
+<h2 id="datastar-clojure-sdk">Datastar Clojure SDK</h2>
+
+<p>Handful of different artifacts</p>
+
+<p>Separate SSE implementations for http-kit and Ring.</p>
+
+<pre><code class="language-clojure">{:deps
+ {dev.data-star.clojure/ring   {:mvn/version "1.0.0-RC11"}
+  dev.data-star.clojure/brotli {:mvn/version "1.0.0-RC11"}}}
+</code></pre>
+
+</section><section class="slide">
+
+<h2 id="datastar-clojure-sdk-1">Datastar Clojure SDK</h2>
+
+<p>Returning an SSE response</p>
+
+<pre><code class="language-clojure">(ns my-app
+  (:require
+   [starfederation.datastar.clojure.adapter.ring :refer [-&gt;sse-response]]
+   [starfederation.datastar.clojure.api :as d*]
+   [starfederation.datastar.clojure.brotli :as d*-brotli]))
+
+(defn ring-handler [req]
+  (-&gt;sse-response
+   req
+   {:d*.sse/write-profile (d*-brotli/-&gt;brotli-profile)
+    :d*.sse/on-open
+    (fn [sse]
+      (d*/patch-elements! sse "&lt;div id=\"question\"&gt;What do you put in a toaster?&lt;/div&gt;")
+      (d*/patch-signals! sse "{response: '', answer: 'bread'}"))}))
+</code></pre>
+
+<p>Connection stays open as long as <code>on-open</code> doesn’t return.</p>
+
+</section><section class="slide">
+
+<h2 id="basic-frontend-pattern">Basic frontend pattern</h2>
+
+<pre><code class="language-clojure">[:body {:data-signals:tabid (pr-str (hash/random-unique-identifier))
+        :data-signals:path "window.location.pathname"
+        :data-init "@post('/updates')"}
+  [:main {:id "main"} 
+  ...]]])
+</code></pre>
+
+<p><code>tabid</code> as an identifier for connections</p>
+
+<p><code>path</code> to know the route the user is on</p>
+
+<p>Now we can send them an updated <code>&lt;main&gt;</code> via SSE</p>
+
+</section><section class="slide">
+
+<h2 id="using-with-jetty">Using with Jetty</h2>
+
+<p>Use virtual threads!</p>
+
+<pre><code class="language-clojure">(ns my.app.http
+  (:require
+   [ring.adapter.jetty :as jetty])
+  (:import
+   (org.eclipse.jetty.util.thread VirtualThreadPool)))
+
+(defn start [{:keys [port host handler]}]
+  (jetty/run-jetty
+   handler
+   {;; Make it ok to have many open connections
+    :thread-pool (VirtualThreadPool.)
+    :host        host
+    :port        port
+    :join?       false}))
+</code></pre>
+
+</section><section class="slide">
+
+<h2 id="track-connections">Track Connections</h2>
+
+<pre><code class="language-clojure">(defonce connections (atom {}))
+
+(defn POST-updates [{:keys [body-params] :as req}]
+  (let [{:keys! [tabid path]} body-params]
+    (-&gt;sse-response
+     req
+     {:d*.sse/write-profile (d*-brotli/-&gt;brotli-profile)
+      :d*.sse/on-open
+      (fn [sse]
+        (swap! connections assoc tabid {:request (clean-req req)
+                                        :path    path
+                                        :sse-gen sse})
+        (while true
+          (Thread/sleep 1500)
+          (d*-proto/send-event! "ping" nil nil)))
+      :d*.sse/on-open
+      (fn [_]
+        (swap! connections dissoc tabid))})
+</code></pre>
+
+</section><section class="slide">
+
+<h2 id="aside-wrap-render">Aside: wrap-render</h2>
+
+<ul>
+  <li>Return hiccup as <code>:html/body</code></li>
+  <li>Extends content negotiation</li>
+</ul>
+
+<pre><code class="language-clojure">(defn GET-hello [_req]
+  {:status 200 :html/body [:p "hello"]})
+
+;; Pseudocode
+(defn wrap-render [handler]
+  (fn [req]
+    (let [res (handler req)]
+      (assoc res :body (hiccup/render (:html/body res))))))
+</code></pre>
+
+</section><section class="slide">
+
+<h2 id="react-to-changes">React to changes</h2>
+
+<pre><code class="language-clojure">;; pseudocode
+(defn re-render [db-after {:keys! [sse-gen path request]}]
+  (let [;; synthetic GET request with updated DB and current URL
+        req  (assoc request
+                    :db db-after
+                    :uri path
+                    :request-method :get)
+        ;; dispatch to ring (including routing, session, etc)
+        res  (ring-app-handler req)
+        ;; render &lt;main&gt;
+        html (hiccup/render [layout/main (:html/body res)] {:doctype? false})]
+    ;; Send to frontend
+    (d*/patch-elements! sse-gen html)))
+</code></pre>
+</section><section class="slide">
+
+<h2 id="react-to-changes-1">React to changes</h2>
+
+<p>Now we can hook up Datomic <code>tx-report-q</code></p>
+
+<pre><code class="language-clojure">(while true
+ (let [tx-report-q                (d/tx-report-queue conn)
+       {:keys [db-after tx-data]} (BlockingQueue/.take tx-report-q)]
+   (doseq [tab (vals @updates/connections)]
+     (re-render db-after tab))))
+</code></pre>
+
+</section><section class="slide">
+
+<h2 id="next-steps">Next steps</h2>
+
+<ul>
+  <li><code>:html/body [my-page-view some-data]</code> — effectively lazy evaluation of rendering</li>
+  <li>Store previous <code>:html/body</code> form, compare, only re-render if changed</li>
+  <li>Requires all view data to be passed in as pure data</li>
+  <li><code>datomic.api/entity</code> is out, different db basis is always unequal</li>
+</ul>
+
+</section><section class="slide">
+
+<h1 id="thank-you-qa">Thank You! Q&amp;A?</h1>
+
+</section><section class="slide">
+
+<pre><code class="language-html">&lt;div data-json-signals&gt;&lt;/div&gt;
+</code></pre>
+
+<div data-json-signals=""></div>
 </section></div></div>
 <script src="bdc99754f36fb1c2da172679fe50ad255a069dfaa5f52efa69bc4dd22ed9a17f.js"></script>
 <script src="38cb5c336e11fdc4a798b074555f7a2305f5f65c217ac29876e79526e58f818b.js"></script>
-<script src="1272bd05c9d2309909ac07b23a0e42c4844b65c8375827ea5511e3986d39675f.js"></script>
-<script>window.reveal_opts = {plugins: [RevealHighlight], ...{"controls":false,"transition":"none","hash":true}}
+<script type="module" src="727844adfc825ee651fb93c544a2a739986f9a21820a94524b35f0cac470cf91.js"></script>
+<script>window.reveal_opts = {plugins: [RevealHighlight], ...{"controls":false,"transition":"none","hash":true,"disableLayout":true}}
 Reveal.initialize(window.reveal_opts)</script></body></html>
